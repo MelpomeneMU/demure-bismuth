@@ -98,18 +98,19 @@
 &d.allow-unapproved-players-IC [v(d.bd)]=0
 
 +channel/create Public=The group hangout thing.
++channel/create Chargen=Character questions and help.
++channel/create Monitor=Monitor channel for errors and weird commands.
++channel/create Staff=For staff discussions.
+
 +channel/public Public
 +channel/header Public=%x<#d4c0fa>-%x<#894ff7>\{ %xwPublic %x<#894ff7>\}%x<#d4c0fa>-
 
-+channel/create Chargen=Character questions and help.
 +channel/public Chargen
 +channel/header Chargen=%x<#d4c0fa>-%x<#894ff7>\{ %xwChargen %x<#894ff7>\}%x<#d4c0fa>-
 
-+channel/create Monitor=Monitor channel for errors and weird commands.
 +channel/staff Monitor
 +channel/header Monitor=%x<#d4c0fa>\[%x<#CC0000>Monitor%x<#d4c0fa>\]
 
-+channel/create Staff=For staff discussions.
 +channel/staff Staff
 +channel/header Staff=%x<#894ff7><%xwStaff%x<#894ff7>>
 
