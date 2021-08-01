@@ -103,14 +103,16 @@
 +channel/create Staff=For staff discussions.
 
 +channel/public Public
-+channel/header Public=%x<#d4c0fa>-%x<#894ff7>\{ %xwPublic %x<#894ff7>\}%x<#d4c0fa>-
-
 +channel/public Chargen
-+channel/header Chargen=%x<#d4c0fa>-%x<#894ff7>\{ %xwChargen %x<#894ff7>\}%x<#d4c0fa>-
 
 +channel/staff Monitor
++channel/staff Staff
+
++channel/header Public=%x<#d4c0fa>-%x<#894ff7>\{ %xwPublic %x<#894ff7>\}%x<#d4c0fa>-
+
++channel/header Chargen=%x<#d4c0fa>-%x<#894ff7>\{ %xwChargen %x<#894ff7>\}%x<#d4c0fa>-
+
 +channel/header Monitor=%x<#d4c0fa>\[%x<#CC0000>Monitor%x<#d4c0fa>\]
 
-+channel/staff Staff
 +channel/header Staff=%x<#894ff7><%xwStaff%x<#894ff7>>
 
