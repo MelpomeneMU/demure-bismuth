@@ -116,3 +116,4 @@
 
 +channel/header Staff=%x<#894ff7><%xwStaff%x<#894ff7>>
 
+@@ Code idea: +temproom Tavern > makes you a random tavern with desc, randomized name, etc.
