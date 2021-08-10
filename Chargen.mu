@@ -2,20 +2,40 @@
 Requirements: byzantine-opal
 
 Commands:
-	+sheet & +stats
-	+set <blah>=<bleh>
-	+list <stuff>
+	+sheet
+
+Chargen DIY:
+	+stat/set <stat>=<value>
+	+stat/add <special ability>
+	+stat/remove <special ability>
+
+	+stat/random <stat> - will choose a random value for <stat> for you.
+
+EZ-CG:
+	+stat/choose <Playbook|Heritage|Background|Vice|Special Abilities|XP triggers|Gear|Friends|Equipment>
+
+	The options will be listed and can be recalled at any time with +stat/choose <item>.
+
+	When you've chosen an item, +stat/choose <#> where <#> is the number of the item. If you're not sure, type +stat/choose random and the chooser will pick a random item for you.
+
+XP:
 	+xp
-	+xp/cost
-	+xp/spend <stat>
-	+xp/award
-	+xp/unaward
+	+xp/buy <stat>
+	+xp/unwind <player>/<action>
+	+xp/award <player>/<attribute or playbook>=<amount>
+	+xp/unaward <player>/<attribute or playbook>=<amount>
 
 Healing and harming:
 	+harm Shanked 2
 	+harm Gravely insulted
 	+harm L2 Defenestrated
-	+heal 1, 2, 3, or 5.
+	+heal 1, 2, 3, or 5 - tick your healing clock based on your healer's rolls. When it reaches 4, you heal a level of harm.
+
+Pools:
+	+take 1 stress
+	+take stress|drain|gloom
+	+take trauma=<which>
+	+vice???
 
  =[ Name ] ===================================================================
  Playbook: Hound           Crew: The Rooks            Heritage: Akorosi
@@ -99,6 +119,10 @@ Page 2:
 
 &d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Look
 
+&d.bio.hull [v(d.cgdb)]=Frame Size|Primary Function|Secondary Function|Tertiary Function
+
+&d.bio.vampire [v(d.cgdb)]=Telltale
+
 &d.attributes [v(d.cgdb)]=Insight|Prowess|Resolve
 
 &d.actions.insight [v(d.cgdb)]=Hunt|Study|Survey|Tinker
@@ -111,6 +135,32 @@ Page 2:
 
 &d.main_stats [v(d.cgdb)]=d.bio d.actions.insight d.actions.prowess d.actions.resolve
 
+&d.abilities [v(d.cgdb)]=d.abilities.cutter d.abilities.hound d.abilities.leech d.abilities.lurk d.abilities.slide d.abilities.spider d.abilities.whisper
+
+&d.abilities.cutter [v(d.cgdb)]=Battleborn|Bodyguard|Ghost Fighter|Leader|Mule|Not to be Trifled With|Savage|Vigorous
+
+&d.abilities.hound [v(d.cgdb)]=Sharpshooter|Focused|Ghost Hunter (ghost-form)|Ghost Hunter (mind-link)|Ghost Hunter (arrow-swift)|Scout|Survivor|Tough as Nails|Vengeful
+
+&d.abilities.leech [v(d.cgdb)]=Alchemist|Analyst|Artificer|Fortitude|Ghost Ward|Phsysicker|Saboteur|Venomous
+
+&d.abilities.lurk [v(d.cgdb)]=Infiltrator|Ambush|Daredevil|The Devil's Footsteps|Expertise|Ghost Veil|Reflexes|Shadow
+
+&d.abilities.slide [v(d.cgdb)]=Rook's Gambit|Cloak & Dagger|Ghost Voice|Like Looking into a Mirror|A Little Something on the Side|Mesmerism|Subterfuge|Trust in Me
+
+&d.abilities.spider [v(d.cgdb)]=Foresight|Calculating|Connected|Functioning Vice|Ghost Contract|Jail Bird|Mastermind|Weaving the Web
+
+&d.abilities.whisper [v(d.cgdb)]=Compel|Ghost Mind|Iron Will|Occultist|Ritual|Strange Methods|Tempest|Warded
+
+&d.abilities.ghost [v(d.cgdb)]=Ghost Form|Dissipate|Manifest|Poltergeist|Possess
+
+&d.abilities.hull [v(d.cgdb)]=Compartments|Electroplasmic Projectors|Interface|Overcharge|Secondary Hull|Frame Upgrade
+
+&d.abilities.vampire [v(d.cgdb)]=Arcane Sight|Dark Talent|Sinister Guile|Terrible Power|A Void in the Echo
+
+&d.frame_upgrades.hull [v(d.cgdb)]=Interior Chamber|Life-like Appearance|Levitation|Phonograph|Plating|Reflexes|Sensors|Smoke Projectors|Spider Climb|Spring-leap Pistons
+
+&d.strictures.vampire [v(d.cgdb)]=Slumber|Forbidden|Repelled|Bestial|Bound
+
 &d.stats_editable_after_chargen [v(d.cgdb)]=Name|Alias|Look
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -119,13 +169,21 @@ Page 2:
 
 &d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire|*
 
-&d.value.heritage [v(d.cgdb)]=Akorosi|Dagger Islander|Iruvian|Severosi|Skovlander|Tycherosi
+&d.value.heritage [v(d.cgdb)]=Akoros|The Dagger Isles|Iruvia|Severos|Skovland|Tycheros
 
 &d.value.background [v(d.cgdb)]=Academic|Labor|Law|Trade|Military|Noble|Underworld
 
 &d.value.vice [v(d.cgdb)]=Faith|Gambling|Luxury|Obligation|Pleasure|Stupor|Weird
 
 &d.value.action [v(d.cgdb)]=0|1|2|3|4|5
+
+&d.value.frame_size [v(d.cgdb)]=Small|Medium|Heavy
+
+&d.value.primary_function [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+
+&d.value.secondary_function [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+
+&d.value.tertiary_function [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Restricted values at character generation
@@ -180,7 +238,7 @@ Page 2:
 
 &layout.abilities-title [v(d.cgf)]=strcat(Special Abilities %(, default(%0/_abilities-xp, 0), /8, %b, XP, %))
 
-&layout.abilities [v(d.cgf)]=strcat(divider(ulocal(layout.abilities-title, %0, %1), %1), %r, multicol(, * * *, 0, |, %1))
+&layout.abilities [v(d.cgf)]=strcat(divider(ulocal(layout.abilities-title, %0, %1), %1), %r, multicol(ulocal(f.get-player-abilities, %0), * *, 0, |, %1))
 
 &layout.health [v(d.cgf)]=strcat(divider(Health, %1), setq(3, ulocal(layout.3health, %0, %1, %2)), setq(2, ulocal(layout.2health, %0, %1, 2, %2)), setq(1, ulocal(layout.2health, %0, %1, 1, %2)), if(t(%q3), strcat(%r, %q3)), if(t(%q2), strcat(%r, %q2)), if(t(%q1), strcat(%r, %q1)), if(not(cor(t(%q3), t(%q2), t(%q1))), strcat(%r, formattext(Unwounded, 0, %1))))
 
@@ -213,7 +271,13 @@ Page 2:
 
 &f.get-player-attribute [v(d.cgf)]=ladd(iter(xget(%vD, d.actions.%1), t(xget(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |))
 
+&f.get-player-ability [v(d.cgf)]=finditem(xget(%0, _stat.abilities), %0, |)
+
+&f.get-player-abilities [v(d.cgf)]=xget(%0, _stat.abilities)
+
 &f.get-stats [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.main_stats), setq(S, setunion(%qS, xget(%vD, itext(0)), |)))), %qS)
+
+&f.get-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.abilities), setq(S, setunion(%qS, xget(%vD, itext(0)), |)))), %qS)
 
 &f.get-harm-field [v(d.cgf)]=case(%1, 3, if(hasattr(%0, _health-3), #-1 DEAD CHARACTER, _health-3), case(strcat(hasattr(%0, _health-%1-1), hasattr(%0, _health-%1-2)), 00, _health-%1-1, 10, _health-%1-2, ulocal(f.get-harm-field, %0, add(%1, 1))))
 
@@ -269,7 +333,13 @@ Page 2:
 
 &f.get-total-player-actions [v(d.cgf)]=ladd(iter(ulocal(f.list-actions), if(not(member(%1, itext(0))), ulocal(f.get-player-action, %0, itext(0))), |))
 
-&c.+stat/set [v(d.cg)]=$+stat/set *=*: @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to set or unset.; }; @assert t(setr(S, finditem(ulocal(f.get-stats), %0, |)))={ @trigger me/tr.error=%#, Could not find a settable stat that starts with '%0'.; }; @assert cand(t(strlen(setr(V, ulocal(f.get-valid-value, %qS, %1)))), not(member(ulocal(f.list-restricted-values, %qS), %qV, |)))={ @trigger me/tr.error=%#, '%1' is not a value for %qS. Valid values are: [itemize(ulocal(f.list-valid-values, %qS), |)].[if(t(setr(R, itemize(ulocal(f.list-restricted-values, %qS), |))), %bRestricted values are: %qR.)]; }; @assert cor(not(isapproved(%#)), member(xget(%vD, d.stats_editable_after_chargen), %qS, |))={ @trigger me/tr.error=%#, %qS cannot be changed after you are approval. You will need to either +xp/spend or open a job with staff.; }; @assert if(ulocal(f.is-action, %qS), strcat(setq(T, ulocal(f.get-total-player-actions, %#, %qS)), lte(add(%qT, %qV), 7)), 1)={ @trigger me/tr.error=%#, Setting your %qS to %qV would take you over 7 points of actions. Reduce your action total to move the dots around.; }; @set %#=[ulocal(f.get-stat-location-on-player, %qS)]:%qV; @trigger me/tr.success=%#, You set your %qS to %qV.;
+&f.get-total-player-abilities [v(d.cgf)]=words(ulocal(f.get-player-abilities, %0), |)
+
+&c.+stat/set [v(d.cg)]=$+stat/set *=*: @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to set or unset.; }; @assert t(setr(S, finditem(ulocal(f.get-stats), %0, |)))={ @trigger me/tr.error=%#, Could not find a settable stat that starts with '%0'.; }; @assert cand(t(strlen(setr(V, ulocal(f.get-valid-value, %qS, %1)))), not(member(ulocal(f.list-restricted-values, %qS), %qV, |)))={ @trigger me/tr.error=%#, '%1' is not a value for %qS. Valid values are: [itemize(ulocal(f.list-valid-values, %qS), |)].[if(t(setr(R, itemize(ulocal(f.list-restricted-values, %qS), |))), %bRestricted values are: %qR.)]; }; @assert cor(not(isapproved(%#)), member(xget(%vD, d.stats_editable_after_chargen), %qS, |))={ @trigger me/tr.error=%#, %qS cannot be changed after you are approved. You will need to either +xp/spend or open a job with staff.; }; @assert if(ulocal(f.is-action, %qS), strcat(setq(T, ulocal(f.get-total-player-actions, %#, %qS)), lte(add(%qT, %qV), 7)), 1)={ @trigger me/tr.error=%#, Setting your %qS to %qV would take you over 7 points of actions. Reduce your action total to move the dots around.; }; @set %#=[ulocal(f.get-stat-location-on-player, %qS)]:%qV; @trigger me/tr.success=%#, You set your %qS to %qV.;
+
+&c.+stat/add [v(d.cg)]=$+stat/add *: @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to add.; }; @assert t(setr(S, finditem(ulocal(f.get-abilities), %0, |)))={ @trigger me/tr.error=%#, Could not find a special ability that starts with '%0'.; }; @assert not(isapproved(%#))={ @force %#={ +xp/buy %qS; }; }; @assert strcat(setq(T, ulocal(f.get-total-player-abilities, %#)), lte(add(%qT, 1), 1))={ @trigger me/tr.error=%#, Adding %qS would take you over 1 points of special abilities. +stat/remove something else to move the dots around.; }; @set %#=_stat.abilities:[trim(strcat(xget(%#, _stat.abilities), |, %qS), b, |)]; @trigger me/tr.success=%#, You added the special ability %qS.;
+
+&c.+stat/remove [v(d.cg)]=$+stat/remove *: @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to remove.; }; @assert t(setr(S, finditem(setr(P, ulocal(f.get-player-abilities, %#)), %0, |)))={ @trigger me/tr.error=%#, You don't have a special ability that starts with '%0'.; }; @assert not(isapproved(%#))={ @trigger me/tr.error=%#, You cannot remove abilities after you are approved. You will need to open a job with staff.; }; @set %#=_stat.abilities:[trim(remove(%qP, %qS, |, |), b, |)]; @trigger me/tr.success=%#, You removed the special ability %qS.;
 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -280,4 +350,3 @@ Page 2:
 @tel [v(d.cgdb)]=[v(d.cgf)]
 @tel [v(d.cgf)]=[v(d.cg)]
 @tel [v(d.cg)]=#2
- 
