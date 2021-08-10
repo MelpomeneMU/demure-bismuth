@@ -271,18 +271,6 @@ Page 2:
 
 &c.+stat/set [v(d.cg)]=$+stat/set *=*: @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to set or unset.; }; @assert t(setr(S, finditem(ulocal(f.get-stats), %0, |)))={ @trigger me/tr.error=%#, Could not find a settable stat that starts with '%0'.; }; @assert cand(t(strlen(setr(V, ulocal(f.get-valid-value, %qS, %1)))), not(member(ulocal(f.list-restricted-values, %qS), %qV, |)))={ @trigger me/tr.error=%#, '%1' is not a value for %qS. Valid values are: [itemize(ulocal(f.list-valid-values, %qS), |)].[if(t(setr(R, itemize(ulocal(f.list-restricted-values, %qS), |))), %bRestricted values are: %qR.)]; }; @assert cor(not(isapproved(%#)), member(xget(%vD, d.stats_editable_after_chargen), %qS, |))={ @trigger me/tr.error=%#, %qS cannot be changed after you are approval. You will need to either +xp/spend or open a job with staff.; }; @assert if(ulocal(f.is-action, %qS), strcat(setq(T, ulocal(f.get-total-player-actions, %#, %qS)), lte(add(%qT, %qV), 7)), 1)={ @trigger me/tr.error=%#, Setting your %qS to %qV would take you over 7 points of actions. Reduce your action total to move the dots around.; }; @set %#=[ulocal(f.get-stat-location-on-player, %qS)]:%qV; @trigger me/tr.success=%#, You set your %qS to %qV.;
 
-train +stat/set Playbook=Vampire
-train +stat/set Hunt=5
-train +stat/set Prowl=2
-
-+stat/set alias=The Codebreaker
-+stat/set Vice=Gambling
-+stat/set Vice=Shooting people - fails because not a valid vice
-+stat/set Hunt=6 - fails because not a valid value
-+stat/set Hunt=3 - fails because can't be higher than 2 at chargen (Player kit page 2)
-+stat/set Playbook=Cut - sets to Cutter
-+stat/set Playbook=Medium
-
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Wrap-up
