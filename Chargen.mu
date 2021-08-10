@@ -4,19 +4,26 @@ Requirements: byzantine-opal
 Commands:
 	+sheet
 
-Chargen DIY:
+Chargen:
+	+stat/choose <Playbook|Heritage|Background|Vice|Special Abilities|XP triggers|Gear|Friends> - get a list of choices.
+	+stat/choose <#> - pick a choice from the list
+	+stat/choose random - have the system pick a random one
+
 	+stat/set <stat>=<value>
 	+stat/add <special ability>
 	+stat/remove <special ability>
 
 	+stat/random <stat> - will choose a random value for <stat> for you.
 
-EZ-CG:
-	+stat/choose <Playbook|Heritage|Background|Vice|Special Abilities|XP triggers|Gear|Friends|Equipment>
+	+stat/clear - clear your stats. Will ask if you're sure first.
 
-	The options will be listed and can be recalled at any time with +stat/choose <item>.
-
-	When you've chosen an item, +stat/choose <#> where <#> is the number of the item. If you're not sure, type +stat/choose random and the chooser will pick a random item for you.
+Staff commands:
+	+stat/set <player>/<stat>=<value>
+	+stat/add <player>/<special ability>
+	+stat/remove <player>/<special ability>
+	+stat/choose <player>/<section>
+	+stat/choose <#>
+	+stat/choose random
 
 XP:
 	+xp
@@ -29,7 +36,7 @@ Healing and harming:
 	+harm Shanked 2
 	+harm Gravely insulted
 	+harm L2 Defenestrated
-	+heal 1, 2, 3, or 5 - tick your healing clock based on your healer's rolls. When it reaches 4, you heal a level of harm.
+	+heal 1, 2, 3, or 5 - tick your healing clock based on your healer's rolls. When the clock reaches 4, you heal a level of harm.
 
 Pools:
 	+take 1 stress
@@ -62,14 +69,6 @@ Pools:
  * You express your beliefs, drives, heritage, or background
  * You struggled with issues from your vice or traumas during a session
  ===============================[ Approved 08/01/2021, 5 advancements, 6 XP ]=
-
- Insight (2/6 XP)    4
-   Hunt 1, Study 1, Survey 1, Tinker 1
- Prowess (0/6 XP)    1
-   Finesse 0, Prowl 0, Skirmish 1, Wreck 0
- Resolve (0/6 XP)    2
-   Attune 2, Command 2, Consort 0, Sway 0
-
 
 Page 2:
 
@@ -114,14 +113,24 @@ Page 2:
 @force me=&vD [v(d.cgf)]=[v(d.cgdb)]
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Settings
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.log-staff-statting-to-channel [v(d.cgdb)]=Monitor
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Data for chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Look
 
-&d.bio.hull [v(d.cgdb)]=Frame Size|Primary Function|Secondary Function|Tertiary Function
+&d.bio.hull [v(d.cgdb)]=Frame Size|Primary Drive|Secondary Drive|Tertiary Drive
+
+&d.bio.hull.exclude [v(d.cgdb)]=Vice
 
 &d.bio.vampire [v(d.cgdb)]=Telltale
+
+&d.bio.vampire.exclude [v(d.cgdb)]=Vice
 
 &d.attributes [v(d.cgdb)]=Insight|Prowess|Resolve
 
@@ -133,7 +142,7 @@ Page 2:
 
 @@ Add the attribute name to this every time you add a new type of stat.
 
-&d.main_stats [v(d.cgdb)]=d.bio d.actions.insight d.actions.prowess d.actions.resolve
+&d.main_stats [v(d.cgdb)]=d.actions.insight d.actions.prowess d.actions.resolve
 
 &d.abilities [v(d.cgdb)]=d.abilities.cutter d.abilities.hound d.abilities.leech d.abilities.lurk d.abilities.slide d.abilities.spider d.abilities.whisper
 
@@ -194,6 +203,14 @@ Page 2:
 &d.restricted.action [v(d.cgdb)]=3|4|5
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Restricted values at character generation
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.choose-sections [v(d.cgdb)]=Special Abilities|XP triggers|Gear|Friends
+
+&d.crew-choose-sections [v(d.cgdb)]=
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Random values for chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -222,14 +239,19 @@ Page 2:
 @@ %1 - viewer
 &layout.sheet [v(d.cgf)]=strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.pools, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1), if(not(isapproved(%0)), strcat(%r%r, ulocal(layout.cg-errors, %0, %1))))
 
-&layout.cg-errors [v(d.cgf)]=strcat(header(Character generation instructions), %r, formattext(strcat(- You get 7 action dots. None may be higher than a 2 at chargen., %r, - You get one special ability., %r, - Fill out all the bio fields. If you're not sure%, use +stat/random., %r, - Select friends., %r, - Select equipment.), 0, %1), %r, divider(Commands), %r, multicol(+stat/set <stat>=<value>|+stat/add <stat>|+stat/remove <stat>|+stat/random <stat>|+stat/list|+stat/list <stat to find>, * * *, 0, |, %1), %r, footer(cg/on to join the Chargen channel and ask questions!))
-+sheet
+&layout.pass [v(d.cgf)]=%ch%cg%[Pass%]
+
+&layout.fail [v(d.cgf)]=%cr%[Needs work%]
+
+&layout.test [v(d.cgf)]=strcat(%b, if(t(%0), ulocal(layout.pass), ulocal(layout.fail)))
+
+&layout.cg-errors [v(d.cgf)]=strcat(header(Character generation instructions), %r, formattext(strcat(- You get 7 action dots. You have, %b, setr(A, ulocal(f.get-total-player-actions, %0))., ulocal(layout.test, eq(%qA, 7)), %r, - You get one special ability. You have%b, setr(A, ulocal(f.get-total-player-abilities, %0))., ulocal(layout.test, eq(%qA, 1)), %r, - Fill out all the bio fields. You have%b, setr(A, ulocal(f.get-remaining-bio-fields, %0)) remaining., ulocal(layout.test, eq(%qA, 0)), %r, setq(A, words(ulocal(f.get-player-friends, %0), |)), if(eq(%qA, 0), - You have no friends. Select 5 with +stat/choose Friends., - Choose 5 friends.), ulocal(layout.test, gt(%qA, 0)), %r, setq(A, words(ulocal(f.get-player-gear, %0), |)), if(neq(%qA, 5), - You need gear. Select it with +stat/choose Gear., - Choose your gear.), ulocal(layout.test, gt(%qA, 0))), 0, %1), %r, divider(Commands), %r, multicol(+stat/set <stat>=<value>|+stat/add <stat>|+stat/remove <stat>|+stat/choose|+stat/random <stat>|+stat/list, * * *, 0, |, %1), %r, footer(cg/on to join the Chargen channel and ask questions!))
 
 &layout.name [v(d.cgf)]=strcat(ulocal(f.get-name, %0, %1), if(isstaff(%1), strcat(%b, %(, %0, %))))
 
 &layout.bio [v(d.cgf)]=strcat(multicol(ulocal(layout.player-bio, %0, %1), * * *, 0, |, %1), %r, formattext(cat(Look:, shortdesc(%0, %1))))
 
-&layout.player-bio [v(d.cgf)]=iter(setdiff(xget(%vD, d.bio), Look, |), strcat(itext(0), :, %b, default(strcat(%0, /, ulocal(f.get-stat-location-on-player, itext(0))), Not set)), |, |)
+&layout.player-bio [v(d.cgf)]=iter(remove(ulocal(f.get-player-bio-fields, %0), Look, |), strcat(itext(0), :, %b, default(strcat(%0, /, ulocal(f.get-stat-location-on-player, itext(0))), Not set)), |, |)
 +sheet
 
 &layout.actions [v(d.cgf)]=strcat(divider(Actions, %0), %r, multicol(ulocal(layout.player-actions, %0), * 1 * 1 * 1, 1, |, %1))
@@ -259,13 +281,29 @@ Page 2:
 @@ Non-sheet layouts
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&layout.harm [v(d.cgf)]=cat(alert(Health), ulocal(f.get-name, %0), inflicted a level, %1, harm on, obj(%0)self, called, %2.)
+&layout.harm [v(d.cgf)]=cat(alert(Health), ulocal(f.get-name, %0), inflicted a, %chlevel %1%cn, harm on, obj(%0)self, called, %ch%2%cn.)
 
-&layout.heal [v(d.cgf)]=squish(cat(alert(Health), ulocal(f.get-name, %0), adds %1 ticks to, poss(%0), healing clock%,, if(t(%2), cat(removing, itemize(%2, |)%,)), if(%3, but, and), subj(%0), switch(subj(%0), they, are, is), if(%3, still injured, fully healed).))
+&layout.heal [v(d.cgf)]=squish(cat(alert(Health), ulocal(f.get-name, %0), adds %ch%1%cn ticks to, poss(%0), healing clock%,, if(t(%2), cat(removing, itemize(%ch%2%cn, |)%,)), if(%3, but, and), subj(%0), switch(subj(%0), they, are, is), ansi(h, if(%3, still injured, fully healed).)))
+
+@@ %0 - target
+@@ %1 - viewer
+&layout.choose_main [v(d.cgf)]=strcat(header(CG Chooser, %1), %r, multicol(ulocal(f.get-choices, %0), * * *, 0, |, %1), %r, footer(+stat/choose <section>, %1))
++stat/choose
+
+@@ %0 - target
+@@ %1 - viewer
+&layout.choose [v(d.cgf)]=strcat(header(CG Chooser, %1), %r, multicol(ulocal(f.get-choices, %0), * * *, 0, |, %1), %r, footer(+stat/choose <section>, %1))
++stat/choose
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Functions
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&f.get-choices [v(d.cgf)]=strcat(squish(trim(iter(ulocal(f.get-player-bio-fields, %0), if(hasattr(%vD, strcat(d.value., ulocal(f.get-stat-location, itext(0)))), itext(0)), |, |), b, |), |), |, xget(%vD, d.choose-sections))
+
+&f.get-remaining-bio-fields [v(d.cgf)]=ladd(iter(ulocal(f.get-player-bio-fields, %0), not(hasattr(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |))
+
+&f.get-player-bio-fields [v(d.cgf)]=strcat(setq(P, xget(%0, ulocal(f.get-stat-location-on-player, Playbook))), setq(F, xget(%vD, d.bio)), setq(F, strcat(%qF, |, xget(%vD, d.bio.%qP))), null(iter(xget(%vD, d.bio.%qP.exclude), setq(F, remove(%qF, itext(0), |, |)), |, |)), squish(trim(%qF, b, |), |))
 
 &f.get-player-action [v(d.cgf)]=default(strcat(%0, /, ulocal(f.get-stat-location-on-player, %1)), 0)
 
@@ -275,13 +313,37 @@ Page 2:
 
 &f.get-player-abilities [v(d.cgf)]=xget(%0, _stat.abilities)
 
-&f.get-stats [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.main_stats), setq(S, setunion(%qS, xget(%vD, itext(0)), |)))), %qS)
+&f.get-player-friends [v(d.cgf)]=xget(%0, _stat.friends)
+
+&f.get-player-gear [v(d.cgf)]=xget(%0, _stat.gear)
+
+&f.get-stats [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.main_stats), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(strcat(%qS, |, ulocal(f.get-player-bio-fields, %0)), b, |), |))
 
 &f.get-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.abilities), setq(S, setunion(%qS, xget(%vD, itext(0)), |)))), %qS)
 
 &f.get-harm-field [v(d.cgf)]=case(%1, 3, if(hasattr(%0, _health-3), #-1 DEAD CHARACTER, _health-3), case(strcat(hasattr(%0, _health-%1-1), hasattr(%0, _health-%1-2)), 00, _health-%1-1, 10, _health-%1-2, ulocal(f.get-harm-field, %0, add(%1, 1))))
 
 &f.get-highest-health-level [v(d.cgf)]=trim(iter(3 2-2 2-1 1-2 1-1, if(hasattr(%0, _health-[itext(0)]), strcat(_health-, itext(0)))))
+
+&f.list-actions [v(d.cgf)]=iter(lattr(%vD/d.actions.*), xget(%vD, itext(0)),, |)
+
+&f.is-action [v(d.cgf)]=finditem(ulocal(f.list-actions), %0, |)
+
+&f.list-values [v(d.cgf)]=if(ulocal(f.is-action, %0), xget(%vD, d.value.action), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
+
+&f.list-restricted-values [v(d.cgf)]=xget(%vD, if(ulocal(f.is-action, %0), d.restricted.action, ulocal(f.get-stat-location, d.restricted.%0)))
+
+&f.list-valid-values [v(d.cgf)]=strcat(setq(R, setdiff(ulocal(f.list-values, %0), ulocal(f.list-restricted-values, %0), |)), if(member(%qR, *, |), strcat(setq(R, setdiff(%qR, *, |)), setq(R, strcat(%qR, |, any unrestricted text)))), %qR)
+
+&f.get-valid-value [v(d.cgf)]=if(t(setr(S, ulocal(f.list-values, %0))), finditem(%qS, %1, |), %1)
+
+&f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, Name, d.ic_full_name, Alias, d.street_alias, edit(%0, %b, _, ^, _stat.))
+
+&f.get-stat-location [v(d.cgf)]=edit(%0, %b, _)
+
+&f.get-total-player-actions [v(d.cgf)]=ladd(iter(ulocal(f.list-actions), if(not(member(%1, itext(0))), ulocal(f.get-player-action, %0, itext(0))), |))
+
+&f.get-total-player-abilities [v(d.cgf)]=words(ulocal(f.get-player-abilities, %0), |)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Triggers
@@ -315,31 +377,24 @@ Page 2:
 @@ Chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&f.list-actions [v(d.cgf)]=iter(lattr(%vD/d.actions.*), xget(%vD, itext(0)),, |)
+&c.+stat/set [v(d.cg)]=$+stat/set *=*: @break match(%0, */*); @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to set or unset.; }; @assert t(setr(S, finditem(ulocal(f.get-stats, %#), %0, |)))={ @trigger me/tr.error=%#, Could not find a settable stat that starts with '%0'.; }; @assert cand(t(strlen(setr(V, ulocal(f.get-valid-value, %qS, %1)))), not(member(ulocal(f.list-restricted-values, %qS), %qV, |)))={ @trigger me/tr.error=%#, '%1' is not a value for %qS. Valid values are: [itemize(ulocal(f.list-valid-values, %qS), |)].[if(t(setr(R, itemize(ulocal(f.list-restricted-values, %qS), |))), %bRestricted values are: %qR.)]; }; @assert cor(not(isapproved(%#)), member(xget(%vD, d.stats_editable_after_chargen), %qS, |))={ @assert not(isnum(%qV))={ @force %#={ +xp/buy %qS; }; }; @trigger me/tr.error=%#, %qS cannot be changed after you are approved. You will need to either %ch+xp/buy%cn or open a job with staff.; }; @assert if(ulocal(f.is-action, %qS), strcat(setq(T, ulocal(f.get-total-player-actions, %#, %qS)), lte(add(%qT, %qV), 7)), 1)={ @trigger me/tr.error=%#, Setting your %qS to %qV would take you over 7 points of actions. Reduce your action total to move the dots around.; }; @set %#=[ulocal(f.get-stat-location-on-player, %qS)]:%qV; @trigger me/tr.success=%#, You set your %ch%qS%cn to %ch%qV%cn.;
 
-&f.is-action [v(d.cgf)]=finditem(ulocal(f.list-actions), %0, |)
+&c.+stat/add [v(d.cg)]=$+stat/add *: @break match(%0, */*); @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to add.; }; @assert t(setr(S, finditem(ulocal(f.get-abilities), %0, |)))={ @trigger me/tr.error=%#, Could not find a special ability that starts with '%0'.; }; @assert not(t(finditem(setr(L, ulocal(f.get-player-abilities, %#)), %qS, |)))={ @trigger me/tr.error=%#, You already have a special ability called '%qS'.; }; @assert not(isapproved(%#))={ @force %#={ +xp/buy %qS; }; }; @assert strcat(setq(T, ulocal(f.get-total-player-abilities, %#)), lte(add(%qT, 1), 1))={ @trigger me/tr.error=%#, Adding %qS would take you over 1 points of special abilities. +stat/remove something else to move the dots around.; }; @set %#=_stat.abilities:[trim(strcat(%qL, |, %qS), b, |)]; @trigger me/tr.success=%#, You added the special ability %ch%qS%cn.;
 
-&f.list-values [v(d.cgf)]=if(ulocal(f.is-action, %0), xget(%vD, d.value.action), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
+&c.+stat/remove [v(d.cg)]=$+stat/remove *: @break match(%0, */*); @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to remove.; }; @assert t(setr(S, finditem(setr(L, ulocal(f.get-player-abilities, %#)), %0, |)))={ @trigger me/tr.error=%#, You don't have a special ability that starts with '%0'.; }; @assert not(isapproved(%#))={ @trigger me/tr.error=%#, You cannot remove abilities after you are approved. You will need to open a job with staff.; }; @set %#=_stat.abilities:[trim(remove(%qL, %qS, |, |), b, |)]; @trigger me/tr.success=%#, You removed the special ability %ch%qS%cn.;
 
-&f.list-restricted-values [v(d.cgf)]=xget(%vD, if(ulocal(f.is-action, %0), d.restricted.action, ulocal(f.get-stat-location, d.restricted.%0)))
+&c.+stat/clear [v(d.cg)]=$+stat/clear*: @assert not(isapproved(%#))={ @trigger me/tr.error=%#, You can't clear your stats once you're approved.; };  @assert cand(lte(sub(secs(), xget(%0, _stat.clear-request)), 600), match(trim(%0), YES))={ @wipe %#/_stat.*; @trigger me/tr.success=%#, Your stats have been cleared.; }; @set %#=_stat.clear-request:[secs()]; @trigger me/tr.success=%#, This will clear all of your stats. If you would like to continue%, type %ch+stat/clear YES%cn within the next 10 minutes. It is now [prettytime()].;
 
-&f.list-valid-values [v(d.cgf)]=strcat(setq(R, setdiff(ulocal(f.list-values, %0), ulocal(f.list-restricted-values, %0), |)), if(member(%qR, *, |), strcat(setq(R, setdiff(%qR, *, |)), setq(R, strcat(%qR, |, any unrestricted text)))), %qR)
+&c.+stat/set_staff [v(d.cg)]=$+stat/set */*=*: @assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to set other players' stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; };  @assert t(%1)={ @trigger me/tr.error=%#, You need to enter something to set or unset.; }; @assert t(setr(S, finditem(ulocal(f.get-stats, %#), %1, |)))={ @trigger me/tr.error=%#, Could not find a settable stat that starts with '%1'.; }; @assert t(strlen(setr(V, ulocal(f.get-valid-value, %qS, %2))))={ @trigger me/tr.error=%#, '%2' is not a value for %qS. Valid values are: [itemize(ulocal(f.list-valid-values, %qS), |)].; }; @cemit [xget(%vD, d.log-staff-statting-to-channel)]=ulocal(f.get-name, %#) set [ulocal(f.get-name, %qP)]'s %ch%qS%cn to %ch%qV%cn.; @set %qP=[ulocal(f.get-stat-location-on-player, %qS)]:%qV; @trigger me/tr.success=%#, You set [ulocal(f.get-name, %qP, %#)]'s %ch%qS%cn to %ch%qV%cn.;
 
-&f.get-valid-value [v(d.cgf)]=if(t(setr(S, ulocal(f.list-values, %0))), finditem(%qS, %1, |), %1)
+&c.+stat/add_staff [v(d.cg)]=$+stat/add */*: @assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to set other players' stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(%1)={ @trigger me/tr.error=%#, You need to enter something to add.; }; @assert t(setr(S, finditem(ulocal(f.get-abilities), %1, |)))={ @trigger me/tr.error=%#, Could not find a special ability that starts with '%1'.; }; @assert not(t(finditem(setr(L, ulocal(f.get-player-abilities, %qP)), %qS, |)))={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) already has a special ability called '%qS'.; }; @set %qP=_stat.abilities:[trim(strcat(%qL, |, %qS), b, |)]; @cemit [xget(%vD, d.log-staff-statting-to-channel)]=ulocal(f.get-name, %#) added the special ability %ch%qS%cn to [ulocal(f.get-name, %qP)]'s character sheet.; @trigger me/tr.success=%#, You added the special ability %ch%qS%cn to [ulocal(f.get-name, %qP, %#)]'s character sheet.;
 
-&f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, edit(%0, %b, _, ^, _stat.))
+&c.+stat/remove_staff [v(d.cg)]=$+stat/remove */*: @assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to set other players' stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(%1)={ @trigger me/tr.error=%#, You need to enter something to remove.; }; @assert t(setr(S, finditem(setr(L, ulocal(f.get-player-abilities, %qP)), %1, |)))={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) doesn't have a special ability that starts with '%1'.; }; @cemit [xget(%vD, d.log-staff-statting-to-channel)]=ulocal(f.get-name, %#) removed the special ability %ch%qS%cn from [ulocal(f.get-name, %qP)]'s character sheet.; @set %qP=_stat.abilities:[trim(remove(%qL, %qS, |, |), b, |)]; @trigger me/tr.success=%#, You removed the special ability %ch%qS%cn from [ulocal(f.get-name, %qP, %#)]'s character sheet.;
 
-&f.get-stat-location [v(d.cgf)]=edit(%0, %b, _)
+&c.+stat/choose [v(d.cg)]=$+stat/choose:@pemit %#=ulocal(layout.choose_main, %#, %#); 
 
-&f.get-total-player-actions [v(d.cgf)]=ladd(iter(ulocal(f.list-actions), if(not(member(%1, itext(0))), ulocal(f.get-player-action, %0, itext(0))), |))
+&c.+stat/choose_text [v(d.cg)]=$+stat/choose *:@assert not(isnum(%0)); @assert t(setr(S, finditem(ulocal(f.get-choices, %#), %0, |)))={ @trigger me/tr.error=%#, Could not find a choices section called '%0'.; }; @pemit %#=ulocal(layout.choose, %qS, %#, %#);
 
-&f.get-total-player-abilities [v(d.cgf)]=words(ulocal(f.get-player-abilities, %0), |)
-
-&c.+stat/set [v(d.cg)]=$+stat/set *=*: @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to set or unset.; }; @assert t(setr(S, finditem(ulocal(f.get-stats), %0, |)))={ @trigger me/tr.error=%#, Could not find a settable stat that starts with '%0'.; }; @assert cand(t(strlen(setr(V, ulocal(f.get-valid-value, %qS, %1)))), not(member(ulocal(f.list-restricted-values, %qS), %qV, |)))={ @trigger me/tr.error=%#, '%1' is not a value for %qS. Valid values are: [itemize(ulocal(f.list-valid-values, %qS), |)].[if(t(setr(R, itemize(ulocal(f.list-restricted-values, %qS), |))), %bRestricted values are: %qR.)]; }; @assert cor(not(isapproved(%#)), member(xget(%vD, d.stats_editable_after_chargen), %qS, |))={ @trigger me/tr.error=%#, %qS cannot be changed after you are approved. You will need to either +xp/spend or open a job with staff.; }; @assert if(ulocal(f.is-action, %qS), strcat(setq(T, ulocal(f.get-total-player-actions, %#, %qS)), lte(add(%qT, %qV), 7)), 1)={ @trigger me/tr.error=%#, Setting your %qS to %qV would take you over 7 points of actions. Reduce your action total to move the dots around.; }; @set %#=[ulocal(f.get-stat-location-on-player, %qS)]:%qV; @trigger me/tr.success=%#, You set your %qS to %qV.;
-
-&c.+stat/add [v(d.cg)]=$+stat/add *: @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to add.; }; @assert t(setr(S, finditem(ulocal(f.get-abilities), %0, |)))={ @trigger me/tr.error=%#, Could not find a special ability that starts with '%0'.; }; @assert not(isapproved(%#))={ @force %#={ +xp/buy %qS; }; }; @assert strcat(setq(T, ulocal(f.get-total-player-abilities, %#)), lte(add(%qT, 1), 1))={ @trigger me/tr.error=%#, Adding %qS would take you over 1 points of special abilities. +stat/remove something else to move the dots around.; }; @set %#=_stat.abilities:[trim(strcat(xget(%#, _stat.abilities), |, %qS), b, |)]; @trigger me/tr.success=%#, You added the special ability %qS.;
-
-&c.+stat/remove [v(d.cg)]=$+stat/remove *: @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to remove.; }; @assert t(setr(S, finditem(setr(P, ulocal(f.get-player-abilities, %#)), %0, |)))={ @trigger me/tr.error=%#, You don't have a special ability that starts with '%0'.; }; @assert not(isapproved(%#))={ @trigger me/tr.error=%#, You cannot remove abilities after you are approved. You will need to open a job with staff.; }; @set %#=_stat.abilities:[trim(remove(%qP, %qS, |, |), b, |)]; @trigger me/tr.success=%#, You removed the special ability %qS.;
 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@

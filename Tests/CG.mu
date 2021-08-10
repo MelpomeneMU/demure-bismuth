@@ -10,3 +10,12 @@ train +stat/set Prowl=2
 +stat/set Hunt=3 - fails because can't be higher than 2 at chargen (Player kit page 2)
 +stat/set Playbook=Cut - sets to Cutter
 +stat/set Playbook=Medium
+
+
+ 
++heal 3
++heal 5
++heal 1
++heal 5
++heal 5
+
