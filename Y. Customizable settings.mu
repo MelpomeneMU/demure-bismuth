@@ -117,3 +117,9 @@
 +channel/header Staff=%x<#894ff7><%xwStaff%x<#894ff7>>
 
 @@ Code idea: +temproom Tavern > makes you a random tavern with desc, randomized name, etc.
+
+&d.allowed-who-fields [v(d.bd)]=Alias|Apparent Age|Connection Info|Connection Time|DBref|Doing|Gender|IC Full Name|Street Alias|IC Occupation|IC Pronouns|Idle|Last IP|Location|Mail Stats|Name|Note|OOC Pronouns|Played-by|Position|Private Alts|Public Alts|Quote|RP Prefs|Short-desc|Staff Notes|Status|Themesong|Timezone|Wiki
+
+&d.section.ic_info [v(d.bd)]=Apparent Age|Gender|IC Full Name|Street Alias|IC Occupation|IC Pronouns|Played-by|Short-desc|Wiki|Themesong|Quote
+
+&d.finger-settable-fields [v(d.bd)]=Apparent Age|Gender|IC Full Name|Street Alias|IC Occupation|IC Pronouns|OOC Pronouns|Played-by|Position|Public Alts|Quote|RP Prefs|Short-desc|Themesong|Timezone|Wiki
