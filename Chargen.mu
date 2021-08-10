@@ -87,27 +87,74 @@ Page 2:
 
 @force me=&d.cg me=[search(ETHING=t(member(name(##), Chargen Commands <CGC>, |)))]
 @force me=&d.cgf me=[search(ETHING=t(member(name(##), Chargen Functions <CGF>, |)))]
-@force me=&d.cdb me=[search(ETHING=t(member(name(##), Chargen Database <CGDB>, |)))]
+@force me=&d.cgdb me=[search(ETHING=t(member(name(##), Chargen Database <CGDB>, |)))]
 
 @force me=&d.chargen-functions [v(d.bd)]=[v(d.cgf)]
 
-@force me=&vD [v(d.cgf)]=[v(d.cdb)]
+@force me=&vD [v(d.cgf)]=[v(d.cgdb)]
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Settings
+@@ Data for chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.bio [v(d.cdb)]=Playbook|Crew|Heritage|Background|Vice
+&d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Look
 
-&d.bio.playbook [v(d.cdb)]=Hound|etc
+&d.attributes [v(d.cgdb)]=Insight|Prowess|Resolve
 
-&d.attributes [v(d.cdb)]=Insight|Prowess|Resolve
+&d.actions.insight [v(d.cgdb)]=Hunt|Study|Survey|Tinker
 
-&d.actions.insight [v(d.cdb)]=Hunt|Study|Survey|Tinker
+&d.actions.prowess [v(d.cgdb)]=Finesse|Prowl|Skirmish|Wreck
 
-&d.actions.prowess [v(d.cdb)]=Finesse|Prowl|Skirmish|Wreck
+&d.actions.resolve [v(d.cgdb)]=Attune|Command|Consort|Sway
 
-&d.actions.resolve [v(d.cdb)]=Attune|Command|Consort|Sway
+@@ Add the attribute name to this every time you add a new type of stat.
+
+&d.main_stats [v(d.cgdb)]=d.bio d.actions.insight d.actions.prowess d.actions.resolve
+
+&d.stats_editable_after_chargen [v(d.cgdb)]=Name|Alias|Look
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Valid values for various stats - * means write your own
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire|*
+
+&d.value.heritage [v(d.cgdb)]=Akorosi|Dagger Islander|Iruvian|Severosi|Skovlander|Tycherosi
+
+&d.value.background [v(d.cgdb)]=Academic|Labor|Law|Trade|Military|Noble|Underworld
+
+&d.value.vice [v(d.cgdb)]=Faith|Gambling|Luxury|Obligation|Pleasure|Stupor|Weird
+
+&d.value.action [v(d.cgdb)]=0|1|2|3|4|5
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Restricted values at character generation
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.restricted.playbook [v(d.cgdb)]=Ghost|Hull|Vampire
+
+&d.restricted.action [v(d.cgdb)]=3|4|5
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Random values for chargen
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.random.name [v(d.cgdb)]=Adric|Aldo|Amosen|Andrel|Arden|Arlyn|Arquo|Arvus|Ashlyn|Branon|Brace|Brance|Brena|Bricks|Candra|Carissa|Carro|Casslyn|Cavelle| Clave|Corille|Cross|Crowl|Cyrene|Daphnia|Drav|Edlun|Emeline|Grine|Helles|Hix|Holtz|Kamelin|Kelyr|Kobb|Kristov|Laudius|Lauria|Lenia|Lizete|Lorette|Lucella|Lynthia|Mara|Milos|Morlan|Myre|Narcus|Naria|Noggs|Odrienne|Orlan|Phin|Polonia|Quess|Remira|Ring|Roethe|Sesereth|Sethla|Skannon|Stavrul|Stev|Syra|Talitha|Tesslyn|Thena|Timoth|Tocker|Una|Vaurin|Veleris|Veretta|Vestine|Vey|Volette|Vond|Weaver|Wester|Zamira
+
+&d.random.surname [v(d.cgdb)]=Ankhayat|Arran|Athanoch|Basran|Boden|Booker|Bowman|Breakiron|Brogan|Clelland|Clermont|Coleburn|Comber|Daava|Dalmore|Danfield|Dunvil|Farros|Grine|Haig|Helker|Helles|Hellyers|Jayan|Jeduin|Kardera|Karstas|Keel|Kessarin|Kinclaith|Lomond|Maroden|Michter|Morriston|Penderyn|Prichard|Rowan|Sevoy|Skelkallan|Skora|Slane|Strangford|Strathmill|Templeton|Tyrconnell|Vale|Walund|Welker
+
+&d.random.gender_presentation [v(d.cgdb)]=Man|Woman|Ambiguous|Concealed
+
+&d.random.appearance_adjective [v(d.cgdb)]=Affable|Athletic|Bony|Bright|Brooding|Calm|Chiseled|Cold|Dark|Delicate|Fair|Fierce|Grimy|Handsome|Huge|Hunched|Languid|Lovely|Open|Plump|Rough|Sad|Scarred|Slim|Soft|Squat|Stern|Stout|Striking|Twitchy|Weathered|Wiry|Worn
+
+&d.random.clothing [v(d.cgdb)]=Collared Shirt|Eel-skin Bodysuit|Fitted Dress|Fitted Leggings|Half-Cape|Heavy Cloak|Heavy Jacket|Hide & Furs|Hood & Veil|Hooded Cape|Hooded Coat|Knit Cap|Knit Sweater|Leathers|Long Coat|Long Scarf|Loose Silks|Mask & Robes|Rags & Tatters|Rough Tunic|Scavenged Uniform|Sharp Trousers|Short Cloak|Skirt & Blouse|Slim Jacket|Soft Boots|Suit & Tie|Suspenders|Tall Boots|Thick Greatcoat|Tricorn Hat|Vest or Waistcoat|Waxed Coat|Wide Belt|Work Boots|Work Trousers
+
+&d.random.alias [v(d.cgdb)]=Bell|Birch|Bricks|Bug|Chime|Coil|Cricket|Cross|Crow|Echo|Flint|Frog|Frost|Grip|Gunner|Hammer|Hook|Junker|Mist|Moon|Nail|Needle|Ogre|Pool|Ring|Ruby|Silver|Skinner|Song|Spur|Tackle|Thistle|Thorn|Tick-Tock|Twelves|Vixen|Whip|Wicker
+
+&d.random. [v(d.cgdb)]=
+&d.random. [v(d.cgdb)]=
+&d.random. [v(d.cgdb)]=
+&d.random. [v(d.cgdb)]=
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Layouts
@@ -115,21 +162,25 @@ Page 2:
 
 @@ %0 - target
 @@ %1 - viewer
-&layout.sheet [v(d.cgf)]=strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.pools, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1))
+&layout.sheet [v(d.cgf)]=strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.pools, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1), if(not(isapproved(%0)), strcat(%r%r, ulocal(layout.cg-errors, %0, %1))))
+
+&layout.cg-errors [v(d.cgf)]=strcat(header(Character generation instructions), %r, formattext(strcat(- You get 7 action dots. None may be higher than a 2 at chargen., %r, - You get one special ability., %r, - Fill out all the bio fields. If you're not sure%, use +stat/random., %r, - Select friends., %r, - Select equipment.), 0, %1), %r, divider(Commands), %r, multicol(+stat/set <stat>=<value>|+stat/add <stat>|+stat/remove <stat>|+stat/random <stat>|+stat/list|+stat/list <stat to find>, * * *, 0, |, %1), %r, footer(cg/on to join the Chargen channel and ask questions!))
++sheet
 
 &layout.name [v(d.cgf)]=strcat(ulocal(f.get-name, %0, %1), if(isstaff(%1), strcat(%b, %(, %0, %))))
 
-&layout.bio [v(d.cgf)]=multicol(ulocal(layout.player-bio, %0, %1), 33p 34p 33p, 0, |, %1)
+&layout.bio [v(d.cgf)]=strcat(multicol(ulocal(layout.player-bio, %0, %1), * * *, 0, |, %1), %r, formattext(cat(Look:, shortdesc(%0, %1))))
 
-&layout.player-bio [v(d.cgf)]=iter(xget(%vD, d.bio), strcat(itext(0), :, %b, default(strcat(%0, /, _bio., itext(0)), Not set)), |, |)
+&layout.player-bio [v(d.cgf)]=iter(setdiff(xget(%vD, d.bio), Look, |), strcat(itext(0), :, %b, default(strcat(%0, /, ulocal(f.get-stat-location-on-player, itext(0))), Not set)), |, |)
++sheet
 
 &layout.actions [v(d.cgf)]=strcat(divider(Actions, %0), %r, multicol(ulocal(layout.player-actions, %0), * 1 * 1 * 1, 1, |, %1))
 
-&layout.player-actions [v(d.cgf)]=iter(strcat(xget(%vD, d.attributes), |, fliplist(strcat(xget(%vD, d.actions.insight), |, xget(%vD, d.actions.prowess), |, xget(%vD, d.actions.resolve)), 3, |)), strcat(itext(0), if(lte(inum(0), 3), strcat(space(3), %(, 0, /, 6, %b, XP, %))), |, default(%0/_action.[itext(0)], 0)), |, |)
+&layout.player-actions [v(d.cgf)]=iter(strcat(xget(%vD, d.attributes), |, fliplist(strcat(xget(%vD, d.actions.insight), |, xget(%vD, d.actions.prowess), |, xget(%vD, d.actions.resolve)), 3, |)), strcat(itext(0), if(lte(inum(0), 3), strcat(space(3), %(, 0, /, 6, %b, XP, %), |, ulocal(f.get-player-attribute, %0, itext(0))), strcat(|, ulocal(f.get-player-action, %0, itext(0))))), |, |)
 
 &layout.abilities-title [v(d.cgf)]=strcat(Special Abilities %(, default(%0/_abilities-xp, 0), /8, %b, XP, %))
 
-&layout.abilities [v(d.cgf)]=strcat(divider(ulocal(layout.abilities-title, %0, %1), %1), %r, multicol(, 33p 34p 33p, 0, |, %1))
+&layout.abilities [v(d.cgf)]=strcat(divider(ulocal(layout.abilities-title, %0, %1), %1), %r, multicol(, * * *, 0, |, %1))
 
 &layout.health [v(d.cgf)]=strcat(divider(Health, %1), setq(3, ulocal(layout.3health, %0, %1, %2)), setq(2, ulocal(layout.2health, %0, %1, 2, %2)), setq(1, ulocal(layout.2health, %0, %1, 1, %2)), if(t(%q3), strcat(%r, %q3)), if(t(%q2), strcat(%r, %q2)), if(t(%q1), strcat(%r, %q1)), if(not(cor(t(%q3), t(%q2), t(%q1))), strcat(%r, formattext(Unwounded, 0, %1))))
 
@@ -158,6 +209,12 @@ Page 2:
 @@ Functions
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
+&f.get-player-action [v(d.cgf)]=default(strcat(%0, /, ulocal(f.get-stat-location-on-player, %1)), 0)
+
+&f.get-player-attribute [v(d.cgf)]=ladd(iter(xget(%vD, d.actions.%1), t(xget(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |))
+
+&f.get-stats [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.main_stats), setq(S, setunion(%qS, xget(%vD, itext(0)), |)))), %qS)
+
 &f.get-harm-field [v(d.cgf)]=case(%1, 3, if(hasattr(%0, _health-3), #-1 DEAD CHARACTER, _health-3), case(strcat(hasattr(%0, _health-%1-1), hasattr(%0, _health-%1-2)), 00, _health-%1-1, 10, _health-%1-2, ulocal(f.get-harm-field, %0, add(%1, 1))))
 
 &f.get-highest-health-level [v(d.cgf)]=trim(iter(3 2-2 2-1 1-2 1-1, if(hasattr(%0, _health-[itext(0)]), strcat(_health-, itext(0)))))
@@ -178,6 +235,8 @@ Page 2:
 
 &c.+sheet [v(d.cg)]=$+sheet:@pemit %#=ulocal(layout.sheet, %#, %#)
 
+&c.+stat [v(d.cg)]=$+stats:@pemit %#=ulocal(layout.sheet, %#, %#)
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Health
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -192,8 +251,37 @@ Page 2:
 @@ Chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+set [v(d.cg)]=$+set: ; @trigger me/tr.success=%#, ;
+&f.list-actions [v(d.cgf)]=iter(lattr(%vD/d.actions.*), xget(%vD, itext(0)),, |)
 
+&f.is-action [v(d.cgf)]=finditem(ulocal(f.list-actions), %0, |)
+
+&f.list-values [v(d.cgf)]=if(ulocal(f.is-action, %0), xget(%vD, d.value.action), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
+
+&f.list-restricted-values [v(d.cgf)]=xget(%vD, if(ulocal(f.is-action, %0), d.restricted.action, ulocal(f.get-stat-location, d.restricted.%0)))
+
+&f.list-valid-values [v(d.cgf)]=strcat(setq(R, setdiff(ulocal(f.list-values, %0), ulocal(f.list-restricted-values, %0), |)), if(member(%qR, *, |), strcat(setq(R, setdiff(%qR, *, |)), setq(R, strcat(%qR, |, any unrestricted text)))), %qR)
+
+&f.get-valid-value [v(d.cgf)]=if(t(setr(S, ulocal(f.list-values, %0))), finditem(%qS, %1, |), %1)
+
+&f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, edit(%0, %b, _, ^, _stat.))
+
+&f.get-stat-location [v(d.cgf)]=edit(%0, %b, _)
+
+&f.get-total-player-actions [v(d.cgf)]=ladd(iter(ulocal(f.list-actions), if(not(member(%1, itext(0))), ulocal(f.get-player-action, %0, itext(0))), |))
+
+&c.+stat/set [v(d.cg)]=$+stat/set *=*: @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to set or unset.; }; @assert t(setr(S, finditem(ulocal(f.get-stats), %0, |)))={ @trigger me/tr.error=%#, Could not find a settable stat that starts with '%0'.; }; @assert cand(t(strlen(setr(V, ulocal(f.get-valid-value, %qS, %1)))), not(member(ulocal(f.list-restricted-values, %qS), %qV, |)))={ @trigger me/tr.error=%#, '%1' is not a value for %qS. Valid values are: [itemize(ulocal(f.list-valid-values, %qS), |)].[if(t(setr(R, itemize(ulocal(f.list-restricted-values, %qS), |))), %bRestricted values are: %qR.)]; }; @assert cor(not(isapproved(%#)), member(xget(%vD, d.stats_editable_after_chargen), %qS, |))={ @trigger me/tr.error=%#, %qS cannot be changed after you are approval. You will need to either +xp/spend or open a job with staff.; }; @assert if(ulocal(f.is-action, %qS), strcat(setq(T, ulocal(f.get-total-player-actions, %#, %qS)), lte(add(%qT, %qV), 7)), 1)={ @trigger me/tr.error=%#, Setting your %qS to %qV would take you over 7 points of actions. Reduce your action total to move the dots around.; }; @set %#=[ulocal(f.get-stat-location-on-player, %qS)]:%qV; @trigger me/tr.success=%#, You set your %qS to %qV.;
+
+train +stat/set Playbook=Vampire
+train +stat/set Hunt=5
+train +stat/set Prowl=2
+
++stat/set alias=The Codebreaker
++stat/set Vice=Gambling
++stat/set Vice=Shooting people - fails because not a valid vice
++stat/set Hunt=6 - fails because not a valid value
++stat/set Hunt=3 - fails because can't be higher than 2 at chargen (Player kit page 2)
++stat/set Playbook=Cut - sets to Cutter
++stat/set Playbook=Medium
 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -201,6 +289,7 @@ Page 2:
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 
-@tel [v(d.cdb)]=[v(d.cgf)]
+@tel [v(d.cgdb)]=[v(d.cgf)]
 @tel [v(d.cgf)]=[v(d.cg)]
 @tel [v(d.cg)]=#2
+ 
