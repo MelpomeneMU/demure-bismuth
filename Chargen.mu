@@ -72,7 +72,7 @@ Pools:
 Page 2:
 
  ==============================[ Friends ]====================================
- Jimbob the candlestick maker                (enemy) Jasper the bravo
+ Jimbob the candlestick maker                (rival) Jasper the bravo
  Shinji the mech pilot                       Beatrice the bellmaker
  ===============================[ Armor ]=====================================
  Armor                 1   Heavy Armor           0   Special Armor         0
@@ -139,31 +139,77 @@ Page 2:
 
 &d.actions.resolve [v(d.cgdb)]=Attune|Command|Consort|Sway
 
-@@ Add the attribute name to this every time you add a new type of stat.
-
-&d.main_stats [v(d.cgdb)]=d.actions.insight d.actions.prowess d.actions.resolve
+&d.actions [v(d.cgdb)]=Hunt|Study|Survey|Tinker|Finesse|Prowl|Skirmish|Wreck|Attune|Command|Consort|Sway
 
 &d.abilities [v(d.cgdb)]=d.abilities.cutter d.abilities.hound d.abilities.leech d.abilities.lurk d.abilities.slide d.abilities.spider d.abilities.whisper
 
 &d.abilities.cutter [v(d.cgdb)]=Battleborn|Bodyguard|Ghost Fighter|Leader|Mule|Not to be Trifled With|Savage|Vigorous
 
+&d.friends.cutter [v(d.cgdb)]=Marlene, a pugilist|Chael, a vicious thug|Mercy, a cold killer|Grace, an extortionist|Sawtooth, a phsysicker
+
+&d.xp_triggers.cutter [v(d.cgdb)]=address a challenge with Violence or Coercion
+
+&d.gear.cutter [v(d.cgdb)]=
+
+&d.gear. [v(d.cgdb)]=
+&d.gear. [v(d.cgdb)]=
+&d.gear. [v(d.cgdb)]=
+&d.gear. [v(d.cgdb)]=
+&d.gear. [v(d.cgdb)]=
+&d.gear. [v(d.cgdb)]=
+&d.gear. [v(d.cgdb)]=
+&d.gear. [v(d.cgdb)]=
+&d.gear. [v(d.cgdb)]=
+&d.gear. [v(d.cgdb)]=
+&d.gear. [v(d.cgdb)]=
+
 &d.abilities.hound [v(d.cgdb)]=Sharpshooter|Focused|Ghost Hunter (ghost-form)|Ghost Hunter (mind-link)|Ghost Hunter (arrow-swift)|Scout|Survivor|Tough as Nails|Vengeful
+
+&d.friends.hound [v(d.cgdb)]=Steiner, an assassin|Celene, a sentinel|Melvir, a phsysicker|Veleris, a spy|Casta, a bounty hunter
+
+&d.xp_triggers.hound [v(d.cgdb)]=address a challenge with Tracking or Violence
 
 &d.abilities.leech [v(d.cgdb)]=Alchemist|Analyst|Artificer|Fortitude|Ghost Ward|Phsysicker|Saboteur|Venomous
 
+&d.friends.leech [v(d.cgdb)]=Stazia, an apothecary|Veldren, a psychonaut|Eckard, a corpse thief|Jul, a blood dealer|Malista, a priestess
+
+&d.xp_triggers.leech [v(d.cgdb)]=address a challenge with Technical Skill or Mayhem
+
 &d.abilities.lurk [v(d.cgdb)]=Infiltrator|Ambush|Daredevil|The Devil's Footsteps|Expertise|Ghost Veil|Reflexes|Shadow
+
+&d.friends.lurk [v(d.cgdb)]=Telda, a beggar|Darmot, a bluecoat|Frake, a locksmith|Roslyn Kellis, a noble|Petra, a city clerk
+
+&d.xp_triggers.lurk [v(d.cgdb)]=address a challenge with Stealth or Evasion
 
 &d.abilities.slide [v(d.cgdb)]=Rook's Gambit|Cloak & Dagger|Ghost Voice|Like Looking into a Mirror|A Little Something on the Side|Mesmerism|Subterfuge|Trust in Me
 
+&d.friends.slide [v(d.cgdb)]=Bryl, a drug dealer|Bazso Baz, a  gang leader|Klyra, a tavern owner|Nyryx, a prostitute|Harker, a jail-bird
+
+&d.xp_triggers.slide [v(d.cgdb)]=address a challenge with Deception or Influence
+
 &d.abilities.spider [v(d.cgdb)]=Foresight|Calculating|Connected|Functioning Vice|Ghost Contract|Jail Bird|Mastermind|Weaving the Web
+
+&d.friends.spider [v(d.cgdb)]=Salia, an information broker|Augus, a master architect|Jennah, a servant|Riven, a chemist|Jeren, a bluecoat archivist
+
+&d.xp_triggers.spider [v(d.cgdb)]=address a challenge with Calculation or Conspiracy
 
 &d.abilities.whisper [v(d.cgdb)]=Compel|Ghost Mind|Iron Will|Occultist|Ritual|Strange Methods|Tempest|Warded
 
+&d.friends.whisper [v(d.cgdb)]=Nyryx, a possessor ghost|Scurlock, a vampire|Setarra, a demon|Quellyn, a witch|Flint, a spirit trafficker
+
+&d.xp_triggers.whisper [v(d.cgdb)]=address a challenge with Knowledge or Arcane Power
+
 &d.abilities.ghost [v(d.cgdb)]=Ghost Form|Dissipate|Manifest|Poltergeist|Possess
+
+&d.xp_triggers.ghost [v(d.cgdb)]=Exact Vengeance, Express Outrage or Anger, or Settle Scores from Your Heritage or Background
 
 &d.abilities.hull [v(d.cgdb)]=Compartments|Electroplasmic Projectors|Interface|Overcharge|Secondary Hull|Frame Upgrade
 
+&d.xp_triggers.hull [v(d.cgdb)]=fulfill your Drives despite Difficulty or Danger or Suppress or Ignore your former Human Qualities
+
 &d.abilities.vampire [v(d.cgdb)]=Arcane Sight|Dark Talent|Sinister Guile|Terrible Power|A Void in the Echo
+
+&d.xp_triggers.vampire [v(d.cgdb)]=Display Dominance or Slay without Mercy
 
 &d.frame_upgrades.hull [v(d.cgdb)]=Interior Chamber|Life-like Appearance|Levitation|Phonograph|Plating|Reflexes|Sensors|Smoke Projectors|Spider Climb|Spring-leap Pistons
 
@@ -195,6 +241,10 @@ Page 2:
 
 &d.value.tertiary_function [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
 
+&d.choose.note.friends [v(d.cgdb)]=Every playbook has a list of 5 friends that come with it. You can choose your list from any playbook. Which would you like?
+
+&d.choose.note.xp_triggers [v(d.cgdb)]=Every playbook has a list of XP triggers that, when encountered, grant you XP. You can choose your triggers from any playbook. Which would you like?
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Restricted values at character generation
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -207,7 +257,9 @@ Page 2:
 @@ Text for the chooser
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.choose-sections [v(d.cgdb)]=Special Abilities|XP triggers|Gear|Friends
+&d.choose-sections [v(d.cgdb)]=Special Abilities|XP Triggers|Gear|Friends|Ally|Rival
+
+&d.choosable-stats [v(d.cgdb)]=Friends|Ally|Rival|Gear|XP Triggers
 
 &d.crew-choose-sections [v(d.cgdb)]=
 
@@ -246,6 +298,8 @@ Page 2:
 @@ %1 - viewer
 &layout.sheet [v(d.cgf)]=strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.pools, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1), if(not(isapproved(%0)), strcat(%r%r, ulocal(layout.cg-errors, %0, %1))))
 
+&layout.full-sheet [v(d.cgf)]=strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.pools, %0, %1), %r, ulocal(layout.friends, %0, %1), %r, ulocal(layout.gear, %0, %1), %r, ulocal(layout.projects, %0, %1), %r, ulocal(layout.notes, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1), if(not(isapproved(%0)), strcat(%r%r, ulocal(layout.cg-errors, %0, %1))))
+
 &layout.pass [v(d.cgf)]=%ch%cg%[Pass%]
 
 &layout.fail [v(d.cgf)]=%cr%[Needs work%]
@@ -280,7 +334,15 @@ Page 2:
 
 &layout.pools [v(d.cgf)]=strcat(divider(Pools, %0), %r, multicol(strcat(Stress, |, 0/9, |, Trauma, |, 0/4, |, Healing, |, default(%0/_health-clock, 0), /4), * 5 * 5 * 5, 0, |, %1), %r, formattext(Traumas: None yet., 0, %1))
 
-&layout.xp_triggers [v(d.cgf)]=strcat(divider(XP Triggers, %1), %r, formattext(strcat(* You addressed a challenge with ______ or ______., %r, * You roll a desperate action., %r, * You express your beliefs%, drives%, heritage%, or background., %r, * You struggled with issues from your vice or traumas during the session.), 0, %1))
+&layout.xp_triggers [v(d.cgf)]=strcat(divider(XP Triggers, %1), %r, formattext(strcat(* You, %b, default(%0/_stat.xp_triggers, addressed a challenge with ______ or ______)., %r, * You roll a desperate action., %r, * You express your beliefs%, drives%, heritage%, or background., %r, * You struggled with issues from your vice or traumas during the session.), 0, %1))
+
+&layout.friends [v(d.cgf)]=strcat(header(Friends, %1), setq(E, ulocal(f.get-player-rival, %0)), setq(A, ulocal(f.get-player-ally, %0)), %r, multicol(iter(ulocal(f.get-player-friends, %0), strcat(switch(itext(0), %qA, %ch%cg%(Ally%)%cn%b, %qE, %cr%(Rival%)%cn%b,), itext(0)), |, |), * *, 0, |, %1))
+
+&layout.gear [v(d.cgf)]=strcat(header(cat(Load:, ulocal(f.get-player-load, %0)), %1), %r, multicol(ulocal(f.get-player-gear, %0), * *, 0, |, %1))
+
+&layout.projects [v(d.cgf)]=strcat(header(Long-term projects, %1), %r, multicol(ulocal(f.get-player-projects, %0), *, 0, |, %1))
+
+&layout.notes [v(d.cgf)]=strcat(header(Notes, %1), %r, multicol(ulocal(f.get-player-notes, %0), *, 0, |, %1))
 
 &layout.footer [v(d.cgf)]=strcat(Approved status and date, %,, %b, X advancements, %,, %b, Y XP)
 
@@ -326,9 +388,23 @@ Page 2:
 
 &f.get-player-friends [v(d.cgf)]=xget(%0, _stat.friends)
 
+&f.get-player-rival [v(d.cgf)]=xget(%0, _stat.rival)
+
+&f.get-player-ally [v(d.cgf)]=xget(%0, _stat.ally)
+
+&f.get-player-load [v(d.cgf)]=xget(%0, _stat.load)
+
+&f.get-player-notes [v(d.cgf)]=iter(lattr(%0/_note.*), itext(0),, |)
+
+&f.get-player-projects [v(d.cgf)]=iter(lattr(%0/_project.*), itext(0),, |)
+
+&f.get-player-xp_triggers [v(d.cgf)]=xget(%0, _stat.xp_triggers)
+
 &f.get-player-gear [v(d.cgf)]=xget(%0, _stat.gear)
 
-&f.get-stats [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.main_stats), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(strcat(%qS, |, ulocal(f.get-player-bio-fields, %0)), b, |), |))
+&f.get-stats [v(d.cgf)]=strcat(setq(S, xget(%vD, d.actions)), squish(trim(strcat(%qS, |, ulocal(f.get-player-bio-fields, %0)), b, |), |))
+
+&f.get-choosable-stats [v(d.cgf)]=xget(%vD, d.choosable-stats)
 
 &f.get-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.abilities), setq(S, setunion(%qS, xget(%vD, itext(0)), |)))), %qS)
 
@@ -336,15 +412,15 @@ Page 2:
 
 &f.get-highest-health-level [v(d.cgf)]=trim(iter(3 2-2 2-1 1-2 1-1, if(hasattr(%0, _health-[itext(0)]), strcat(_health-, itext(0)))))
 
-&f.list-actions [v(d.cgf)]=iter(lattr(%vD/d.actions.*), xget(%vD, itext(0)),, |)
+&f.list-actions [v(d.cgf)]=xget(%vD, d.actions)
 
 &f.is-action [v(d.cgf)]=finditem(ulocal(f.list-actions), %0, |)
 
 &f.get-random-name-and-job [v(d.cgf)]=strcat(pickrand(xget(%vD, d.random.name), |), %,%b, art(setr(J, pickrand(xget(%vD, d.random.job), |))), %b, %qJ)
 
-&f.get-10-friends [v(d.cgf)]=iter(lnum(10), ulocal(f.get-random-name-and-job),, |)
+&f.get-section-playbooks [v(d.cgf)]=squish(trim(iter(ulocal(f.list-valid-values, Playbook, %1), if(hasattr(%vD, strcat(d., ulocal(f.get-stat-location, %0), ., ulocal(f.get-stat-location, itext(0)))), itext(0)), |, |), b, |), |)
 
-&f.list-values [v(d.cgf)]=case(1, ulocal(f.is-action, %0), xget(%vD, d.value.action), member(Friends, %0), ulocal(f.get-10-friends, %1), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
+&f.list-values [v(d.cgf)]=case(1, ulocal(f.is-action, %0), xget(%vD, d.value.action), t(member(Friends|XP Triggers, %0, |)), ulocal(f.get-section-playbooks, %0, %1), t(member(Rival|Ally, %0, |)), xget(%1, _stat.friends), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
 
 &f.list-restricted-values [v(d.cgf)]=xget(%vD, if(ulocal(f.is-action, %0), d.restricted.action, ulocal(f.get-stat-location, d.restricted.%0)))
 
@@ -376,6 +452,8 @@ Page 2:
 
 &c.+sheet [v(d.cg)]=$+sheet:@pemit %#=ulocal(layout.sheet, %#, %#)
 
+&c.+sheet_full [v(d.cg)]=$+sheet/*:@pemit %#=ulocal(layout.full-sheet, %#, %#)
+
 &c.+stat [v(d.cg)]=$+stats:@pemit %#=ulocal(layout.sheet, %#, %#)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -396,6 +474,8 @@ Page 2:
 
 &c.+stat/add [v(d.cg)]=$+stat/add *: @break match(%0, */*); @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to add.; }; @assert t(setr(S, finditem(ulocal(f.get-abilities), %0, |)))={ @trigger me/tr.error=%#, Could not find a special ability that starts with '%0'.; }; @assert not(t(finditem(setr(L, ulocal(f.get-player-abilities, %#)), %qS, |)))={ @trigger me/tr.error=%#, You already have a special ability called '%qS'.; }; @assert not(isapproved(%#))={ @force %#={ +xp/buy %qS; }; }; @assert strcat(setq(T, ulocal(f.get-total-player-abilities, %#)), lte(add(%qT, 1), 1))={ @trigger me/tr.error=%#, Adding %qS would take you over 1 points of special abilities. +stat/remove something else to move the dots around.; }; @set %#=_stat.abilities:[trim(strcat(%qL, |, %qS), b, |)]; @trigger me/tr.success=%#, You added the special ability %ch%qS%cn.;
 
+&c.+stat/choose_thing [v(d.cg)]=$+stat/choose *=*:@break match(%0, */*); @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to choose.; }; @assert t(setr(S, finditem(ulocal(f.get-choosable-stats, %#), %0, |)))={ @trigger me/tr.error=%#, Could not find a choosable stat that starts with '%0'.; }; @assert cand(t(strlen(setr(C, ulocal(f.get-valid-value, %qS, %1, %#)))), not(member(ulocal(f.list-restricted-values, %qS), %qC, |)))={ @trigger me/tr.error=%#, '%1' is not a value for %qS. Valid values are: [itemize(ulocal(f.list-valid-values, %qS, %#), |)].[if(t(setr(R, itemize(ulocal(f.list-restricted-values, %qS), |))), %bRestricted values are: %qR.)]; }; @assert cor(not(isapproved(%#)), member(xget(%vD, d.stats_editable_after_chargen), %qS, |))={ @trigger me/tr.error=%#, %qS cannot be changed after you are approved. You will need to open a job with staff.; }; @assert t(setr(V, switch(%qS, Rival, %qC, Ally, %qC, xget(%vD, strcat(d., ulocal(f.get-stat-location, %qS.%qC))))))={ @trigger me/tr.error=%#, %qS is not set up for %qC.; }; @set %#=[ulocal(f.get-stat-location-on-player, %qS)]:%qV; @assert not(t(member(Rival|Ally, %qS, |)))={ @trigger me/tr.success=%#, You set your %ch%qS%cn to %ch%qV%cn.; };  @trigger me/tr.success=%#, You set your %ch%qS%cn to the %ch%qC%cn list: %ch[itemize(%qV, |, and, ;)]%cn.;
+
 &c.+stat/remove [v(d.cg)]=$+stat/remove *: @break match(%0, */*); @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to remove.; }; @assert t(setr(S, finditem(setr(L, ulocal(f.get-player-abilities, %#)), %0, |)))={ @trigger me/tr.error=%#, You don't have a special ability that starts with '%0'.; }; @assert not(isapproved(%#))={ @trigger me/tr.error=%#, You cannot remove abilities after you are approved. You will need to open a job with staff.; }; @set %#=_stat.abilities:[trim(remove(%qL, %qS, |, |), b, |)]; @trigger me/tr.success=%#, You removed the special ability %ch%qS%cn.;
 
 &c.+stat/clear [v(d.cg)]=$+stat/clear*: @assert not(isapproved(%#))={ @trigger me/tr.error=%#, You can't clear your stats once you're approved.; };  @assert cand(lte(sub(secs(), xget(%0, _stat.clear-request)), 600), match(trim(%0), YES))={ @wipe %#/_stat.*; @trigger me/tr.success=%#, Your stats have been cleared.; }; @set %#=_stat.clear-request:[secs()]; @trigger me/tr.success=%#, This will clear all of your stats. If you would like to continue%, type %ch+stat/clear YES%cn within the next 10 minutes. It is now [prettytime()].;
@@ -408,13 +488,10 @@ Page 2:
 
 &c.+stat/choose [v(d.cg)]=$+stat/choose:@pemit %#=ulocal(layout.choose,, %#, %#); @set %#=_last-cg-choice:;
 
-&c.+stat/choose_text [v(d.cg)]=$+stat/choose *: @assert t(setr(L, ulocal(f.get-choice-list, setr(S, xget(%#, _last-cg-choice)), %#)|Random))={ @trigger me/tr.error=%#, No choices were found to choose from! Something is very wrong.; }; @assert t(setr(C, if(isnum(%0), extract(%qL, %0, 1, |), finditem(%qL, %0, |))))={ @trigger me/tr.error=%#, Could not find an item in your list of choices [if(isnum(%0), at position %0, called '%0')].; }; @eval setq(X, strcat(t(member(Random, %qC, |)), t(member(ulocal(f.get-stats, %#), %qS, |)), t(member(ulocal(f.get-choices), %qC, |)))); @switch/first %qX=1*, { @trigger me/tr.random_choice=%#, %qL;  }, 01*, { @force %#={ +stat/set %qS=%qC; }; }, 001*, { @set %#=_last-cg-choice:%qC; @pemit %#=ulocal(layout.choose, %qC, %#, %#); }, { @trigger me/tr.error=%#, Not implemented yet!; };
+&c.+stat/choose_text [v(d.cg)]=$+stat/choose *:@break match(%0, *=*); @assert t(setr(L, ulocal(f.get-choice-list, setr(S, xget(%#, _last-cg-choice)), %#)|Random))={ @trigger me/tr.error=%#, No choices were found to choose from! Something is very wrong.; }; @assert t(setr(C, if(isnum(%0), extract(%qL, %0, 1, |), finditem(%qL, %0, |))))={ @trigger me/tr.error=%#, Could not find an item in your list of choices [if(isnum(%0), at position %0, called '%0')].; }; @eval setq(X, strcat(t(member(Random, %qC, |)), cand(t(member(ulocal(f.get-choosable-stats), %qS, |)), hasattr(%#, _last-cg-choice)), t(member(ulocal(f.get-stats, %#), %qS, |)), t(member(ulocal(f.get-choices), %qC, |)))); @switch/first %qX=1*, { @trigger me/tr.random_choice=%#, %qL;  }, 01*, { @force %#={ +stat/choose %qS=%qC; }; }, 001*, { @force %#={ +stat/set %qS=%qC; }; }, { @set %#=_last-cg-choice:%qC; @pemit %#=ulocal(layout.choose, %qC, %#, %#); };
 
-&tr.random_choice [v(d.cg)]=@force %0={ +stat/choose [inc(rand(words(%1, |)))]; }; @break t(xget(%0, _last-cg-choice))={ @trigger me/tr.message=%0, Randomly selected your [setr(S, xget(%0, _last-cg-choice))]. Now sending you back to the main screen!; @force %0={ @wait 1=+stat/choose; }; };
+&tr.random_choice [v(d.cg)]=@force %0={ +stat/choose [inc(rand(words(%1, |)))]; }; @break t(setr(S, xget(%0, _last-cg-choice)))={ @trigger me/tr.message=%0, Randomly selected your %qS.; };
 
-+stat/choose ra
-
-th ulocal(v(d.cgf)/f.get-stats, %#)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Wrap-up
