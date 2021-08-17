@@ -1,5 +1,5 @@
 /*
-Requirements: byzantine-opal
+Requirements: byzantine-opal with channels auxilary functionality if you want rolling to channels to work. Has not been tested without channels code.
 
 Commands:
 	+roll 4 - roll 4 dice
@@ -11,11 +11,14 @@ Aliases:
 	+dice
 
 Switches:
-	/quiet - secretly roll something
-	/page - roll it to another player
-	/job - do we even want jobs? Hmm.
-	/com - roll to a channel?
+	/quiet <dice> - secretly roll something
+	/page <name>=<dice> - roll it to another player
+	/com <channel>=<dice> - roll to a channel
+	/<channel> <dice> - roll to the channel
 
+	/job <job>=<dice> - do we even want jobs? Hmm.
+
+TODO: Job rolling, if we ever add it.
 */
 
 
@@ -32,22 +35,43 @@ Switches:
 
 &tr.success [v(d.dr)]=@pemit %0=cat(alert(Success), %1);
 
+@@ %0 - number of dice
+@@ Output: Roll results|Successes|Mixed|Failures|Highest|Lowest
+&f.roll-dice [v(d.dr)]=strcat(setq(S, setr(M, setr(F, setr(H, 0)))), setq(L, 6), iter(switch(%0, 0, 1 2, lnum(%0)), strcat(setr(R, die(1, 6)),  case(1, gte(%qR, 6), setq(S, inc(%qS)), gte(%qR, 4), setq(M, inc(%qM)), setq(F, inc(%qF))), if(gt(%qR, %qH), setq(H, %qR)), if(lt(%qR, %qL), setq(L, %qR)))), |%qS|%qM|%qF|%qH|%qL)
+
+@@ %0 - player
+@@ %1 - dice to roll
+@@ %2 - stat to roll
+@@ %3 - is resistance roll
+@@ %4 - destination
+&layout.sentence [v(d.dr)]=squish(strcat(alert(), %b, setq(R, ulocal(f.roll-dice, %1)), ulocal(layout.destination, %4, %0), %b, ulocal(f.get-name, %0) rolled, %b, if(t(%2), cat(poss(%0), %2%,, %1), %1), %b, dice%, and got, %b, iter(first(%qR, |), ulocal(layout.die-roll, itext(0)))., %b, ulocal(layout.[if(%3, resistance, result)], %1, %qR, %0)))
+
+@@ %0 - number of dice
+@@ %1 - roll results
+&layout.result [v(d.dr)]=cat(This was a, ulocal(strcat(layout., if(gt(%0, 0), case(1, gt(extract(%1, 2, 1, |), 1), crit, gt(extract(%1, 2, 1, |), 0), success, gt(extract(%1, 3, 1, |), 0), mixed, failure), case(1, gte(last(%1, |), 6), success, gt(last(%1, |), 3), mixed, failure)))))
+
+&layout.resistance [v(d.dr)]=ulocal(strcat(layout., if(gt(%0, 0), case(1, gt(extract(%1, 2, 1, |), 1), crit, normal), normal), _resistance), if(gt(%0, 0), extract(%1, 5, 1, |), last(%1, |)), %2)
+
+@@ %0 - destination
+@@ %1 - player
+&layout.destination [v(d.dr)]=switch(%0, %1, To yourself:, loc(%1),, ulocal(f.find-player, %0, %1), cat(To, ulocal(f.get-name, %0):), switch(%0, * *, cat(To, itemize(iter(%0, ulocal(f.get-name, itext(0)),, |), |):)))
+
 &layout.die-roll [v(d.dr)]=ansi(case(%0, 6, ch, 5, hg, 4, hg, xh), %0)
 
-&layout.crit [v(d.dr)]=ansi(ch, critical success)
+&layout.crit [v(d.dr)]=ansi(ch, critical success)!
 
-&layout.success [v(d.dr)]=ansi(ch, success)
+&layout.success [v(d.dr)]=ansi(ch, success)!
 
-&layout.mixed [v(d.dr)]=ansi(g, mixed)
+&layout.mixed [v(d.dr)]=ansi(g, mixed result).
 
-&layout.failure [v(d.dr)]=ansi(r, failure)
+&layout.failure [v(d.dr)]=ansi(r, failure).
 
-&layout.dice_results [v(d.dr)]=strcat(alert(Dice), ulocal(f.get-name, %0) rolls %1 dice and gets, setq(S, setr(M, 0)), %b, iter(lnum(%1), strcat(ulocal(layout.die-roll, setr(R, die(1, 6))), case(%qR, 6, setq(S, add(%qS, 1)), 5, setq(M, add(%qM, 1)), 4, setq(M, add(%qM, 1))))), %,, %b, a result of, %b, case(1, gt(%qS, 1), ulocal(layout.crit), gt(%qS, 0), ulocal(layout.success), gt(%qM, 0), ulocal(layout.mixed), ulocal(layout.failure)), !)
+&layout.crit_resistance [v(d.dr)]=cat(This was a, ansi(ch, critical success)%,, which allows, obj(%1), to clear a stress!)
 
-&layout.dice_results-zero [v(d.dr)]=strcat(alert(Dice), ulocal(f.get-name, %0) rolls %1 dice and gets, setq(S, setr(M, setr(F, 0))), %b, iter(1 2, strcat(ulocal(layout.die-roll, setr(R, die(1, 6))), case(%qR, 6, setq(S, add(%qS, 1)), 5, setq(M, add(%qM, 1)), 4, setq(M, add(%qM, 1)), setq(F, add(%qF, 1))))), %,, %b, a result of, %b, case(1, gt(%qF, 0), ulocal(layout.failure), gt(%qM, 0), ulocal(layout.mixed), gt(%qS, 0), ulocal(layout.success)), !)
+&layout.normal_resistance [v(d.dr)]=case(sub(6, %0), 0, capstr(subj(%1)) does not need to spend stress., cat(capstr(subj(%1)) must spend, ansi(ch, #$), stress.))
 
-&c.+roll_number [v(d.dr)]=$+roll *:@assert isnum(%0); @assert gte(%0, 0)={ @trigger me/tr.error=%#, You must enter a number greater than or equal to zero.; }; @assert lte(%0, 10)={ @trigger me/tr.error=%#, You must enter a number less than or equal to ten.; }; @trigger me/tr.remit=%l, ulocal(layout.dice_results[case(%0, 0, -zero)], %#, %0), %#;
+&c.+roll [v(d.dr)]=$+roll* *: @eval strcat(setq(F, trim(edit(%0, /,))), setq(D, switch(%1, *=*, first(%1, =))), setq(R, switch(%1, *=*, rest(%1, =), %1)), switch(%qF, c*, setq(D, ulocal(v(d.channel-functions)/f.get-channel-name, %qD))), if(not(t(%qD)), setq(D, switch(%qF, q*, %#, if(t(%qF), ulocal(v(d.channel-functions)/f.get-channel-name, %qF, setq(F, com)), loc(%#)))))); @assert t(%qD)={ @trigger me/tr.error=%#, Could not figure out where to send the roll.; }; @eval if(cand(not(isdbref(%qD)), not(strmatch(%qF, c*))), setq(D, iter(%qD, if(t(setr(P, ulocal(f.find-player, itext(0), %#))), %qP, setq(E, %qE|[itext(0)]))))); @assert not(t(%qE))={ @trigger me/tr.error=%#, Could not find player(s) [itemize(trim(%qE, b, |), |)].; }; @assert t(setr(C, v(d.chargen-functions)))={ @trigger me/tr.error=%#, Rolling stats is not set up yet.; }; @eval if(not(isnum(%qR)), case(1, t(setr(W, ulocal(%qC/f.is-action, %qR))), setq(A, ulocal(%qC/f.get-player-action, %#, %qW)), t(setr(W, ulocal(%qC/f.is-attribute, %qR))), setr(A, ulocal(%qC/f.get-player-attribute, %#, %qW, setq(S, 1))))); @assert not(t(setr(E, if(isnum(%qR), if(cor(lt(%qR, 0), gt(%qR, 10)), You cannot roll a number greater than 10 or less than 0., setq(A, %qR)), if(not(cand(t(%qW), t(strlen(%qA)))), Could not find a stat you can roll starting with '%qR'.)))))={ @trigger me/tr.error=%#, %qE; }; @assert t(setr(X, ulocal(layout.sentence, %#, %qA, %qW, %qS, %qD)))={ @trigger me/tr.error=%#, Could not roll dice for some reason. Got %qX.; }; @assert switch(%qF, q*, 0, p*, 0, 1)={ @trigger me/tr.pemit=%qD %#, %qX, %#; }; @assert not(t(%qF))={ @force %#={ +com/emit %qD=%qX; }; };  @trigger me/tr.remit-or-pemit=%qD, %qX, %#;
 
-&c.+roll_text [v(d.dr)]=$+roll *:@assert not(isnum(%0)); @trigger me/tr.error=%#, Rolling stats doesn't work yet.; 
+&c.+dice [v(d.dr)]=$+dice*: @force %#={ +roll%0 };
 
 @tel [v(d.dr)]=#2
