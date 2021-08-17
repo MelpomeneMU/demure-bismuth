@@ -19,3 +19,14 @@ train +stat/set Prowl=2
 +heal 5
 +heal 5
 
+@@ Dice roller - test destinations:
+
++roll 1
++roll/p w demo=1
++roll/com pub=1
++roll/pub 1
++roll/q 1
+
++roll hunt
++roll resolve
++roll insight
