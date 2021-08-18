@@ -14,9 +14,28 @@
 
 &layout.test [v(d.cgf)]=strcat(%b, if(t(%0), ulocal(layout.pass), ulocal(layout.fail)))
 
-&layout.cg-errors [v(d.cgf)]=strcat(header(Character generation instructions), %r, formattext(strcat(- You get 7 action dots. You have, %b, setr(A, ulocal(f.get-total-player-actions, %0))., ulocal(layout.test, eq(%qA, 7)), %r, - You get one special ability. You have%b, setr(A, ulocal(f.get-total-player-abilities, %0))., ulocal(layout.test, eq(%qA, 1)), %r, - Fill out all the bio fields. You have%b, setr(A, ulocal(f.get-remaining-bio-fields, %0)) remaining., ulocal(layout.test, eq(%qA, 0)), %r, setq(A, words(ulocal(f.get-player-stat, %0, friends), |)), if(eq(%qA, 0), - You have no friends. Select 5 with +stat/choose Friends., - Choose 5 friends.), ulocal(layout.test, gt(%qA, 0)), %r, setq(A, words(ulocal(f.get-player-stat, %0, gear), |)), if(neq(%qA, 5), - You need gear. Select it with +stat/choose Gear., - Choose your gear.), ulocal(layout.test, gt(%qA, 0))), 0, %1), %r, divider(Commands), %r, multicol(+stat/set <stat>=<value>|+stat/add <stat>|+stat/remove <stat>|+stat/choose|+stat/random <stat>|+stat/list, * * *, 0, |, %1), %r, footer(cg/on to join the Chargen channel and ask questions!))
+
+@@ Tests:
+/*
+Need 7 points of abilities. (Not restricted by playbook, should it be?)
+Need all the bio fields.
+Need a crew sheet.
+Need 5 friends
+Need gear
+Need 
+
+*/
+
+&layout.cg-errors [v(d.cgf)]=strcat(header(Character generation instructions), %r, formattext(strcat(- You get 7 action dots. You have, %b, setr(A, ulocal(f.get-total-player-actions, %0))., ulocal(layout.test, eq(%qA, 7)), %r, - You get one special ability. You have%b, setr(A, ulocal(f.get-total-player-abilities, %0))., ulocal(layout.test, eq(%qA, 1)), %r, - Fill out all the bio fields. You have%b, setr(A, ulocal(f.get-remaining-bio-fields, %0)) remaining., ulocal(layout.test, eq(%qA, 0)), %r, setq(A, words(ulocal(f.get-player-stat, %0, friends), |)), if(eq(%qA, 0), - You have no friends. You need 5., - Choose 5 friends.), ulocal(layout.test, eq(%qA, 5)), %r, setq(A, words(ulocal(f.get-player-stat, %0, gear), |)), if(eq(%qA, 0), - You need gear., - Choose your gear.), ulocal(layout.test, gt(%qA, 0))), 0, %1), %r, divider(Commands), %r, multicol(+stat/set <stat>=<value>|+stat/add <stat>|+stat/remove <stat>|+stat/choose <stat>=<value>, * *, 0, |, %1), %r, footer(cg/on to join the Chargen channel and ask questions!))
 
 &layout.name [v(d.cgf)]=strcat(ulocal(f.get-name, %0, %1), if(isstaff(%1), strcat(%b, %(, %0, %))))
+
+&layout.crew_name [v(d.cgf)]=header(if(t(%0), strcat(name(%0), if(isstaff(%1), strcat(%b, %(, %0, %)))), No crew selected), %1)
+
+&layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(remove(xget(%vD, d.crew_bio), Lair, |), strcat(itext(0), :, %b, default(strcat(%0, /, ulocal(f.get-stat-location-on-player, itext(0))), Not set)), |, |), * * *, 0, |, %1), %r, formattext(cat(Lair:, ulocal(f.get-player-stat, %0, lair))))
+
+&layout.crew [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1))
++sheet/crew
 
 &layout.bio [v(d.cgf)]=strcat(multicol(ulocal(layout.player-bio, %0, %1), * * *, 0, |, %1), %r, formattext(cat(Look:, shortdesc(%0, %1))))
 
