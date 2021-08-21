@@ -136,8 +136,6 @@
 
 &d.value.reputation [v(d.cgdb)]=Ambitious|Brutal|Daring|Honorable|Professional|Savvy|Subtle|Strange
 
-&d.choose.note.playbook [v(d.cgdb)]=Your playbook represents your character's reputation in the underworld, their special abilities, and how they advance. While we don't make strong use of playbooks in this game, a playbook can be an easy way to focus on what your character is good at and what you expect them to do during a job.
-
 &d.value.heritage [v(d.cgdb)]=Akoros|The Dagger Isles|Iruvia|Severos|Skovland|Tycheros
 
 &d.value.background [v(d.cgdb)]=Academic|Labor|Law|Trade|Military|Noble|Underworld
@@ -156,10 +154,6 @@
 
 &d.value.trauma [v(d.cgdb)]=Cold|Haunted|Obsessed|Paranoid|Reckless|Soft|Unstable|Vicious
 
-&d.choose.note.friends [v(d.cgdb)]=Every playbook has a list of 5 friends that come with it. You can choose your list from any playbook. Which would you like?
-
-&d.choose.note.xp_triggers [v(d.cgdb)]=Every playbook has a list of XP triggers that, when encountered, grant you XP. You can choose your triggers from any playbook. Which would you like?
-
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Restricted values at character generation
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -174,13 +168,11 @@
 
 &d.choose-sections [v(d.cgdb)]=Special Abilities|XP Triggers|Gear|Friends|Ally|Rival
 
-&d.choosable-stats [v(d.cgdb)]=Friends|Ally|Rival|Gear|XP Triggers
+&d.choosable-stats [v(d.cgdb)]=Special Ability|Friends|Ally|Rival|Gear|XP Triggers
+
+&d.addable-stats [v(d.cgdb)]=Special Ability|Friend|Ally|Rival
 
 &d.crew-choose-sections [v(d.cgdb)]=
-
-&d.choose.note. [v(d.cgdb)]=Welcome to the Chargen Chooser! Each of the sections below contains unique choices to help you flesh out your character. To visit one, type +stat/choose <section>.
-
-&d.choose.afterword. [v(d.cgdb)]=These are not the only options to set. Take a look at your %ch+sheet%cn and you'll find you can fill out more of it with %ch+stat/set <stat>=<value>%cn. As always%, if you have questions%, use %chcg/on%cn to turn on the Chargen channel and %chcg <question>%cn to ask questions.
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Random values for chargen

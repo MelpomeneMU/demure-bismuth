@@ -5,24 +5,13 @@ Commands:
 	+sheet
 
 Chargen:
-	+stat/choose - get a list of choices.
-	+stat/choose <# or text> - pick a choice from the list
-
 	+stat/set <stat>=<value>
-	+stat/add <special ability>
-	+stat/remove <special ability>
-
-	+stat/random <stat> - will choose a random value for <stat> for you.
-
 	+stat/clear - clear your stats. Will ask if you're sure first.
 
 Staff commands:
 	+stat/set <player>/<stat>=<value>
-	+stat/add <player>/<special ability>
-	+stat/remove <player>/<special ability>
-	+stat/choose <player>/<section>
-	+stat/choose <#>
-	+stat/choose random
+	+stat/add <player>/<section>=<value>
+	+stat/remove <player>/<section>=<value>
 
 Gear:
 	+gear
