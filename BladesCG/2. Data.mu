@@ -4,13 +4,15 @@
 
 &d.log-staff-statting-to-channel [v(d.cgdb)]=Monitor
 
+&d.manual-bio-stats [v(d.cgdb)]=Expert Type|Character Type|Look
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Data for chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.sheet-sections [v(d.cgdb)]=Page1|Page2|Bio|Actions|Abilities|Health|Pools|XP Triggers|Friends|Gear|Projects|Notes|Crew
 
-&d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Look
+&d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Look|Expert Type|Character Type
 
 &d.bio.hull [v(d.cgdb)]=Frame Size|Primary Drive|Secondary Drive|Tertiary Drive
 
@@ -128,6 +130,8 @@
 @@ Valid values for various stats - * means write your own
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
+&d.value.expert_type [v(d.cgdb)]=Apothecary|Assassin|Beggar|Blood Dealer|Bounty Hunter|Chemist|City Clerk|Cold Killer|Corpse Thief|Drug Dealer|Extortionist|Gang Leader|Information Broker|Jail-Bird|Locksmith|Master Architect|Noble|Phsysicker|Priestess|Prostitute|Psychonaut|Pugilist|Sentinel|Servant|Spirit Trafficker|Spy|Tavern Owner|Vicious Thug|Witch
+
 &d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire|*
 
 &d.value.load [v(d.cgdb)]=Light|Normal|Heavy|Encumbered
@@ -146,11 +150,11 @@
 
 &d.value.frame_size [v(d.cgdb)]=Small|Medium|Heavy
 
-&d.value.primary_function [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+&d.value.primary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
 
-&d.value.secondary_function [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+&d.value.secondary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
 
-&d.value.tertiary_function [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+&d.value.tertiary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
 
 &d.value.trauma [v(d.cgdb)]=Cold|Haunted|Obsessed|Paranoid|Reckless|Soft|Unstable|Vicious
 

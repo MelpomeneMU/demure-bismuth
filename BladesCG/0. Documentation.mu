@@ -2,16 +2,22 @@
 Requirements: byzantine-opal
 
 Commands:
-	+sheet
+	+sheet and +stats - same thing
+	+sheet/all - show all the pages of your sheet
+	+sheet/1, 2, etc - show just that page
 
 Chargen:
 	+stat/set <stat>=<value>
 	+stat/clear - clear your stats. Will ask if you're sure first.
+	+stats/lock - lock your stats and request approval.
+	+stats/unlock - unlock your stats. Will ask if you're sure before proceeding if you're already approved.
 
 Staff commands:
 	+stat/set <player>/<stat>=<value>
 	+stat/add <player>/<section>=<value>
 	+stat/remove <player>/<section>=<value>
+	+approve <player>=<comment>
+	+uunapprove <player>=<comment>
 
 Gear:
 	+gear

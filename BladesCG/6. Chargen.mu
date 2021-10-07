@@ -1,3 +1,41 @@
+/*
+I'm having trouble because: How jobs work is designed to let people blather away for paragraphs upon paragraphs in order to really belt one out at the other player. That's extra work for the staffer to write and the player to read. Sometimes it's necessary, most of the time it isn't. I want the system to encourage small messages, bite-sized chunks. However, sometimes there's actually a need for the spammy-ass messages. In which case they should be *possible*, in which case we should just use +jobs.
+
+
+
+ =[ Characterrs awaiting approval ]===========================================
+ Alice: Akorosi Academic Cutter - Last: Request for approval submitted.
+ Bob: Apothecary Shop owner - Last: Bob, your Name is still Bobbitus Maximu...
+ =============================================================================
+
++cg/who - who's in chargen and their status. Staff-restricted? Includes everyone on in the last 30 days.
+
++cg/approvable - who's locked and ready for approval.
+
++cg/check Alice
+
++cg/approve Alice=Go have fun, you crazy kids!
++cg/unapprove <name>=Unapproved at player request.
+
++cg/reject Bob=Your name is Bobbitus Maximus. That's not in-theme. Please remove or change it and get back to us.
+	- Unlocks their character
+	- Shows them the notice at login or in a message if they're logged in
+
++cg/status - shows the status of your CG app
+
++cg/status <name> - shows their status and approval history if you're staff, and if not, just shows approved date.
+
+*/
+
+
+&c.+stats/lock [v(d.cg)]=$+stats/lock: @set %#=_stat.locked:[time()]; @trigger me/tr.success=%#, You locked your stats and added yourself to staff's list;
+
+&c.+stats/unlock [v(d.cg)]=$+stats/unlock*:@assert not(isapproved(%#))={ @assert cand(lte(sub(secs(), xget(%#, _stat.unlock-request)), 600), match(trim(%0), YES))={ @set %#=_stat.unlock-request:[secs()];@trigger me/tr.message=%#, Warning: You are currently approved. Unlocking your stats will remove your approval. You'll need to get approved again to go IC! Are you sure? If so, type +stats/unlock YES within the next 10 minutes. It is now [prettytime()].; }; @trigger me/tr.unlock_stats=%#; }; @trigger me/tr.unlock_stats=%#;
+
+&tr.unlock_stats [v(d.cg)]=@set %0=_stat.locked:; @set %0=!APPROVED; @trigger me/tr.success=%0, You have unlocked your stats. You can't be approved until you lock them again. Happy editing!;
+
+&c.+approve [v(d.cg)]=$+approve *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to approve people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @set %qP=APPROVED; @trigger me/tr.success=%#, You approved [ulocal(f.get-name, %qP, %#)]. Be sure to let them know!;
+
 
 &c.+stat/set [v(d.cg)]=$+stat/set *=*: @break match(%0, */*); @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to set or unset.; }; @trigger me/tr.set-stat=%0, %1, %#;
 

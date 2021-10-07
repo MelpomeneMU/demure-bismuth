@@ -4,9 +4,14 @@
 
 @@ %0 - target
 @@ %1 - viewer
-&layout.page1 [v(d.cgf)]=strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.pools, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1))
+&layout.page1 [v(d.cgf)]=if(hasattr(%0, _stat.expert_type), ulocal(layout.simple, %0, %1), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.pools, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1)))
 
-&layout.page2 [v(d.cgf)]=strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.friends, %0, %1), %r, ulocal(layout.gear, %0, %1), %r, ulocal(layout.projects, %0, %1), %r, ulocal(layout.notes, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1))
+&layout.page2 [v(d.cgf)]=if(hasattr(%0, _stat.expert_type), ulocal(layout.simple, %0, %1), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.friends, %0, %1), %r, ulocal(layout.gear, %0, %1), %r, ulocal(layout.projects, %0, %1), %r, ulocal(layout.notes, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1)))
+
+&layout.simple [v(d.cgf)]=strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.simple-bio, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1))
+
+&layout.simple-bio [v(d.cgf)]=multicol(strcat(Name, |, ulocal(f.get-player-stat, %0, name), |, Crew, |, ulocal(f.get-player-stat, %0, crew), |, Expert Type, |, ulocal(f.get-player-stat, %0, expert type), |, Character Type, |, ulocal(f.get-player-stat, %0, character type), |, Look, |, ulocal(f.get-player-stat, %0, look)), 20 *, 0, |, %1)
++sheet
 
 &layout.pass [v(d.cgf)]=%ch%cg%[Pass%]
 
@@ -26,7 +31,16 @@ Need
 
 */
 
-&layout.cg-errors [v(d.cgf)]=strcat(header(Character generation instructions), %r, formattext(strcat(- You get 7 action dots. You have, %b, setr(A, ulocal(f.get-total-player-actions, %0))., ulocal(layout.test, eq(%qA, 7)), %r, - You get one special ability. You have%b, setr(A, ulocal(f.get-total-player-abilities, %0))., ulocal(layout.test, eq(%qA, 1)), %r, - Fill out all the bio fields. You have%b, setr(A, ulocal(f.get-remaining-bio-fields, %0)) remaining., ulocal(layout.test, eq(%qA, 0)), %r, setq(A, words(ulocal(f.get-player-stat, %0, friends), |)), if(eq(%qA, 0), - You have no friends. You need 5., - Choose 5 friends.), ulocal(layout.test, eq(%qA, 5)), %r, setq(A, words(ulocal(f.get-player-stat, %0, gear), |)), if(eq(%qA, 0), - You need gear., - Choose your gear.), ulocal(layout.test, gt(%qA, 0))), 0, %1), %r, divider(Commands), %r, multicol(+stat/set <stat>=<value>|+stat/add <stat>|+stat/remove <stat>|+stat/choose <stat>=<value>, * *, 0, |, %1), %r, footer(cg/on to join the Chargen channel and ask questions!))
+&layout.cg-errors [v(d.cgf)]=strcat(header(Character generation instructions, %1), %r, if(hasattr(%0, _stat.expert_type), ulocal(layout.simple-cg-errors, %0, %1), ulocal(layout.full-cg-errors, %0, %1)), %r, footer(cg/on to join the Chargen channel and ask questions!))
+
+&layout.simple-cg-errors [v(d.cgf)]=strcat(formattext(strcat(+stat/set Look=<Character's short description>, ulocal(layout.test, ulocal(check.simple.look, %0)), %r, @desc me=<Character's normal description>, ulocal(layout.test, ulocal(check.simple.desc, %0)), %r, +stat/set Expert Type=<Character's expert type>, ulocal(layout.test, ulocal(check.simple.expert_type, %0)), %r, +stat/set Character Type=<Character's type>, ulocal(layout.test, ulocal(check.simple.character_type, %0)), %r, +stat/lock when you're done!), 0, %1))
+
+&check.simple.look [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, look))
+&check.simple.desc [v(d.cgf)]=hasattr(%0, desc)
+&check.simple.expert_type [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, expert type))
+&check.simple.character_type [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, character type))
+
+&layout.full-cg-errors [v(d.cgf)]=strcat(formattext(strcat(- You get 7 action dots. You have, %b, setr(A, ulocal(f.get-total-player-actions, %0))., ulocal(layout.test, eq(%qA, 7)), %r, - You get one special ability. You have%b, setr(A, ulocal(f.get-total-player-abilities, %0))., ulocal(layout.test, eq(%qA, 1)), %r, - Fill out all the bio fields. You have%b, setr(A, ulocal(f.get-remaining-bio-fields, %0)) remaining., ulocal(layout.test, eq(%qA, 0)), %r, setq(A, words(ulocal(f.get-player-stat, %0, friends), |)), if(eq(%qA, 0), - You have no friends. You need 5., - Choose 5 friends.), ulocal(layout.test, eq(%qA, 5)), %r, setq(A, words(ulocal(f.get-player-stat, %0, gear), |)), if(eq(%qA, 0), - You need gear., - Choose your gear.), ulocal(layout.test, gt(%qA, 0))), 0, %1), %r, divider(Commands), %r, multicol(+stat/set <stat>=<value>|+stat/add <stat>|+stat/remove <stat>|+stat/choose <stat>=<value>, * *, 0, |, %1))
 
 &layout.name [v(d.cgf)]=strcat(ulocal(f.get-name, %0, %1), if(isstaff(%1), strcat(%b, %(, %0, %))))
 
@@ -39,8 +53,7 @@ Need
 
 &layout.bio [v(d.cgf)]=strcat(multicol(ulocal(layout.player-bio, %0, %1), * * *, 0, |, %1), %r, formattext(cat(Look:, shortdesc(%0, %1))))
 
-&layout.player-bio [v(d.cgf)]=iter(remove(ulocal(f.get-player-bio-fields, %0), Look, |), strcat(itext(0), :, %b, default(strcat(%0, /, ulocal(f.get-stat-location-on-player, itext(0))), Not set)), |, |)
-+sheet
+&layout.player-bio [v(d.cgf)]=iter(ulocal(f.get-layout-bio-stats, %0), strcat(itext(0), :, %b, default(strcat(%0, /, ulocal(f.get-stat-location-on-player, itext(0))), Not set)), |, |)
 
 &layout.actions [v(d.cgf)]=strcat(divider(Actions, %0), %r, multicol(ulocal(layout.player-actions, %0), * 1 * 1 * 1, 1, |, %1))
 
