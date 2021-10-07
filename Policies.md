@@ -1,8 +1,8 @@
-# Game policies #
+# Conduct policies #
 
-- [Game policies](#game-policies)
+- [Conduct policies](#conduct-policies)
   - [Possible consequences for rules violations](#possible-consequences-for-rules-violations)
-  - [Player policies](#player-policies)
+  - [Player conduct policies](#player-conduct-policies)
     - [Be kind and if you can't be kind, be respectful](#be-kind-and-if-you-cant-be-kind-be-respectful)
     - [Don't harass people](#dont-harass-people)
     - [Keep your RP and character in theme](#keep-your-rp-and-character-in-theme)
@@ -14,7 +14,7 @@
     - [De-escalate where possible](#de-escalate-where-possible)
     - [Don't mess with other people's stuff without permission](#dont-mess-with-other-peoples-stuff-without-permission)
     - [Abandoned stuff is fair game](#abandoned-stuff-is-fair-game)
-  - [Staff policies](#staff-policies)
+  - [Staff conduct policies](#staff-conduct-policies)
     - [Be realistic about your time and stamina](#be-realistic-about-your-time-and-stamina)
     - [Regularly purge old jobs](#regularly-purge-old-jobs)
     - [Say yes when it doesn't hurt anything](#say-yes-when-it-doesnt-hurt-anything)
@@ -43,7 +43,7 @@ We would rather apologize to someone for incorrectly banning them than let a sit
 
 With that in mind, please follow our policies.
 
-## Player policies ##
+## Player conduct policies ##
 
 All policies, except where otherwise noted, apply to players and staff alike.
 
@@ -109,7 +109,7 @@ Failing to honor a FTB request is harassment.
 
 Certain topics require advance warning before they come up, and can be rejected as topics for RP or conversation by all players involved.
 
-These topics are off limits on public channels, +bboards, and other places where the reader may not have a choice before engaging with them.
+These topics are off limits on public channels, +bboards, and other places where the reader may not have a choice before engaging with them. Characters themed around these topics are not allowed.
 
 - What topics? Including but not limited to: violence against children and pets, domestic violence, sexual violence, eating disorders, dysphoria, transphobia, homophobia, racism, self-harm, and suicide. These are topics that can provoke PTSD responses in players who are unprepared for them.
 
@@ -145,7 +145,7 @@ Shared resources, like community NPCs, public buildings, the code, the general w
 
 If you log off and stay off long enough to get idle-retired, your buildings, crew, etc, may be destroyed or passed to someone else and modified beyond recognition. If you would rather avoid this, put in a `+job` before you quit detailing what you want done with or to your holdings, and stick around long enough to make sure it's resolved.
 
-## Staff policies ##
+## Staff conduct policies ##
 
 Staff are required to abide by these, in addition to the other policies (except where noted).
 
