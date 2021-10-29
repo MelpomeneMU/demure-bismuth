@@ -68,8 +68,8 @@
 &d.text-left [v(d.bd)]=.o:
 &d.text-right [v(d.bd)]=:o.
 &d.text-repeat [v(d.bd)]=,.
-&d.title-left [v(d.bd)]=o{
-&d.title-right [v(d.bd)]=}o
+&d.title-left [v(d.bd)]={
+&d.title-right [v(d.bd)]=}
 &d.body-left [v(d.bd)]=.
 &d.body-right [v(d.bd)]=.
 
