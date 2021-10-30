@@ -50,7 +50,7 @@ TODO:
 @@ =============================================================================
 
 @@ Clocks auto-destroy roughly one day after they are completed.
-@daily [v(d.clocks)]=@dolist search(EPLAYER=t(lattr(##/_clock.*)))={ @dolist lattr(setr(P, ##)/_clock.*)={ @trigger me/tr.destroy_clock=%qP, ##; }; };
+@daily [v(d.clocks)]=@dolist search(EPLAYER=t(ulocal(f.get-player-clocks, ##)))={ @dolist ulocal(f.get-player-clocks, setr(P, ##))={ @trigger me/tr.destroy_clock=%qP, ##; }; };
 
 @@ =============================================================================
 @@ Settings
@@ -77,7 +77,7 @@ TODO:
 &f.get-tick-color [v(d.clocks)]=case(1, gte(%0, ceil(mul(%1, .75))), r, gte(%0, ceil(mul(%1, .5))), y, g)
 
 @@ %0 - player
-&f.get-clocks [v(d.clocks)]=squish(trim(iter(lcon(loc(%0), CONNECT), if(t(lattr(itext(0)/_clock.*)), itext(0)))))
+&f.get-clocks [v(d.clocks)]=squish(trim(iter(lcon(loc(%0), CONNECT), if(t(ulocal(f.get-player-clocks, %0)), itext(0)))))
 
 @@ %0 - player
 &f.get-player-clocks [v(d.clocks)]=lattr(%0/_clock.*)
@@ -173,7 +173,7 @@ TODO:
 
 @@ Creating and destroying ====================================================
 
-&c.+clock/create [v(d.clocks)]=$+clock/create *=*:@assert t(setr(D, v(d.max_ticks)))={ @trigger me/tr.error=%#, Could not get the maximum clock size. Fix the setting!; }; @break t(ulocal(f.find-clock-by-title, %#, %0))={ @trigger me/tr.error=%#, There is already a clock with a name like '%0'. Pick something different.; }; @assert cand(isnum(%1), gte(%1, 2), lte(%1, %qD))={ @trigger me/tr.error=%#, Your '%0' clock's ticks must be a number between 2 and %qD.; }; @eval strcat(setq(C, 0), iter(lattr(%#/_clock.*), if(gt(setr(T, edit(itext(0), _CLOCK.,)), %qC), setq(C, %qT))), setq(C, strcat(_clock., inc(%qC)))); @assert t(%qC)={ @trigger me/tr.error=%#, Could not figure out how to save your clock attribute.; }; @set %#=%qC:[secs()]|[secs()]|0|%1|%0; @trigger me/tr.remit-or-pemit=%L, strcat(ulocal(layout.creation, %#, %0, %1), %r, ulocal(layout.clock, %0, 0, %1)), %#;
+&c.+clock/create [v(d.clocks)]=$+clock/create *=*:@assert t(setr(D, v(d.max_ticks)))={ @trigger me/tr.error=%#, Could not get the maximum clock size. Fix the setting!; }; @break t(ulocal(f.find-clock-by-title, %#, %0))={ @trigger me/tr.error=%#, There is already a clock with a name like '%0'. Pick something different.; }; @assert cand(isnum(%1), gte(%1, 2), lte(%1, %qD))={ @trigger me/tr.error=%#, Your '%0' clock's ticks must be a number between 2 and %qD.; }; @eval strcat(setq(C, 0), iter(ulocal(f.get-player-clocks, %#), if(gt(setr(T, edit(itext(0), _CLOCK.,)), %qC), setq(C, %qT))), setq(C, strcat(_clock., inc(%qC)))); @assert t(%qC)={ @trigger me/tr.error=%#, Could not figure out how to save your clock attribute.; }; @set %#=%qC:[secs()]|[secs()]|0|%1|%0; @trigger me/tr.remit-or-pemit=%L, strcat(ulocal(layout.creation, %#, %0, %1), %r, ulocal(layout.clock, %0, 0, %1)), %#;
 
 &c.+clock/destroy [v(d.clocks)]=$+clock/destroy *:@break strmatch(%0, *=*); @assert cor(t(setr(C, ulocal(f.find-clock-by-title, %#, %0))), switch(%0, all, 1, complete, 1, 0))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0', and you didn't specify 'all' or 'complete'.; }; @assert cor(switch(%0, all, 1, complete, 1, 0), cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC))))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @break switch(%0, all, 1, complete, 1, 0)={ @assert t(setr(C, ulocal(f.get-clocks, %#)))={ @trigger me/tr.error=%#, You don't have any clocks to destroy.; }; @dolist %qC={ th @@(TODO: Delete completed clocks. Don't forget about the 'all' case!); }; }; @break lt(%qV, %qM)={ @trigger me/tr.message=%#, The %qN clock is still ticking. Are you sure you want to destroy it? Type '+clock/destroy %0=YES' within 10 minutes to confirm. It is now [prettytime()].; @set %#=_clock-destroy.[edit(%qC, _CLOCK.,)]:[secs()]; }; @wipe %#/%qC; @wipe %#/_clock-destroy.[ed it(%qC, _CLOCK.,)]; @trigger me/tr.success=%#, You successfully destroyed the %qM-tick %qN clock.;
 
