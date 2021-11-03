@@ -27,12 +27,11 @@ Clocks are auto-destroyed about one day after they are completed.
 +clock/clear <clock> - reset a clock
 +clock/reset <clock> - same
 +clock/wipe <clock> - same
-
+ 
 +clock/show <clock> - show the room a clock
 +clock/show <clock>=<player> - show a player a clock
 
 TODO:
- - Finish up +clock/destroy complete and all
  - Do +clock/show
 
 */
@@ -49,8 +48,12 @@ TODO:
 @@ Infrastructure
 @@ =============================================================================
 
-@@ Clocks auto-destroy roughly one day after they are completed.
-@daily [v(d.clocks)]=@dolist search(EPLAYER=t(ulocal(f.get-player-clocks, ##)))={ @dolist ulocal(f.get-player-clocks, setr(P, ##))={ @trigger me/tr.destroy_clock=%qP, ##; }; };
+@@ Required to enable @daily.
+@startup [v(d.clocks)]=@enable eventchecking;
+
+@@ Auto-destroy clocks roughly one day after they are completed.
+@@ My daily fires at 07:10:43 AM. No guarantee when yours will fire.
+@daily [v(d.clocks)]=@dolist search(EPLAYER=t(ulocal(f.get-player-clocks, ##)))={ @eval iter(ulocal(f.get-player-clocks, setr(P, ##)), trigger(me/tr.destroy_clock, %qP, itext(0))); };
 
 @@ =============================================================================
 @@ Settings
@@ -156,10 +159,13 @@ TODO:
 
 @@ %0 - player
 @@ %1 - clock attribute
-&tr.destroy_clock [v(d.clocks)]=@assert gte(ulocal(f.get-ticks, %0, %1), ulocal(f.get-max, %0, %1)); @assert gte(sub(secs(), ulocal(f.get-time, %0, %1)), 86400); @wipe %0/%1; @wipe %0/_clock-destroy.[edit(%1, _CLOCK.,)];
+@@ %2 - if true, skip the time check.
+&tr.destroy_clock [v(d.clocks)]=@assert t(strlen(setr(V, ulocal(f.get-ticks, %0, %1)))); @assert t(setr(M, ulocal(f.get-max, %0, %1))); @assert gte(%qV, %qM); @assert t(setr(L, ulocal(f.get-last-ticked, %0, %1))); @assert cor(t(%2), gte(sub(secs(), %qL), 86400)); @wipe %0/%1; @wipe %0/_clock-destroy.[edit(%1, _CLOCK.,)];
 
 @@ Override the default message so it says it's from the Clocks system.
 &tr.message [v(d.clocks)]=@pemit %0=cat(alert(Clocks), %1);
+
+th ulocal(v(d.clocks)/f.get-max, %#, %#)
 
 @@ =============================================================================
 @@ Commands
@@ -175,9 +181,9 @@ TODO:
 
 &c.+clock/create [v(d.clocks)]=$+clock/create *=*:@assert t(setr(D, v(d.max_ticks)))={ @trigger me/tr.error=%#, Could not get the maximum clock size. Fix the setting!; }; @break t(ulocal(f.find-clock-by-title, %#, %0))={ @trigger me/tr.error=%#, There is already a clock with a name like '%0'. Pick something different.; }; @assert cand(isnum(%1), gte(%1, 2), lte(%1, %qD))={ @trigger me/tr.error=%#, Your '%0' clock's ticks must be a number between 2 and %qD.; }; @eval strcat(setq(C, 0), iter(ulocal(f.get-player-clocks, %#), if(gt(setr(T, edit(itext(0), _CLOCK.,)), %qC), setq(C, %qT))), setq(C, strcat(_clock., inc(%qC)))); @assert t(%qC)={ @trigger me/tr.error=%#, Could not figure out how to save your clock attribute.; }; @set %#=%qC:[secs()]|[secs()]|0|%1|%0; @trigger me/tr.remit-or-pemit=%L, strcat(ulocal(layout.creation, %#, %0, %1), %r, ulocal(layout.clock, %0, 0, %1)), %#;
 
-&c.+clock/destroy [v(d.clocks)]=$+clock/destroy *:@break strmatch(%0, *=*); @assert cor(t(setr(C, ulocal(f.find-clock-by-title, %#, %0))), switch(%0, all, 1, complete, 1, 0))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0', and you didn't specify 'all' or 'complete'.; }; @assert cor(switch(%0, all, 1, complete, 1, 0), cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC))))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @break switch(%0, all, 1, complete, 1, 0)={ @assert t(setr(C, ulocal(f.get-clocks, %#)))={ @trigger me/tr.error=%#, You don't have any clocks to destroy.; }; @dolist %qC={ th @@(TODO: Delete completed clocks. Don't forget about the 'all' case!); }; }; @break lt(%qV, %qM)={ @trigger me/tr.message=%#, The %qN clock is still ticking. Are you sure you want to destroy it? Type '+clock/destroy %0=YES' within 10 minutes to confirm. It is now [prettytime()].; @set %#=_clock-destroy.[edit(%qC, _CLOCK.,)]:[secs()]; }; @wipe %#/%qC; @wipe %#/_clock-destroy.[ed it(%qC, _CLOCK.,)]; @trigger me/tr.success=%#, You successfully destroyed the %qM-tick %qN clock.;
+&c.+clock/destroy [v(d.clocks)]=$+clock/destroy *:@break strmatch(%0, *=*); @assert cor(t(setr(C, ulocal(f.find-clock-by-title, %#, %0))), switch(%0, all, 1, complete, 1, 0))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0', and you didn't specify 'all' or 'complete'.; }; @assert cor(switch(%0, all, 1, complete, 1, 0), cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC))))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @break switch(%0, all, 1, complete, 1, 0)={ @assert t(setr(C, ulocal(f.get-player-clocks, %#)))={ @trigger me/tr.error=%#, You don't have any clocks to destroy.; }; @dolist %qC={ @trigger me/tr.destroy_clock=%#, ##, 1; }; @break cand(strmatch(%0, all), t(ulocal(f.get-clocks, %#)))={ @trigger me/tr.message=%#, All your completed clocks have been destroyed%, but you still have clocks remaining. To really destroy all your clocks%, including those with ticks remaining%, type '+clock/destroy %0=YES' within 10 minutes to confirm. It is now [prettytime()].; @set %#=_clock-destroy.all:[secs()]; }; @trigger me/tr.success=%#, Your completed clocks have been destroyed!; }; @break lt(%qV, %qM)={ @trigger me/tr.message=%#, The %qN clock is still ticking. Are you sure you want to destroy it? Type '+clock/destroy %0=YES' within 10 minutes to confirm. It is now [prettytime()].; @set %#=_clock-destroy.[edit(%qC, _CLOCK.,)]:[secs()]; }; @wipe %#/%qC; @wipe %#/_clock-destroy.[edit(%qC, _CLOCK.,)]; @trigger me/tr.success=%#, You successfully destroyed the %qM-tick %qN clock.;
 
-&c.+clock/destroy_YES [v(d.clocks)]=$+clock/destroy *=*:@assert t(setr(C, ulocal(f.find-clock-by-title, %#, %0)))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0'.; }; @assert cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC)))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @break gte(%qV, %qM)={ @force %#=+clock/destroy %0; }; @assert strmatch(%1, YES)={ @trigger me/tr.error=%#, You must type 'YES' if you really want to delete the %qN clock while it's still ticking.; }; @assert t(setr(X, xget(%#, edit(%qC, _CLOCK., _clock-destroy.))))={ @trigger me/tr.error=%#, That clock isn't waiting to be destroyed. Call '+clock/destroy %0' first.; }; @assert lte(sub(secs(), %qX), 600)={ @trigger me/tr.error=%#, The ten minute timeout has elapsed. Please try '+clock/destroy %0' again.; };  @wipe %#/%qC; @wipe %#/_clock-destroy.[edit(%qC, _CLOCK.,)]; @trigger me/tr.remit-or-pemit=%L, cat(alert(Clocks), ulocal(f.get-name, %#) destroyed the %qM-tick %qN clock.), %#;
+&c.+clock/destroy_YES [v(d.clocks)]=$+clock/destroy *=*:@assert cor(t(setr(C, ulocal(f.find-clock-by-title, %#, %0))), switch(%0, all, 1, complete, 1, 0))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0'.; }; @assert cor(switch(%0, all, 1, complete, 1, 0), cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC))))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @break switch(%0, all, 1, complete, 1, 0)={ @assert t(setr(C, ulocal(f.get-player-clocks, %#)))={ @trigger me/tr.error=%#, You don't have any clocks to destroy.; }; @assert strmatch(%1, YES)={ @trigger me/tr.error=%#, You must type 'YES' if you really want to destroy clocks while they're still ticking.; }; @assert t(setr(X, xget(%#, _clock-destroy.all)))={ @trigger me/tr.error=%#, That clock isn't waiting to be destroyed. Call '+clock/destroy %0' first.; }; @assert lte(sub(secs(), %qX), 600)={ @trigger me/tr.error=%#, The ten minute timeout has elapsed. Please try '+clock/destroy %0' again.; }; @dolist %qC={ @wipe %#/##; @wipe %#/_clock-destroy.[edit(##, _CLOCK.,)]; }; @wipe %#/_clock-destroy.all; @trigger me/tr.success=%#, All of your clocks have been destroyed!; }; @break gte(%qV, %qM)={ @force %#=+clock/destroy %0; }; @assert strmatch(%1, YES)={ @trigger me/tr.error=%#, You must type 'YES' if you really want to destroy the %qN clock while it's still ticking.; }; @assert t(setr(X, xget(%#, edit(%qC, _CLOCK., _clock-destroy.))))={ @trigger me/tr.error=%#, That clock isn't waiting to be destroyed. Call '+clock/destroy %0' first.; }; @assert lte(sub(secs(), %qX), 600)={ @trigger me/tr.error=%#, The ten minute timeout has elapsed. Please try '+clock/destroy %0' again.; }; @wipe %#/%qC; @wipe %#/_clock-destroy.[edit(%qC, _CLOCK.,)]; @trigger me/tr.remit-or-pemit=%L, cat(alert(Clocks), ulocal(f.get-name, %#) destroyed the %qM-tick %qN clock.), %#;
 
 &c.+clock/delete [v(d.clocks)]=$+clock/delete *: @force %#=+clock/destroy %0;
 
