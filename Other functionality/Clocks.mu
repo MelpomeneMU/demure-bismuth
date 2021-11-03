@@ -31,9 +31,6 @@ Clocks are auto-destroyed about one day after they are completed.
 +clock/show <clock> - show the room a clock
 +clock/show <clock>=<player> - show a player a clock
 
-TODO:
- - Do +clock/show
-
 */
 
 @create Clocks=10
@@ -119,6 +116,11 @@ TODO:
 
 @@ %0 - player
 @@ %1 - clock title
+@@ %2 - destination
+&layout.share [v(d.clocks)]=cat(alert(Clock), ulocal(f.get-name, %0), shares the, %ch%1%cn, clock, if(strmatch(%2, loc(%0)), with the room, cat(with, itemize(iter(%2, ulocal(f.get-name, itext(0)),, |), |))):)
+
+@@ %0 - player
+@@ %1 - clock title
 @@ %2 - amount to tick
 @@ %3 - new ticks value
 @@ %4 - max
@@ -191,7 +193,7 @@ th ulocal(v(d.clocks)/f.get-max, %#, %#)
 
 @@ Managing ===================================================================
 
-&c.+clock/set [v(d.clocks)]=$+clock/set *=*: @assert t(setr(C, ulocal(f.find-clock-by-title, %#, %0)))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0'.; }; @assert t(setr(D, v(d.max_ticks)))={ @trigger me/tr.error=%#, Could not get the maximum clock size. Fix the setting!; };  @assert cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @assert cand(isnum(%1), gte(%1, 0), lte(%1, %qD))={ @trigger me/tr.error=%#, You must set your '%qN' clock to a number between 0 and %qD.; }; @set %#=%qC:[replace(replace(xget(%#, %qC), 3, %1, |, |), 2, secs(), |, |)]; @trigger me/tr.remit-or-pemit=%L, strcat(ulocal(layout.set, %#, %qN, %1, %qM), %r, ulocal(layout.clock, %qN, %1, %qM)), %#;
+&c.+clock/set [v(d.clocks)]=$+clock/set *=*: @assert t(setr(C, ulocal(f.find-clock-by-title, %#, %0)))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0'.; }; @assert t(setr(D, v(d.max_ticks)))={ @trigger me/tr.error=%#, Could not get the maximum clock size. Fix the setting!; }; @assert cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @assert cand(isnum(%1), gte(%1, 0), lte(%1, %qD))={ @trigger me/tr.error=%#, You must set your '%qN' clock to a number between 0 and %qD.; }; @set %#=%qC:[replace(replace(xget(%#, %qC), 3, %1, |, |), 2, secs(), |, |)]; @trigger me/tr.remit-or-pemit=%L, strcat(ulocal(layout.set, %#, %qN, %1, %qM), %r, ulocal(layout.clock, %qN, %1, %qM)), %#;
 
 &c.+clock/clear [v(d.clocks)]=$+clock/clear *: @force %#=+clock/set %0=0;
 
@@ -199,11 +201,17 @@ th ulocal(v(d.clocks)/f.get-max, %#, %#)
 
 &c.+clock/wipe [v(d.clocks)]=$+clock/wipe *: @force %#=+clock/set %0=0;
 
-&c.+clock/tick_amount [v(d.clocks)]=$+clock/tick *=*: @assert t(setr(C, ulocal(f.find-clock-by-title, %#, %0)))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0'.; }; @assert t(setr(D, v(d.max_ticks)))={ @trigger me/tr.error=%#, Could not get the maximum clock size. Fix the setting!; };  @assert cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC)))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @assert cand(t(strlen(setr(L, sub(0, %qV)))), isnum(%1), gte(%1, %qL), lte(%1, %qD))={ @trigger me/tr.error=%#, You must tick your '%qN' clock a number of ticks between %qL and %qD.; }; @assert cor(lt(%qV, %qM), lt(%1, 0))={ @trigger me/tr.error=%#, There are no ticks left on this clock to tick!; }; @set %#=%qC:[replace(replace(xget(%#, %qC), 3, add(%qV, %1), |, |), 2, secs(), |, |)]; @trigger me/tr.remit-or-pemit=%L, strcat(ulocal(layout.tick, %#, %qN, %1, add(%qV, %1), %qM), %r, ulocal(layout.clock, %qN, add(%qV, %1), %qM)), %#;
+&c.+clock/tick_amount [v(d.clocks)]=$+clock/tick *=*: @assert t(setr(C, ulocal(f.find-clock-by-title, %#, %0)))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0'.; }; @assert t(setr(D, v(d.max_ticks)))={ @trigger me/tr.error=%#, Could not get the maximum clock size. Fix the setting!; }; @assert cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC)))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @assert cand(t(strlen(setr(L, sub(0, %qV)))), isnum(%1), gte(%1, %qL), lte(%1, %qD))={ @trigger me/tr.error=%#, You must tick your '%qN' clock a number of ticks between %qL and %qD.; }; @assert cor(lt(%qV, %qM), lt(%1, 0))={ @trigger me/tr.error=%#, There are no ticks left on this clock to tick!; }; @set %#=%qC:[replace(replace(xget(%#, %qC), 3, add(%qV, %1), |, |), 2, secs(), |, |)]; @trigger me/tr.remit-or-pemit=%L, strcat(ulocal(layout.tick, %#, %qN, %1, add(%qV, %1), %qM), %r, ulocal(layout.clock, %qN, add(%qV, %1), %qM)), %#;
 
-&c.+clock/tick [v(d.clocks)]=$+clock/tick *:@break strmatch(%0, *=*); @assert t(setr(C, ulocal(f.find-clock-by-title, %#, %0)))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0'.; }; @assert t(setr(D, v(d.max_ticks)))={ @trigger me/tr.error=%#, Could not get the maximum clock size. Fix the setting!; };  @assert cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC)))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @assert lt(%qV, %qM)={ @trigger me/tr.error=%#, There are no ticks left on this clock to tick!; };  @set %#=%qC:[replace(replace(xget(%#, %qC), 3, inc(%qV), |, |), 2, secs(), |, |)]; @trigger me/tr.remit-or-pemit=%L, strcat(ulocal(layout.tick, %#, %qN, 1, inc(%qV), %qM), %r, ulocal(layout.clock, %qN, inc(%qV), %qM)), %#;
+&c.+clock/tick [v(d.clocks)]=$+clock/tick *:@break strmatch(%0, *=*); @assert t(setr(C, ulocal(f.find-clock-by-title, %#, %0)))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0'.; }; @assert t(setr(D, v(d.max_ticks)))={ @trigger me/tr.error=%#, Could not get the maximum clock size. Fix the setting!; }; @assert cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC)))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @assert lt(%qV, %qM)={ @trigger me/tr.error=%#, There are no ticks left on this clock to tick!; }; @set %#=%qC:[replace(replace(xget(%#, %qC), 3, inc(%qV), |, |), 2, secs(), |, |)]; @trigger me/tr.remit-or-pemit=%L, strcat(ulocal(layout.tick, %#, %qN, 1, inc(%qV), %qM), %r, ulocal(layout.clock, %qN, inc(%qV), %qM)), %#;
 
 &c.+clock/untick_amount [v(d.clocks)]=$+clock/untick *=*: @force %#=+clock/tick %0=[if(lt(%1, 0), %1, sub(0, %1))];
 
 &c.+clock/untick [v(d.clocks)]=$+clock/untick *:@break strmatch(%0, *=*); @force %#=+clock/tick %0=-1;
+
+@@ Sharing ====================================================================
+
+&c.+clock/show [v(d.clocks)]=$+clock/show *: @break strmatch(%0, *=*); @assert t(setr(C, ulocal(f.find-clock-by-title, %#, %0)))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0'.; }; @assert cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC)))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @trigger me/tr.remit-or-pemit=%l, strcat(ulocal(layout.share, %#, %qN, %l), %r, ulocal(layout.clock, %qN, %qV, %qM)), %#;
+
+&c.+clock/show_target [v(d.clocks)]=$+clock/show *=*: @assert t(setr(C, ulocal(f.find-clock-by-title, %#, %0)))={ @trigger me/tr.error=%#, Could not find a clock that starts with '%0'.; }; @eval strcat(setq(P, iter(%1, ulocal(f.find-player, itext(0), %#))), iter(%qP, if(not(t(itext(0))), setq(E, %qE Could not find player '[extract(%1, inum(0), 1)]'.)))); @break t(%qE)={ @trigger me/tr.error=%#, squish(trim(%qE)); }; @eval iter(%qP, if(not(t(ulocal(filter.is_connected_player, itext(0)))), setq(E, cat(%qE, ulocal(f.get-name, itext(0), %#) is not connected.)))); @break t(%qE)={ @trigger me/tr.error=%#, squish(trim(%qE)); }; @assert t(%qP)={ @trigger me/tr.error=%#, Could not find a player named '%1'.; }; @assert cand(t(setr(M, ulocal(f.get-max, %#, %qC))), t(setr(N, ulocal(f.get-title, %#, %qC))), t(strlen(setr(V, ulocal(f.get-ticks, %#, %qC)))))={ @trigger me/tr.error=%#, Could not get information about the specified clock.; }; @trigger me/tr.pemit=%qP %#, strcat(ulocal(layout.share, %#, %qN, %qP), %r, ulocal(layout.clock, %qN, %qV, %qM)), %#;
 
