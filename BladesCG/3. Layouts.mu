@@ -63,9 +63,9 @@ Need
 
 &layout.abilities [v(d.cgf)]=strcat(divider(ulocal(layout.abilities-title, %0, %1), %1), %r, multicol(ulocal(f.get-player-stat, %0, abilities), * *, 0, |, %1))
 
-&layout.health [v(d.cgf)]=strcat(divider(Health, %1), setq(3, ulocal(layout.3health, %0, %1, %2)), setq(2, ulocal(layout.2health, %0, %1, 2, %2)), setq(1, ulocal(layout.2health, %0, %1, 1, %2)), if(t(%q3), strcat(%r, %q3)), if(t(%q2), strcat(%r, %q2)), if(t(%q1), strcat(%r, %q1)), if(not(cor(t(%q3), t(%q2), t(%q1))), strcat(%r, formattext(Unwounded, 0, %1))), if(t(%2), formattext(%b, 0, %1)))
+&layout.health [v(d.cgf)]=strcat(divider(Health, %1), setq(4, ulocal(layout.3health, %0, %1, 4, %2)), setq(3, ulocal(layout.3health, %0, %1, 3, %2)), setq(2, ulocal(layout.2health, %0, %1, 2, %2)), setq(1, ulocal(layout.2health, %0, %1, 1, %2)), if(t(%q4), strcat(%r, %q4)), if(t(%q3), strcat(%r, %q3)), if(t(%q2), strcat(%r, %q2)), if(t(%q1), strcat(%r, %q1)), if(not(cor(t(%q4), t(%q3), t(%q2), t(%q1))), strcat(%r, formattext(Unwounded, 0, %1))), if(t(%2), formattext(%b, 0, %1)))
 
-&layout.3health [v(d.cgf)]=if(or(t(%2), t(setr(H, xget(%0, _health-3)))), edit(multicol(strcat(setq(W, sub(getremainingwidth(%1), 13)), |, _, repeat(@, %qW), |||, #, center(__, %qW, _), #, ||, 3, |, ulocal(layout.player-health, %0, %1, %qH, %qW), |, Need help, ||, #, repeat(@, %qW), #), 1 * 13, 0, |, %1), _, %b, @, _, #, |))
+&layout.3health [v(d.cgf)]=if(or(t(%3), t(setr(H, xget(%0, _health-%2)))), edit(multicol(strcat(setq(W, sub(getremainingwidth(%1), 13)), |, _, repeat(@, %qW), |||, #, center(__, %qW, _), #, |, case(%2, 4, Catastrophic), |, %2, |, ulocal(layout.player-health, %0, %1, %qH, %qW), |, case(%2, 4, permanent, Need help), ||, #, repeat(@, %qW), #, |, case(%2, 4, consequences)), 1 * 13, 0, |, %1), _, %b, @, _, #, |))
 
 &layout.player-health [v(d.cgf)]=strcat(#, center(mid(%2, 0, %3), %3, _), #)
 
