@@ -125,3 +125,5 @@
 &d.finger-settable-fields [v(d.bd)]=Apparent Age|Gender|IC Full Name|Street Alias|IC Pronouns|OOC Pronouns|Played-by|Position|Public Alts|Quote|RP Prefs|Short-desc|Themesong|Timezone|Wiki
 
 &f.get-expert_type [v(d.bf)]=xget(%0, _stat.expert_type)
+
+&jobs [v(d.pp)]=BTCMO
