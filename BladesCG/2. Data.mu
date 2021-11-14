@@ -12,7 +12,9 @@
 
 &d.sheet-sections [v(d.cgdb)]=Page1|Page2|Bio|Actions|Abilities|Health|Pools|XP Triggers|Friends|Gear|Projects|Notes|Crew
 
-&d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Look|Expert Type|Character Type
+&d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Age|Look
+
+&d.expert_bio [v(d.cgdb)]=Name|Alias|Crew|Expert Type|Character Type|Age|Look
 
 &d.bio.hull [v(d.cgdb)]=Frame Size|Primary Drive|Secondary Drive|Tertiary Drive
 
@@ -134,9 +136,11 @@
 
 &d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire|*
 
+&d.value.age [v(d.cgdb)]=Young Adult|Adult|Mature|Elderly
+
 &d.value.load [v(d.cgdb)]=Light|Normal|Heavy|Encumbered
 
-&d.value.crew_type [v(d.cgdb)]=Asssssins|Bravos|Cult|Hawkers|Shadows|Smugglers
+&d.value.crew_type [v(d.cgdb)]=Assassins|Bravos|Cult|Hawkers|Shadows|Smugglers
 
 &d.value.reputation [v(d.cgdb)]=Ambitious|Brutal|Daring|Honorable|Professional|Savvy|Subtle|Strange
 

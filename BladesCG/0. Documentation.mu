@@ -55,6 +55,17 @@ Pools:
 	+take trauma=<which>
 	+vice???
 
+TODO:
+
+When crew name is set: set crew (could just have them be the same??)
+
+When crew is set: check for a player that has a crew named exactly that or something similar and set it to that (good reason not to have them be the same?)
+
+Remember to change the footer for +sheet/crew to reflect the crew advancement not the player
+
+When the player sets their playbook, default their equipment/friends/etc to the listed ones for that playbook if available
+
+
  =[ Name ] ===================================================================
  Playbook: Hound           Crew: The Rooks            Heritage: Akorosi
  Background: Military      Vice: Obligation

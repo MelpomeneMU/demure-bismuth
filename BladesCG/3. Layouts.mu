@@ -6,7 +6,7 @@
 @@ %1 - viewer
 &layout.page1 [v(d.cgf)]=if(hasattr(%0, _stat.expert_type), ulocal(layout.simple, %0, %1), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.pools, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1)))
 
-&layout.page2 [v(d.cgf)]=if(hasattr(%0, _stat.expert_type), ulocal(layout.simple, %0, %1), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.friends, %0, %1), %r, ulocal(layout.gear, %0, %1), %r, ulocal(layout.projects, %0, %1), %r, ulocal(layout.notes, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1)))
+&layout.page2 [v(d.cgf)]=if(hasattr(%0, _stat.expert_type), null(No second page.), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.friends, %0, %1), %r, ulocal(layout.gear, %0, %1), %r, ulocal(layout.projects, %0, %1), %r, ulocal(layout.notes, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1)))
 
 &layout.simple [v(d.cgf)]=strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.simple-bio, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1))
 
@@ -19,17 +19,6 @@
 
 &layout.test [v(d.cgf)]=strcat(%b, if(t(%0), ulocal(layout.pass), ulocal(layout.fail)))
 
-
-@@ Tests:
-/*
-Need 7 points of abilities. (Not restricted by playbook, should it be?)
-Need all the bio fields.
-Need a crew sheet.
-Need 5 friends
-Need gear
-Need 
-
-*/
 
 &layout.cg-errors [v(d.cgf)]=strcat(header(Character generation instructions, %1), %r, if(hasattr(%0, _stat.expert_type), ulocal(layout.simple-cg-errors, %0, %1), ulocal(layout.full-cg-errors, %0, %1)), %r, footer(cg/on to join the Chargen channel and ask questions!))
 
@@ -44,12 +33,29 @@ Need
 
 &layout.name [v(d.cgf)]=strcat(ulocal(f.get-name, %0, %1), if(isstaff(%1), strcat(%b, %(, %0, %))))
 
-&layout.crew_name [v(d.cgf)]=header(if(t(%0), strcat(name(%0), if(isstaff(%1), strcat(%b, %(, %0, %)))), No crew selected), %1)
+&layout.crew_name [v(d.cgf)]=header(if(t(%0), strcat(default(strcat(%0, /, ulocal(f.get-stat-location-on-player, Crew Name, %0)), No crew name set), if(isstaff(%1), strcat(%b, %(, %0, %)))), No crew selected), %1)
 
-&layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(remove(xget(%vD, d.crew_bio), Lair, |), strcat(itext(0), :, %b, default(strcat(%0, /, ulocal(f.get-stat-location-on-player, itext(0))), Not set)), |, |), * * *, 0, |, %1), %r, formattext(cat(Lair:, ulocal(f.get-player-stat, %0, lair))))
+&layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.crew_bio)|Tier, Lair|Crew Name, |, |), strcat(itext(0), :, %b, default(strcat(%0, /, ulocal(f.get-stat-location-on-player, itext(0))), if(member(itext(0), Tier), 0, Not set))), |, |), * * *, 0, |, %1), %r, formattext(cat(Lair:, default(strcat(%0, /, ulocal(f.get-stat-location-on-player, Lair)), Not set))))
 
-&layout.crew [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1))
-+sheet/crew
+&layout.crew [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, if(cor(cand(member(%qC, %1), member(%0, %1)), not(t(%qC)), isapproved(%1), isstaff(%1)), strcat(ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew_pools, %qC, %1), %r, ulocal(layout.crew-map, %qC, %1), %r, ulocal(layout.crew-abilities, %qC, %1), %r, ulocal(layout.crew-cohorts, %qC, %1), %r, ulocal(layout.crew-contacts, %qC, %1), %r, ulocal(layout.crew-upgrades, %qC, %1), %r, ulocal(layout.crew-members, %qC, %1)), strcat(formattext(Full crew sheet will become available once you are approved., 1, %1))))
+
+&layout.crew_pools [v(d.cgf)]=strcat(divider(Pools, %0), %r, multicol(strcat(Hold, |, Weak, |, Heat, |, 0/9, |, Wanted Level, |, 0/4, |, Coin, |, 0/4, |, Vaults, |, 0/12), * 6 * 5 * 5, 0, |, %1))
+
+&layout.crew-abilities-title [v(d.cgf)]=strcat(Special Abilities %(, default(%0/_crew-xp, 0), /10, %b, XP, %))
+
+&layout.crew-abilities [v(d.cgf)]=strcat(divider(ulocal(layout.crew-abilities-title, %0, %1), %1), %r, multicol(ulocal(f.get-player-stat, %0, crew abilities), * *, 0, |, %1))
+
+&layout.crew-cohorts [v(d.cgf)]=strcat(divider(Cohorts, %0, %1), %r, multicol(ulocal(f.get-player-stat, %0, Cohort), * *, 0, |, %1))
+
+&layout.crew-contacts [v(d.cgf)]=strcat(divider(Contacts, %0, %1), %r, multicol(ulocal(f.get-player-stat, %0, Contacts), * *, 0, |, %1))
+
+&layout.crew-upgrades [v(d.cgf)]=strcat(divider(Upgrades, %0, %1), %r, multicol(ulocal(f.get-player-stat, %0, Upgrades), * *, 0, |, %1))
+
+&layout.crew-members [v(d.cgf)]=strcat(divider(Members, %0, %1), %r, multicol(ulocal(f.get-player-stat, %0, Members), * *, 0, |, %1))
+
+&layout.crew-map [v(d.cgf)]=strcat(divider(Holdings, %0, %1), %r, ulocal(layout.crew-map-format, %0, %1, default(strcat(%0, /, ulocal(f.get-stat-location-on-player, crew type)), blank)))
+
+&layout.crew-map-format [v(d.cgf)]=edit(formattext(edit(ulocal(layout.crew-map.%2, %0, %1), |, @), 0, %1), @, |)
 
 &layout.bio [v(d.cgf)]=strcat(multicol(ulocal(layout.player-bio, %0, %1), * * *, 0, |, %1), %r, formattext(cat(Look:, shortdesc(%0, %1))))
 
@@ -71,7 +77,6 @@ Need
 
 &layout.2health [v(d.cgf)]=if(or(t(%3), t(setr(1, xget(%0, _health-%2-1))), t(setr(2, xget(%0, _health-%2-2)))), edit(multicol(strcat(setq(W, sub(div(sub(getremainingwidth(%1), 10), 2), 3)), |, _, repeat(@, %qW), |, _, repeat(@, %qW), |||, #, center(__, %qW, _), #, |, #, center(__, %qW, _), #, ||, %2, |, ulocal(layout.player-health, %0, %1, %q1, %qW), |, ulocal(layout.player-health, %0, %1, %q2, %qW), |, case(%2, 2, -1d, Less effect), ||, #, repeat(@, %qW), #, |, #, repeat(@, %qW), #), 1 * * 13, 0, |, %1), _, %b, @, _, #, |))
 
-
 &layout.pools [v(d.cgf)]=strcat(divider(Pools, %0), %r, multicol(strcat(Stress, |, 0/9, |, Trauma, |, 0/4, |, Healing, |, default(%0/_health-clock, 0), /4), * 5 * 5 * 5, 0, |, %1), %r, formattext(Traumas: None yet., 0, %1))
 
 &layout.xp_triggers [v(d.cgf)]=strcat(divider(XP Triggers, %1), %r, formattext(strcat(* You, %b, default(%0/_stat.xp_triggers, addressed a challenge with ______ or ______)., %r, * You roll a desperate action., %r, * You express your beliefs%, drives%, heritage%, or background., %r, * You struggled with issues from your vice or traumas during the session.), 0, %1))
@@ -86,7 +91,7 @@ Need
 
 &layout.other-gear [v(d.cgf)]=strcat(divider(Other gear, %1), %r, setq(L, edit(iter(fliplist(ulocal(f.get-player-stat, %0, other gear), 2, |), ulocal(layout.gear-item, itext(0)), |, |), 0L, %ch%cx--%cn)), multicol(if(t(%qL), %qL, |), * *, 0, |, %1))
 
-&layout.load-chart [v(d.cgf)]=strcat(formattext(%b, 0, %1), multicol(strcat(ulocal(f.get-player-load-list, %0), |, Your load:, |, ulocal(f.get-player-stat, %0, load)), 6 4 7 4 6 2 12 4 * 6, 0, |, %1))
+&layout.load-chart [v(d.cgf)]=strcat(formattext(%b, 0, %1), multicol(strcat(ulocal(f.get-player-load-list, %0), |, Your load:, |, if(t(setr(L, ulocal(f.get-player-stat, %0, load))), %qL, Unset)), 6 4 7 4 6 2 12 4 * 6, 0, |, %1))
 
 &layout.load-desc [v(d.cgf)]=cat(ulocal(f.get-name, %0, %1), looks, switch(ulocal(f.get-player-stat, %0, load), Normal, like a scoundrel%, ready for trouble, Heavy, like an operative on a mission, Encumbered, overburdened and slow, like an ordinary%, law-abiding citizen).)
 
@@ -109,3 +114,15 @@ Need
 
 &layout.choose_list [v(d.cgf)]=strcat(setq(N, 0), iter(%0, strcat(___, setr(N, inum(0)).%b, itext(0)), |, |), |, ___, inc(%qN). Random)
 
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Crew map layouts
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ Blank
+&layout.crew-map.blank [v(d.cgf)]=strcat(strcat(space(8), 1, space(13), 2, space(13), 3, space(13), 4, space(13), 5, %r, space(3), ___________, space(3), ___________, space(3), ___________, space(3), ___________, space(3), ___________, %r, space(2), |, space(11), | |, space(11), | |, space(11), | |, space(11), | |, space(11), |, %r, A |, space(11), | |, space(11), | |, space(11), | |, space(11), | |, space(11), |, %r, space(2), |, space(11), | |, space(11), | |, space(11), | |, space(11), | |, space(11), |, %r, space(2), |___________| |___________| |___________| |___________| |___________|), %r, strcat(space(3), ___________, space(3), ___________, space(3), _____|_____, space(3), ___________, space(3), ___________, %r, space(2), |, space(11), | |, space(11), | |, space(10), X| |, space(11), | |, space(11), |, %r, B |, space(11), | |, space(11), |-|, space(3), LAIR, space(4), |-|, space(11), | |, space(11), |, %r, space(2), |, space(11), | |, space(11), | |, space(11), | |, space(11), | |, space(11), |, %r, space(2), |___________| |___________| |___________| |___________| |___________|), %r, strcat(space(3), ___________, space(3), ___________, space(3), _____|_____, space(3), ___________, space(3), ___________, %r, space(2), |, space(11), | |, space(11), | |, space(11), | |, space(11), | |, space(11), |, %r, C |, space(11), | |, space(11), | |, space(11), | |, space(11), | |, space(11), |, %r, space(2), |, space(11), | |, space(11), | |, space(11), | |, space(11), | |, space(11), |, %r, space(2), |___________| |___________| |___________| |___________| |___________|, %r))
+
+&layout.crew-map.smugglers [v(d.cgf)]=strcat(strcat(space(8), 1, space(13), 2, space(13), 3, space(13), 4, space(13), 5, %r, space(3), ___________, space(3), ___________, space(3), ___________, space(3), ___________, space(3), ___________, %r, space(2), |, space(10), #| |, space(10), #| |, space(10), #| |, space(10), #| |, space(10), #|, %r, A |, space(3), TURF, space(4), |-|, space(3), SIDE, space(4), | |, space(3), LUXURY, space(2), | |, space(4), VICE, space(3), |-|, space(2), TAVERN, space(3), |, %r, space(2), |, space(11), | | BUSINESS, space(2), | |, space(3), FENCE, space(3), | |, space(4), DEN, space(4), | |, space(11), |, %r, space(2), |___________| |___________| |___________| |___________| |___________|), %r, strcat(space(3), _____|_____, space(3), _____|_____, space(3), _____|_____, space(3), _____|_____, space(3), _____|_____, %r, space(2), |, space(10), #| |, space(10), #| |, space(10), X| |, space(10), #| |, space(10), #|, %r, B |, space(2), ANCIENT, space(2), | |, space(3), TURF, space(4), |-|, space(3), LAIR, space(4), |-|, space(3), TURF, space(4), |-|, space(3), TURF, space(4), |, %r, space(2), |, space(3), GATE, space(4), | |, space(11), | |, space(11), | |, space(11), | |, space(11), |, %r, space(2), |___________| |___________| |___________| |___________| |___________|), %r, strcat(space(3), _____|_____, space(3), _____|_____, space(3), _____|_____, space(3), _____|_____, space(3), _____|_____, %r, space(2), |, space(10), #| |, space(10), #| |, space(10), #| |, space(10), #| |, space(10), #|, %r, C |, space(2), SECRET, space(3), | |INFORMANTS | |, space(3), FLEET, space(3), | |, space(3), COVER, space(3), | | WAREHOUSE |, %r, space(2), |, space(2), ROUTES, space(3), |-|, space(11), | |, space(11), | | OPERATION |-|, space(11), |, %r, space(2), |___________| |___________| |___________| |___________| |___________|, %r))
+
++stat/set crew type=Smu
++sheet/crew
