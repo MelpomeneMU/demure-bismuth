@@ -2,13 +2,23 @@
 @@ Settings
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
+@@ If this is set, +stat/set will emit to this channel when used by staff.
 &d.log-staff-statting-to-channel [v(d.cgdb)]=Monitor
 
-&d.manual-bio-stats [v(d.cgdb)]=Expert Type|Character Type|Look
+@@ This is how long crew invitations last - default is 3 days.
+&d.crew-invitation-time [v(d.cgdb)]=259200
+
+@@ If this is 'msg', the code will use the msg command to send notes to players. If it's anything else, the code will first try to @pemit, then will send @mail.
+&d.message-method [v(d.cgdb)]=msg
+
+@@ This is how the crew invitation will look.
+&d.crew_invitation_flair [v(d.cgdb)]=alert(Crew Invitation)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Data for chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.manual-bio-stats [v(d.cgdb)]=Expert Type|Character Type|Look
 
 &d.sheet-sections [v(d.cgdb)]=Page1|Page2|Bio|Actions|Abilities|Health|Pools|XP Triggers|Friends|Gear|Projects|Notes|Crew
 

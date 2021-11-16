@@ -85,6 +85,7 @@
 @wait 3=&short-desc here=All chat in this room goes to the Chargen channel.
 @wait 3=@desc here=%R%TYou start play with one Special Ability. You can choose your special ability from any non-restricted playbook. To keep it simple%, here are the abilities from your chosen playbook:%R%R%[multicol(fliplist(ulocal(%%vF/f.get-player-abilities, %%#), 3, |), * * *, 0, |, getremainingwidth(%%#), 1)%]%R%R%TTo select a special ability, type %ch+stat/set Special Ability=<ability>%cn.%R%R%TAll chat in this room goes to the Chargen channel.%R
 
+@@ TODO: Change Friends/XP Triggers/Gear to be skippable.
 
 +dig Friends
 @wait 1=@name f=Friends <Next>\;f\;fr\;fri\;friend\;friends\;next\;n\;

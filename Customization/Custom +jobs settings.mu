@@ -26,6 +26,22 @@
 +bucket/create REQUESTS=Player requests
 +bucket/create SOCIAL=Game culture and PvP issues.
 
+/*
+ .o:{ Bucket List },.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.:o.
+  Name        Flags    Description                  # Pct  C  A  D  Due  ARTS
+ .o:,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,:o.
+  BUILD       V---M--  Special buildings, typos     1 20%  1  2  2    0     -
+  CG          V---M--  Character creation/statting  0  0%  1  2  2    0     -
+  CODE        V---M--  Bugs & code requests         0  0%  1  2  2    0     -
+  FACTION     V---M--  Faction changes & updates    0  0%  1  2  2    0     -
+  PLOTS       V---M--  Plot info & questions        0  0%  1  2  2    0     -
+  PUBLIC      V---MP-  Everyone can see this.       1 20%  1  2  2    0    0d
+  QUERY       V---M--  Query bucket                 0  0%  1  2  2  168     -
+  REQUESTS    V---M--  Player requests              3 60%  1  2  2  168    0d
+  SOCIAL      V---M--  Game culture and PvP issues  0  0%  1  2  2   72     -
+ .o:,.,.,.,.,{ V=Viewing H=Hidden P=Published M=Myjobs L=Locked S=Summary }:o.
+*/
+
 @@ TODO: +bucket/set <name>/help=<stuff>
 @@ +myjob/help <#>
 
