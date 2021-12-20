@@ -15,10 +15,6 @@
 
 &f.get-layout-bio-stats [v(d.cgf)]=strcat(setq(L, ulocal(f.get-player-bio-fields, %0)), null(iter(xget(%vD, d.manual-bio-stats), setq(L, remove(%qL, itext(0), |)), |)), %qL)
 
-&f.get-player-action [v(d.cgf)]=default(strcat(%0, /, ulocal(f.get-stat-location-on-player, %1)), 0)
-
-&f.get-player-attribute [v(d.cgf)]=ladd(iter(xget(%vD, d.actions.%1), t(xget(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |))
-
 &f.get-player-bio-fields [v(d.cgf)]=strcat(setq(P, xget(%0, ulocal(f.get-stat-location-on-player, Playbook))), setq(E, xget(%0, ulocal(f.get-stat-location-on-player, Expert Type))), if(t(%qE), xget(%vD, d.expert_bio), strcat(setq(F, xget(%vD, d.bio)), setq(F, strcat(%qF, |, xget(%vD, d.bio.%qP))), setq(F, setdiff(%qF, xget(%vD, d.bio.%qP.exclude), |, |)), squish(trim(%qF, b, |), |))))
 
 &f.get-player-abilities [v(d.cgf)]=strcat(setq(P, xget(%0, ulocal(f.get-stat-location-on-player, Playbook))), setq(F, default(%vD/d.abilities.[edit(%qP, %b, _)], ulocal(f.get-abilities))), squish(trim(%qF, b, |), |))
@@ -31,12 +27,18 @@
 
 &f.get-playbook-default [v(d.cgf)]=if(cand(t(%0), switch(%1, XP Triggers, 1, Friends, 1, Gear, 1, 0)), xget(%vD, strcat(d., ulocal(f.get-stat-location, %1), ., %0)))
 
-&f.get-player-stat [v(d.cgf)]=switch(%1, Crew, xget(ulocal(f.get-player-stat, %0, crew object), ulocal(f.get-stat-location-on-player, crew name)), strcat(setq(0, xget(%0, ulocal(f.get-stat-location-on-player, %1))), if(t(%q0), %q0, ulocal(f.get-playbook-default, xget(%0, ulocal(f.get-stat-location-on-player, Playbook)), %1))))
+&f.get-crew-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.crew_abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
+
+&f.is-crew-stat [v(d.cgf)]=t(member(strcat(xget(%vD, d.crew_bio), |Tier|, ulocal(f.get-crew-abilities)), %0, |))
+
+@@ %0: Player
+@@ %1: Stat name
+&f.get-player-stat [v(d.cgf)]=strcat(setq(N, switch(%1, Crew, Crew Name, %1)), setq(O, ulocal(f.get-player-stat, %0, crew object)), if(cand(not(strmatch(%qO, %0)), ulocal(f.is-crew-stat, %qN)), ulocal(f.get-player-stat, %qO, %qN), strcat(setq(0, xget(%0, ulocal(f.get-stat-location-on-player, %qN))), if(t(%q0), %q0, ulocal(f.get-playbook-default, xget(%0, ulocal(f.get-stat-location-on-player, Playbook)), %qN)))))
 
 &f.get-player-stat-or-zero [v(d.cgf)]=ulocal(f.get-player-stat-or-default, %0, %1, 0)
 
-@@ We do it this way because it should all come down to one place for getting the player stat, f.get-player-stat, and default() doesn't allow that.
-&f.get-player-stat-or-default [v(d.cgf)]=if(t(setr(0, ulocal(f.get-player-stat, %0, %1))), %q0, %2)
+@@ Done this way because udefault() won't return the default unless f.get-player-stat doesn't exist, and we need to get the default in the case of nothing on the player instead.
+&f.get-player-stat-or-default [v(d.cgf)]=if(t(strlen(setr(0, ulocal(f.get-player-stat, %0, %1)))), %q0, %2)
 
 &f.get-random-name-and-job [v(d.cgf)]=strcat(pickrand(xget(%vD, d.random.name), |), %,%b, art(setr(J, pickrand(xget(%vD, d.random.job), |))), %b, %qJ)
 
@@ -56,7 +58,7 @@
 
 &f.get-total-player-abilities [v(d.cgf)]=words(ulocal(f.get-player-stat, %0, abilities), |)
 
-&f.get-total-player-actions [v(d.cgf)]=ladd(iter(ulocal(f.list-actions), if(not(member(%1, itext(0))), ulocal(f.get-player-action, %0, itext(0))), |))
+&f.get-total-player-actions [v(d.cgf)]=ladd(iter(ulocal(f.list-actions), if(not(member(%1, itext(0))), ulocal(f.get-player-stat-or-zero, %0, itext(0))), |))
 
 &f.get-valid-value [v(d.cgf)]=if(t(setr(S, ulocal(f.list-values, %0, %2))), finditem(%qS, %1, |), %1)
 
