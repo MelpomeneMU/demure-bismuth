@@ -4,6 +4,7 @@ Requirements: byzantine-opal with channels auxilary functionality if you want ro
 Commands:
 	+roll 4 - roll 4 dice
 	+roll 0 - roll two and take the lowest
+	+roll Tier - roll your character's tier
 	+roll <action> - roll your <action> score
 	+roll <attribute> - tells you how many stress you'll take for this resistance (since attributes are only used for resistance)
 
@@ -15,10 +16,8 @@ Switches:
 	/page <name>=<dice> - roll it to another player
 	/com <channel>=<dice> - roll to a channel
 	/<channel> <dice> - roll to the channel
+	/job <job>=<dice>
 
-	/job <job>=<dice> - do we even want jobs? Hmm.
-
-TODO: Job rolling, if we ever add it.
 */
 
 
@@ -28,6 +27,10 @@ TODO: Job rolling, if we ever add it.
 @force me=@parent DR=[v(d.bf)]
 
 @force me=&d.dr me=[search(ETHING=t(member(name(##), Dice Roller <DR>, |)))]
+
+@force me=&d.jobs [v(d.dr)]=[search(ETHING=t(member(name(##), Job Global Object <JGO>, |)))]
+
+@force me=&va [v(d.dr)]=[xget(search(ETHING=t(member(name(##), Job Global Object <JGO>, |))), va)]
 
 @tel [v(d.dr)]=#2
 
@@ -50,7 +53,7 @@ TODO: Job rolling, if we ever add it.
 
 @@ %0 - destination
 @@ %1 - player
-&layout.destination [v(d.dr)]=switch(%0, %1, To yourself:, loc(%1),, ulocal(f.find-player, %0, %1), cat(To, ulocal(f.get-name, %0):), switch(%0, * *, cat(To, itemize(iter(%0, ulocal(f.get-name, itext(0)),, |), |):)))
+&layout.destination [v(d.dr)]=switch(%0, %1, To yourself:, loc(%1),, ulocal(f.find-player, %0, %1), cat(To, ulocal(f.get-name, %0):), if(cand(isdbref(%0), hastype(%0, THING)), cat(To, name(%0):), switch(%0, * *, cat(To, itemize(iter(%0, ulocal(f.get-name, itext(0)),, |), |):))))
 
 &layout.die-roll [v(d.dr)]=ansi(case(%0, 6, ch, 5, hg, 4, hg, xh), %0)
 
@@ -66,6 +69,10 @@ TODO: Job rolling, if we ever add it.
 
 &layout.normal_resistance [v(d.dr)]=case(sub(6, %0), 0, capstr(subj(%1)) does not need to spend stress., cat(capstr(subj(%1)) must spend, ansi(ch, #$), stress.))
 
-&c.+roll [v(d.dr)]=$+roll* *: @eval strcat(setq(F, trim(edit(%0, /,))), setq(D, switch(%1, *=*, first(%1, =))), setq(R, switch(%1, *=*, rest(%1, =), %1)), switch(%qF, c*, setq(D, ulocal(v(d.channel-functions)/f.get-channel-name, %qD))), if(not(t(%qD)), setq(D, switch(%qF, q*, %#, if(t(%qF), ulocal(v(d.channel-functions)/f.get-channel-name, %qF, setq(F, com)), loc(%#)))))); @assert t(%qD)={ @trigger me/tr.error=%#, Could not figure out where to send the roll.; }; @eval if(cand(not(isdbref(%qD)), not(strmatch(%qF, c*))), setq(D, iter(%qD, if(t(setr(P, ulocal(f.find-player, itext(0), %#))), %qP, setq(E, %qE|[itext(0)]))))); @assert not(t(%qE))={ @trigger me/tr.error=%#, Could not find player(s) [itemize(trim(%qE, b, |), |)].; }; @assert t(setr(C, v(d.chargen-functions)))={ @trigger me/tr.error=%#, Rolling stats is not set up yet.; }; @eval if(not(isnum(%qR)), case(1, t(setr(W, ulocal(%qC/f.is-action, %qR))), setq(A, ulocal(%qC/f.get-player-action, %#, %qW)), t(setr(W, ulocal(%qC/f.is-attribute, %qR))), setr(A, ulocal(%qC/f.get-player-attribute, %#, %qW, setq(S, 1))))); @assert not(t(setr(E, if(isnum(%qR), if(cor(lt(%qR, 0), gt(%qR, 10)), You cannot roll a number greater than 10 or less than 0., setq(A, %qR)), if(not(cand(t(%qW), t(strlen(%qA)))), Could not find a stat you can roll starting with '%qR'.)))))={ @trigger me/tr.error=%#, %qE; }; @assert t(setr(X, ulocal(layout.sentence, %#, %qA, %qW, %qS, %qD)))={ @trigger me/tr.error=%#, Could not roll dice for some reason. Got %qX.; }; @assert switch(%qF, q*, 0, p*, 0, 1)={ @trigger me/tr.pemit=%qD %#, %qX, %#; }; @assert not(t(%qF))={ @force %#={ +com/emit %qD=%qX; }; }; @trigger me/tr.remit-or-pemit=%qD, %qX, %#;
+&f.can-roll-to-job [v(d.dr)]=cand(cor(isapproved(%0), isstaff(%0)), isdbref(%1), cor(cand(ulocal(%vA/is_public, %1), t(match(xget(%1, opened_by), %0))), ulocal(%vA/fn_myaccesscheck, parent(%1), %0, %1)), not(hasattr(%1, locked)))
+
+&c.+roll [v(d.dr)]=$+roll* *: @eval strcat(setq(F, trim(edit(%0, /,))), setq(D, switch(%1, *=*, first(%1, =))), setq(R, switch(%1, *=*, rest(%1, =), %1)), switch(%qF, c*, setq(D, ulocal(v(d.channel-functions)/f.get-channel-name, %qD)), j*, setq(D, ulocal(%vA/fn_find-job, %qD))), if(not(t(%qD)), setq(D, switch(%qF, q*, %#, if(t(%qF), ulocal(v(d.channel-functions)/f.get-channel-name, %qF, setq(F, com)), loc(%#)))))); @assert t(%qD)={ @trigger me/tr.error=%#, Could not figure out where to send the roll.; }; @eval if(cand(not(isdbref(%qD)), not(strmatch(%qF, c*))), setq(D, iter(%qD, if(t(setr(P, ulocal(f.find-player, itext(0), %#))), %qP, setq(E, %qE|[itext(0)]))))); @assert not(t(%qE))={ @trigger me/tr.error=%#, Could not find player(s) [itemize(trim(%qE, b, |), |)].; }; @eval setq(E, switch(%qF, j*, if(not(ulocal(f.can-roll-to-job, %#, %qD)), Could not find the job you wish to roll to. You might not have entered it correctly%, or you may not have access.))); @assert not(t(%qE))={ @trigger me/tr.error=%#, %qE; }; @assert t(setr(C, v(d.chargen-functions)))={ @trigger me/tr.error=%#, Rolling stats is not set up yet.; }; @eval if(not(isnum(%qR)), case(1, t(strmatch(%qR, Tier)), setq(A, ulocal(%qC/f.get-player-stat-or-zero, %#, setr(W, Tier))), t(setr(W, ulocal(%qC/f.is-action, %qR))), setq(A, ulocal(%qC/f.get-player-stat-or-zero, %#, %qW)), t(setr(W, ulocal(%qC/f.is-attribute, %qR))), setr(A, ulocal(%qC/f.get-player-stat-or-zero, %#, %qW, setq(S, 1))))); @assert not(t(setr(E, if(isnum(%qR), if(cor(lt(%qR, 0), gt(%qR, 10)), You cannot roll a number greater than 10 or less than 0., setq(A, %qR)), if(not(cand(t(%qW), t(strlen(%qA)))), Could not find a stat you can roll starting with '%qR'.)))))={ @trigger me/tr.error=%#, %qE; }; @assert t(setr(X, ulocal(layout.sentence, %#, %qA, %qW, %qS, %qD)))={ @trigger me/tr.error=%#, Could not roll dice for some reason. Got %qX.; }; @assert switch(%qF, q*, 0, p*, 0, 1)={ @trigger me/tr.pemit=%qD %#, %qX, %#; }; @assert switch(%qF, j*, 0, 1)={ @trigger %vA/trig_add=%qD, %qX, %#, ADD; @trigger me/tr.pemit=%#, %qX, %#; }; @assert not(t(%qF))={ @force %#={ +com/emit %qD=%qX; }; }; @trigger me/tr.remit-or-pemit=%qD, %qX, %#;
+
++roll/j 8=5
 
 &c.+dice [v(d.dr)]=$+dice*: @force %#={ +roll%0 };
