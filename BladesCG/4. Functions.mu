@@ -1,6 +1,3 @@
-@@ %0 - screen
-@@ %1 - target
-
 &f.get-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
 &f.get-addable-stats [v(d.cgf)]=xget(%vD, d.addable-stats)
@@ -25,15 +22,25 @@
 
 &f.is_expert [v(d.cgf)]=t(ulocal(f.get-player-stat, expert type))
 
-&f.get-playbook-default [v(d.cgf)]=if(cand(t(%0), switch(%1, XP Triggers, 1, Friends, 1, Gear, 1, 0)), xget(%vD, strcat(d., ulocal(f.get-stat-location, %1), ., %0)))
+&f.get-playbook-default [v(d.cgf)]=strcat(setq(F, if(cand(t(%0), switch(%1, XP Triggers, 1, Friends, 1, Gear, 1, Abilities, 1, 0)), xget(%vD, strcat(d., ulocal(f.get-stat-location, %1), ., %0)))), if(switch(%1, Abilities, 1, 0), first(%qF, |), %qF))
 
-&f.get-crew-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.crew_abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
+&f.get-crew-default [v(d.cgf)]=strcat(setq(F, if(cand(t(%0), switch(%1, Crew XP Triggers, 1, Crew Abilities, 1, Contacts, 1, Favorite, 1, 0)), xget(%vD, strcat(d., ulocal(f.get-stat-location, switch(%1, Favorite, Contacts, %1)), ., %0)))), if(switch(%1, Crew Abilities, 1, Favorite, 1, 0), first(%qF, |), %qF))
 
-&f.is-crew-stat [v(d.cgf)]=t(member(strcat(xget(%vD, d.crew_bio), |Tier|, ulocal(f.get-crew-abilities)), %0, |))
+&f.get-friends-default [v(d.cgf)]=strcat(setq(F, ulocal(f.get-player-stat, %0, Friends)), switch(%1, Ally, first(%qF, |), last(%qF, |)))
 
 @@ %0: Player
 @@ %1: Stat name
-&f.get-player-stat [v(d.cgf)]=strcat(setq(N, switch(%1, Crew, Crew Name, %1)), setq(O, ulocal(f.get-player-stat, %0, crew object)), if(cand(not(strmatch(%qO, %0)), ulocal(f.is-crew-stat, %qN)), ulocal(f.get-player-stat, %qO, %qN), strcat(setq(0, xget(%0, ulocal(f.get-stat-location-on-player, %qN))), if(t(%q0), %q0, ulocal(f.get-playbook-default, xget(%0, ulocal(f.get-stat-location-on-player, Playbook)), %qN)))))
+@@ %2: Is crew stat
+@@ %3: Crew object
+&f.get-stat-default [v(d.cgf)]=if(%2, ulocal(f.get-crew-default, xget(%3, ulocal(f.get-stat-location-on-player, Crew Type)), %1), if(switch(%1, Ally, 1, Rival, 1, 0), ulocal(f.get-friends-default, %0, %1), ulocal(f.get-playbook-default, xget(%0, ulocal(f.get-stat-location-on-player, Playbook)), %1)))
+
+&f.get-crew-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.crew_abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
+
+&f.is-crew-stat [v(d.cgf)]=t(finditem(xget(%vD, d.crew_bio)|Tier|Crew XP Triggers|Crew Abilities|Contacts|Favorite, %0, |))
+
+@@ %0: Player
+@@ %1: Stat name
+&f.get-player-stat [v(d.cgf)]=strcat(setq(N, switch(%1, Crew, Crew Name, %1)), setq(O, xget(%0, ulocal(f.get-stat-location-on-player, crew object))), setq(I, ulocal(f.is-crew-stat, %qN)), if(cand(not(strmatch(%qO, %0)), %qI), ulocal(f.get-player-stat, %qO, %qN), strcat(setq(0, xget(%0, ulocal(f.get-stat-location-on-player, %qN))), if(cand(t(%q0), if(switch(%qN, Rival, 1, Ally, 1, Favorite, 1, 0), t(finditem(ulocal(f.list-valid-values, %qN, %0), %q0, |)), 1)), %q0, ulocal(f.get-stat-default, %0, %qN, %qI, %qO)))))
 
 &f.get-player-stat-or-zero [v(d.cgf)]=ulocal(f.get-player-stat-or-default, %0, %1, 0)
 
@@ -50,7 +57,7 @@
 
 &f.get-stats [v(d.cgf)]=strcat(setq(S, xget(%vD, d.actions)|Load), squish(trim(strcat(%qS, |, setdiff(ulocal(f.get-player-bio-fields, %0), Crew, |, |), |, setdiff(xget(%vD, d.expert_bio), Crew, |, |), |, if(t(ulocal(f.get-player-stat, %0, crew object)), ulocal(f.get-crew-stats))), b, |), |))
 
-&f.get-crew-stats [v(d.cgf)]=xget(%vD, d.crew_bio)
+&f.get-crew-stats [v(d.cgf)]=xget(%vD, d.crew_bio)|Favorite
 
 &f.has-crew-stats [v(d.cgf)]=strcat(setq(0, iter(ulocal(f.get-crew-stats)|crew*|cohort*|contacts|upgrades, ulocal(f.get-stat-location-on-player, itext(0)), |)), setq(0, iter(%q0, if(t(member(itext(0), *)), lattr(strcat(%0, /, itext(0))), itext(0)))), setq(0, setdiff(%q0, ulocal(f.get-stat-location-on-player, Crew Name))), t(ladd(iter(%q0, hasattr(%0, itext(0))))))
 
@@ -74,4 +81,4 @@
 
 &f.list-valid-values [v(d.cgf)]=strcat(setq(R, ulocal(f.list-values, %0, %1)), null(iter(ulocal(f.list-restricted-values, %0), setq(R, remove(%qR, itext(0), |)), |)), if(member(%qR, *, |), strcat(setq(R, remove(%qR, *, |)), setq(R, strcat(%qR, |, any unrestricted text)))), %qR)
 
-&f.list-values [v(d.cgf)]=case(1, t(ulocal(f.is-action, %0)), xget(%vD, d.value.action), t(member(Friends|XP Triggers|Gear, %0, |)), ulocal(f.get-section-playbooks, %0, %1), t(member(Ally, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, rival), |), t(member(Rival, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, ally), |), t(member(Special Ability|Special Abilities, %0, |)), ulocal(f.get-abilities), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
+&f.list-values [v(d.cgf)]=case(1, t(ulocal(f.is-action, %0)), xget(%vD, d.value.action), t(finditem(Friends|XP Triggers|Gear, %0, |)), ulocal(f.get-section-playbooks, %0, %1), t(finditem(Ally, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, rival), |), t(finditem(Rival, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, ally), |), t(finditem(Favorite, %0, |)), ulocal(f.get-player-stat, %1, contacts), t(finditem(Special Ability|Special Abilities, %0, |)), ulocal(f.get-abilities), t(finditem(Crew Ability|Crew Abilities, %0, |)), ulocal(f.get-crew-abilities), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))

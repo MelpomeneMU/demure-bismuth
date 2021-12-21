@@ -1,0 +1,16 @@
+Jobs customizations
+Board customizations
+	Crews board
+Channel creations
+	LFG channel
+
+CG
+	+stat/lock locks your stats from being changed and creates a job for staff to approve you
+Dice (roll Tier needs to work)
+XP (staff spending and advancement tracking)
+Crew code
+	Probies (not optional)
+	Crew approval process
+		+crew/lock?
+	Vote to boot people (optional)
+	Invite-sharing (optional)
