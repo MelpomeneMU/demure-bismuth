@@ -16,6 +16,8 @@
 
 &f.get-player-abilities [v(d.cgf)]=strcat(setq(P, xget(%0, ulocal(f.get-stat-location-on-player, Playbook))), setq(F, default(%vD/d.abilities.[edit(%qP, %b, _)], ulocal(f.get-abilities))), squish(trim(%qF, b, |), |))
 
+&f.get-player-crew-abilities [v(d.cgf)]=strcat(setq(O, xget(%0, ulocal(f.get-stat-location-on-player, crew object))), setq(T, ulocal(f.get-player-stat, %qO, crew type)), setq(F, default(%vD/d.crew_abilities.[edit(%qT, %b, _)], ulocal(f.get-crew-abilities))), squish(trim(%qF, b, |), |))
+
 &f.get-player-notes [v(d.cgf)]=iter(lattr(%0/_note.*), itext(0),, |)
 
 &f.get-player-projects [v(d.cgf)]=iter(lattr(%0/_project.*), itext(0),, |)
@@ -53,7 +55,7 @@
 
 &f.get-stat-location [v(d.cgf)]=edit(%0, %b, _)
 
-&f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, Name, d.ic_full_name, Alias, d.street_alias, Special Ability, _stat.abilities, edit(%0, %b, _, ^, _stat.))
+&f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, Name, d.ic_full_name, Alias, d.street_alias, Special Ability, _stat.abilities, Crew Ability, _stat.crew_abilities, edit(%0, %b, _, ^, _stat.))
 
 &f.get-stats [v(d.cgf)]=strcat(setq(S, xget(%vD, d.actions)|Load), squish(trim(strcat(%qS, |, setdiff(ulocal(f.get-player-bio-fields, %0), Crew, |, |), |, setdiff(xget(%vD, d.expert_bio), Crew, |, |), |, if(t(ulocal(f.get-player-stat, %0, crew object)), ulocal(f.get-crew-stats))), b, |), |))
 

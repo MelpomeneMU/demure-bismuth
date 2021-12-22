@@ -14,6 +14,8 @@
 @@ This is how the crew invitation will look.
 &d.crew_invitation_flair [v(d.cgdb)]=alert(Crew Invitation)
 
+@@ TODO: Add advanced abilities from pg 234. These aren't "special abilities", they're Advances (costs the same?) and they may go in a different section. Might also come with some hidden bio fields like "which Iruvian path are you on" but I don't think we vitally *need* that.
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Data for chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -22,9 +24,21 @@
 
 &d.sheet-sections [v(d.cgdb)]=Page1|Page2|Bio|Actions|Abilities|Health|Pools|XP Triggers|Friends|Gear|Projects|Notes|Crew
 
-&d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Age|Look
+&d.stats_editable_after_chargen [v(d.cgdb)]=Name|Alias|Look
+
+&d.standard_gear [v(d.cgdb)]=1L A blade or two|1L Throwing knives|1L A pistol|1L A second pistol|2L A large weapon|1L An unusual weapon|2L Armor|3L Heavy Armor (requires Armor)|1L Burglary Gear|2L Climbing gear|1L Arcane implements|1L Documents|1L Subterfuge supplies|2L Demolition tools|1L Tinkering tools|1L Lantern|0L Spiritbane charm
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Expert stats
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.expert_bio [v(d.cgdb)]=Name|Alias|Crew|Expert Type|Character Type|Age|Look
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Scoundrel stats
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Age|Look
 
 &d.bio.hull [v(d.cgdb)]=Frame Size|Primary Drive|Secondary Drive|Tertiary Drive
 
@@ -33,8 +47,6 @@
 &d.bio.vampire [v(d.cgdb)]=Telltale
 
 &d.bio.vampire.exclude [v(d.cgdb)]=Vice
-
-&d.crew_bio [v(d.cgdb)]=Crew Name|Crew Type|Reputation|Lair
 
 &d.attributes [v(d.cgdb)]=Insight|Prowess|Resolve
 
@@ -48,43 +60,6 @@
 
 &d.abilities [v(d.cgdb)]=d.abilities.cutter d.abilities.hound d.abilities.leech d.abilities.lurk d.abilities.slide d.abilities.spider d.abilities.whisper
 
-&d.crew_abilities [v(d.cgdb)]=d.crew_abilities.assassins d.crew_abilities.bravos d.crew_abilities.cult d.crew_abilities.hawkers d.crew_abilities.shadows d.crew_abilities.smugglers
-
-&d.crew_abilities.assassins [v(d.cgdb)]=Deadly|Crow's Veil|Emberdeath|No Traces|Patron|Predators|Vipers
-
-&d.crew_abilities.bravos [v(d.cgdb)]=Dangerous|Blood Brothers|Door Kickers|Fiends|Forged in the Fire|Patron|War Dogs
-
-&d.crew_abilities.cult [v(d.cgdb)]=Chosen|Anointed|Bound in Darkness|Conviction|Glory Incarnate|Sealed in Blood|Zealotry
-
-&d.crew_abilities.hawkers [v(d.cgdb)]=Silver Tongues|Accord|The Good Stuff|Ghost Market|High Society|Hooked|Patron
-
-&d.crew_abilities.shadows [v(d.cgdb)]=Everyone Steals|Ghost Echoes|Pack Rats|Patron|Second Story|Slippery|Synchronized
-
-&d.crew_abilities.smugglers [v(d.cgdb)]=Like Part of the Family|All Hands|Ghost Passage|Just Passing Through|Leverage|Reavers|Renegades
-
-&d.crew_xp_triggers.assassins [v(d.cgdb)]=Execute a successful accident, disappearance, murder, or ransom operation.
-
-&d.crew_xp_triggers.bravos [v(d.cgdb)]=Execute a successful battle, extortion, sabotage, or smash & grab operation.
-
-&d.crew_xp_triggers.cult [v(d.cgdb)]=Advance the agenda of your deity or embody its precepts in Actions.
-
-&d.crew_xp_triggers.hawkers [v(d.cgdb)]=Acquire product supply, execute clandestine/covert sales, or secure new territory.
-
-&d.crew_xp_triggers.shadows [v(d.cgdb)]=Execute a successful espionage, sabotage, or theft operation.
-
-&d.crew_xp_triggers.smugglers [v(d.cgdb)]=Execute a successful smuggling or acquire new clients or contraband sources.
-
-&d.contacts.assassins [v(d.cgdb)]=Trev, a gang boss|Lydra, a deal broker|Irimina, a vicious noble|Karlos, a bounty hunter|Exeter, a spirit warden|Sevoy, a merchant lord
-
-&d.contacts.bravos [v(d.cgdb)]=Meg, a pit-fighter|Conway, a bluecoat|Keller, a blacksmith|Tomas, a physicker|Walker, a ward boss|Lutes, a tavern owner
-
-&d.contacts.cult [v(d.cgdb)]=Gagan, an academic|Adikin, an occultist|Hutchins, an antiquarian|Moriya, a spirit trafficker|Mateas Kline, a noble|Bennett, an astronomer
-
-&d.contacts.hawkers [v(d.cgdb)]=Rolan Wott, a magistrate|Laroze, a bluecoat|Lydra, a deal broker|Hoxley, a smuggler|Anya, a dillettante|Marlo, a gang boss
-
-&d.contacts.shadows [v(d.cgdb)]=Dowler, an explorer|Laroze, a bluecoat|Amancio, a deal broker|Fitz, a collector|Adelaide Phroaig, a noble|Rigney, a tavern owner
-
-&d.contacts.smugglers [v(d.cgdb)]=Elynn, a dock worker|Rolan, a drug dealer|Sera, an arms dealer|Nyelle, a spirit trafficker|Decker, an anarchist|Esme, a tavern owner
 
 &d.abilities.cutter [v(d.cgdb)]=Battleborn|Bodyguard|Ghost Fighter|Leader|Mule|Not to be Trifled With|Savage|Vigorous
 
@@ -158,9 +133,69 @@
 
 &d.strictures.vampire [v(d.cgdb)]=Slumber|Forbidden|Repelled|Bestial|Bound
 
-&d.stats_editable_after_chargen [v(d.cgdb)]=Name|Alias|Look
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Crew stats
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.standard_gear [v(d.cgdb)]=1L A blade or two|1L Throwing knives|1L A pistol|1L A second pistol|2L A large weapon|1L An unusual weapon|2L Armor|3L Heavy Armor (requires Armor)|1L Burglary Gear|2L Climbing gear|1L Arcane implements|1L Documents|1L Subterfuge supplies|2L Demolition tools|1L Tinkering tools|1L Lantern|0L Spiritbane charm
+&d.crew_bio [v(d.cgdb)]=Crew Name|Crew Type|Reputation|Lair
+
+&d.crew_abilities [v(d.cgdb)]=d.crew_abilities.assassins d.crew_abilities.bravos d.crew_abilities.cult d.crew_abilities.hawkers d.crew_abilities.shadows d.crew_abilities.smugglers
+
+&d.crew_abilities.assassins [v(d.cgdb)]=Deadly|Crow's Veil|Emberdeath|No Traces|Patron|Predators|Vipers
+
+&d.crew_abilities.bravos [v(d.cgdb)]=Dangerous|Blood Brothers|Door Kickers|Fiends|Forged in the Fire|Patron|War Dogs
+
+&d.crew_abilities.cult [v(d.cgdb)]=Chosen|Anointed|Bound in Darkness|Conviction|Glory Incarnate|Sealed in Blood|Zealotry
+
+&d.crew_abilities.hawkers [v(d.cgdb)]=Silver Tongues|Accord|The Good Stuff|Ghost Market|High Society|Hooked|Patron
+
+&d.crew_abilities.shadows [v(d.cgdb)]=Everyone Steals|Ghost Echoes|Pack Rats|Patron|Second Story|Slippery|Synchronized
+
+&d.crew_abilities.smugglers [v(d.cgdb)]=Like Part of the Family|All Hands|Ghost Passage|Just Passing Through|Leverage|Reavers|Renegades
+
+&d.crew_xp_triggers.assassins [v(d.cgdb)]=Execute a successful accident, disappearance, murder, or ransom operation.
+
+&d.crew_xp_triggers.bravos [v(d.cgdb)]=Execute a successful battle, extortion, sabotage, or smash & grab operation.
+
+&d.crew_xp_triggers.cult [v(d.cgdb)]=Advance the agenda of your deity or embody its precepts in Actions.
+
+&d.crew_xp_triggers.hawkers [v(d.cgdb)]=Acquire product supply, execute clandestine/covert sales, or secure new territory.
+
+&d.crew_xp_triggers.shadows [v(d.cgdb)]=Execute a successful espionage, sabotage, or theft operation.
+
+&d.crew_xp_triggers.smugglers [v(d.cgdb)]=Execute a successful smuggling or acquire new clients or contraband sources.
+
+&d.contacts.assassins [v(d.cgdb)]=Trev, a gang boss|Lydra, a deal broker|Irimina, a vicious noble|Karlos, a bounty hunter|Exeter, a spirit warden|Sevoy, a merchant lord
+
+&d.contacts.bravos [v(d.cgdb)]=Meg, a pit-fighter|Conway, a bluecoat|Keller, a blacksmith|Tomas, a physicker|Walker, a ward boss|Lutes, a tavern owner
+
+&d.contacts.cult [v(d.cgdb)]=Gagan, an academic|Adikin, an occultist|Hutchins, an antiquarian|Moriya, a spirit trafficker|Mateas Kline, a noble|Bennett, an astronomer
+
+&d.contacts.hawkers [v(d.cgdb)]=Rolan Wott, a magistrate|Laroze, a bluecoat|Lydra, a deal broker|Hoxley, a smuggler|Anya, a dillettante|Marlo, a gang boss
+
+&d.contacts.shadows [v(d.cgdb)]=Dowler, an explorer|Laroze, a bluecoat|Amancio, a deal broker|Fitz, a collector|Adelaide Phroaig, a noble|Rigney, a tavern owner
+
+&d.contacts.smugglers [v(d.cgdb)]=Elynn, a dock worker|Rolan, a drug dealer|Sera, an arms dealer|Nyelle, a spirit trafficker|Decker, an anarchist|Esme, a tavern owner
+
+&d.upgrades [v(d.cgdb)]=d.upgrades.lair d.upgrades.quality d.upgrades.training d.upgrades.assassins d.upgrades.bravos d.upgrades.cult d.upgrades.hawkers d.upgrades.shadows d.upgrades.smugglers
+
+&d.upgrades.lair [v(d.cgdb)]=[ ] [ ] Carriage|[ ] [ ] Boat|[ ] Hidden|[ ] Quarters|[ ] [ ] Secure|[ ] [ ] Vault|[ ] Workshop
+
+&d.upgrades.quality [v(d.cgdb)]=[ ] Documents|[ ] Gear|[ ] Implements|[ ] Supplies|[ ] Tools|[ ] Weapons
+
+&d.upgrades.training [v(d.cgdb)]=[ ] Insight|[ ] Prowess|[ ] Resolve|[ ] Playbook|[ ]-[ ]-[ ]-[ ] Mastery
+
+&d.upgrades.assassins [v(d.cgdb)]=[ ] Assassin rigging|[ ] Ironhook Contacts|[ ] Elite Skulks|[ ] Elite Thugs|[ ]-[ ]-[ ] Hardened
+
+&d.upgrades.bravos [v(d.cgdb)]=[ ] Bravos rigging|[ ] Ironhook Contacts|[ ] Elite Rovers|[ ] Elite Thugs|[ ]-[ ]-[ ] Hardened
+
+&d.upgrades.cult [v(d.cgdb)]=[ ] Cult rigging|[ ] Ritual sanctum in lair|[ ] Elite Adepts|[ ] Elite Thugs|[ ]-[ ]-[ ] Ordained
+
+&d.upgrades.hawkers [v(d.cgdb)]=[ ] Hawker's rigging|[ ] Ironhook Contacts|[ ] Elite Rooks|[ ] Elite Thugs|[ ]-[ ]-[ ] Composed
+
+&d.upgrades.shadows [v(d.cgdb)]=[ ] Thief rigging|[ ] Underground maps & passkeys|[ ] Elite Rooks|[ ] Elite Skulks|[ ]-[ ]-[ ] Steady
+
+&d.upgrades.smugglers [v(d.cgdb)]=[ ] Smuggler's rigging|[ ] Camouflage|[ ] Elite Rovers|[ ] Barge|[ ]-[ ]-[ ] Steady
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Valid values for various stats - * means write your own
@@ -208,11 +243,11 @@
 @@ Text for the chooser
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.choose-sections [v(d.cgdb)]=Special Abilities|XP Triggers|Gear|Friends|Ally|Rival|Crew Ability|Favorite
+&d.choose-sections [v(d.cgdb)]=Special Abilities|XP Triggers|Gear|Friends|Ally|Rival|Crew Abilities|Favorite|Upgrades
 
-&d.choosable-stats [v(d.cgdb)]=Special Ability|Friends|Ally|Rival|Gear|XP Triggers|Favorite|Crew Ability
+&d.choosable-stats [v(d.cgdb)]=Special Ability|Friends|Ally|Rival|Gear|XP Triggers|Favorite|Crew Ability|Upgrade
 
-&d.addable-stats [v(d.cgdb)]=Special Ability|Friend|Ally|Rival|Crew Ability
+&d.addable-stats [v(d.cgdb)]=Special Ability|Friend|Ally|Rival|Crew Ability|Upgrade
 
 &d.crew-choose-sections [v(d.cgdb)]=
 
