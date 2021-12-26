@@ -20,17 +20,43 @@
 @@ Data for chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.manual-bio-stats [v(d.cgdb)]=Expert Type|Character Type|Look
-
 &d.sheet-sections [v(d.cgdb)]=Page1|Page2|Bio|Actions|Abilities|Health|Pools|XP Triggers|Friends|Gear|Projects|Notes|Crew
 
 &d.stats_editable_after_chargen [v(d.cgdb)]=Name|Alias|Look
 
-&d.standard_gear [v(d.cgdb)]=1L A blade or two|1L Throwing knives|1L A pistol|1L A second pistol|2L A large weapon|1L An unusual weapon|2L Armor|3L Heavy Armor (requires Armor)|1L Burglary Gear|2L Climbing gear|1L Arcane implements|1L Documents|1L Subterfuge supplies|2L Demolition tools|1L Tinkering tools|1L Lantern|0L Spiritbane charm
+&d.stats-where-player-gets-entire-list [v(d.cgdb)]=Gear|XP Triggers|Friends|Contacts
+
+&d.choose-sections [v(d.cgdb)]=Special Abilities|XP Triggers|Gear|Friends|Ally|Rival|Crew Abilities|Favorite|Upgrades
+
+&d.choosable-stats [v(d.cgdb)]=Special Ability|Friends|Ally|Rival|Gear|XP Triggers|Favorite|Crew Ability|Upgrades|Contacts
+
+&d.addable-stats [v(d.cgdb)]=Special Ability|Friend|Ally|Rival|Crew Ability|Upgrade
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Stat aliases
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ Aliases should only be added for the following cases:
+@@ -
+@@  1. The stat has a short but confusing version of itself ("Crew" for "Crew Name") - if a player types the short version, you want it going directly to the long version, even if there are multiple stats that begin with that word.
+@@ -
+@@  2. The stat's singular version is spelled slightly differently from its plural version ("Special Ability" vs "Special Abilities") - if a player types the whole thing out, we want it to work.
+@@ -
+@@ You can add multiple aliases for the same stat.
+@@ -
+@@ Make sure the last entry on the alias is the actual destination of the stat.
+
+&d.alias.crew_name [v(d.cgdb)]=Crew|Crew Name
+
+&d.alias.abilities [v(d.cgdb)]=Special Ability|Special Abilities|Ability|Abilities
+
+&d.alias.crew_abilities [v(d.cgdb)]=Crew Ability|Crew Abilities
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Expert stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.manual-bio-stats [v(d.cgdb)]=Expert Type|Character Type|Look
 
 &d.expert_bio [v(d.cgdb)]=Name|Alias|Crew|Expert Type|Character Type|Age|Look
 
@@ -74,6 +100,8 @@
 &d.friends.hound [v(d.cgdb)]=Steiner, an assassin|Celene, a sentinel|Melvir, a phsysicker|Veleris, a spy|Casta, a bounty hunter
 
 &d.xp_triggers.hound [v(d.cgdb)]=address a challenge with Tracking or Violence
+
+&d.standard_gear [v(d.cgdb)]=1L A blade or two|1L Throwing knives|1L A pistol|1L A second pistol|2L A large weapon|1L An unusual weapon|2L Armor|3L Heavy Armor (requires Armor)|1L Burglary Gear|2L Climbing gear|1L Arcane implements|1L Documents|1L Subterfuge supplies|2L Demolition tools|1L Tinkering tools|1L Lantern|0L Spiritbane charm
 
 &d.gear.hound [v(d.cgdb)]=1L Fine pair of pistols|2L Fine long rifle|1L Electroplasmic ammunition|0L A trained hunting pet|1L Spyglass|0L Spiritbane charm
 
@@ -238,18 +266,6 @@
 &d.restricted.playbook [v(d.cgdb)]=Ghost|Hull|Vampire
 
 &d.restricted.action [v(d.cgdb)]=3|4|5
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Text for the chooser
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&d.choose-sections [v(d.cgdb)]=Special Abilities|XP Triggers|Gear|Friends|Ally|Rival|Crew Abilities|Favorite|Upgrades
-
-&d.choosable-stats [v(d.cgdb)]=Special Ability|Friends|Ally|Rival|Gear|XP Triggers|Favorite|Crew Ability|Upgrade
-
-&d.addable-stats [v(d.cgdb)]=Special Ability|Friend|Ally|Rival|Crew Ability|Upgrade
-
-&d.crew-choose-sections [v(d.cgdb)]=
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Data about the game.
