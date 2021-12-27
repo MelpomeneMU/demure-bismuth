@@ -20,7 +20,7 @@
 @@ Data for chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.sheet-sections [v(d.cgdb)]=Page1|Page2|Bio|Actions|Abilities|Health|Pools|XP Triggers|Friends|Gear|Projects|Notes|Crew
+&d.sheet-sections [v(d.cgdb)]=Page1|Page2|Bio|Actions|Abilities|Health|Pools|XP Triggers|Friends|Gear|Projects|Notes|Crew1|Crew2
 
 &d.stats_editable_after_chargen [v(d.cgdb)]=Name|Alias|Look
 
@@ -30,7 +30,9 @@
 
 &d.choosable-stats [v(d.cgdb)]=Special Ability|Friends|Ally|Rival|Gear|XP Triggers|Favorite|Crew Ability|Upgrades|Contacts
 
-&d.addable-stats [v(d.cgdb)]=Special Ability|Friend|Ally|Rival|Crew Ability|Upgrade
+&d.addable-stats [v(d.cgdb)]=Special Ability|Special Abilities|Friends|Ally|Rival|Crew Ability|Crew Abilities|Upgrades
+
+&d.cg-addable-stats [v(d.cgdb)]=Upgrades
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat aliases

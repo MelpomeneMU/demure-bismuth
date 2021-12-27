@@ -1,6 +1,22 @@
 &f.get-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
-&f.get-addable-stats [v(d.cgf)]=xget(%vD, d.addable-stats)
+&f.get-upgrades-with-boxes [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.upgrades), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
+
+@@ %0 - list of player's upgrades
+@@ %1 - list of player's expected crew upgrades
+&f.get-extra-crew-upgrades [v(d.cgf)]=strcat(setq(S, setq(R,)), null(iter(d.upgrades.lair d.upgrades.quality d.upgrades.training, setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), setq(S, squish(trim(%qS|%1, b, |), |)), null(iter(%0, if(not(t(ulocal(f.find-upgrade, %qS, trim(last(itext(0), \]))))), setq(R, strcat(%qR, |, itext(0)))), |, |)), squish(trim(%qR, b, |), |))
+
+&f.get-upgrades [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.upgrades), setq(S, strcat(%qS, |, iter(xget(%vD, itext(0)), trim(last(itext(0), \])), |, |))))), squish(trim(%qS, b, |), |))
+
+@@ %0 - any upgrades list with boxes
+@@ %1 - upgrade to find
+&f.find-upgrade [v(d.cgf)]=first(trim(iter(%0, if(strmatch(trim(last(itext(0), \])), %1*), inum(0)), |, |), b, |), |)
+
+@@ %0: A list of standardized upgrades
+@@ %1: A list of the player's upgrades
+&f.replace-upgrades [v(d.cgf)]=strcat(setq(F, %0), null(iter(%1, if(t(setr(I, ulocal(f.find-upgrade, %0, trim(last(itext(0), \]))))), setq(F, replace(%qF, %qI, itext(0), |, |))), |, |)), %qF)
+
+&f.get-addable-stats [v(d.cgf)]=xget(%vD, if(cand(isstaff(%1), not(strmatch(%0, %1))), d.addable-stats, d.cg-addable-stats))
 
 &f.get-choice-list [v(d.cgf)]=if(t(%0), remove(ulocal(f.list-valid-values, %0, %1), any unrestricted text, |), ulocal(f.get-choices, %1))
 
@@ -89,7 +105,7 @@
 
 &f.get-full-list-stat-values [v(d.cgf)]=iter(lattr(strcat(%vD, /, d., ulocal(f.get-stat-location, %0), ., *)), title(lcstr(last(itext(0), .))),, |)
 
-&f.list-values [v(d.cgf)]=case(1, t(ulocal(f.is-action, %0)), xget(%vD, d.value.action), ulocal(f.is-full-list-stat, %0), ulocal(f.get-full-list-stat-values, %0, %1), t(finditem(Ally, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, rival), |), t(finditem(Rival, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, ally), |), t(finditem(Favorite, %0, |)), ulocal(f.get-player-stat, %1, contacts), t(finditem(Special Ability|Special Abilities, %0, |)), ulocal(f.get-abilities), t(finditem(Crew Ability|Crew Abilities, %0, |)), ulocal(f.get-crew-abilities), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
+&f.list-values [v(d.cgf)]=case(1, t(ulocal(f.is-action, %0)), xget(%vD, d.value.action), ulocal(f.is-full-list-stat, %0), ulocal(f.get-full-list-stat-values, %0, %1), t(finditem(Ally, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, rival), |), t(finditem(Rival, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, ally), |), t(finditem(Favorite, %0, |)), ulocal(f.get-player-stat, %1, contacts), t(finditem(Special Ability|Special Abilities, %0, |)), ulocal(f.get-abilities), t(finditem(Crew Ability|Crew Abilities, %0, |)), ulocal(f.get-crew-abilities), strmatch(%0, Upgrade*), ulocal(f.get-upgrades), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
 
 @@ These expect a tickable stat, in one of the following formats:
 @@  [ ] Stat name here
