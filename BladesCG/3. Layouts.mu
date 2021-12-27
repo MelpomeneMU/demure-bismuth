@@ -12,37 +12,10 @@
 
 &layout.simple-bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.expert_bio), Look|Character Type, |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), Not set)), |, |), * *, 0, |, %1), %r, divider(), %r, formattext(cat(Character Type:, ulocal(f.get-player-stat-or-default, %0, Character Type, Not set))), %r, formattext(cat(Look:, ulocal(f.get-player-stat-or-default, %0, Look, Not set))))
 
-&layout.pass [v(d.cgf)]=%ch%cg%[Pass%]
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Rest of the sheet
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&layout.fail [v(d.cgf)]=%cr%[Needs work%]
-
-&layout.test [v(d.cgf)]=cat(if(t(%0), %1, if(t(%2), %2, %1)), if(t(%0), ulocal(layout.pass), ulocal(layout.fail)))
-
-&layout.cg-errors [v(d.cgf)]=strcat(header(Character generation instructions, %1), %r, if(ulocal(f.is_expert, %0), ulocal(layout.simple-cg-errors, %0, %1), ulocal(layout.full-cg-errors, %0, %1)), %r, footer(cg/on to join the Chargen channel and ask questions!))
-
-&layout.simple-cg-errors [v(d.cgf)]=strcat(formattext(strcat(ulocal(layout.test, ulocal(check.simple.age, %0), +stat/set Age=<Young Adult%, Adult%, Mature%, or Elderly>), %r, ulocal(layout.test, ulocal(check.simple.look, %0), +stat/set Look=<Character's short description>), %r, ulocal(layout.test, ulocal(check.simple.desc, %0), @desc me=<Character's normal description>), %r, ulocal(layout.test, ulocal(check.simple.expert_type, %0), +stat/set Expert Type=<Character's expert type>), %r, ulocal(layout.test, ulocal(check.simple.character_type, %0), +stat/set Character Type=<Character's type>), %r, +stat/lock when you're done!), 0, %1))
-
-&check.simple.age [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, Age))
-&check.simple.look [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, look))
-&check.simple.desc [v(d.cgf)]=hasattr(%0, desc)
-&check.simple.expert_type [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, expert type))
-&check.simple.character_type [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, character type))
-
-&check.scoundrel.crew [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, crew object))
-&check.scoundrel.actions [v(d.cgf)]=eq(ulocal(f.get-total-player-actions, %0), 7)
-&check.scoundrel.abilities [v(d.cgf)]=eq(ulocal(f.get-total-player-abilities, %0), 1)
-&check.scoundrel.bio [v(d.cgf)]=not(ladd(iter(remove(ulocal(f.get-player-bio-fields, %0), Crew, |), not(hasattr(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |)))
-&check.scoundrel.friends [v(d.cgf)]=cand(t(ulocal(f.get-player-stat, %0, friends)), t(ulocal(f.get-player-stat, %0, ally)), t(ulocal(f.get-player-stat, %0, rival)))
-&check.scoundrel.gear [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, gear))
-&check.scoundrel.xp_triggers [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, xp triggers))
-
-&check.crew.bio [v(d.cgf)]=ladd(iter(xget(%vD, d.crew_bio), not(hasattr(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |))
-
-&layout.crew-cg-errors [v(d.cgf)]=strcat(ulocal(layout.test, ulocal(check.crew.bio, %0), Crew bio is all set up., Your crew bio is missing some information.), %r, ulocal(layout.test, ulocal(check.crew.), A, B))
-
-&layout.full-cg-errors [v(d.cgf)]=strcat(formattext(strcat(ulocal(layout.test, ulocal(check.scoundrel.actions, %0), 7 action dots chosen., You need 7 action dots. You have [ulocal(f.get-total-player-actions, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.abilities, %0), One ability selected., You need one ability. You have [ulocal(f.get-total-player-abilities, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.bio, %0), You have all your bio fields set., Some of your bio fields %(not counting Crew%) are not set.), %r, ulocal(layout.test, ulocal(check.scoundrel.friends, %0), You have friends%, an ally%, and a rival., You need friends%, an ally%, and a rival.), %r, ulocal(layout.test, ulocal(check.scoundrel.gear, %0), You have chosen your gear., You need gear!), %r, ulocal(layout.test, ulocal(check.scoundrel.xp_triggers, %0), You have chosen your XP triggers., You need to select your XP triggers.)), 0, %1), %r, divider(Commands), %r, multicol(+stat/set <stat>=<value>|+stat/set <stat>= to clear a stat|+stat/clear to start over|+sheet/all to see everything|+stats/lock to submit to staff, * *, 0, |, %1))
-
-@@ Old crew checks: , %r, setq(C, ulocal(f.get-player-stat, %0, crew object)), case(1, not(t(%qC)), cat(You need a crew. Set one up or join an existing one., ulocal(layout.fail)), cand(t(%qC), not(match(%qC, %0))), cat(You're all set up with a crew., ulocal(layout.pass)), ulocal(layout.crew-cg-errors, %qC))
 
 &layout.name [v(d.cgf)]=strcat(ulocal(f.get-name, %0, %1), if(isstaff(%1), strcat(%b, %(, %0, %))))
 
@@ -123,14 +96,6 @@
 
 &layout.room-emit [v(d.cgf)]=cat(alert(Game), ulocal(f.get-name, %0), %1)
 
-@@ %0 - screen
-@@ %1 - target
-@@ %2 - viewer
-&layout.choose [v(d.cgf)]=strcat(header(cat(Choose your, if(t(%0), %0, CG section)), %2), %r, setq(M, ulocal(layout.choose_list, ulocal(f.get-choice-list, %0, %1))), setq(N, words(%qM, |)), setq(N, add(div(%qN, 10), t(mod(%qN, 10)))), setq(R, ulocal(f.list-restricted-values, %0, %1)), setq(T, xget(%vD, ulocal(f.get-stat-location, d.choose.note.%0))), setq(A, xget(%vD, ulocal(f.get-stat-location, d.choose.afterword.%0))), formattext(%qT%b, t(%qT), %2), edit(multicol(if(gt(%qN, 1), fliplist(%qM, %qN, |), %qM), repeat(*%b, %qN), 0, |, %2), _, %b), %r, formattext(If you're stuck for choices%, choose "Random" to have the chooser pick one for you., 1, %2), , if(t(%qR), formattext(strcat(indent(), The following are restricted and are not currently available:%b, itemize(%qR, |), ., %r), 0, %1)), if(t(%qA), formattext(%qA%b, 1, %2)), %r, footer(+stat/choose <#> to choose, %2))
-
-&layout.choose_list [v(d.cgf)]=strcat(setq(N, 0), iter(%0, strcat(___, setr(N, inum(0)).%b, itext(0)), |, |), |, ___, inc(%qN). Random)
-
-
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew map layouts
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -149,3 +114,62 @@
 &layout.crew-map.assassins [v(d.cgf)]=strcat(strcat(space(45), #A1: Training Rooms, %r, %b______, space(3), ______, space(3), ______, space(3), ______, space(3), ______, space(2), #A2: Vice Den, %r, |, space(5), #| |, space(5), #| |, space(5), #| |, space(5), #| |, space(5), #| #A3: Fixer, %r, |, space(2), A1, space(2), |-|, space(2), A2, space(2), | |, space(2), A3, space(2), | |, space(2), A4, space(2), |-|, space(2), A5, space(2), | #A4: Informants, %r, |______| |______| |______| |______| |______| #A5: Hagfish Farm), %r, strcat(%b__|___, space(3), ___|__, space(3), ___|__, space(3), ___|__, space(3), ___|__, space(2), #B1: Victim Trophies, %r, |, space(5), #| |, space(5), #| |, space(5), x| |, space(5), #| |, space(5), #| #B2: Turf, %r, |, space(2), B1, space(2), | |, space(2), B2, space(2), |-| LAIR |-|, space(2), B4, space(2), |-|, space(2), B5, space(2), | #B4: Turf, %r, |______| |______| |______| |______| |______| #B5: Cover Operation), %r, strcat(%b__|___, space(3), ___|__, space(3), ___|__, space(3), ______, space(3), ___|__, space(2), #C1: Protection Racket, %r, |, space(5), #| |, space(5), #| |, space(5), #| |, space(5), #| |, space(5), #| #C2: Infirmary, %r, |, space(2), C1, space(2), |-|, space(2), C2, space(2), | |, space(2), C3, space(2), | |, space(2), C4, space(2), |-|, space(2), C5, space(2), | #C3: Envoy, %r, |______| |______| |______| |______| |______| #C4: Cover Identities, %r, , space(45), #C5: City Records, %r))
 
 &layout.crew-map.bravos [v(d.cgf)]=strcat(strcat(space(45), #A1: Barracks, %r, %b______, space(3), ______, space(3), ______, space(3), ______, space(3), ______, space(2), #A2: Turf, %r, |, space(5), #| |, space(5), #| |, space(5), #| |, space(5), #| |, space(5), #| #A3: Terrorized Citizens, %r, |, space(2), A1, space(2), |-|, space(2), A2, space(2), |-|, space(2), A3, space(2), | |, space(2), A4, space(2), |-|, space(2), A5, space(2), | #A4: Informants, %r, |______| |______| |______| |______| |______| #A5: Protection Racket), %r, strcat(%b__|___, space(3), ______, space(3), ___|__, space(3), ___|__, space(3), ___|__, space(2), #B1: Fighting Pits, %r, |, space(5), #| |, space(5), #| |, space(5), x| |, space(5), #| |, space(5), #| #B2: Turf, %r, |, space(2), B1, space(2), |-|, space(2), B2, space(2), |-| LAIR |-|, space(2), B4, space(2), |-|, space(2), B5, space(2), | #B4: Turf, %r, |______| |______| |______| |______| |______| #B5: Turf), %r, strcat(%b__|___, space(3), ___|__, space(3), ___|__, space(3), ___|__, space(3), ___|__, space(2), #C1: Infirmary, %r, |, space(5), #| |, space(5), #| |, space(5), #| |, space(5), #| |, space(5), #| #C2: Blue. Intimidation, %r, |, space(2), C1, space(2), |-|, space(2), C2, space(2), | |, space(2), C3, space(2), |-|, space(2), C4, space(2), |-|, space(2), C5, space(2), | #C3: Street Fence, %r, |______| |______| |______| |______| |______| #C4: Warehouses, %r, , space(45), #C5: Blue. Confederates, %r))
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ CG checks
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&check.simple.age [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, Age))
+
+&check.simple.look [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, look))
+
+&check.simple.desc [v(d.cgf)]=hasattr(%0, desc)
+
+&check.simple.expert_type [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, expert type))
+
+&check.simple.character_type [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, character type))
+
+&check.scoundrel.crew [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, crew object))
+
+&check.scoundrel.actions [v(d.cgf)]=eq(ulocal(f.get-total-player-actions, %0), 7)
+
+&check.scoundrel.abilities [v(d.cgf)]=eq(ulocal(f.get-total-player-abilities, %0), 1)
+
+&check.scoundrel.bio [v(d.cgf)]=not(ladd(iter(remove(ulocal(f.get-player-bio-fields, %0), Crew, |), not(hasattr(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |)))
+
+&check.scoundrel.friends [v(d.cgf)]=cand(t(ulocal(f.get-player-stat, %0, friends)), t(ulocal(f.get-player-stat, %0, ally)), t(ulocal(f.get-player-stat, %0, rival)))
+
+&check.scoundrel.gear [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, gear))
+
+&check.scoundrel.xp_triggers [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, xp triggers))
+
+&check.crew.bio [v(d.cgf)]=not(ladd(iter(xget(%vD, d.crew_bio), not(hasattr(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |)))
+
+&check.crew.abilities [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, crew abilities))
+th ulocal(v(d.cgf)/f.get-player-stat, %#, crew abilities)
+
+&check.crew.contacts [v(d.cgf)]=cand(t(ulocal(f.get-player-stat, %0, contacts)), t(ulocal(f.get-player-stat, %0, favorite)))
+
+&check.crew.upgrades [v(d.cgf)]=eq(ulocal(f.count-ticks, ulocal(f.get-player-stat, %0, upgrades)), 4)
+
+&check.crew.xp_triggers [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, crew xp triggers))
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ CG error messages
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&layout.pass [v(d.cgf)]=%ch%cg%[Pass%]
+
+&layout.fail [v(d.cgf)]=%cr%[Needs work%]
+
+&layout.test [v(d.cgf)]=cat(if(t(%0), %1, if(t(%2), %2, %1)), if(t(%0), ulocal(layout.pass), ulocal(layout.fail)))
+
+&layout.cg-errors [v(d.cgf)]=strcat(header(Character generation instructions, %1), %r, if(ulocal(f.is_expert, %0), ulocal(layout.simple-cg-errors, %0, %1), ulocal(layout.full-cg-errors, %0, %1)), %r, footer(cg/on to join the Chargen channel and ask questions!))
+
+&layout.simple-cg-errors [v(d.cgf)]=strcat(formattext(strcat(ulocal(layout.test, ulocal(check.simple.age, %0), +stat/set Age=<Young Adult%, Adult%, Mature%, or Elderly>), %r, ulocal(layout.test, ulocal(check.simple.look, %0), +stat/set Look=<Character's short description>), %r, ulocal(layout.test, ulocal(check.simple.desc, %0), @desc me=<Character's normal description>), %r, ulocal(layout.test, ulocal(check.simple.expert_type, %0), +stat/set Expert Type=<Character's expert type>), %r, ulocal(layout.test, ulocal(check.simple.character_type, %0), +stat/set Character Type=<Character's type>), %r, +stat/lock when you're done!), 0, %1))
+
+&layout.crew-cg-errors [v(d.cgf)]=strcat(header(Crew creation instructions, %1), %r, formattext(strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.test, t(%qC), You have joined or created a crew., +crew/join <name> or +crew/create <name> to set your crew up.), %r, ulocal(layout.test, ulocal(check.crew.bio, %qC), Crew bio is all set up., Your crew bio is missing some information.), %r, ulocal(layout.test, ulocal(check.crew.abilities, %qC), You have one Crew Ability selected., You need to select one Crew Ability.), %r, ulocal(layout.test, ulocal(check.crew.contacts, %qC), You have Contacts and a Favorite., You need to set your Contacts and Favorite.), %r, ulocal(layout.test, ulocal(check.crew.upgrades, %qC), You have selected 4 Upgrades for your crew., You need to select 4 Upgrades for your crew.), %r, ulocal(layout.test, ulocal(check.crew.xp_triggers, %qC), You have selected your Crew XP Trigger., You must select a Crew XP Trigger.)), 0, %1), ulocal(layout.cg-commands, +crew/lock to submit to staff, %1), %r, footer(cg/on to join the Chargen channel and ask questions!, %1))
+
+&layout.full-cg-errors [v(d.cgf)]=strcat(formattext(strcat(ulocal(layout.test, ulocal(check.scoundrel.actions, %0), 7 action dots chosen., You need 7 action dots. You have [ulocal(f.get-total-player-actions, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.abilities, %0), One ability selected., You need one ability. You have [ulocal(f.get-total-player-abilities, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.bio, %0), You have all your bio fields set., Some of your bio fields %(not counting Crew%) are not set.), %r, ulocal(layout.test, ulocal(check.scoundrel.friends, %0), You have friends%, an ally%, and a rival., You need friends%, an ally%, and a rival.), %r, ulocal(layout.test, ulocal(check.scoundrel.gear, %0), You have chosen your gear., You need gear!), %r, ulocal(layout.test, ulocal(check.scoundrel.xp_triggers, %0), You have chosen your XP triggers., You need to select your XP triggers.)), 0, %1), ulocal(layout.cg-commands, +stats/lock to submit to staff, %1))
+
+&layout.cg-commands [v(d.cgf)]=strcat(divider(Commands), %r, multicol(+stat/set <stat>=<value>|+stat/set <stat>= to clear a stat|+stat/clear to start over|+sheet/all to see everything|%0, * *, 0, |, %1))
