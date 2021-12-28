@@ -1,6 +1,4 @@
-&c.+crew [v(d.cg)]=$+crew:@force %#=+sheet/crew;
-
-&c.+crew2 [v(d.cg)]=$+crew2:@force %#=+sheet/crew2;
+&c.+crew [v(d.cg)]=$+crew*:@force %#=+sheet/crew%0;
 
 &c.+crew/create [v(d.cg)]=$+crew/create *:@break strmatch(%0, *=*); @assert not(isapproved(%#))={ @trigger me/tr.error=%#, You must be unapproved to create a new crew. Open a new +request to get unapproved and start working on it.; }; @assert cor(not(setr(C, ulocal(f.get-player-stat, %#, crew object))), t(member(%qC, %#)))={ @trigger me/tr.message=%#, This will take you out of your existing crew%, [ulocal(f.get-player-stat, %qC, Crew Name)]. If you're sure you want to proceed%, type '+crew/create %0=YES' within the next 15 minutes. The time is now [prettytime()].; @eval settimer(%#, crew.new, 900); }; @assert not(ulocal(f.has-crew-stats, %#))={ @trigger me/tr.message=%#, This will wipe your existing crew data. If you're sure you want to proceed%, type '+crew/create %0=YES' within the next 15 minutes. The time is now [prettytime()].; @eval settimer(%#, crew.new, 900); }; @set %#=[ulocal(f.get-stat-location-on-player, crew object)]:%#; @set %#=[ulocal(f.get-stat-location-on-player, crew name)]:%0; @trigger me/tr.success=%#, You have started a new crew called '%0'.;
 
