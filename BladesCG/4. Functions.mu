@@ -1,3 +1,16 @@
+@@ %0: player doing the editing
+@@ %1: player being edited
+&f.is-allowed-to-break-stat-setting-rules [v(d.cgf)]=cand(isstaff(%0), not(strmatch(%1, %0)))
+
+@@ %0: player doing the editing
+@@ %1: player being edited
+@@ %2: stat to be edited
+&f.is-allowed-to-edit-stat [v(d.cgf)]=cor(not(hasattr(%1, _stat.locked)), t(member(xget(%vD, d.stats_editable_after_chargen), %2, |)), ulocal(f.is-allowed-to-break-stat-setting-rules, %0, %1))
+
+@@ %0: player doing the editing
+@@ %1: crew object being edited
+&f.is-allowed-to-edit-crew [v(d.cgf)]=cor(not(hasattr(%1, _crew.locked)), ulocal(f.is-allowed-to-break-stat-setting-rules, %0, %1))
+
 &f.get-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
 &f.get-upgrades-with-boxes [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.upgrades), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
@@ -24,7 +37,7 @@
 
 &f.get-choosable-stats [v(d.cgf)]=xget(%vD, d.choosable-stats)
 
-&f.is-stat [v(d.cgf)]=finditem(strcat(ulocal(f.get-stats, %1), |, ulocal(f.get-choosable-stats, %1), |, iter(lattr(%vD/d.alias.*), xget(%vD, itext(0)),, |)), %0, |)
+&f.is-stat [v(d.cgf)]=strcat(setq(N, ulocal(f.resolve-stat-name, %0)), finditem(strcat(ulocal(f.get-stats, %1), |, ulocal(f.get-choosable-stats, %1)), %qN, |))
 
 &f.is-full-list-stat [v(d.cgf)]=t(finditem(xget(%vD, d.stats-where-player-gets-entire-list), %0, |))
 
@@ -117,7 +130,10 @@
 
 &f.is-tickable-type [v(d.cgf)]=cor(strmatch(%0, %[ %]*), strmatch(%0, %[X%]*))
 
-&f.count-ticks [v(d.cgf)]=dec(words(%0, \[X\]))
+&f.count-ticks [v(d.cgf)]=if(gt(setr(0, words(%0, \[X\])), 0), dec(%q0), 0)
+
+@@ %0: crew object
+&f.count-upgrades [v(d.cgf)]=add(ulocal(f.count-ticks, ulocal(f.get-player-stat, %0, Upgrades)), ulocal(f.get-total-cohort-cost, %0))
 
 @@ If %0 matches conjoined ticks, tick all of them
 @@ If %0 matches separated ticks, tick only the FIRST unticked
@@ -138,3 +154,36 @@
 @@ 	Player must be staff and must not be setting their own stats
 @@ Returns the "pretty" value - AKA "Bodyguard" instead of "bod".
 &f.get-pretty-value [v(d.cgf)]=if(cand(t(strlen(setr(0, ulocal(f.get-valid-value, %0, %1, %2)))), cor(not(finditem(ulocal(f.list-restricted-values, %0), %q0, |)), cand(isstaff(%3), not(strmatch(%2, %3))))), %q0)
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Cohort functions
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ %0: crew object
+@@ %1: cohort name
+@@ %2: stat to get
+&f.get-cohort-stat [v(d.cgf)]=xget(%0, ulocal(f.get-stat-location-on-player, %2.%1))
+
+&f.get-cohort-upgrade-cost [v(d.cgf)]=add(2, mul(dec(words(ulocal(f.get-cohort-stat, %0, %1, types), |)), 2))
+
+th ulocal(v(d.cgf)/f.get-cohort-upgrade-cost, %#, Aramina the Bold)
+
+@@ %0: player
+&f.get-total-cohort-cost [v(d.cgf)]=ladd(iter(ulocal(f.get-player-stat, ulocal(f.get-player-stat, %0, crew object), cohort), ulocal(f.get-cohort-upgrade-cost, ulocal(f.get-player-stat, %0, crew object), itext(0)), |,))
+
+&f.find-cohort-stat-name [v(d.cgf)]=finditem(xget(%vD, d.cohort.stats), %0, |)
+
+@@ %0: crew object
+@@ %1: cohort name to find
+&f.find-cohort [v(d.cgf)]=finditem(ulocal(f.get-player-stat, %0, Cohorts), %1, |)
+
+@@ %0: stat name - edges, gang types, etc.
+@@ %1: value being offered
+&f.get-cohort-stat-pretty-value [v(d.cgf)]=if(t(setr(0, xget(%vD, strcat(d.cohort., ulocal(f.get-stat-location, %0))))), finditem(%q0, %1, |), %1)
+
+@@ %0: list to search in
+@@ %1: text we're looking for
+&f.find-list-index [v(d.cgf)]=first(iter(%0, if(strmatch(itext(0), %1*), inum(0)), |))
+
+@@ For sorting "Elite Rooks|Rovers" into "Rovers|Elite Rooks" so that it doesn't look like the Rovers are Elite too.
+&f.sort-elite-last [v(d.cgf)]=case(1, cand(strmatch(%0, Elite *), strmatch(%1, Elite *)), comp(%0, %1), strmatch(%0, Elite *), 1, strmatch(%1, Elite *), -1, comp(%0, %1))

@@ -23,16 +23,27 @@
 
 &layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.crew_bio), Lair|Crew Name, |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), Not set)), |, |), * *, 0, |, %1), %r, formattext(cat(Lair:, ulocal(f.get-player-stat-or-default, %0, Lair, Not set))))
 
-&layout.crew1 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, if(cor(cand(member(%qC, %1), member(%0, %1)), not(t(%qC)), isapproved(%1), isstaff(%1)), strcat(ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew_pools, %qC, %1), %r, ulocal(layout.crew-abilities, %qC, %1), %r, ulocal(layout.crew-cohorts, %qC, %1), %r, ulocal(layout.crew-contacts, %qC, %1), %r, ulocal(layout.crew-upgrades, %qC, %1), %r, ulocal(layout.crew_xp_triggers, %qC, %1)), strcat(formattext(Full crew sheet will become available once you are approved., 1, %1))))
+&layout.crew1 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, if(cor(cand(member(%qC, %1), member(%0, %1)), not(t(%qC)), isapproved(%1), isstaff(%1)), strcat(ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew_pools, %qC, %1), %r, ulocal(layout.crew-abilities, %qC, %1), %r, ulocal(layout.crew-contacts, %qC, %1), %r, ulocal(layout.crew-upgrades, %qC, %1), %r, ulocal(layout.crew-cohorts, %qC, %1), %r, ulocal(layout.crew_xp_triggers, %qC, %1)), strcat(formattext(Full crew sheet will become available once you are approved., 1, %1))))
 
-&layout.crew2 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, if(cor(cand(member(%qC, %1), member(%0, %1)), not(t(%qC)), isapproved(%1), isstaff(%1)), strcat(ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew-map, %qC, %1), %r, ulocal(layout.crew-members, %qC, %1)), strcat(formattext(Full crew sheet will become available once you are approved., 1, %1))))
+&layout.crew2 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, if(cor(cand(member(%qC, %1), member(%0, %1)), not(t(%qC)), isapproved(%1), isstaff(%1)), strcat(ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew-map, %qC, %1), %r, ulocal(layout.crew-factions, %qC, %1), %r, ulocal(layout.crew-members, %qC, %1)), strcat(formattext(Full crew sheet will become available once you are approved., 1, %1))))
+
+@@ TODO: Set up the maps correctly.
+@@ TODO: Factions
 
 &layout.crew_pools [v(d.cgf)]=strcat(divider(Pools, %0), %r, multicol(strcat(Hold:, |, Weak, |, Heat:, |, 0/9, |, Coin:, |, 0/4, |, Crew XP:, |, 0/10, |, Wanted Level:, |, 0/4, |, Vaults:, |, 0/12), * 6 * 5 * 5, 0, |, %1))
 +sheet/crew
 
 &layout.crew-abilities [v(d.cgf)]=strcat(divider(Crew Abilities, %1), %r, multicol(ulocal(f.get-player-stat, %0, Crew Abilities), * *, 0, |, %1))
 
-&layout.crew-cohorts [v(d.cgf)]=strcat(divider(Cohorts, %0, %1), %r, multicol(ulocal(f.get-player-stat, %0, Cohort), * *, 0, |, %1))
+@@ %0: crew object
+@@ %1: cohort full name
+&layout.cohort [v(d.cgf)]=strcat(setq(T, ulocal(f.get-player-stat-or-zero, %0, tier)), setq(C, ulocal(f.get-cohort-stat, %0, %1, cohort type)), setq(Y, ulocal(f.get-cohort-stat, %0, %1, types)), if(cand(strmatch(%qC, Gang), strmatch(setr(U, ulocal(f.get-player-stat, %0, Upgrades)), *Elite *)), iter(%qY, if(strmatch(%qU, cat(* Elite, itext(0))), setq(Y, edit(%qY, itext(0), cat(Elite, itext(0))))), |)), setq(Y, sortby(f.sort-elite-last, %qY, |, |)), setq(F, trim(strcat(ulocal(f.get-cohort-stat, %0, %1, edges), |, ulocal(f.get-cohort-stat, %0, %1, flaws)), b, |)), %ch%cu%1%cn, %b\(, switch(%qC, Gang, %qC of, %qC), %b, itemize(%qY, |), \), |, Edges & Flaws:, %b, if(t(%qF), itemize(%qF, |), None yet.), |, switch(ulocal(f.get-cohort-stat, %0, %1, cohort type), Gang, cat(Scale:, %qT%,, Quality: %qT), cat(Quality:, inc(%qT))))
+
+@@ TODO: Someday AFTER initial open, add Cohort Harm.
+
+&layout.crew-cohorts [v(d.cgf)]=strcat(divider(Cohorts, %0, %1), %r, multicol(iter(ulocal(f.get-player-stat, %0, Cohorts), ulocal(layout.cohort, %0, itext(0)), |, |), *, 0, |, %1))
+
+&layout.crew-factions [v(d.cgf)]=strcat(divider(Factions, %0, %1), %r, multicol(ulocal(f.get-player-stat, %0, Factions), * *, 0, |, %1))
 
 &layout.crew-contacts [v(d.cgf)]=strcat(divider(Crew Contacts, %0, %1), setq(F, ulocal(f.get-player-stat, %0, favorite)), %r, multicol(iter(ulocal(f.get-player-stat, %0, Contacts), strcat(itext(0), switch(%qF, itext(0), %b%cg%(Favorite%))), |, |), * *, 0, |, %1))
 
@@ -92,7 +103,7 @@
 
 &layout.footer [v(d.cgf)]=strcat(Approved status and date, %,, %b, X advancements, %,, %b, Y XP)
 
-&layout.subsection [v(d.cgf)]=strcat(ulocal(ulocal(f.get-stat-location, layout.%0), %1, %2, %3), %r, footer(ulocal(layout.footer, %1, %2), %2))
+&layout.subsection [v(d.cgf)]=strcat(ulocal(ulocal(f.get-stat-location, layout.%0), %1, %2), %r, footer(ulocal(layout.footer, %1, %2), %2))
 
 &layout.room-emit [v(d.cgf)]=cat(alert(Game), ulocal(f.get-name, %0), %1)
 
@@ -170,6 +181,8 @@ th ulocal(v(d.cgf)/f.get-player-stat, %#, crew abilities)
 
 &layout.crew-cg-errors [v(d.cgf)]=strcat(header(Crew creation instructions, %1), %r, formattext(strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.test, t(%qC), You have joined or created a crew., +crew/join <name> or +crew/create <name> to set your crew up.), %r, ulocal(layout.test, ulocal(check.crew.bio, %qC), Crew bio is all set up., Your crew bio is missing some information.), %r, ulocal(layout.test, ulocal(check.crew.abilities, %qC), You have one Crew Ability selected., You need to select one Crew Ability.), %r, ulocal(layout.test, ulocal(check.crew.contacts, %qC), You have Contacts and a Favorite., You need to set your Contacts and Favorite.), %r, ulocal(layout.test, ulocal(check.crew.upgrades, %qC), You have selected 4 Upgrades for your crew., You need to select 4 Upgrades for your crew.), %r, ulocal(layout.test, ulocal(check.crew.xp_triggers, %qC), You have selected your Crew XP Trigger., You must select a Crew XP Trigger.)), 0, %1), ulocal(layout.cg-commands, +crew/lock to submit to staff, %1), %r, footer(cg/on to join the Chargen channel and ask questions!, %1))
 
-&layout.full-cg-errors [v(d.cgf)]=strcat(formattext(strcat(ulocal(layout.test, ulocal(check.scoundrel.actions, %0), 7 action dots chosen., You need 7 action dots. You have [ulocal(f.get-total-player-actions, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.abilities, %0), One ability selected., You need one ability. You have [ulocal(f.get-total-player-abilities, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.bio, %0), You have all your bio fields set., Some of your bio fields %(not counting Crew%) are not set.), %r, ulocal(layout.test, ulocal(check.scoundrel.friends, %0), You have friends%, an ally%, and a rival., You need friends%, an ally%, and a rival.), %r, ulocal(layout.test, ulocal(check.scoundrel.gear, %0), You have chosen your gear., You need gear!), %r, ulocal(layout.test, ulocal(check.scoundrel.xp_triggers, %0), You have chosen your XP triggers., You need to select your XP triggers.)), 0, %1), ulocal(layout.cg-commands, +stats/lock to submit to staff, %1))
+&layout.full-cg-errors [v(d.cgf)]=strcat(formattext(strcat(ulocal(layout.test, ulocal(check.scoundrel.bio, %0), You have all your bio fields set., Some of your bio fields %(not counting Crew%) are not set.), %r, ulocal(layout.test, ulocal(check.scoundrel.actions, %0), 7 action dots chosen., You need 7 action dots. You have [ulocal(f.get-total-player-actions, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.abilities, %0), One ability selected., You need one ability. You have [ulocal(f.get-total-player-abilities, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.friends, %0), You have friends%, an ally%, and a rival., You need friends%, an ally%, and a rival.), %r, ulocal(layout.test, ulocal(check.scoundrel.gear, %0), You have chosen your gear., You need gear!), %r, ulocal(layout.test, ulocal(check.scoundrel.xp_triggers, %0), You have chosen your XP triggers., You need to select your XP triggers.)), 0, %1), ulocal(layout.cg-commands, +stats/lock to submit to staff, %1))
 
 &layout.cg-commands [v(d.cgf)]=strcat(divider(Commands), %r, multicol(+stat/set <stat>=<value>|+stat/set <stat>= to clear a stat|+stat/clear to start over|+sheet/all to see everything|%0, * *, 0, |, %1))
+
+@@ TODO: If a staffer is looking at an unapproved sheet, @pemit them an extra layout which includes every "arbitrary text" field on the sheet so they can very quickly go over those for any unthematic stuff.
