@@ -37,7 +37,7 @@
 
 @@ %0: crew object
 @@ %1: cohort full name
-&layout.cohort [v(d.cgf)]=strcat(setq(T, ulocal(f.get-player-stat-or-zero, %0, tier)), setq(C, ulocal(f.get-cohort-stat, %0, %1, cohort type)), setq(Y, ulocal(f.get-cohort-stat, %0, %1, types)), if(cand(strmatch(%qC, Gang), strmatch(setr(U, ulocal(f.get-player-stat, %0, Upgrades)), *Elite *)), iter(%qY, if(strmatch(%qU, cat(* Elite, itext(0))), setq(Y, edit(%qY, itext(0), cat(Elite, itext(0))))), |)), setq(Y, sortby(f.sort-elite-last, %qY, |, |)), setq(F, trim(strcat(ulocal(f.get-cohort-stat, %0, %1, edges), |, ulocal(f.get-cohort-stat, %0, %1, flaws)), b, |)), %ch%cu%1%cn, %b\(, switch(%qC, Gang, %qC of, %qC), %b, itemize(%qY, |), \), |, Edges & Flaws:, %b, if(t(%qF), itemize(%qF, |), None yet.), |, switch(ulocal(f.get-cohort-stat, %0, %1, cohort type), Gang, cat(Scale:, %qT%,, Quality: %qT), cat(Quality:, inc(%qT))))
+&layout.cohort [v(d.cgf)]=strcat(setq(T, ulocal(f.get-player-stat-or-zero, %0, tier)), setq(C, ulocal(f.get-cohort-stat, %0, %1, cohort type)), setq(Y, ulocal(f.get-cohort-stat, %0, %1, types)), if(strmatch(setr(U, ulocal(f.get-player-stat, %0, Upgrades)), *Elite *), iter(%qY, if(strmatch(%qU, cat(* Elite, itext(0))), setq(Y, edit(%qY, itext(0), cat(Elite, itext(0))))), |)), setq(Y, sortby(f.sort-elite-last, %qY, |, |)), setq(F, trim(strcat(ulocal(f.get-cohort-stat, %0, %1, edges), |, ulocal(f.get-cohort-stat, %0, %1, flaws)), b, |)), setq(S, ulocal(f.get-cohort-stat, %0, %1, specialty)), %ch%cu%1%cn, %b\(, switch(%qC, Gang, %qC of, %qC), %b, itemize(if(strmatch(%qC, Expert), iter(%qY, mid(itext(0), 0, dec(strlen(itext(0)))), |, |), %qY), |), \), if(strmatch(%qC, Expert), strcat(|, Specialty:, %b, if(t(%qS), %qS, None yet.))), |, Edges & Flaws:, %b, if(t(%qF), itemize(%qF, |), None yet.), |, switch(%qC, Gang, cat(Scale:, %qT%,, Quality: %qT), cat(Quality:, inc(%qT))))
 
 @@ TODO: Someday AFTER initial open, add Cohort Harm.
 
@@ -161,7 +161,7 @@ th ulocal(v(d.cgf)/f.get-player-stat, %#, crew abilities)
 
 &check.crew.contacts [v(d.cgf)]=cand(t(ulocal(f.get-player-stat, %0, contacts)), t(ulocal(f.get-player-stat, %0, favorite)))
 
-&check.crew.upgrades [v(d.cgf)]=eq(ulocal(f.count-ticks, ulocal(f.get-player-stat, %0, upgrades)), 4)
+&check.crew.upgrades [v(d.cgf)]=eq(ulocal(f.count-upgrades, %0), 4)
 
 &check.crew.xp_triggers [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, crew xp triggers))
 

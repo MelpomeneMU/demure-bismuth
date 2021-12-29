@@ -166,20 +166,23 @@
 
 &f.get-cohort-upgrade-cost [v(d.cgf)]=add(2, mul(dec(words(ulocal(f.get-cohort-stat, %0, %1, types), |)), 2))
 
-th ulocal(v(d.cgf)/f.get-cohort-upgrade-cost, %#, Aramina the Bold)
-
 @@ %0: player
-&f.get-total-cohort-cost [v(d.cgf)]=ladd(iter(ulocal(f.get-player-stat, ulocal(f.get-player-stat, %0, crew object), cohort), ulocal(f.get-cohort-upgrade-cost, ulocal(f.get-player-stat, %0, crew object), itext(0)), |,))
+&f.get-total-cohort-cost [v(d.cgf)]=ladd(iter(ulocal(f.get-player-stat, ulocal(f.get-player-stat, %0, crew object), Cohorts), ulocal(f.get-cohort-upgrade-cost, ulocal(f.get-player-stat, %0, crew object), itext(0)), |,))
 
 &f.find-cohort-stat-name [v(d.cgf)]=finditem(xget(%vD, d.cohort.stats), %0, |)
+
+&f.is-addable-cohort-stat [v(d.cgf)]=t(member(xget(%vD, d.cohort.addable_stats), %0, |))
 
 @@ %0: crew object
 @@ %1: cohort name to find
 &f.find-cohort [v(d.cgf)]=finditem(ulocal(f.get-player-stat, %0, Cohorts), %1, |)
 
-@@ %0: stat name - edges, gang types, etc.
+@@ %0: stat name - edges, cohort types, etc.
 @@ %1: value being offered
-&f.get-cohort-stat-pretty-value [v(d.cgf)]=if(t(setr(0, xget(%vD, strcat(d.cohort., ulocal(f.get-stat-location, %0))))), finditem(%q0, %1, |), %1)
+&f.get-cohort-stat-pretty-value [v(d.cgf)]=if(t(setr(0, ulocal(f.list-cohort-stat-pretty-values, %0, %1))), finditem(%q0, %1, |), %1)
+
+@@ %0: stat name - edges, cohort types, etc.
+&f.list-cohort-stat-pretty-values [v(d.cgf)]=xget(%vD, strcat(d.value., ulocal(f.get-stat-location, %0)))
 
 @@ %0: list to search in
 @@ %1: text we're looking for

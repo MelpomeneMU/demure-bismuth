@@ -62,6 +62,8 @@
 
 &d.expert_bio [v(d.cgdb)]=Name|Alias|Crew|Expert Type|Character Type|Age|Look
 
+&d.value.expert_type [v(d.cgdb)]=Academic|Anarchist|Antiquarian|Apothecary|Arms Dealer|Assassin|Astronomer|Beggar|Blacksmith|Blood Dealer|Bluecoat|Bounty Hunter|Chemist|City Clerk|Cold Killer|Collector|Corpse Thief|Deal Broker|Dilettante|Dock Worker|Drug Dealer|Explorer|Extortionist|Gang Boss|Gang Leader|Information Broker|Jail-Bird|Locksmith|Magistrate|Master Architect|Merchant Lord|Noble|Occultist|Physicker|Pit Fighter|Priestess|Prostitute|Psychonaut|Pugilist|Sentinel|Servant|Smuggler|Spirit Trafficker|Spirit Warden|Spy|Tavern Owner|Vicious Noble|Vicious Thug|Ward Boss|Witch
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Scoundrel stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -231,8 +233,6 @@
 @@ Valid values for various stats - * means write your own
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.value.expert_type [v(d.cgdb)]=Apothecary|Assassin|Beggar|Blood Dealer|Bounty Hunter|Chemist|City Clerk|Cold Killer|Corpse Thief|Drug Dealer|Extortionist|Gang Leader|Information Broker|Jail-Bird|Locksmith|Master Architect|Noble|Phsysicker|Priestess|Prostitute|Psychonaut|Pugilist|Sentinel|Servant|Spirit Trafficker|Spy|Tavern Owner|Vicious Thug|Witch
-
 &d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire
 
 &d.value.age [v(d.cgdb)]=Young Adult|Adult|Mature|Elderly
@@ -273,10 +273,14 @@
 @@ Cohort stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.cohort.stats [v(d.cgdb)]=Cohort Type|Types|Edges|Flaws
+&d.cohort.stats [v(d.cgdb)]=Cohort Type|Edges|Flaws|Name|Specialty|Types
 
-&d.cohort.gang_types [v(d.cgdb)]=Adepts|Rooks|Rovers|Skulks|Thugs
+&d.cohort.addable_stats [v(d.cgdb)]=Edges|Flaws|Types
 
-&d.cohort.edges [v(d.cgdb)]=Fearsome|Independent|Loyal|Tenacious
+&d.value.cohort_type [v(d.cgdb)]=Expert|Gang
 
-&d.cohort.flaws [v(d.cgdb)]=Principled|Savage|Unreliable|Wild
+&d.value.types [v(d.cgdb)]=Adepts|Rooks|Rovers|Skulks|Thugs
+
+&d.value.edges [v(d.cgdb)]=Fearsome|Independent|Loyal|Tenacious
+
+&d.value.flaws [v(d.cgdb)]=Principled|Savage|Unreliable|Wild
