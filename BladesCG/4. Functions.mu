@@ -29,15 +29,20 @@
 @@ %1: A list of the player's upgrades
 &f.replace-upgrades [v(d.cgf)]=strcat(setq(F, %0), null(iter(%1, if(t(setr(I, ulocal(f.find-upgrade, %0, trim(last(itext(0), \]))))), setq(F, replace(%qF, %qI, itext(0), |, |))), |, |)), %qF)
 
-&f.get-addable-stats [v(d.cgf)]=xget(%vD, if(cand(isstaff(%1), not(strmatch(%0, %1))), d.addable-stats, d.cg-addable-stats))
+&f.get-addable-stats [v(d.cgf)]=xget(%vD, if(isstaff(%1), d.addable-stats, d.cg-addable-stats))
 
-&f.get-choice-list [v(d.cgf)]=if(t(%0), remove(ulocal(f.list-valid-values, %0, %1), any unrestricted text, |), ulocal(f.get-choices, %1))
+&f.get-choice-list [v(d.cgf)]=strcat(setq(0, if(t(%0), remove(ulocal(f.list-valid-values, %0, %1), any unrestricted text, |), ulocal(f.get-choices, %1))), case(1, t(member(xget(%vD, d.playbook-stats), %0, |)), setdiff(%q0, ulocal(f.list-restricted-values, Playbook, %1), |), t(member(xget(%vD, d.crew-type-stats), %0, |)), setdiff(%q0, ulocal(f.list-restricted-values, Crew Type, %1), |), %q0))
 
+@@ %0: player
 &f.get-choices [v(d.cgf)]=strcat(squish(trim(iter(ulocal(f.get-player-bio-fields, %0), if(hasattr(%vD, strcat(d.value., ulocal(f.get-stat-location, itext(0)))), itext(0)), |, |), b, |), |), |, xget(%vD, d.choose-sections))
 
 &f.get-choosable-stats [v(d.cgf)]=xget(%vD, d.choosable-stats)
 
-&f.is-stat [v(d.cgf)]=strcat(setq(N, ulocal(f.resolve-stat-name, %0)), finditem(strcat(ulocal(f.get-stats, %1), |, ulocal(f.get-choosable-stats, %1)), %qN, |))
+&f.is-stat [v(d.cgf)]=strcat(setq(N, ulocal(f.resolve-stat-name, %0)), finditem(ulocal(f.list-stats, %0, %1), %qN, |))
+
+&f.is-addable-stat [v(d.cgf)]=strcat(setq(N, ulocal(f.resolve-stat-name, %0)), finditem(ulocal(f.get-addable-stats, %0, %1), %qN, |))
+
+&f.list-stats [v(d.cgf)]=strcat(ulocal(f.get-stats, %1), |, ulocal(f.get-choosable-stats, %1), |, ulocal(f.list-crew-stats, %1))
 
 &f.is-full-list-stat [v(d.cgf)]=t(finditem(xget(%vD, d.stats-where-player-gets-entire-list), %0, |))
 
@@ -71,7 +76,9 @@
 
 &f.get-crew-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.crew_abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
-&f.is-crew-stat [v(d.cgf)]=t(finditem(xget(%vD, d.crew_bio)|Tier|Crew XP Triggers|Crew Abilities|Crew Ability|Contacts|Favorite, %0, |))
+&f.is-crew-stat [v(d.cgf)]=t(finditem(ulocal(f.list-crew-stats), %0, |))
+
+&f.list-crew-stats [v(d.cgf)]=strcat(xget(%vD, d.crew_bio), |, xget(%vD, d.crew-stats))
 
 &f.resolve-stat-name [v(d.cgf)]=strcat(setq(0, setq(1,)), null(iter(lattr(%vD/d.alias.*), if(cand(not(t(%q0)), t(finditem(setr(1, xget(%vD, itext(0))), %0, |))), setq(0, last(%q1, |))))), if(t(%q0), %q0, %0))
 
@@ -88,7 +95,7 @@
 
 &f.get-stat-location [v(d.cgf)]=edit(%0, %b, _)
 
-&f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, Name, d.ic_full_name, Alias, d.street_alias, Special Ability, _stat.abilities, Crew Ability, _stat.crew_abilities, edit(%0, %b, _, ^, _stat.))
+&f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, Name, d.ic_full_name, Alias, d.street_alias, edit(%0, %b, _, ^, _stat.))
 
 &f.get-stats [v(d.cgf)]=strcat(setq(S, xget(%vD, d.actions)|Load), squish(trim(strcat(%qS, |, setdiff(ulocal(f.get-player-bio-fields, %0), Crew, |, |), |, setdiff(xget(%vD, d.expert_bio), Crew, |, |), |, if(t(ulocal(f.get-player-stat, %0, crew object)), ulocal(f.get-crew-stats))), b, |), |))
 
@@ -118,7 +125,7 @@
 
 &f.get-full-list-stat-values [v(d.cgf)]=iter(lattr(strcat(%vD, /, d., ulocal(f.get-stat-location, %0), ., *)), title(lcstr(last(itext(0), .))),, |)
 
-&f.list-values [v(d.cgf)]=case(1, t(ulocal(f.is-action, %0)), xget(%vD, d.value.action), ulocal(f.is-full-list-stat, %0), ulocal(f.get-full-list-stat-values, %0, %1), t(finditem(Ally, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, rival), |), t(finditem(Rival, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, ally), |), t(finditem(Favorite, %0, |)), ulocal(f.get-player-stat, %1, contacts), t(finditem(Special Ability|Special Abilities, %0, |)), ulocal(f.get-abilities), t(finditem(Crew Ability|Crew Abilities, %0, |)), ulocal(f.get-crew-abilities), strmatch(%0, Upgrade*), ulocal(f.get-upgrades), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
+&f.list-values [v(d.cgf)]=case(1, t(ulocal(f.is-action, %0)), xget(%vD, d.value.action), ulocal(f.is-full-list-stat, %0), ulocal(f.get-full-list-stat-values, %0, %1), t(finditem(Ally, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, rival), |), t(finditem(Rival, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, ally), |), t(finditem(Favorite, %0, |)), ulocal(f.get-player-stat, %1, contacts), strmatch(Abilities, %0), ulocal(f.get-abilities), t(finditem(Crew Ability|Crew Abilities, %0, |)), ulocal(f.get-crew-abilities), strmatch(%0, Upgrade*), ulocal(f.get-upgrades), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
 
 @@ These expect a tickable stat, in one of the following formats:
 @@  [ ] Stat name here
@@ -167,7 +174,8 @@
 &f.get-cohort-upgrade-cost [v(d.cgf)]=add(2, mul(dec(words(ulocal(f.get-cohort-stat, %0, %1, types), |)), 2))
 
 @@ %0: player
-&f.get-total-cohort-cost [v(d.cgf)]=ladd(iter(ulocal(f.get-player-stat, ulocal(f.get-player-stat, %0, crew object), Cohorts), ulocal(f.get-cohort-upgrade-cost, ulocal(f.get-player-stat, %0, crew object), itext(0)), |,))
+@@ They get a free Cohort for Like Part of the Family, but it has to be a Vehicle.
+&f.get-total-cohort-cost [v(d.cgf)]=ladd(iter(ulocal(f.get-player-stat, %0, Cohorts), sub(ulocal(f.get-cohort-upgrade-cost, %0, itext(0)), if(ulocal(f.has-list-stat, %0, Crew Abilities, Like Part of the Family), if(t(finditem(iter(ulocal(f.get-player-stat, %0, Cohorts), ulocal(f.get-cohort-stat, %0, itext(0), Cohort Type), |, |), Vehicle, |)), 2, 0), 0)), |,))
 
 &f.find-cohort-stat-name [v(d.cgf)]=finditem(xget(%vD, d.cohort.stats), %0, |)
 
@@ -179,10 +187,12 @@
 
 @@ %0: stat name - edges, cohort types, etc.
 @@ %1: value being offered
-&f.get-cohort-stat-pretty-value [v(d.cgf)]=if(t(setr(0, ulocal(f.list-cohort-stat-pretty-values, %0, %1))), finditem(%q0, %1, |), %1)
+@@ %2: cohort type (Vehicle, gang, etc)
+&f.get-cohort-stat-pretty-value [v(d.cgf)]=if(t(setr(0, ulocal(f.list-cohort-stat-pretty-values, %0, %2))), finditem(%q0, %1, |), %1)
 
 @@ %0: stat name - edges, cohort types, etc.
-&f.list-cohort-stat-pretty-values [v(d.cgf)]=xget(%vD, strcat(d.value., ulocal(f.get-stat-location, %0)))
+@@ %1: cohort type (Vehicle, gang, etc)
+&f.list-cohort-stat-pretty-values [v(d.cgf)]=xget(%vD, strcat(d.value., if(strmatch(%1, Vehicle), vehicle_), ulocal(f.get-stat-location, %0)))
 
 @@ %0: list to search in
 @@ %1: text we're looking for
@@ -190,3 +200,31 @@
 
 @@ For sorting "Elite Rooks|Rovers" into "Rovers|Elite Rooks" so that it doesn't look like the Rovers are Elite too.
 &f.sort-elite-last [v(d.cgf)]=case(1, cand(strmatch(%0, Elite *), strmatch(%1, Elite *)), comp(%0, %1), strmatch(%0, Elite *), 1, strmatch(%1, Elite *), -1, comp(%0, %1))
+
+@@ %0: crew object
+@@ %1: position on the map, ex A3
+@@ %2: 1 if this is a key mark
+&f.mark-map [v(d.cgf)]=if(t(ulocal(f.get-player-stat, %0, Map %1)), if(%2, +, X), %b)
+
+@@ TODO: Finish faction status
+
+@@ %0: list
+@@ %1: word to find
+&f.get-item-by-second-word [v(d.cgf)]=first(iter(%0, if(strmatch(rest(itext(0)), %1*), itext(0)), |, |), |)
+
+@@ %0: crew object
+@@ %1: faction
+&f.get-faction-status [v(d.cgf)]=strcat(setq(L, ulocal(f.get-player-stat, %0, Factions)), if(t(setr(D, ulocal(f.get-item-by-second-word, %qL, %1))), ulocal(f.get-faction-status-color, first(%qD)), strcat(setq(I, 0), setq(H, ulocal(f.get-player-stat, %0, faction.hunting)), setq(E, ulocal(f.get-player-stat, %0, faction.helped)), setq(A, ulocal(f.get-player-stat, %0, faction.harmed)), setq(F, ulocal(f.get-player-stat, %0, faction.friendly)), setq(U, ulocal(f.get-player-stat, %0, faction.unfriendly)), if(strmatch(%1, first(%qH, |)), setq(I, add(dec(%qI), rest(%qH, |)))), if(strmatch(%1, first(%qE, |)), setq(I, add(inc(%qI), rest(%qE, |)))), if(strmatch(%1, first(%qA, |)), setq(I, add(sub(%qI, 2), rest(%qA, |)))), if(strmatch(%1, first(%qF, |)), setq(I, add(inc(%qI), rest(%qF, |)))), if(strmatch(%1, first(%qU, |)), setq(I, add(dec(%qI), rest(%qU, |)))), ulocal(f.get-faction-status-color, %qI))))
+
+&f.get-faction-status-color [v(d.cgf)]=switch(edit(%0, +,), >3, %ch%cg+#$, >0, %cc+#$, 0, +0, >-2, %ch%cy#$, %cr%ch#$)
+
+&f.get-all-factions [v(d.cgf)]=iter(xget(%vD, d.factions), xget(%vD, itext(0)),, |)
+
+@@ %0: Crew object
+@@ %1: Optional - question to skip
+&f.get-total-faction-coin [v(d.cgf)]=ladd(iter(xget(%vD, d.faction.questions), if(not(t(member(%1|Friendly|Unfriendly, itext(0), |))), rest(ulocal(f.get-player-stat, %0, strcat(faction., itext(0))), |)), |))
+
+@@ %0: player
+@@ %1: stat list to look on
+@@ %2: stat to look for
+&f.has-list-stat [v(d.cgf)]=switch(%1, Upgrades, t(ulocal(f.find-upgrade, ulocal(f.get-player-stat, %0, %1), switch(%2, *\]*, trim(last(%2, \])), %2))), Faction, t(finditem(iter(ulocal(f.get-player-stat, %0, %1), rest(itext(0)), |, |), if(isnum(first(%2)), rest(%2), %1))), t(finditem(ulocal(f.get-player-stat, %0, %1), %2, |)))

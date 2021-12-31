@@ -22,17 +22,31 @@
 
 &d.sheet-sections [v(d.cgdb)]=Page1|Page2|Bio|Actions|Abilities|Health|Pools|XP Triggers|Friends|Gear|Projects|Notes|Crew1|Crew2
 
+&d.crew-sheet-sections [v(d.cgdb)]=Crew1|Crew2|Bio|Abilities|Upgrades|Contacts|Factions|XP Triggers|Members|Map|Cohorts
+
 &d.stats_editable_after_chargen [v(d.cgdb)]=Name|Alias|Look
 
-&d.stats-where-player-gets-entire-list [v(d.cgdb)]=Gear|XP Triggers|Friends|Contacts
+@@ Consider expanding editable stats - Playbook, Crew Type, etc should maybe be changeable after CG. Maybe there are others - stats that change the feel of the character or crew but not the stats. (Consider who can change those stats in a crew, if we allow crews to be editable after CG.)
 
-&d.choose-sections [v(d.cgdb)]=Special Abilities|XP Triggers|Gear|Friends|Ally|Rival|Crew Abilities|Favorite|Upgrades
+&d.stats-where-player-gets-entire-list [v(d.cgdb)]=Gear|XP Triggers|Friends|Contacts|Crew XP Triggers
 
-&d.choosable-stats [v(d.cgdb)]=Special Ability|Friends|Ally|Rival|Gear|XP Triggers|Favorite|Crew Ability|Upgrades|Contacts
+&d.choose-sections [v(d.cgdb)]=Abilities|XP Triggers|Gear|Friends|Ally|Rival|Crew Abilities|Favorite|Upgrades|Crew XP Triggers
 
-&d.addable-stats [v(d.cgdb)]=Special Ability|Special Abilities|Friends|Ally|Rival|Crew Ability|Crew Abilities|Upgrades
+&d.choosable-stats [v(d.cgdb)]=Abilities|Friends|Ally|Rival|Gear|XP Triggers|Favorite|Crew Abilities|Upgrades|Contacts|Crew XP Triggers
 
-&d.cg-addable-stats [v(d.cgdb)]=Upgrades
+&d.addable-stats [v(d.cgdb)]=Abilities|Friends|Crew Abilities|Upgrades
+
+@@ TODO: Add Friends and Contacts to the list of CG-addable stats once we figure out how that'll work.
+
+&d.cg-addable-stats [v(d.cgdb)]=Upgrades|Abilities
+
+&d.faction.questions [v(d.cgdb)]=Hunting|Helped|Harmed|Friendly|Unfriendly
+
+@@ Stats you can "+stat/set <stat>=<a playbook>":
+&d.playbook-stats [v(d.cgdb)]=XP Triggers|Playbook|Friends|Gear
+
+@@ Stats you can "+stat/set <stat>=<a crew type>":
+&d.crew-type-stats [v(d.cgdb)]=Crew XP Triggers|Contacts
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat aliases
@@ -47,6 +61,8 @@
 @@ You can add multiple aliases for the same stat.
 @@ -
 @@ Make sure the last entry on the alias is the actual destination of the stat.
+@@ -
+@@ Make sure that the actual destination of the stat matches an existing stat on d.choosable-stats, the actions list, the bio lists, or the crew stats list. Otherwise you will get errors.
 
 &d.alias.crew_name [v(d.cgdb)]=Crew|Crew Name
 
@@ -63,6 +79,14 @@
 &d.expert_bio [v(d.cgdb)]=Name|Alias|Crew|Expert Type|Character Type|Age|Look
 
 &d.value.expert_type [v(d.cgdb)]=Academic|Anarchist|Antiquarian|Apothecary|Arms Dealer|Assassin|Astronomer|Beggar|Blacksmith|Blood Dealer|Bluecoat|Bounty Hunter|Chemist|City Clerk|Cold Killer|Collector|Corpse Thief|Deal Broker|Dilettante|Dock Worker|Drug Dealer|Explorer|Extortionist|Gang Boss|Gang Leader|Information Broker|Jail-Bird|Locksmith|Magistrate|Master Architect|Merchant Lord|Noble|Occultist|Physicker|Pit Fighter|Priestess|Prostitute|Psychonaut|Pugilist|Sentinel|Servant|Smuggler|Spirit Trafficker|Spirit Warden|Spy|Tavern Owner|Vicious Noble|Vicious Thug|Ward Boss|Witch
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Restricted values at character generation
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.restricted.playbook [v(d.cgdb)]=Ghost|Hull|Vampire
+
+&d.restricted.action [v(d.cgdb)]=3|4|5
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Scoundrel stats
@@ -166,10 +190,50 @@
 &d.strictures.vampire [v(d.cgdb)]=Slumber|Forbidden|Repelled|Bestial|Bound
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Valid values for various stats - * means write your own
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire
+
+&d.value.age [v(d.cgdb)]=Young Adult|Adult|Mature|Elderly
+
+&d.value.load [v(d.cgdb)]=Light|Normal|Heavy|Encumbered
+
+&d.value.heritage [v(d.cgdb)]=Akoros|The Dagger Isles|Iruvia|Severos|Skovland|Tycheros
+
+&d.value.background [v(d.cgdb)]=Academic|Labor|Law|Trade|Military|Noble|Underworld
+
+&d.value.vice [v(d.cgdb)]=Faith|Gambling|Luxury|Obligation|Pleasure|Stupor|Weird
+
+&d.value.action [v(d.cgdb)]=0|1|2|3|4|5
+
+&d.value.frame_size [v(d.cgdb)]=Small|Medium|Heavy
+
+&d.value.primary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+
+&d.value.secondary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+
+&d.value.tertiary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+
+&d.value.trauma [v(d.cgdb)]=Cold|Haunted|Obsessed|Paranoid|Reckless|Soft|Unstable|Vicious
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.crew_bio [v(d.cgdb)]=Crew Name|Crew Type|Reputation|Lair
+&d.crew_bio [v(d.cgdb)]=Crew Name|Crew Type|Reputation|Hunting Grounds|Lair|Lair District
+
+@@ TODO: Add Preferred Operation Type
+
+&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew Abilities|Contacts|Favorite|Factions
+
+&d.value.crew_type [v(d.cgdb)]=Assassins|Bravos|Cult|Hawkers|Shadows|Smugglers
+
+&d.value.reputation [v(d.cgdb)]=Ambitious|Brutal|Daring|Honorable|Professional|Savvy|Subtle|Strange|*
+
+&d.value.hunting_grounds [v(d.cgdb)]=Barrowcleft|Brightstone|Charhollow|Charterhall|Coalridge|Crow's Foot|The Docks|Dunslough|Nightmarket|Silkshore|Six Towers|Whitecrown
+
+&d.value.lair_district [v(d.cgdb)]=Barrowcleft|Brightstone|Charhollow|Charterhall|Coalridge|Crow's Foot|The Docks|Dunslough|Nightmarket|Silkshore|Six Towers|Whitecrown
 
 &d.crew_abilities [v(d.cgdb)]=d.crew_abilities.assassins d.crew_abilities.bravos d.crew_abilities.cult d.crew_abilities.hawkers d.crew_abilities.shadows d.crew_abilities.smugglers
 
@@ -211,7 +275,7 @@
 
 &d.upgrades [v(d.cgdb)]=d.upgrades.lair d.upgrades.quality d.upgrades.training d.upgrades.assassins d.upgrades.bravos d.upgrades.cult d.upgrades.hawkers d.upgrades.shadows d.upgrades.smugglers
 
-&d.upgrades.lair [v(d.cgdb)]=[ ] [ ] Carriage|[ ] [ ] Boat|[ ] Hidden|[ ] Quarters|[ ] [ ] Secure|[ ] [ ] Vault|[ ] Workshop
+&d.upgrades.lair [v(d.cgdb)]=[ ] [ ] Carriage|[ ] [ ] Boat|[ ] [ ] Vehicle|[ ] Hidden|[ ] Quarters|[ ] [ ] Secure|[ ] [ ] Vault|[ ] Workshop
 
 &d.upgrades.quality [v(d.cgdb)]=[ ] Documents|[ ] Gear|[ ] Implements|[ ] Supplies|[ ] Tools|[ ] Weapons
 
@@ -230,44 +294,46 @@
 &d.upgrades.smugglers [v(d.cgdb)]=[ ] Smuggler's rigging|[ ] Camouflage|[ ] Elite Rovers|[ ] Barge|[ ]-[ ]-[ ] Steady
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Valid values for various stats - * means write your own
+@@ Factions
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire
+&d.factions [v(d.cgdb)]=d.factions.criminal_underworld d.factions.city_institutions d.factions.labor_and_trade d.factions.citizenry d.factions.the_fringe
 
-&d.value.age [v(d.cgdb)]=Young Adult|Adult|Mature|Elderly
+&d.factions.criminal_underworld [v(d.cgdb)]=The Unseen (IV)|The Hive (IV)|The Circle of Flame (III)|The Silver Nails (III)|Lord Scurlock (III)|The Crows (II)|The Lampblacks (II)|The Red Sashes (II)|The Dimmer Sisters (II)|The Grinders (II)|The Billhooks (II)|The Wraiths (II)|The Gray Cloaks (II)|Ulf Ironborn (I)|The Fog Hounds (I)|The Lost (I)
 
-&d.value.load [v(d.cgdb)]=Light|Normal|Heavy|Encumbered
+&d.factions.city_institutions [v(d.cgdb)]=Imperial Military (VI)|City Council (V)|Ministry of Preservation (V)|Leviathan Hunters (V)|Ironhook Prison (IV)|Sparkwrights (IV)|Spirit Wardens (IV)|Bluecoats (III)|Inspectors (III)|Iruvian Consulate (III)|Skovlan Consulate (III)|The Brigade (II)|Severosi Consulate (I)|Dagger Isles Consulate (I)
 
-&d.value.crew_type [v(d.cgdb)]=Assassins|Bravos|Cult|Hawkers|Shadows|Smugglers
+&d.factions.labor_and_trade [v(d.cgdb)]=The Foundation (IV)|Dockers (III)|Gondoliers (III)|Sailors (III)|Laborers (III)|Cabbies (II)|Cyphers (II)|Ink Rakes (II)|Rail Jacks (II)|Servants (II)|The Red Lamps (II)
 
-&d.value.reputation [v(d.cgdb)]=Ambitious|Brutal|Daring|Honorable|Professional|Savvy|Subtle|Strange
+&d.factions.citizenry [v(d.cgdb)]=Whitecrown (V)|Brightstone (IV)|Charterhall (IV)|Six Towers (III)|Barrowcleft (II)|Coalridge (II)|Crow's Foot (II)|The Docks (II)|Nightmarket (II)|Silkshore (II)|Charhollow (I)|Dunslough (I)
 
-&d.value.heritage [v(d.cgdb)]=Akoros|The Dagger Isles|Iruvia|Severos|Skovland|Tycheros
+&d.factions.the_fringe [v(d.cgdb)]=The Church of Ecstasy (IV)|The Horde (III)|The Path of Echoes (III)|The Forgotten Gods (III)|The Reconciled (III)|Skovlander Refugees (III)|The Weeping Lady (II)|Deathlands Scavengers (II)
 
-&d.value.background [v(d.cgdb)]=Academic|Labor|Law|Trade|Military|Noble|Underworld
+@@ The below are for use in determining which crime boss you pay for your hunting grounds. Do not add factions to these list unless they are crime bosses.
 
-&d.value.vice [v(d.cgdb)]=Faith|Gambling|Luxury|Obligation|Pleasure|Stupor|Weird
+&d.Barrowcleft.factions [v(d.cgdb)]=The Brigade (II)|The Grinders (II)|Ministry of Preservation (V)
 
-&d.value.action [v(d.cgdb)]=0|1|2|3|4|5
+&d.Brightstone.factions [v(d.cgdb)]=The Church of Ecstasy (IV)|The Reconciled (III)|Sparkwrights (IV)
 
-&d.value.frame_size [v(d.cgdb)]=Small|Medium|Heavy
+&d.Charhollow.factions [v(d.cgdb)]=Cabbies (II)|The Lost (I)|Skovlander Refugees (III)
 
-&d.value.primary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+&d.Charterhall.factions [v(d.cgdb)]=The Foundation (IV)|Leviathan Hunters (V)
 
-&d.value.secondary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+&d.Coalridge.factions [v(d.cgdb)]=The Billhooks (II)|Rail Jacks (II)|Ulf Ironborn (I)
 
-&d.value.tertiary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+&d.Crow's_Foot.factions [v(d.cgdb)]=Bluecoats (III)|The Crows (II)|The Lampblacks (II)|The Red Sashes (II)
 
-&d.value.trauma [v(d.cgdb)]=Cold|Haunted|Obsessed|Paranoid|Reckless|Soft|Unstable|Vicious
+&d.The_Docks.factions [v(d.cgdb)]=Dockers (III)|The Gray Cloaks (II)|The Fog Hounds (I)|Ink Rakes (II)|Sailors (III)
 
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Restricted values at character generation
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+&d.Dunslough.factions [v(d.cgdb)]=Deathlands Scavengers (II)|Ironhook Prison (IV)
 
-&d.restricted.playbook [v(d.cgdb)]=Ghost|Hull|Vampire
+&d.Nightmarket.factions [v(d.cgdb)]=Cyphers (II)|The Dimmer Sisters (II)|The Forgotten Gods (III)|The Path of Echoes (III)
 
-&d.restricted.action [v(d.cgdb)]=3|4|5
+&d.Silkshore.factions [v(d.cgdb)]=Gondoliers (III)|The Hive (IV)|The Silver Nails (III)|The Wraiths (II)|The Red Lamps (II)
+
+&d.Six_Towers.factions [v(d.cgdb)]=The Circle of Flame (III)|Lord Scurlock (III)|The Unseen (IV)|The Weeping Lady (II)
+
+&d.Whitecrown.factions [v(d.cgdb)]=City Council (V)|Imperial Military (VI)|Spirit Wardens (IV)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Cohort stats
@@ -277,10 +343,16 @@
 
 &d.cohort.addable_stats [v(d.cgdb)]=Edges|Flaws|Types
 
-&d.value.cohort_type [v(d.cgdb)]=Expert|Gang
+&d.value.cohort_type [v(d.cgdb)]=Expert|Gang|Vehicle
 
-&d.value.types [v(d.cgdb)]=Adepts|Rooks|Rovers|Skulks|Thugs
+&d.value.types [v(d.cgdb)]=Adepts|Rooks|Rovers|Skulks|Thugs|Vehicle
 
 &d.value.edges [v(d.cgdb)]=Fearsome|Independent|Loyal|Tenacious
 
 &d.value.flaws [v(d.cgdb)]=Principled|Savage|Unreliable|Wild
+
+&d.value.vehicle_types [v(d.cgdb)]=Vehicle
+
+&d.value.vehicle_edges [v(d.cgdb)]=Nimble|Simple|Sturdy
+
+&d.value.vehicle_flaws [v(d.cgdb)]=Costly|Distinct|Finicky
