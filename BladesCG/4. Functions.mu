@@ -66,13 +66,13 @@
 
 &f.get-crew-default [v(d.cgf)]=strcat(setq(F, if(strmatch(%1, Favorite), ulocal(f.get-list-default, %2, %1, Contacts), if(cand(t(%0), switch(%1, Crew XP Triggers, 1, Crew Abilities, 1, Contacts, 1, Favorite, 1, 0)), xget(%vD, strcat(d., ulocal(f.get-stat-location, %1), ., %0))))), if(switch(%1, Crew Abilities, 1, Favorite, 1, 0), first(%qF, |), %qF))
 
-&f.get-list-default [v(d.cgf)]=strcat(setq(F, ulocal(f.get-player-stat, %0, %2)), switch(%1, Rival, last(%qF, |), first(%qF, |)))
+&f.get-list-default [v(d.cgf)]=strcat(setq(F, ulocal(f.get-player-stat, %0, %2)), first(%qF, |))
 
 @@ %0: Player
 @@ %1: Stat name
 @@ %2: Is crew stat
 @@ %3: Crew object
-&f.get-stat-default [v(d.cgf)]=if(%2, ulocal(f.get-crew-default, xget(%3, ulocal(f.get-stat-location-on-player, Crew Type)), %1, %3), if(switch(%1, Ally, 1, Rival, 1, 0), ulocal(f.get-list-default, %0, %1, Friends), ulocal(f.get-playbook-default, xget(%0, ulocal(f.get-stat-location-on-player, Playbook)), %1)))
+&f.get-stat-default [v(d.cgf)]=if(%2, ulocal(f.get-crew-default, xget(%3, ulocal(f.get-stat-location-on-player, Crew Type)), %1, %3), ulocal(f.get-playbook-default, xget(%0, ulocal(f.get-stat-location-on-player, Playbook)), %1))
 
 &f.get-crew-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.crew_abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
@@ -97,7 +97,7 @@
 
 &f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, Name, d.ic_full_name, Alias, d.street_alias, edit(%0, %b, _, ^, _stat.))
 
-&f.get-stats [v(d.cgf)]=strcat(setq(S, xget(%vD, d.actions)|Load), squish(trim(strcat(%qS, |, setdiff(ulocal(f.get-player-bio-fields, %0), Crew, |, |), |, setdiff(xget(%vD, d.expert_bio), Crew, |, |), |, if(t(ulocal(f.get-player-stat, %0, crew object)), ulocal(f.get-crew-stats))), b, |), |))
+&f.get-stats [v(d.cgf)]=strcat(setq(S, xget(%vD, d.actions)|Load|Special Ability), squish(trim(strcat(%qS, |, setdiff(ulocal(f.get-player-bio-fields, %0), Crew, |, |), |, setdiff(xget(%vD, d.expert_bio), Crew, |, |), |, if(t(ulocal(f.get-player-stat, %0, crew object)), ulocal(f.get-crew-stats))), b, |), |))
 
 &f.get-crew-stats [v(d.cgf)]=xget(%vD, d.crew_bio)|Favorite
 

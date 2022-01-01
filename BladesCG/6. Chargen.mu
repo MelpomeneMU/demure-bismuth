@@ -232,7 +232,7 @@ To pay a faction, +faction/pay <faction>=<0, 1, or 2>.
 @@ %5 - the text to pass into the error and success messages
 &tr.add-or-remove-stat [v(d.cg)]=@assert ulocal(f.is-allowed-to-edit-stat, %2, %3)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %1, %2, %3); }; @eval strcat(setq(E, ulocal(f.get-player-stat, %2, %0)), setq(I, ulocal(f.find-list-index, %qE, %1))); @if t(%4)={ @trigger me/tr.remove-final-stat=%0, %1, %2, %3, %qE, %qI, %5; }, { @trigger me/tr.add-final-stat=%0, %1, %2, %3, %qE, %qI, %5; };
 
-&tr.add-final-stat [v(d.cg)]=@assert not(t(%5))={ @trigger me/tr.error=%3, Player already has the %0 '%1'.; }; @eval setq(E, trim(%4|%1, b, |)); @assert cor(not(strmatch(%0, Abilities)), eq(words(%qE, |), 1))={ @trigger me/tr.error=%3, Player already has a Special Ability. Please remove one before adding this one.; }; @set %2=[ulocal(f.get-stat-location-on-player, %0)]:%qE; @trigger me/tr.success=%2, ulocal(layout.add-message, if(t(%6), %6, %0), %1, %2, %3); @assert strmatch(%2, %3)={ @cemit xget(%vD, d.log-staff-statting-to-channel)=ulocal(layout.staff-add-alert, if(t(%6), %6, %0), %1, %2, %3); };
+&tr.add-final-stat [v(d.cg)]=@assert cor(not(t(%1)), not(t(%5)))={ @trigger me/tr.error=%3, Player already has the %0 '%1'.; }; @eval setq(E, trim(strcat(xget(%2, ulocal(f.get-stat-location-on-player, %0)), |, %1), b, |)); @eval setq(E, if(cand(not(t(%1)), eq(words(%qE, |), 1)),, %qE)); @assert cor(not(t(%1)), not(strmatch(%0, Abilities)), eq(words(%qE, |), 1))={ @trigger me/tr.error=%3, Player already has a Special Ability. Please remove one before adding this one.; }; @set %2=[ulocal(f.get-stat-location-on-player, %0)]:%qE; @assert t(%1)={ @trigger me/tr.success=%2, ulocal(layout.set-message, if(t(%6), %6, %0), %1, %2, %3); @assert strmatch(%2, %3)={ @cemit xget(%vD, d.log-staff-statting-to-channel)=ulocal(layout.staff-set-alert, if(t(%6), %6, %0), %1, %2, %3); }; }; @trigger me/tr.success=%2, ulocal(layout.add-message, if(t(%6), %6, %0), %1, %2, %3); @assert strmatch(%2, %3)={ @cemit xget(%vD, d.log-staff-statting-to-channel)=ulocal(layout.staff-add-alert, if(t(%6), %6, %0), %1, %2, %3); };
 
 &tr.remove-final-stat [v(d.cg)]=@assert t(%5)={ @trigger me/tr.error=%3, Player doesn't have the %0 '%1'.; }; @eval setq(E, ldelete(%4, %5, |, |)); @set %2=[ulocal(f.get-stat-location-on-player, %0)]:%qE; @trigger me/tr.success=%2, ulocal(layout.remove-message, if(t(%6), %6, %0), %1, %2, %3); @assert strmatch(%2, %3)={ @cemit xget(%vD, d.log-staff-statting-to-channel)=ulocal(layout.staff-remove-alert, if(t(%6), %6, %0), %1, %2, %3); };
 
@@ -246,14 +246,14 @@ To pay a faction, +faction/pay <faction>=<0, 1, or 2>.
 @@ %1 - value
 @@ %2 - player
 @@ %3 - player doing the setting
-&tr.set-stat [v(d.cg)]=@assert t(setr(S, ulocal(f.is-stat, %0, %2)))={ @trigger me/tr.error=%3, '%0' does not appear to be a stat. Valid stats are: [ulocal(layout.list, ulocal(f.list-stats, %0, %2))]; }; @assert not(t(ulocal(f.is-addable-stat, %0)))={ @force %3=+stat/add %0=%1; }; @assert ulocal(f.is-allowed-to-edit-stat, %2, %3, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3); }; @trigger me/tr.set-[case(1, t(ulocal(f.is-action, %qS)), action, ulocal(f.is-crew-stat, %qS), crew-stat, ulocal(f.is-full-list-stat, %qS), full-list-stat, final-stat)]=%qS, %qV, %2, %3;
+&tr.set-stat [v(d.cg)]=@assert t(setr(S, ulocal(f.is-stat, %0, %2)))={ @trigger me/tr.error=%3, '%0' does not appear to be a stat. Valid stats are: [ulocal(layout.list, ulocal(f.list-stats, %0, %2))]; }; @assert cor(not(t(ulocal(f.is-addable-stat, %0))), strmatch(%qS, Abilities))={ @force %3=+stat/add %0=%1; }; @assert ulocal(f.is-allowed-to-edit-stat, %2, %3, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, switch(%qS, Abilities, Special Ability, %qS), %1, %2, %3); }; @trigger me/tr.set-[case(1, t(ulocal(f.is-action, %qS)), action, ulocal(f.is-crew-stat, %qS), crew-stat, ulocal(f.is-full-list-stat, %qS), full-list-stat, final-stat)]=%qS, %qV, %2, %3;
 
 @@ %0 - stat
 @@ %1 - value
 @@ %2 - player
 @@ %3 - player doing the setting
 @@ %4 - value to display
-&tr.set-final-stat [v(d.cg)]=@set %2=[ulocal(f.get-stat-location-on-player, %0)]:%1; @trigger me/tr.success=%2, ulocal(layout.set-message, %0, %1, %2, %3, %4); @assert strmatch(%2, %3)={ @cemit xget(%vD, d.log-staff-statting-to-channel)=ulocal(layout.staff-set-alert, %0, %1, %2, %3, %4); };
+&tr.set-final-stat [v(d.cg)]=@set %2=[ulocal(f.get-stat-location-on-player, %0)]:%1; @trigger me/tr.success=%2, ulocal(layout.set-message, switch(%0, Abilities, Special Ability, %0), %1, %2, %3, %4); @assert strmatch(%2, %3)={ @cemit xget(%vD, d.log-staff-statting-to-channel)=ulocal(layout.staff-set-alert, switch(%0, Abilities, Special Ability, %0), %1, %2, %3, %4); };
 
 @@ %0 - stat
 @@ %1 - value

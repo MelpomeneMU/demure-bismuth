@@ -343,7 +343,7 @@ N
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TLook over your +sheet one more time with %ch+sheet/all%cn and see if anything looks incomplete.%R%RStaff will be looking for:%R%T* Does your character fit into the theme OK?%R%T* Desc can't be underage.%R%T* Desc should be at least one (relevant) sentence long.%R%T* Anything missing? Any red on the sheet check?%R%R%TWhen you're sure you're ready, type %ch+stat/lock%cn to lock your sheet and notify staff that you're ready for approval. There might still be changes, but staff will work those out with you.%R%R%TAll chat in this room goes to the Chargen channel.%R
+@desc here=%R%TLook over your +sheet one more time with %ch+sheet/all%cn and see if anything looks incomplete.%R%RStaff will be looking for:%R%T* Does your character fit into the theme OK?%R%T* Desc can't be underage.%R%T* Desc should be at least one (relevant) sentence long.%R%T* Anything missing? Any [ulocal(%vF/layout.fail)] marks on the CG check?%R%R%TWhen you're sure you're ready, type %ch+stat/lock%cn to lock your sheet and notify staff that you're ready for approval. There might still be changes, but staff will work those out with you.%R%R%TAll chat in this room goes to the Chargen channel.%R
 
 +note/add here/Crew=%R%TCrews are not mandatory, but they do give you extra power. You can join a crew or make your own.%R%TIf you want to join an existing crew, ask around on the LFG channel (%chlfg/on%cn) or check out the Crews board (%ch+bbread Crews%cn).%R%TIf you're interested in creating your own crew - and no, you don't need other players to join you, and you can always join a different crew later! - head back into CG and visit the %chCrew Creation%cn walkthrough.%R
 
@@ -528,7 +528,7 @@ n
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TYour crew's special abilities are granted to every member of the crew. Some abilities add extra dice; some grant special powers. You can choose abilities from any crew type, not just your own crew type, but to keep things simple, here are the special abilities available to your Crew Type:%R%R[multicol(ulocal(%vF/f.get-player-crew-abilities, %#), * *, 0, |, getremainingwidth(%#), 1)]%R%R%TTo set your crew's ability, type %ch+stat/set Crew Ability=<your choice>%cn. If you're not sure what to pick, leave it alone - the default is the first item on the list, and it's usually a very good choice.%R%R%TAll chat in this room goes to the Chargen channel.%R
+@desc here=%R%TYour crew's special abilities are granted to every member of the crew. Some abilities add extra dice; some grant special powers. You can choose any Crew Ability you like, but to keep things simple, here are the iconic abilities available to yours:%R%R[multicol(ulocal(%vF/f.get-player-crew-abilities, %#), * *, 0, |, getremainingwidth(%#), 1)]%R%R%TTo set your crew's ability, type %ch+stat/set Crew Ability=<your choice>%cn. If you're not sure what to pick, leave it alone - the default is the first item on the list, and it's usually a very good choice.%R%R%TAll chat in this room goes to the Chargen channel.%R
 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -553,7 +553,7 @@ n
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TUpgrades make a crew unique. You have 4 Upgrade points to distribute on your sheet. Upgrade points are also used for creating Cohorts, 2 per Cohort, so if your crew wants Cohorts instead, save your points. Here are the default Upgrades:%R%R[ulocal(%vF/layout.crew-upgrades, %#, setr(W, getremainingwidth(%#)))][footer(,%qW)]%R%R%TAll chat in this room goes to the Chargen channel.%R
+@desc here=%R%TUpgrades make a crew unique. You have 4 Upgrade points to distribute on your sheet. Upgrade points are also used for creating Cohorts, 2 per Cohort, so if your crew wants Cohorts instead, save your points. Here are the default Upgrades:%R%R[ulocal(%vF/layout.crew-upgrades, %#, setr(W, getremainingwidth(%#)))]%r[footer(,%qW)]%R%R%T%ch+stat/add Upgrade=<upgrade>%cn to choose your upgrades.%R%R%TAll chat in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew Creation Walkthrough - Cohorts
@@ -577,7 +577,9 @@ n
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TA Cohort is an NPC which helps the crew out on Scores and can, with the right Crew Abilities, become quite powerful. If you're not creating a Cohort right now, feel free to move on to the Next room.%R%R%TIf you'd like to create a Cohort, get started with %ch+cohort/create <name>=<type>%cn. Available Cohort Types are [itemize(ulocal(%vF/f.list-cohort-stat-pretty-values, Cohort Type), |)]. (Vehicle is only available if you have the Crew Ability "Like Part of the Family".)%R%R%TOnce your Cohort is created, add 1-2 Edges and Flaws to it with %ch+cohort/add Edge=<edge>%cn and %ch+cohort/add Flaw=<flaw>%cn. Edges and Flaws must balance out, and you must have 1-2 of them for the Cohort to be considered valid.%R%R%TIf you're creating an Expert Cohort, %ch+cohort/set Specialty=<what they do>%cn. Try to keep this text to 1-2 words - they do one thing and they do it well.%R%R%TYou can check your cohorts at any time with %ch+cohorts%cn. Cohorts cost 2 Upgrade points apiece, and you can add additional Types to them for another 2 Upgrade points.%R%R%TAll chat in this room goes to the Chargen channel.%R
+@desc here=%R%TA Cohort is an NPC which helps the crew out on Scores and can, with the right Crew Abilities, become quite powerful.%R%R%TIf you'd like to create a Cohort, get started with %ch+cohort/create <name>=<type>%cn. Available Cohort Types are [itemize(ulocal(%vF/f.list-cohort-stat-pretty-values, Cohort Type), |)]. (Vehicle is only available if you have the Crew Ability "Like Part of the Family".)%R%R%TOnce your Cohort is created, add 1-2 Edges and Flaws to it with %ch+cohort/add Edge=<edge>%cn and %ch+cohort/add Flaw=<flaw>%cn. Edges and Flaws must balance out, and you must have 1-2 of them for the Cohort to be considered valid.%R%R%TIf you're creating an Expert Cohort, %ch+cohort/set Specialty=<what they do>%cn. Try to keep this text to 1-2 words - they do one thing and they do it well.%R%R%TYou can check your cohorts at any time with %ch+cohorts%cn. Cohorts cost 2 Upgrade points apiece, and you can add additional Types to them for another 2 Upgrade points.%R%R%TIf you're not creating a Cohort right now, feel free to move on to the Next room.%R%R%TAll chat in this room goes to the Chargen channel.%R
+
+l
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew Creation Walkthrough - Upgrade Factions
@@ -705,6 +707,6 @@ n
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TYou should have a pretty good crew setup by now. Check %ch+crew/all%cn to see your crew sheet and make any last minute changes you may need before you request crew approval.%R%R%TStaff will be looking for:%R%R%T* Any arbitrary text that doesn't fit the theme of the game.%R%T* Any red errors on your +crew sheet.%R%R%TWhen you're sure you're done, hit %ch+crew/lock%cn and staff will be notified that your crew is ready for approval.%R%R%TAll chat in this room goes to the Chargen channel.%R
+@desc here=%R%TYou should have a pretty good crew setup by now. Check %ch+crew/all%cn to see your crew sheet and make any last minute changes you may need before you request crew approval.%R%R%TStaff will be looking for:%R%R%T* Any arbitrary text that doesn't fit the theme of the game.%R%T* Any [ulocal(%vF/layout.fail)] marks on your +crew sheet.%R%R%TWhen you're sure you're done, hit %ch+crew/lock%cn and staff will be notified that your crew is ready for approval.%R%R%TAll chat in this room goes to the Chargen channel.%R
 
 @force me=@open [escape(v(d.parent_room_exit_name))]=[v(d.cg_parent_room)]
