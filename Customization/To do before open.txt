@@ -1,4 +1,5 @@
 Jobs customizations
+  req/social etc
 Board customizations
 	Crews board
 Channel creations
@@ -6,11 +7,11 @@ Channel creations
 
 CG
 	+stat/lock locks your stats from being changed and creates a job for staff to approve you
-Dice (roll Tier needs to work)
+	+crew/lock same
 XP (staff spending and advancement tracking)
 Crew code
 	Probies (not optional)
 	Crew approval process
-		+crew/lock?
 	Vote to boot people (optional)
 	Invite-sharing (optional)
+Spend and regain Stress on the fly

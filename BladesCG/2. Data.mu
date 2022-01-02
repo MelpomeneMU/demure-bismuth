@@ -48,6 +48,10 @@
 @@ Stats you can "+stat/set <stat>=<a crew type>":
 &d.crew-type-stats [v(d.cgdb)]=Crew XP Triggers|Contacts
 
+&d.xp_tracks [v(d.cgdb)]=Insight|Prowess|Resolve|Playbook|Crew|Untracked
+
+&d.stats-that-default [v(d.cgdb)]=Friends|Abilities|Gear|XP_Triggers
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat aliases
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -223,7 +227,7 @@
 
 &d.crew_bio [v(d.cgdb)]=Crew Name|Crew Type|Reputation|Hunting Grounds|Lair|Lair District
 
-@@ TODO: Add Preferred Operation Type
+@@ TODO: Add Preferred Operation Type?
 
 &d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew Abilities|Contacts|Favorite|Factions
 

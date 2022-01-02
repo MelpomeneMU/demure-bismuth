@@ -93,6 +93,8 @@
 
 &f.get-random-name-and-job [v(d.cgf)]=strcat(pickrand(xget(%vD, d.random.name), |), %,%b, art(setr(J, pickrand(xget(%vD, d.random.job), |))), %b, %qJ)
 
+&f.convert-stat-to-title [v(d.cgf)]=title(edit(lcstr(last(%0, .)), _, %b))
+
 &f.get-stat-location [v(d.cgf)]=edit(%0, %b, _)
 
 &f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, Name, d.ic_full_name, Alias, d.street_alias, edit(%0, %b, _, ^, _stat.))
@@ -206,8 +208,6 @@
 @@ %2: 1 if this is a key mark
 &f.mark-map [v(d.cgf)]=if(t(ulocal(f.get-player-stat, %0, Map %1)), if(%2, +, X), %b)
 
-@@ TODO: Finish faction status
-
 @@ %0: list
 @@ %1: word to find
 &f.get-item-by-second-word [v(d.cgf)]=first(iter(%0, if(strmatch(rest(itext(0)), %1*), itext(0)), |, |), |)
@@ -228,3 +228,17 @@
 @@ %1: stat list to look on
 @@ %2: stat to look for
 &f.has-list-stat [v(d.cgf)]=switch(%1, Upgrades, t(ulocal(f.find-upgrade, ulocal(f.get-player-stat, %0, %1), switch(%2, *\]*, trim(last(%2, \])), %2))), Faction, t(finditem(iter(ulocal(f.get-player-stat, %0, %1), rest(itext(0)), |, |), if(isnum(first(%2)), rest(%2), %1))), t(finditem(ulocal(f.get-player-stat, %0, %1), %2, |)))
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ XP functions
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ %0: player
+@@ %1: track - insight, prowess, resolve, playbook, crew
+@@ %2: unspent, spent, or total (unspent is derived, total and spent are tracked)
+&f.get-advancements [v(d.cgf)]=strcat(setq(P, switch(%2, c*, ulocal(f.get-player-stat, %0, crew object), %0)), if(t(setr(T, ulocal(f.get-player-stat, %qP, advancements.%1.%2))), %qT, sub(ulocal(f.get-player-stat, %qP, advancements.%1.total), ulocal(f.get-player-stat, %qP, advancements.%1.spent))))
+
+@@ %0: player
+@@ %1: track - insight, prowess, resolve, playbook, crew, untracked
+@@ %1: current, max, or total (current is derived, total and max are tracked)
+&f.get-xp [v(d.cgf)]=strcat(setq(P, switch(%2, c*, ulocal(f.get-player-stat, %0, crew object), %0)), if(t(setr(T, ulocal(f.get-player-stat, %qP, xp.%1.%2))), %qT, max(mod(ulocal(f.get-player-stat, %qP, xp.%1.total), ulocal(f.get-player-stat, %qP, xp.%1.max)), 0)))

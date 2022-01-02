@@ -163,13 +163,7 @@ To pay a faction, +faction/pay <faction>=<0, 1, or 2>.
 @@ Commands - TODO: redo these!
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+stats/lock [v(d.cg)]=$+stats/lock: @set %#=_stat.locked:[time()]; @trigger me/tr.success=%#, You locked your stats and added yourself to staff's list;
-
-@@ TODO: During lock, take any Default Values that are blank (but show up on the sheet) and actually put them on the player.
-
-@@ TODO: Calculate number of advances (if we allow higher-than-CG characters) and stick them on the sheet.
-
-@@ TODO: Tally coins spent on factions and mark down the remaining.
+&c.+stats/lock [v(d.cg)]=$+stats/lock:@assert not(hasattr(%#, _stat.locked))={ @trigger me/tr.error=%#, Your stats are already locked.; };  @set %#=_stat.locked:[time()]; @dolist xget(%vD, d.stats-that-default)={ @set %#=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %#, ##)]; }; @set %#=ulocal(f.get-stat-location-on-player, xp.insight.max):[setr(M, switch(setr(P, ulocal(f.get-player-stat, %#, Playbook)), Vampire, 8, 6))]; @set %#=ulocal(f.get-stat-location-on-player, xp.prowess.max):%qM; @set %#=ulocal(f.get-stat-location-on-player, xp.resolve.max):%qM; @set %#=ulocal(f.get-stat-location-on-player, xp.playbook.max):[switch(%qP, Vampire, 10, 8)]; @trigger me/tr.success=%#, You locked your stats.;
 
 @@ TODO: Figure out how stats/lock and unlock interact with jobs.
 
@@ -240,7 +234,11 @@ To pay a faction, +faction/pay <faction>=<0, 1, or 2>.
 
 &tr.add-upgrades [v(d.cg)]=@eval if(t(%5), strcat(setq(E, %4), setq(I, %5)), strcat(setq(U, ulocal(f.get-upgrades-with-boxes)), setq(M, ulocal(f.find-upgrade, %qU, %1)), setq(E, strcat(%4, |, extract(%qU, %qM, 1, |))), setq(E, trim(%qE, b, |)), setq(I, words(%qE, |)))); @assert cand(t(%qE), t(%qI))={ @trigger me/tr.error=%3, There was an issue figuring out which value to add.; }; @eval setq(T, ulocal(f.count-upgrades, %2)); @eval setq(N, ulocal(f.tick-tickable, extract(%qE, %qI, 1, |))); @eval setq(E, replace(%qE, %qI, %qN, |, |)); @assert strmatch(%qE, \[X\]*)={ @trigger me/tr.error=%3, Could not tick the upgrade box.; }; @assert not(strmatch(%qE, %4))={ @trigger me/tr.error=%3, Cannot add %ch%1%cn - it is already added and has no additional boxes to mark.; }; @assert cor(ulocal(f.is-allowed-to-break-stat-setting-rules, %3, %2), lte(add(ulocal(f.count-ticks, %qN), %qT), 4))={ @trigger me/tr.error=%3, ulocal(layout.upgrade-max, %qT, 0, %2, %3); }; @set %2=ulocal(f.get-stat-location-on-player, %0):%qE; @trigger me/tr.success=%3, ulocal(layout.add-message, Upgrade, %1, %2, %3, eq(words(%qE, |), words(%4, |))); @assert strmatch(%2, %3)={ @cemit xget(%vD, d.log-staff-statting-to-channel)=ulocal(layout.staff-add-alert, Upgrade, %1, %2, %3); };
 
+@@ TODO: BUG: Add 3 points of upgrades, where one of them is a 2-box upgrade like Vehicle. Then try to tick the 2nd box of Vehicle. An error occurs because it's counting "3 existing upgrades + 2 incoming". Workaround: tick both your Vehicle boxes THEN tick the other stuff, or ask staff for help.
+
 &tr.remove-upgrades [v(d.cg)]=@assert t(%5)={ @trigger me/tr.error=%3, ulocal(layout.player_does_not_have_stat, Upgrade, %1, %2, %3); }; @eval strcat(setq(E, replace(%4, %5, ulocal(f.untick-tickable, extract(%4, %5, 1, |)), |, |)), setq(F, %qE)); @eval iter(%qE, if(not(strmatch(itext(0), \\\\[X\\\\]*)), setq(F, remove(%qF, itext(0), |, |))), |, |); @set [ulocal(f.get-player-stat, %2, crew object)]=ulocal(f.get-stat-location-on-player, %0):%qF; @trigger me/tr.success=%3, ulocal(layout.remove-message, Upgrade, %1, %2, %3, eq(words(%qE), words(%qF))); @assert strmatch(%2, %3)={ @cemit xget(%vD, d.log-staff-statting-to-channel)=ulocal(layout.staff-remove-alert, Upgrade, %1, %2, %3, eq(words(%qE, |), words(%qF, |))); };
+
+@@ TODO: BUG: crew members can't remove crew's upgrades, what's up with that.
 
 @@ %0 - stat
 @@ %1 - value
