@@ -2,6 +2,9 @@
 @@ %1: player being edited
 &f.is-allowed-to-break-stat-setting-rules [v(d.cgf)]=cand(isstaff(%0), not(strmatch(%1, %0)))
 
+@@ For debug/testing:
+@@ &f.is-allowed-to-break-stat-setting-rules [v(d.cgf)]=isstaff(%0)
+
 @@ %0: player doing the editing
 @@ %1: player being edited
 @@ %2: stat to be edited
@@ -9,7 +12,9 @@
 
 @@ %0: player doing the editing
 @@ %1: crew object being edited
-&f.is-allowed-to-edit-crew [v(d.cgf)]=cor(not(hasattr(%1, _crew.locked)), ulocal(f.is-allowed-to-break-stat-setting-rules, %0, %1))
+&f.is-allowed-to-edit-crew [v(d.cgf)]=cor(not(hasattr(%1, _stat.crew_locked)), ulocal(f.is-allowed-to-break-stat-setting-rules, %0, %1))
+
+&f.get-singular-stat-name [v(d.cgf)]=switch(%0, Abilities, Special Ability, *s, reverse(rest(reverse(%0), s)), %0)
 
 &f.get-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
@@ -60,7 +65,7 @@
 
 &f.get-player-projects [v(d.cgf)]=iter(lattr(%0/_project.*), itext(0),, |)
 
-&f.is_expert [v(d.cgf)]=t(ulocal(f.get-player-stat, expert type))
+&f.is_expert [v(d.cgf)]=not(t(ulocal(f.get-player-stat, %0, playbook)))
 
 &f.get-playbook-default [v(d.cgf)]=strcat(setq(F, if(cand(t(%0), switch(%1, XP Triggers, 1, Friends, 1, Gear, 1, Abilities, 1, 0)), xget(%vD, strcat(d., ulocal(f.get-stat-location, %1), ., %0)))), if(switch(%1, Abilities, 1, 0), first(%qF, |), %qF))
 
@@ -76,7 +81,7 @@
 
 &f.get-crew-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.crew_abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
-&f.is-crew-stat [v(d.cgf)]=t(finditem(ulocal(f.list-crew-stats), %0, |))
+&f.is-crew-stat [v(d.cgf)]=cand(t(setr(S, finditem(ulocal(f.list-crew-stats), %0, |))), strmatch(%qS, %0))
 
 &f.list-crew-stats [v(d.cgf)]=strcat(xget(%vD, d.crew_bio), |, xget(%vD, d.crew-stats))
 
@@ -160,9 +165,13 @@
 @@ %3 - player doing the setting
 @@ %1 must be a valid value AND
 @@ 	Must not be a restricted value OR
-@@ 	Player must be staff and must not be setting their own stats
+@@  Player must be approved
+@@  Setter must be allowed to break stat-setting rules
+@@  Actions may not advance to 4 unless the player's crew has Mastery or the player is a vampire.
 @@ Returns the "pretty" value - AKA "Bodyguard" instead of "bod".
-&f.get-pretty-value [v(d.cgf)]=if(cand(t(strlen(setr(0, ulocal(f.get-valid-value, %0, %1, %2)))), cor(not(finditem(ulocal(f.list-restricted-values, %0), %q0, |)), cand(isstaff(%3), not(strmatch(%2, %3))))), %q0)
+&f.get-pretty-value [v(d.cgf)]=if(cand(t(strlen(setr(0, ulocal(f.get-valid-value, %0, %1, %2)))), cor(not(finditem(ulocal(f.list-restricted-values, %0), %q0, |)), cand(isapproved(%2), if(cand(t(ulocal(f.is-action, %0)), gte(%1, 4)), cor(ulocal(f.has-list-stat, ulocal(f.get-player-stat, %2, crew object), Upgrade, Mastery), strmatch(ulocal(f.get-player-stat, %2, Playbook), Vampire)), 1)))), %q0)
+
+th ulocal(v(d.cgf)/f.get-pretty-value, Hunt, 0, %#, %#)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Cohort functions
@@ -236,9 +245,13 @@
 @@ %0: player
 @@ %1: track - insight, prowess, resolve, playbook, crew
 @@ %2: unspent, spent, or total (unspent is derived, total and spent are tracked)
-&f.get-advancements [v(d.cgf)]=strcat(setq(P, switch(%2, c*, ulocal(f.get-player-stat, %0, crew object), %0)), if(t(setr(T, ulocal(f.get-player-stat, %qP, advancements.%1.%2))), %qT, sub(ulocal(f.get-player-stat, %qP, advancements.%1.total), ulocal(f.get-player-stat, %qP, advancements.%1.spent))))
+&f.get-advancements [v(d.cgf)]=strcat(setq(P, switch(%2, c*, ulocal(f.get-player-stat, %0, crew object), %0)), if(switch(%2, s*, 1, t*, 1, 0), ulocal(f.get-player-stat-or-zero, %qP, advancements.%1.%2), sub(ulocal(f.get-player-stat-or-zero, %qP, advancements.%1.total), ulocal(f.get-player-stat-or-zero, %qP, advancements.%1.spent))))
 
 @@ %0: player
 @@ %1: track - insight, prowess, resolve, playbook, crew, untracked
-@@ %1: current, max, or total (current is derived, total and max are tracked)
-&f.get-xp [v(d.cgf)]=strcat(setq(P, switch(%2, c*, ulocal(f.get-player-stat, %0, crew object), %0)), if(t(setr(T, ulocal(f.get-player-stat, %qP, xp.%1.%2))), %qT, max(mod(ulocal(f.get-player-stat, %qP, xp.%1.total), ulocal(f.get-player-stat, %qP, xp.%1.max)), 0)))
+@@ %2: current, max, or total (current is derived, total and max are tracked)
+&f.get-xp [v(d.cgf)]=strcat(setq(P, switch(%2, c*, ulocal(f.get-player-stat, %0, crew object), %0)), if(switch(%2, m*, 1, t*, 1, 0), ulocal(f.get-player-stat-or-zero, %qP, xp.%1.%2), max(mod(ulocal(f.get-player-stat-or-zero, %qP, xp.%1.total), ulocal(f.get-player-stat-or-zero, %qP, xp.%1.max)), 0)))
+
+@@ %0: player
+@@ %1: total, spent, or unspent
+&f.get-total-advancements [v(d.cgf)]=ladd(iter(setdiff(xget(%vD, d.xp_tracks), Crew|Untracked, |, |), ulocal(f.get-advancements, %0, itext(0), %1), |))

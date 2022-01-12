@@ -2,9 +2,6 @@
 @@ Settings
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-@@ If this is set, +stat/set will emit to this channel when used by staff.
-&d.log-staff-statting-to-channel [v(d.cgdb)]=Monitor
-
 @@ This is how long crew invitations last - default is 3 days.
 &d.crew-invitation-time [v(d.cgdb)]=259200
 
@@ -38,7 +35,9 @@
 
 @@ TODO: Add Friends and Contacts to the list of CG-addable stats once we figure out how that'll work.
 
-&d.cg-addable-stats [v(d.cgdb)]=Upgrades|Abilities
+&d.cg-addable-stats [v(d.cgdb)]=Upgrades|Abilities|Friends|Contacts
+
+&d.settable-addable-stats [v(d.cgdb)]=Abilities|Contacts|Friends
 
 &d.faction.questions [v(d.cgdb)]=Hunting|Helped|Harmed|Friendly|Unfriendly
 
@@ -50,7 +49,9 @@
 
 &d.xp_tracks [v(d.cgdb)]=Insight|Prowess|Resolve|Playbook|Crew|Untracked
 
-&d.stats-that-default [v(d.cgdb)]=Friends|Abilities|Gear|XP_Triggers
+&d.stats-that-default [v(d.cgdb)]=Friends|Abilities|Gear|XP Triggers
+
+&d.crew-stats-that-default [v(d.cgdb)]=Contacts|Favorite|Crew Abilities|Crew XP Triggers
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat aliases
@@ -90,7 +91,7 @@
 
 &d.restricted.playbook [v(d.cgdb)]=Ghost|Hull|Vampire
 
-&d.restricted.action [v(d.cgdb)]=3|4|5
+&d.restricted.action [v(d.cgdb)]=3|4
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Scoundrel stats
@@ -117,7 +118,6 @@
 &d.actions [v(d.cgdb)]=Hunt|Study|Survey|Tinker|Finesse|Prowl|Skirmish|Wreck|Attune|Command|Consort|Sway
 
 &d.abilities [v(d.cgdb)]=d.abilities.cutter d.abilities.hound d.abilities.leech d.abilities.lurk d.abilities.slide d.abilities.spider d.abilities.whisper
-
 
 &d.abilities.cutter [v(d.cgdb)]=Battleborn|Bodyguard|Ghost Fighter|Leader|Mule|Not to be Trifled With|Savage|Vigorous
 
@@ -209,7 +209,7 @@
 
 &d.value.vice [v(d.cgdb)]=Faith|Gambling|Luxury|Obligation|Pleasure|Stupor|Weird
 
-&d.value.action [v(d.cgdb)]=0|1|2|3|4|5
+&d.value.action [v(d.cgdb)]=0|1|2|3|4
 
 &d.value.frame_size [v(d.cgdb)]=Small|Medium|Heavy
 
@@ -229,7 +229,7 @@
 
 @@ TODO: Add Preferred Operation Type?
 
-&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew Abilities|Contacts|Favorite|Factions
+&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew Abilities|Contacts|Favorite|Factions|Upgrades
 
 &d.value.crew_type [v(d.cgdb)]=Assassins|Bravos|Cult|Hawkers|Shadows|Smugglers
 
