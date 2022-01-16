@@ -14,6 +14,8 @@
 @@ %1: crew object being edited
 &f.is-allowed-to-edit-crew [v(d.cgf)]=cor(not(hasattr(%1, _stat.crew_locked)), ulocal(f.is-allowed-to-break-stat-setting-rules, %0, %1))
 
+&f.get-crew-name [v(d.cgf)]=ulocal(f.get-player-stat-or-default, ulocal(f.get-player-stat, %0, crew object), crew name, No crew yet)
+
 &f.get-singular-stat-name [v(d.cgf)]=switch(%0, Abilities, Special Ability, *s, reverse(rest(reverse(%0), s)), %0)
 
 &f.get-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
@@ -34,6 +36,8 @@
 @@ %1: A list of the player's upgrades
 &f.replace-upgrades [v(d.cgf)]=strcat(setq(F, %0), null(iter(%1, if(t(setr(I, ulocal(f.find-upgrade, %0, trim(last(itext(0), \]))))), setq(F, replace(%qF, %qI, itext(0), |, |))), |, |)), %qF)
 
+&f.get-vault-max [v(d.cgf)]=if(ulocal(f.has-list-stat, %0, Upgrades, Vault), add(case(ulocal(f.count-ticks, strcat(setq(E, ulocal(f.get-player-stat, %0, Upgrades)), setq(I, ulocal(f.find-upgrade, %qE, Vault)), extract(%qE, %qI, 1, |))), 1, 4, 12), 4), 4)
+
 &f.get-addable-stats [v(d.cgf)]=xget(%vD, if(isstaff(%1), d.addable-stats, d.cg-addable-stats))
 
 &f.get-choice-list [v(d.cgf)]=strcat(setq(0, if(t(%0), remove(ulocal(f.list-valid-values, %0, %1), any unrestricted text, |), ulocal(f.get-choices, %1))), case(1, t(member(xget(%vD, d.playbook-stats), %0, |)), setdiff(%q0, ulocal(f.list-restricted-values, Playbook, %1), |), t(member(xget(%vD, d.crew-type-stats), %0, |)), setdiff(%q0, ulocal(f.list-restricted-values, Crew Type, %1), |), %q0))
@@ -43,11 +47,11 @@
 
 &f.get-choosable-stats [v(d.cgf)]=xget(%vD, d.choosable-stats)
 
-&f.is-stat [v(d.cgf)]=strcat(setq(N, ulocal(f.resolve-stat-name, %0)), finditem(ulocal(f.list-stats, %0, %1), %qN, |))
+&f.is-stat [v(d.cgf)]=strcat(setq(N, ulocal(f.resolve-stat-name, %0)), finditem(ulocal(f.list-stats, %0, %1, %2), %qN, |))
 
 &f.is-addable-stat [v(d.cgf)]=strcat(setq(N, ulocal(f.resolve-stat-name, %0)), finditem(ulocal(f.get-addable-stats, %0, %1), %qN, |))
 
-&f.list-stats [v(d.cgf)]=strcat(ulocal(f.get-stats, %1), |, ulocal(f.get-choosable-stats, %1), |, ulocal(f.list-crew-stats, %1))
+&f.list-stats [v(d.cgf)]=strcat(setq(D, if(ulocal(f.is-allowed-to-break-stat-setting-rules, %2, %1),, xget(%vD, d.staff-only-stats))), diffset(ulocal(f.get-stats, %1), %qD, |, |), |, diffset(ulocal(f.get-choosable-stats, %1), %qD, |, |), |, diffset(ulocal(f.list-crew-stats, %1), %qD, |, |))
 
 &f.is-full-list-stat [v(d.cgf)]=t(finditem(xget(%vD, d.stats-where-player-gets-entire-list), %0, |))
 
@@ -104,7 +108,7 @@
 
 &f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, Name, d.ic_full_name, Alias, d.street_alias, edit(%0, %b, _, ^, _stat.))
 
-&f.get-stats [v(d.cgf)]=strcat(setq(S, xget(%vD, d.actions)|Load|Special Ability), squish(trim(strcat(%qS, |, setdiff(ulocal(f.get-player-bio-fields, %0), Crew, |, |), |, setdiff(xget(%vD, d.expert_bio), Crew, |, |), |, if(t(ulocal(f.get-player-stat, %0, crew object)), ulocal(f.get-crew-stats))), b, |), |))
+&f.get-stats [v(d.cgf)]=strcat(setq(S, xget(%vD, d.scoundrel-stats)), squish(trim(strcat(%qS, |, setdiff(ulocal(f.get-player-bio-fields, %0), Crew, |, |), |, setdiff(xget(%vD, d.expert_bio), Crew, |, |), |, if(t(ulocal(f.get-player-stat, %0, crew object)), ulocal(f.get-crew-stats))), b, |), |))
 
 &f.get-crew-stats [v(d.cgf)]=xget(%vD, d.crew_bio)|Favorite
 
@@ -121,6 +125,8 @@
 &f.is-action [v(d.cgf)]=finditem(ulocal(f.list-actions), %0, |)
 
 &f.is-attribute [v(d.cgf)]=finditem(xget(%vD, d.attributes), %0, |)
+
+&f.get-player-attribute [v(d.cgf)]=ladd(iter(xget(%vD, d.actions.%1), t(ulocal(f.get-player-stat-or-zero, %0, itext(0))), |,))
 
 &f.list-actions [v(d.cgf)]=xget(%vD, d.actions)
 
@@ -169,9 +175,14 @@
 @@  Setter must be allowed to break stat-setting rules
 @@  Actions may not advance to 4 unless the player's crew has Mastery or the player is a vampire.
 @@ Returns the "pretty" value - AKA "Bodyguard" instead of "bod".
-&f.get-pretty-value [v(d.cgf)]=if(cand(t(strlen(setr(0, ulocal(f.get-valid-value, %0, %1, %2)))), cor(not(finditem(ulocal(f.list-restricted-values, %0), %q0, |)), cand(isapproved(%2), if(cand(t(ulocal(f.is-action, %0)), gte(%1, 4)), cor(ulocal(f.has-list-stat, ulocal(f.get-player-stat, %2, crew object), Upgrade, Mastery), strmatch(ulocal(f.get-player-stat, %2, Playbook), Vampire)), 1)))), %q0)
+&f.get-pretty-value [v(d.cgf)]=if(cand(t(strlen(setr(0, ulocal(f.get-valid-value, %0, %1, %2)))), cor(not(finditem(ulocal(f.list-restricted-values, %0), %q0, |)), cand(isapproved(%2), case(1, t(ulocal(f.is-action, %0)), lte(%1, ulocal(f.get-max-action, %2)), strmatch(%0, Stress), ulocal(f.get-max-stress, %2), strmatch(%0, Traumas), ulocal(f.get-max-trauma, %2), 1)))), %q0)
 
-th ulocal(v(d.cgf)/f.get-pretty-value, Hunt, 0, %#, %#)
+&f.get-max-action [v(d.cgf)]=if(cor(ulocal(f.has-list-stat, ulocal(f.get-player-stat, %0, crew object), Upgrades, Mastery), strmatch(ulocal(f.get-player-stat, %0, Playbook), Vampire)), 4, 3)
+
+&f.get-max-stress [v(d.cgf)]=if(ulocal(f.has-list-stat, ulocal(f.get-player-stat, %0, crew object), Upgrades, Steady), 10, 9)
+
+&f.get-max-trauma [v(d.cgf)]=if(ulocal(f.has-list-stat, ulocal(f.get-player-stat, %0, crew object), Upgrades, Hardened), 5, 4)
+
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Cohort functions
@@ -238,6 +249,10 @@ th ulocal(v(d.cgf)/f.get-pretty-value, Hunt, 0, %#, %#)
 @@ %2: stat to look for
 &f.has-list-stat [v(d.cgf)]=switch(%1, Upgrades, t(ulocal(f.find-upgrade, ulocal(f.get-player-stat, %0, %1), switch(%2, *\]*, trim(last(%2, \])), %2))), Faction, t(finditem(iter(ulocal(f.get-player-stat, %0, %1), rest(itext(0)), |, |), if(isnum(first(%2)), rest(%2), %1))), t(finditem(ulocal(f.get-player-stat, %0, %1), %2, |)))
 
+&f.get-lifestyle [v(d.cgf)]=div(ulocal(f.get-player-stat, %0, Stash), 10)
+
+&f.get-lifestyle-desc [v(d.cgf)]=case(ulocal(f.get-lifestyle, %0), 4, Fine, 3, Modest, 2, Meager, Poor soul)
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ XP functions
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -245,12 +260,12 @@ th ulocal(v(d.cgf)/f.get-pretty-value, Hunt, 0, %#, %#)
 @@ %0: player
 @@ %1: track - insight, prowess, resolve, playbook, crew
 @@ %2: unspent, spent, or total (unspent is derived, total and spent are tracked)
-&f.get-advancements [v(d.cgf)]=strcat(setq(P, switch(%2, c*, ulocal(f.get-player-stat, %0, crew object), %0)), if(switch(%2, s*, 1, t*, 1, 0), ulocal(f.get-player-stat-or-zero, %qP, advancements.%1.%2), sub(ulocal(f.get-player-stat-or-zero, %qP, advancements.%1.total), ulocal(f.get-player-stat-or-zero, %qP, advancements.%1.spent))))
+&f.get-advancements [v(d.cgf)]=strcat(setq(P, switch(%1, c*, ulocal(f.get-player-stat, %0, crew object), %0)), if(switch(%2, s*, 1, t*, 1, 0), ulocal(f.get-player-stat-or-zero, %qP, advancements.%1.%2), sub(ulocal(f.get-player-stat-or-zero, %qP, advancements.%1.total), ulocal(f.get-player-stat-or-zero, %qP, advancements.%1.spent))))
 
 @@ %0: player
 @@ %1: track - insight, prowess, resolve, playbook, crew, untracked
 @@ %2: current, max, or total (current is derived, total and max are tracked)
-&f.get-xp [v(d.cgf)]=strcat(setq(P, switch(%2, c*, ulocal(f.get-player-stat, %0, crew object), %0)), if(switch(%2, m*, 1, t*, 1, 0), ulocal(f.get-player-stat-or-zero, %qP, xp.%1.%2), max(mod(ulocal(f.get-player-stat-or-zero, %qP, xp.%1.total), ulocal(f.get-player-stat-or-zero, %qP, xp.%1.max)), 0)))
+&f.get-xp [v(d.cgf)]=strcat(setq(P, switch(%1, c*, ulocal(f.get-player-stat, %0, crew object), %0)), if(switch(%2, m*, 1, t*, 1, 0), ulocal(f.get-player-stat-or-zero, %qP, xp.%1.%2), max(mod(ulocal(f.get-player-stat-or-zero, %qP, xp.%1.total), ulocal(f.get-player-stat-or-zero, %qP, xp.%1.max)), 0)))
 
 @@ %0: player
 @@ %1: total, spent, or unspent

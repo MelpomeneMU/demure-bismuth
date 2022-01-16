@@ -37,7 +37,7 @@
 
 &d.cg-addable-stats [v(d.cgdb)]=Upgrades|Abilities|Friends|Contacts
 
-&d.settable-addable-stats [v(d.cgdb)]=Abilities|Contacts|Friends
+&d.settable-addable-stats [v(d.cgdb)]=Abilities|Contacts|Friends|Traumas
 
 &d.faction.questions [v(d.cgdb)]=Hunting|Helped|Harmed|Friendly|Unfriendly
 
@@ -52,6 +52,9 @@
 &d.stats-that-default [v(d.cgdb)]=Friends|Abilities|Gear|XP Triggers
 
 &d.crew-stats-that-default [v(d.cgdb)]=Contacts|Favorite|Crew Abilities|Crew XP Triggers
+
+@@ Stuff we want to be settable by staff but don't want players to mess with.
+&d.staff-only-stats [v(d.cgdb)]=Heat|Crew Coin|Wanted Level|Hold|Stress|Traumas|Healing|Coin
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat aliases
@@ -97,9 +100,41 @@
 @@ Scoundrel stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
+&d.scoundrel-stats [v(d.cgdb)]=Hunt|Study|Survey|Tinker|Finesse|Prowl|Skirmish|Wreck|Attune|Command|Consort|Sway|Stress|Traumas|Healing|Load|Coin
+
+&d.value.coin [v(d.cgdb)]=0|1|2|3|4
+
+&d.value.stress [v(d.cgdb)]=0|1|2|3|4|5|6|7|8|9|10
+
+&d.value.healing [v(d.cgdb)]=0|1|2|3|5
+
+&d.value.traumas [v(d.cgdb)]=Cold|Haunted|Obsessed|Paranoid|Reckless|Soft|Unstable|Vicious
+
 &d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Age|Look
 
+&d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire
+
+&d.value.age [v(d.cgdb)]=Young Adult|Adult|Mature|Elderly
+
+&d.value.load [v(d.cgdb)]=Light|Normal|Heavy|Encumbered
+
+&d.value.heritage [v(d.cgdb)]=Akoros|The Dagger Isles|Iruvia|Severos|Skovland|Tycheros
+
+&d.value.background [v(d.cgdb)]=Academic|Labor|Law|Trade|Military|Noble|Underworld
+
+&d.value.vice [v(d.cgdb)]=Faith|Gambling|Luxury|Obligation|Pleasure|Stupor|Weird
+
+&d.value.action [v(d.cgdb)]=0|1|2|3|4
+
 &d.bio.hull [v(d.cgdb)]=Frame Size|Primary Drive|Secondary Drive|Tertiary Drive
+
+&d.value.frame_size [v(d.cgdb)]=Small|Medium|Heavy
+
+&d.value.primary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+
+&d.value.secondary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
+
+&d.value.tertiary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
 
 &d.bio.hull.exclude [v(d.cgdb)]=Vice
 
@@ -194,34 +229,6 @@
 &d.strictures.vampire [v(d.cgdb)]=Slumber|Forbidden|Repelled|Bestial|Bound
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Valid values for various stats - * means write your own
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire
-
-&d.value.age [v(d.cgdb)]=Young Adult|Adult|Mature|Elderly
-
-&d.value.load [v(d.cgdb)]=Light|Normal|Heavy|Encumbered
-
-&d.value.heritage [v(d.cgdb)]=Akoros|The Dagger Isles|Iruvia|Severos|Skovland|Tycheros
-
-&d.value.background [v(d.cgdb)]=Academic|Labor|Law|Trade|Military|Noble|Underworld
-
-&d.value.vice [v(d.cgdb)]=Faith|Gambling|Luxury|Obligation|Pleasure|Stupor|Weird
-
-&d.value.action [v(d.cgdb)]=0|1|2|3|4
-
-&d.value.frame_size [v(d.cgdb)]=Small|Medium|Heavy
-
-&d.value.primary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
-
-&d.value.secondary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
-
-&d.value.tertiary_drive [v(d.cgdb)]=Guard|Destroy|Discover|Acquire|Labor
-
-&d.value.trauma [v(d.cgdb)]=Cold|Haunted|Obsessed|Paranoid|Reckless|Soft|Unstable|Vicious
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -229,7 +236,15 @@
 
 @@ TODO: Add Preferred Operation Type?
 
-&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew Abilities|Contacts|Favorite|Factions|Upgrades
+&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew Abilities|Contacts|Favorite|Factions|Upgrades|Heat|Crew Coin|Wanted Level|Hold
+
+&d.value.heat [v(d.cgdb)]=0|1|2|3|4|5|6|7|8|9
+
+&d.value.crew_coin [v(d.cgdb)]=0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16
+
+&d.value.wanted_level [v(d.cgdb)]=0|1|2|3|4
+
+&d.value.hold [v(d.cgdb)]=Weak|Strong
 
 &d.value.crew_type [v(d.cgdb)]=Assassins|Bravos|Cult|Hawkers|Shadows|Smugglers
 

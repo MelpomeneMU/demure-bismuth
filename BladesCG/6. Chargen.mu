@@ -86,36 +86,7 @@ Factions:
 
 TODO: Skip the blow-by-blow and replace with +rep/log
 
-Faction setup:
-
-Factions are an important part of play. Every crew has ticked somebody off, but every crew also has allies. You can see the full list of factions with +factions. Details about each faction are available on the wiki and in the book.
-
-1. Who claims your crew's hunting ground?
-     +faction/set Hunting=<faction>
-
-2. Who helped your crew get one of their Upgrades?
-     +faction/set Helped=<faction>
-
-3. Who was harmed when your crew got one of their Upgrades?
-     +faction/set Harmed=<faction>
-
-4. Who's friendly with your crew's Favorite Contact?
-     +faction/set Friendly=<faction>
-
-5. Who's unfriendly with your crew's Favorite Contact?
-     +faction/set Unfriendly=<faction>
-
-Faction payment:
-
-Your crew has 2 coins. You can spend these to bring your crew's status with the following factions up. Each coin you pay brings your status with them up by one.
-
-Do you want to pay <Hunting faction> for the privilege of operating in their territory? Your current status with this faction is <status>.
-
-Do you want to pay <Helped faction> for their assistance with getting your crew an Upgrade? Your current status with this faction is <status>.
-
-Do you want to pay <Harmed faction> to mitigate the harm your crew did when getting an Upgrade? Your current status with this faction is <status>.
-
-To pay a faction, +faction/pay <faction>=<0, 1, or 2>.
+TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not, this only really applies to staff because only staff can keep going after 4+ upgrades)
 
 */
 
@@ -127,7 +98,9 @@ To pay a faction, +faction/pay <faction>=<0, 1, or 2>.
 @@ %1 - value
 @@ %2 - player
 @@ %3 - player doing the setting
-&layout.whose-stat [v(d.cgf)]=case(1, ulocal(f.is-crew-stat, %0), ulocal(f.get-player-stat, ulocal(f.get-player-stat, %2, crew object), crew name)'s, strmatch(%2, %3), your, ulocal(f.get-name, %2, %3)'s)
+&layout.whose-stat [v(d.cgf)]=case(1, ulocal(f.is-crew-stat, %0), ulocal(f.get-crew-name, %2)'s, strmatch(%2, %3), your, ulocal(f.get-name, %2, %3)'s)
+
+&layout.who-statting [v(d.cgf)]=case(1, ulocal(f.is-crew-stat, %0), ulocal(f.get-crew-name, %2), strmatch(%2, %3), your, ulocal(f.get-name, %2, %3))
 
 @@ %0 - stat
 @@ %1 - value
@@ -154,13 +127,13 @@ To pay a faction, +faction/pay <faction>=<0, 1, or 2>.
 
 &layout.cannot-edit-crew-stats [v(d.cgf)]=if(strmatch(%1, %2), Your crew stat %0 cannot be changed after the crew has been approved. You will need to open a job with staff., setr(N, ulocal(f.get-name, %1, %2))'s crew stats are currently locked. To edit them%, you must %ch+crew/unlock %qN%cn.)
 
-&layout.player_does_not_have_stat [v(d.cgf)]=if(strmatch(%2, %3), You don't have the %0 '%1'., if(ulocal(f.is-crew-stat, %0), ulocal(f.get-player-stat, ulocal(f.get-player-stat, %2, crew object), crew name), ulocal(f.get-name, %2, %3)) does not have the %0 '%1'.)
+&layout.player_does_not_have_stat [v(d.cgf)]=if(strmatch(%2, %3), You don't have the %0 '%1'., ulocal(layout.who-statting, %0, %1, %2, %3) does not have the %0 '%1'.)
 
-&layout.remove_message [v(d.cgf)]=if(strmatch(%2, %3), You have successfully removed the %0 '%1'., cat(You have removed, if(ulocal(f.is-crew-stat, %0), ulocal(f.get-player-stat, ulocal(f.get-player-stat, %2, crew object), crew name), ulocal(f.get-name, %2, %3)'s), '%1' %0.))
+&layout.remove_message [v(d.cgf)]=if(strmatch(%2, %3), You have successfully removed the %0 '%1'., cat(You have removed, ulocal(layout.whose-stat, %0, %1, %2, %3), '%1' %0.))
 
-&layout.upgrade-max [v(d.cgf)]=cat(if(strmatch(%2, %3), Adding this upgrade would take you over 4 points of Upgrades. Remove some upgrades to rearrange your dots. You currently have %0 Upgrades., cat(Adding this upgrade would take, ulocal(f.get-player-stat, ulocal(f.get-player-stat, %2, crew object), crew name), over 4 points of Upgrades. Remove some upgrades to rearrange their dots. They currently have %0 Upgrades.)), Remember that Cohorts cost 2 Upgrades apiece%, and adding an additional Type to a Cohort costs another 2 Upgrades.)
+&layout.upgrade-max [v(d.cgf)]=cat(if(strmatch(%2, %3), Adding this upgrade would take you over 4 points of Upgrades. Remove some upgrades to rearrange your dots. You currently have %0 Upgrades., cat(Adding this upgrade would take, ulocal(layout.who-statting, %0, %1, %2, %3), over 4 points of Upgrades. Remove some upgrades to rearrange their dots. They currently have %0 Upgrades.)), Remember that Cohorts cost 2 Upgrades apiece%, and adding an additional Type to a Cohort costs another 2 Upgrades.)
 
-&layout.cohort-max [v(d.cgf)]=if(strmatch(%2, %3), Creating this cohort would take you over 4 points of Upgrades. You currently have %0. Move some points around before you create this cohort., cat(Creating this cohort would take, ulocal(f.get-player-stat, ulocal(f.get-player-stat, %2, crew object), crew name), over 4 points of Upgrades. They currently have %0. Move some points around before you create this cohort.))
+&layout.cohort-max [v(d.cgf)]=if(strmatch(%2, %3), Creating this cohort would take you over 4 points of Upgrades. You currently have %0. Move some points around before you create this cohort., cat(Creating this cohort would take, ulocal(layout.who-statting, %0, %1, %2, %3), over 4 points of Upgrades. They currently have %0. Move some points around before you create this cohort.))
 
 
 @@ TODO: Add all other "you" style error messages here (so you can swap them to player-style if it's a staffer doing the setting)
@@ -179,7 +152,7 @@ To pay a faction, +faction/pay <faction>=<0, 1, or 2>.
 
 &tr.unlock_stats [v(d.cg)]=@set %0=_stat.locked:; @set %0=!APPROVED; @trigger me/tr.success=%0, You have unlocked your stats. You can't be approved until you lock them again. Happy editing!;
 
-&c.+approve [v(d.cg)]=$+approve *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to approve people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @set %qP=APPROVED; @set %qP=[ulocal(f.get-stat-location-on-player, approved date)]:[time()]; @set %qP=[ulocal(f.get-stat-location-on-player, approved by)]:[ulocal(f.get-name, %#)] (%#); @trigger me/tr.success=%#, You approved [ulocal(f.get-name, %qP, %#)]. Be sure to let them know!;
+&c.+approve [v(d.cg)]=$+approve *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to approve people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert hasattr(%#, _stat.locked)={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) has not locked [poss(%qP)] stats yet and cannot be approved.; }; @set %qP=APPROVED; @set %qP=[ulocal(f.get-stat-location-on-player, approved date)]:[prettytime()]; @set %qP=[ulocal(f.get-stat-location-on-player, approved by)]:[ulocal(f.get-name, %#)] (%#); @trigger me/tr.success=%#, You approved [ulocal(f.get-name, %qP, %#)]. Be sure to let them know!;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ +stat commands for staffers
@@ -254,7 +227,7 @@ To pay a faction, +faction/pay <faction>=<0, 1, or 2>.
 @@ %1 - value
 @@ %2 - player
 @@ %3 - player doing the setting
-&tr.set-stat [v(d.cg)]=@assert t(setr(S, ulocal(f.is-stat, %0, %2)))={ @trigger me/tr.error=%3, '%0' does not appear to be a stat. Valid stats are: [ulocal(layout.list, ulocal(f.list-stats, %0, %2))]; }; @assert cor(not(t(ulocal(f.is-addable-stat, %0))), t(finditem(xget(%vD, d.settable-addable-stats), %qS, |)))={ @force %3=+stat/add [if(not(strmatch(%2, %3)), %2/)]%0=%1; }; @assert ulocal(f.is-allowed-to-edit-stat, %2, %3, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.set-[case(1, t(ulocal(f.is-action, %qS)), action, ulocal(f.is-crew-stat, %qS), crew-stat, ulocal(f.is-full-list-stat, %qS), full-list-stat, final-stat)]=%qS, %qV, %2, %3;
+&tr.set-stat [v(d.cg)]=@assert t(setr(S, ulocal(f.is-stat, %0, %2, %3)))={ @trigger me/tr.error=%3, '%0' does not appear to be a stat. Valid stats are: [ulocal(layout.list, ulocal(f.list-stats, %0, %2, %3))]; }; @assert cor(not(t(ulocal(f.is-addable-stat, %0))), t(finditem(xget(%vD, d.settable-addable-stats), %qS, |)))={ @force %3=+stat/add [if(not(strmatch(%2, %3)), %2/)]%0=%1; }; @assert ulocal(f.is-allowed-to-edit-stat, %2, %3, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.set-[case(1, t(ulocal(f.is-action, %qS)), action, ulocal(f.is-crew-stat, %qS), crew-stat, ulocal(f.is-full-list-stat, %qS), full-list-stat, final-stat)]=%qS, %qV, %2, %3;
 
 @@ %0 - stat
 @@ %1 - value

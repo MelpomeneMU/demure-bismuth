@@ -30,9 +30,9 @@
 
 &layout.player-bio [v(d.cgf)]=iter(ulocal(f.get-layout-bio-stats, %0), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), Not set)), |, |)
 
-&layout.actions [v(d.cgf)]=strcat(divider(Actions, %1), %r, multicol(ulocal(layout.player-actions, %0), * 1 * 1 * 1, 1, |, %1))
+&layout.actions [v(d.cgf)]=strcat(divider(Actions, %1), %r, multicol(ulocal(layout.player-actions, %0), * 1 2 * 1 2 * 1, 1, |, %1))
 
-&layout.player-actions [v(d.cgf)]=iter(strcat(xget(%vD, d.attributes), |, fliplist(strcat(xget(%vD, d.actions.insight), |, xget(%vD, d.actions.prowess), |, xget(%vD, d.actions.resolve)), 3, |)), strcat(itext(0), if(lte(inum(0), 3), strcat(space(3), %(, ulocal(f.get-xp, %0, itext(0), current), /, ulocal(f.get-xp, %0, itext(0), max), %b, XP, %), |, ulocal(f.get-player-stat-or-zero, %0, itext(0))), strcat(|, ulocal(f.get-player-stat-or-zero, %0, itext(0))))), |, |)
+&layout.player-actions [v(d.cgf)]=iter(strcat(xget(%vD, d.attributes), |, fliplist(strcat(xget(%vD, d.actions.insight), ||, xget(%vD, d.actions.prowess), ||, xget(%vD, d.actions.resolve)), 3, |)), strcat(itext(0), if(lte(inum(0), 3), strcat(space(3), %(, ulocal(f.get-xp, %0, itext(0), current), /, ulocal(f.get-xp, %0, itext(0), max), %b, XP, %), |, ulocal(f.get-player-attribute, %0, itext(0)), if(lte(inum(0), 2), |)), strcat(|, ulocal(f.get-player-stat-or-zero, %0, itext(0)), if(neq(mod(inum(0), 3), 0), |)))), |, |)
 
 &layout.abilities-title [v(d.cgf)]=strcat(Special Abilities %(, ulocal(f.get-xp, %0, playbook, current), /, ulocal(f.get-xp, %0, playbook, max), %b, XP, %))
 
@@ -46,7 +46,7 @@
 
 &layout.2health [v(d.cgf)]=if(or(t(%3), t(setr(1, xget(%0, _health-%2-1))), t(setr(2, xget(%0, _health-%2-2)))), edit(multicol(strcat(setq(W, sub(div(sub(getremainingwidth(%1), 10), 2), 3)), |, _, repeat(@, %qW), |, _, repeat(@, %qW), |||, #, center(__, %qW, _), #, |, #, center(__, %qW, _), #, ||, %2, |, ulocal(layout.player-health, %0, %1, %q1, %qW), |, ulocal(layout.player-health, %0, %1, %q2, %qW), |, case(%2, 2, -1d, Less effect), ||, #, repeat(@, %qW), #, |, #, repeat(@, %qW), #), 1 * * 13, 0, |, %1), _, %b, @, _, #, |))
 
-&layout.pools [v(d.cgf)]=strcat(divider(Pools, %1), %r, multicol(strcat(Stress, |, 0/9, |, Trauma, |, 0/4, |, Healing, |, default(%0/_health-clock, 0), /4), * 5 * 5 * 5, 0, |, %1), %r, formattext(Traumas: None yet., 0, %1))
+&layout.pools [v(d.cgf)]=strcat(divider(Pools, %1), %r, multicol(strcat(Stress, |, ulocal(f.get-player-stat-or-default, %0, Stress, 0), /, ulocal(f.get-max-stress, %0), |, Traumas:, |, words(ulocal(f.get-player-stat, %0, Traumas), |), /, ulocal(f.get-max-trauma, %0), |, Healing, |, default(%0/_health-clock, 0), /4), * 5 * 5 * 5, 0, |, %1), %r, formattext(cat(Traumas:, ulocal(f.get-player-stat-or-default, %0, Traumas, None yet.)), 0, %1))
 
 &layout.xp_triggers [v(d.cgf)]=strcat(divider(XP Triggers, %1), %r, formattext(strcat(* You, %b, ulocal(f.get-player-stat-or-default, %0, xp triggers, addressed a challenge with ______ or ______)., %r, * You roll a desperate action., %r, * You express your beliefs%, drives%, heritage%, or background., %r, * You struggled with issues from your vice or traumas during the session.), 0, %1))
 
@@ -54,7 +54,7 @@
 
 &layout.gear [v(d.cgf)]=strcat(divider(Playbook gear, %1), %r, multicol(edit(iter(fliplist(ulocal(f.get-player-stat, %0, gear), 2, |), ulocal(layout.gear-item, itext(0)), |, |), 0L, %ch%cx--%cn), * *, 0, |, %1), %r, ulocal(layout.other-gear, %0, %1, %2), %r, ulocal(layout.load-chart, %0, %1), if(t(%2), strcat(%r, ulocal(layout.standard-gear, %0, %1, %2))), %r, ulocal(layout.coin, %0, %1))
 
-&layout.coin [v(d.cgf)]=strcat(divider(Coin and wealth, %1), %r, multicol(strcat(Coin:, |, ulocal(f.get-player-stat-or-zero, %0, coin), |, Stash:, |, setr(S, ulocal(f.get-player-stat-or-zero, %0, stash)), |, Lifestyle:, |, min(div(%qS, 10), 4)), * 2 * 2 * 1, 0, |, %1))
+&layout.coin [v(d.cgf)]=strcat(divider(Coin and wealth, %1), %r, multicol(strcat(Coin:, |, ulocal(f.get-player-stat-or-zero, %0, coin), /4, ||, Stash:, |, ulocal(f.get-player-stat-or-zero, %0, stash)/40, ||, Lifestyle:, |, ulocal(f.get-lifestyle-desc, %0), %b, %(, ulocal(f.get-lifestyle, %0), %)), * 3 2 * 5 2 * *, 0, |, %1))
 
 &layout.standard-gear [v(d.cgf)]=strcat(divider(Standard gear, %1), %r, multicol(edit(iter(fliplist(if(t(setr(G, ulocal(f.get-player-stat, %0, standard gear))), %qG, xget(%vD, d.standard_gear)), 2, |), ulocal(layout.gear-item, itext(0)), |, |), 0L, %ch%cx--%cn), * *, 0, |, %1))
 
@@ -70,9 +70,9 @@
 
 &layout.notes [v(d.cgf)]=strcat(divider(Notes, %1), %r, multicol(ulocal(f.get-player-notes, %0), *, 0, |, %1))
 
-&layout.footer [v(d.cgf)]=strcat(if(isapproved(%0), cat(Approved, ulocal(f.get-player-stat, %0, approved date)), Unapproved), %,, %b, setr(A, ulocal(f.get-advancements, %0, spent)), %b, plural(%qA, Advancement, Advancements))
+&layout.footer [v(d.cgf)]=strcat(if(isapproved(%0), cat(Approved, ulocal(f.get-player-stat, %0, approved date)), Unapproved), %,, %b, setr(A, add(ulocal(f.get-advancements, %0, Insight, spent), ulocal(f.get-advancements, %0, Prowess, spent), ulocal(f.get-advancements, %0, Resolve, spent), ulocal(f.get-advancements, %0, Playbook, spent))), %b, plural(%qA, Advancement, Advancements))
 
-&layout.crew_footer [v(d.cgf)]=strcat(if(isapproved(%0), cat(Approved, ulocal(f.get-player-stat, %0, approved date)), Unapproved), %,, %b, setr(A, ulocal(f.get-advancements, %0, spent, crew)), %b, plural(%qA, Advancement, Advancements))
+&layout.crew_footer [v(d.cgf)]=strcat(if(t(setr(D, ulocal(f.get-player-stat, %0, crew approved date))), cat(Approved, %qD), Unapproved), %,, %b, setr(A, ulocal(f.get-advancements, %0, Crew, spent)), %b, plural(%qA, Advancement, Advancements))
 
 &layout.subsection [v(d.cgf)]=strcat(ulocal(ulocal(f.get-stat-location, layout.%0), %1, %2), %r, footer(ulocal(strcat(layout., switch(%0, crew*, crew_), footer), switch(%0, crew*, ulocal(f.get-player-stat, %1, crew object), %1), %2), %2))
 
@@ -90,7 +90,7 @@
 
 &layout.crew2 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew-map, %qC, %1), %r, ulocal(layout.crew-cohorts, %qC, %1), %r, ulocal(layout.crew-contacts, %qC, %1), %r, ulocal(layout.crew-factions, %qC, %1), %r, ulocal(layout.crew-members, %qC, %1))
 
-&layout.crew_pools [v(d.cgf)]=strcat(divider(Pools, %1), %r, multicol(strcat(Hold:, |, ulocal(f.get-player-stat-or-default, %0, hold, Strong), |, Heat:, |, ulocal(f.get-player-stat-or-zero, %0, heat), /, ulocal(f.get-player-stat-or-default, %0, max heat, 9), |, Coin:, |, ulocal(f.get-player-stat-or-zero, %0, coin), /4, |, Crew XP:, |, ulocal(f.get-player-stat-or-zero, %0, crew xp), /10, |, Wanted Level:, |, ulocal(f.get-player-stat-or-zero, %0, wanted level), /4, |, Vaults:, |, ulocal(f.get-player-stat-or-zero, %0, vaults), /12), * 7 * 5 * 5, 0, |, %1))
+&layout.crew_pools [v(d.cgf)]=strcat(divider(Pools, %1), %r, multicol(strcat(Hold:, |, ulocal(f.get-player-stat-or-default, %0, hold, Strong), |, Heat:, |, ulocal(f.get-player-stat-or-zero, %0, heat), /, ulocal(f.get-player-stat-or-default, %0, max heat, 9), |, Coin:, |, ulocal(f.get-player-stat-or-zero, %0, crew coin), /, ulocal(f.get-vault-max, %0), |, Crew XP:, |, ulocal(f.get-xp, %0, Crew, unspent), /10, |, Wanted Level:, |, ulocal(f.get-player-stat-or-zero, %0, wanted level), /4), * 7 * 5 * 5, 0, |, %1))
 
 &layout.crew-abilities [v(d.cgf)]=strcat(divider(Crew Abilities, %1), %r, multicol(ulocal(f.get-player-stat, %0, Crew Abilities), * *, 0, |, %1))
 
@@ -221,20 +221,3 @@
 &layout.cg-commands [v(d.cgf)]=strcat(divider(Commands, %1), %r, multicol(+stat/set <stat>=<value>|+stat/set <stat>= to clear a stat|+stat/clear to start over|%0, * *, 0, |, %1))
 
 @@ TODO: If a staffer is looking at an unapproved sheet, @pemit them an extra layout which includes every "arbitrary text" field on the sheet so they can very quickly go over those for any unthematic stuff.
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ XP
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-@@ %0: player
-@@ %1: track
-&layout.xp_track [v(d.cgf)]=strcat(|, ansi(first(themecolors()), %1), |, ulocal(f.get-xp, %0, %1, total), |, ulocal(f.get-xp, %0, %1, current), /, ulocal(f.get-xp, %0, %1, max), |, ulocal(f.get-advancements, %0, %1, spent), /, ulocal(f.get-advancements, %0, %1, total))
-
-@@ %0: player
-@@ %1: unspent advancement count
-@@ %2: is the player a scoundrel
-&layout.xp_comments [v(d.cgf)]=squish(trim(strcat(if(t(%1), strcat(* You have %1 Untracked XP which needs to be moved onto a track.%r, space(3), %ch+xp/track <track>=<amount>%cn to move it to a useful place.)), if(%2, iter(setdiff(xget(%vD, d.xp_tracks), Untracked|Crew, |, |), if(t(setr(V, ulocal(f.get-advancements, %0, itext(0), unspent))), cat(%r*, You have %qV unspent, plural(%qV, Advancement, Advancements), in your, itext(0) track.)), |, @@))), b, %r), %r)
-
-&layout.crew-xp_comments [v(d.cgf)]=if(t(setr(V, ulocal(f.get-advancements, %0, Crew, unspent))), cat(%r*, Your crew has %qV unspent, plural(%qV, Advancement, Advancements).))
-
-&layout.xp [v(d.cgf)]=strcat(header(XP and Advancements, %1), %r, if(setr(S, not(ulocal(f.is_expert, %0))), strcat(multicol(strcat(|, ansi(first(themecolors())u, Total XP), |, ansi(first(themecolors())u, Current/Max XP), |, ansi(first(themecolors())u, Advancements Spent/\Total), ulocal(layout.xp_track, %0, Insight), ulocal(layout.xp_track, %0, Prowess), ulocal(layout.xp_track, %0, 	Resolve), ulocal(layout.xp_track, %0, Playbook), |, ansi(first(themecolors()), Untracked), |, setr(U, ulocal(f.get-xp, %0, Untracked, total)), setq(T, ulocal(layout.xp_comments, %0, %qU, %qS)), if(t(%qT), |||)), * 12 * 25, 0, |, %1), if(t(%qT), strcat(%r, formattext(%qT%r, 0, %1))))), setq(C, ulocal(f.get-player-stat, %0, crew object)), setq(T, ulocal(layout.crew-xp_comments, %qC)), multicol(strcat(|, ansi(first(themecolors())u, Total XP), |, ansi(first(themecolors())u, Current/Max XP), |, ansi(first(themecolors())u, Advancements Spent/\Total), ulocal(layout.xp_track, %qC, Crew)), * 12 * 25, 0, |, %1), if(t(%qT), strcat(formattext(%qT, 0, %1))), %r, footer(cat(ulocal(f.get-total-advancements, %0, spent), Advancements spent out of, ulocal(f.get-total-advancements, %0, total) total.), %1))
