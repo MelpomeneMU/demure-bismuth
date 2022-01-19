@@ -6,12 +6,12 @@ Channel creations
 	LFG channel
 
 CG
-	+stat/lock locks your stats from being changed and creates a job for staff to approve you
-	+crew/lock same
-XP (staff spending and advancement tracking)
+	Clean up the approval process.
+	Add job messages to +stat/lock and +crew/lock.
 Crew code
 	Probies (not optional)
 	Crew approval process
 	Vote to boot people (optional)
 	Invite-sharing (optional)
 Spend and regain Stress on the fly
+Downtime system

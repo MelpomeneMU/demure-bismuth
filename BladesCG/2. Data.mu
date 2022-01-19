@@ -33,11 +33,9 @@
 
 &d.addable-stats [v(d.cgdb)]=Abilities|Friends|Crew Abilities|Upgrades
 
-@@ TODO: Add Friends and Contacts to the list of CG-addable stats once we figure out how that'll work.
+&d.cg-addable-stats [v(d.cgdb)]=Upgrades|Abilities|Friends|Contacts|Crew Abilities
 
-&d.cg-addable-stats [v(d.cgdb)]=Upgrades|Abilities|Friends|Contacts
-
-&d.settable-addable-stats [v(d.cgdb)]=Abilities|Contacts|Friends|Traumas
+&d.settable-addable-stats [v(d.cgdb)]=Abilities|Contacts|Friends|Traumas|Crew Abilities
 
 &d.faction.questions [v(d.cgdb)]=Hunting|Helped|Harmed|Friendly|Unfriendly
 

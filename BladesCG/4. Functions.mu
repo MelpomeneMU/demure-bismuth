@@ -16,7 +16,7 @@
 
 &f.get-crew-name [v(d.cgf)]=ulocal(f.get-player-stat-or-default, ulocal(f.get-player-stat, %0, crew object), crew name, No crew yet)
 
-&f.get-singular-stat-name [v(d.cgf)]=switch(%0, Abilities, Special Ability, *s, reverse(rest(reverse(%0), s)), %0)
+&f.get-singular-stat-name [v(d.cgf)]=switch(%0, Abilities, Special Ability, Crew Abilities, Crew Ability, *s, reverse(rest(reverse(%0), s)), %0)
 
 &f.get-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
@@ -152,6 +152,8 @@
 
 &f.count-ticks [v(d.cgf)]=if(gt(setr(0, words(%0, \[X\])), 0), dec(%q0), 0)
 
+&f.count-boxes [v(d.cgf)]=add(ulocal(f.count-ticks, %0), if(gt(setr(0, words(%0, \\[ \\])), 0), dec(%q0), 0))
+
 @@ %0: crew object
 &f.count-upgrades [v(d.cgf)]=add(ulocal(f.count-ticks, ulocal(f.get-player-stat, %0, Upgrades)), ulocal(f.get-total-cohort-cost, %0))
 
@@ -270,3 +272,22 @@
 @@ %0: player
 @@ %1: total, spent, or unspent
 &f.get-total-advancements [v(d.cgf)]=ladd(iter(setdiff(xget(%vD, d.xp_tracks), Crew|Untracked, |, |), ulocal(f.get-advancements, %0, itext(0), %1), |))
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Downtimes
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&f.get-player-downtime-per-week [v(d.cgf)]=if(cand(ulocal(f.is_expert, %0), ulocal(f.has-list-stat, ulocal(f.get-player-stat, %0, crew object), Crew Abilities, All Hands)), 2, 1)
+
+&f.get-last-10-downtimes [v(d.cgf)]=extract(revwords(lattr(%0/_downtime-*)), 1, 10)
+
+@@ %0 - number of dice
+@@ Output: 1-3: 1; 4-5: 2; 6: 3; crit: 5
+@@ Registers: D: Roll results; S: Successes; M: Mixed; F: Failures; H: Highest; L: Lowest; R: the number rolled.
+&f.roll-to-heal [v(d.cgf)]=strcat(setq(S, setr(M, setr(F, setr(H, 0)))), setq(L, 6), setq(D, iter(switch(%0, 0, 1 2, lnum(%0)), strcat(setr(R, die(1, 6)), case(1, gte(%qR, 6), setq(S, inc(%qS)), gte(%qR, 4), setq(M, inc(%qM)), setq(F, inc(%qF))), if(gt(%qR, %qH), setq(H, %qR)), if(lt(%qR, %qL), setq(L, %qR))))), ulocal(f.colorize-die-roll, %qD, %0), |, case(1, eq(%0, 0), case(1, gt(%qL, 5), 3, gt(%qL, 3), 2, 1), gt(%qS, 1), 5, t(%qS), 3, t(%qM), 2, 1))
+
+@@ %0: the results
+@@ %1: the number of dice rolled
+&f.colorize-die-roll [v(d.cgf)]=if(t(%1), iter(%0, ansi(case(itext(0), 6, ch, 5, hg, 4, hg, xh), itext(0))), edit(%0, lmin(%0), ansi(hg, lmin(%0))))
+
+&f.get-max-healing-clock [v(d.cgf)]=if(ulocal(f.has-list-stat, %0, Abilities, Vigorous), 3, 4)

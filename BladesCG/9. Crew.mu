@@ -1,3 +1,7 @@
+@@ TODO: +crew <name> doesn't work.
+
+@@ TODO: Figure out a way to give a crew claims. +claim/award <name>=<blah> - but we also need to award claims that are mapped. +claim/award <name>=C1 for example.
+
 &c.+crew [v(d.cg)]=$+crew*:@break switch(%0, /*, 1, * *, 1, 0); @force %#=+sheet/crew%0;
 
 &c.+crew_all [v(d.cg)]=$+crew/all:@pemit %#=ulocal(layout.crew1, %#, %#); @pemit %#=ulocal(layout.crew2, %#, %#); @assert hasattr(%#, _stat.crew_locked)={ @pemit %#=strcat(%r, ulocal(layout.crew-cg-errors, %#, %#)); };

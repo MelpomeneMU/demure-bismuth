@@ -12,7 +12,7 @@
 
 @@ %0 - target
 @@ %1 - viewer
-&layout.page1 [v(d.cgf)]=if(ulocal(f.is_expert, %0), ulocal(layout.simple, %0, %1), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.pools, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1)))
+&layout.page1 [v(d.cgf)]=if(ulocal(f.is_expert, %0), ulocal(layout.simple, %0, %1), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.stress, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1)))
 
 &layout.page2 [v(d.cgf)]=if(ulocal(f.is_expert, %0), null(No second page.), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.friends, %0, %1), %r, ulocal(layout.gear, %0, %1), %r, ulocal(layout.projects, %0, %1), %r, ulocal(layout.notes, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1)))
 
@@ -38,15 +38,15 @@
 
 &layout.abilities [v(d.cgf)]=strcat(divider(ulocal(layout.abilities-title, %0, %1), %1), %r, multicol(ulocal(f.get-player-stat, %0, abilities), * *, 0, |, %1))
 
-&layout.health [v(d.cgf)]=strcat(divider(Health, %1), setq(4, ulocal(layout.3health, %0, %1, 4, %2)), setq(3, ulocal(layout.3health, %0, %1, 3, %2)), setq(2, ulocal(layout.2health, %0, %1, 2, %2)), setq(1, ulocal(layout.2health, %0, %1, 1, %2)), if(t(%q4), strcat(%r, %q4)), if(t(%q3), strcat(%r, %q3)), if(t(%q2), strcat(%r, %q2)), if(t(%q1), strcat(%r, %q1)), if(not(cor(t(%q4), t(%q3), t(%q2), t(%q1))), strcat(%r, formattext(Unwounded, 0, %1))), if(t(%2), formattext(%b, 0, %1)))
+&layout.health [v(d.cgf)]=strcat(divider(Health, %1), setq(4, ulocal(layout.3health, %0, %1, 4, %2)), setq(3, ulocal(layout.3health, %0, %1, 3, %2)), setq(2, ulocal(layout.2health, %0, %1, 2, %2)), setq(1, ulocal(layout.2health, %0, %1, 1, %2)), if(t(%q4), strcat(%r, %q4)), if(t(%q3), strcat(%r, %q3)), if(t(%q2), strcat(%r, %q2)), if(t(%q1), strcat(%r, %q1)), %r, formattext(strcat(if(cor(t(%q4), t(%q3), t(%q2), t(%q1)), strcat(%r, space(3))), Healing clock:, %b, default(%0/_health-clock, 0), /, ulocal(f.get-max-healing-clock, %0)), 0, %1), if(t(%2), formattext(%b, 0, %1)))
 
-&layout.3health [v(d.cgf)]=if(or(t(%3), t(setr(H, xget(%0, _health-%2)))), edit(multicol(strcat(setq(W, sub(getremainingwidth(%1), 13)), |, _, repeat(@, %qW), |||, #, center(__, %qW, _), #, |, case(%2, 4, Catastrophic), |, %2, |, ulocal(layout.player-health, %0, %1, %qH, %qW), |, case(%2, 4, permanent, Need help), ||, #, repeat(@, %qW), #, |, case(%2, 4, consequences)), 1 * 13, 0, |, %1), _, %b, @, _, #, |))
+&layout.3health [v(d.cgf)]=if(or(t(%3), t(setr(H, xget(%0, _health-%2)))), edit(multicol(strcat(setq(W, sub(getremainingwidth(%1), 17)), |, _, repeat(@, %qW), |||, #, center(__, %qW, _), #, |, case(%2, 4, Catastrophic), |, %2, |, ulocal(layout.player-health, %0, %1, %qH, %qW), |, case(%2, 4, permanent, Need help), ||, #, repeat(@, %qW), #, |, case(%2, 4, consequences)), 1 * 13, 0, |, %1), _, %b, @, _, #, |))
 
 &layout.player-health [v(d.cgf)]=strcat(#, center(mid(%2, 0, %3), %3, _), #)
 
-&layout.2health [v(d.cgf)]=if(or(t(%3), t(setr(1, xget(%0, _health-%2-1))), t(setr(2, xget(%0, _health-%2-2)))), edit(multicol(strcat(setq(W, sub(div(sub(getremainingwidth(%1), 10), 2), 3)), |, _, repeat(@, %qW), |, _, repeat(@, %qW), |||, #, center(__, %qW, _), #, |, #, center(__, %qW, _), #, ||, %2, |, ulocal(layout.player-health, %0, %1, %q1, %qW), |, ulocal(layout.player-health, %0, %1, %q2, %qW), |, case(%2, 2, -1d, Less effect), ||, #, repeat(@, %qW), #, |, #, repeat(@, %qW), #), 1 * * 13, 0, |, %1), _, %b, @, _, #, |))
+&layout.2health [v(d.cgf)]=if(or(t(%3), t(setr(1, xget(%0, _health-%2-1))), t(setr(2, xget(%0, _health-%2-2)))), edit(multicol(strcat(setq(W, sub(div(sub(getremainingwidth(%1), 14), 2), 3)), |, _, repeat(@, %qW), |, _, repeat(@, %qW), |||, #, center(__, %qW, _), #, |, #, center(__, %qW, _), #, ||, %2, |, ulocal(layout.player-health, %0, %1, %q1, %qW), |, ulocal(layout.player-health, %0, %1, %q2, %qW), |, case(%2, 2, -1d, Less effect), ||, #, repeat(@, %qW), #, |, #, repeat(@, %qW), #), 1 * * 13, 0, |, %1), _, %b, @, _, #, |))
 
-&layout.pools [v(d.cgf)]=strcat(divider(Pools, %1), %r, multicol(strcat(Stress, |, ulocal(f.get-player-stat-or-default, %0, Stress, 0), /, ulocal(f.get-max-stress, %0), |, Traumas:, |, words(ulocal(f.get-player-stat, %0, Traumas), |), /, ulocal(f.get-max-trauma, %0), |, Healing, |, default(%0/_health-clock, 0), /4), * 5 * 5 * 5, 0, |, %1), %r, formattext(cat(Traumas:, ulocal(f.get-player-stat-or-default, %0, Traumas, None yet.)), 0, %1))
+&layout.stress [v(d.cgf)]=strcat(divider(Stress, %1), %r, multicol(strcat(Stress:, |, ulocal(f.get-player-stat-or-default, %0, Stress, 0), /, ulocal(f.get-max-stress, %0), |, Traumas:, |, words(ulocal(f.get-player-stat, %0, Traumas), |), /, ulocal(f.get-max-trauma, %0)), * 5 * 5, 0, |, %1), %r, formattext(cat(Traumas:, ulocal(layout.list, setr(T, ulocal(f.get-player-stat-or-default, %0, Traumas, None yet.))), if(t(ulocal(f.get-player-stat, %0, needs trauma)), cat(%r%rNew trauma required. +trauma/add <choice> from the following list:, ulocal(layout.list, setdiff(xget(%vD, d.value.traumas), %qT, |, |))))), 0, %1))
 
 &layout.xp_triggers [v(d.cgf)]=strcat(divider(XP Triggers, %1), %r, formattext(strcat(* You, %b, ulocal(f.get-player-stat-or-default, %0, xp triggers, addressed a challenge with ______ or ______)., %r, * You roll a desperate action., %r, * You express your beliefs%, drives%, heritage%, or background., %r, * You struggled with issues from your vice or traumas during the session.), 0, %1))
 
@@ -54,7 +54,7 @@
 
 &layout.gear [v(d.cgf)]=strcat(divider(Playbook gear, %1), %r, multicol(edit(iter(fliplist(ulocal(f.get-player-stat, %0, gear), 2, |), ulocal(layout.gear-item, itext(0)), |, |), 0L, %ch%cx--%cn), * *, 0, |, %1), %r, ulocal(layout.other-gear, %0, %1, %2), %r, ulocal(layout.load-chart, %0, %1), if(t(%2), strcat(%r, ulocal(layout.standard-gear, %0, %1, %2))), %r, ulocal(layout.coin, %0, %1))
 
-&layout.coin [v(d.cgf)]=strcat(divider(Coin and wealth, %1), %r, multicol(strcat(Coin:, |, ulocal(f.get-player-stat-or-zero, %0, coin), /4, ||, Stash:, |, ulocal(f.get-player-stat-or-zero, %0, stash)/40, ||, Lifestyle:, |, ulocal(f.get-lifestyle-desc, %0), %b, %(, ulocal(f.get-lifestyle, %0), %)), * 3 2 * 5 2 * *, 0, |, %1))
+&layout.coin [v(d.cgf)]=strcat(divider(Coin and wealth, %1), %r, multicol(strcat(Coin:, |, ulocal(f.get-player-stat-or-zero, %0, coin), /4, |, Stash:, |, ulocal(f.get-player-stat-or-zero, %0, stash)/40, |, Lifestyle:, |, ulocal(f.get-lifestyle-desc, %0), %b, %(, ulocal(f.get-lifestyle, %0), %)), 15 5 * 5 * 15, 0, |, %1))
 
 &layout.standard-gear [v(d.cgf)]=strcat(divider(Standard gear, %1), %r, multicol(edit(iter(fliplist(if(t(setr(G, ulocal(f.get-player-stat, %0, standard gear))), %qG, xget(%vD, d.standard_gear)), 2, |), ulocal(layout.gear-item, itext(0)), |, |), 0L, %ch%cx--%cn), * *, 0, |, %1))
 
@@ -86,11 +86,13 @@
 
 &layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.crew_bio), Lair|Crew Name|Hunting Grounds|Reputation, |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), Not set)), |, |), * *, 0, |, %1), %r, formattext(strcat(Reputation:, %b, ulocal(f.get-player-stat-or-default, %0, Reputation, Not set), %r, Hunting Grounds:, %b, ulocal(f.get-player-stat-or-default, %0, Hunting Grounds, Not set), %b, \[, first(ulocal(f.get-player-stat-or-default, %0, faction.hunting, +faction/set Hunting=<faction> to select|), |), \], %r, Lair:, %b, ulocal(f.get-player-stat-or-default, %0, Lair, Not set))))
 
-&layout.crew1 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew_pools, %qC, %1), %r, ulocal(layout.crew-abilities, %qC, %1), %r, ulocal(layout.crew-upgrades, %qC, %1), %r, ulocal(layout.crew-xp_triggers, %qC, %1))
+&layout.crew1 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew-heat, %qC, %1), %r, ulocal(layout.crew-coin, %qC, %1), %r, ulocal(layout.crew-abilities, %qC, %1), %r, ulocal(layout.crew-upgrades, %qC, %1), %r, ulocal(layout.crew-xp_triggers, %qC, %1))
 
 &layout.crew2 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew-map, %qC, %1), %r, ulocal(layout.crew-cohorts, %qC, %1), %r, ulocal(layout.crew-contacts, %qC, %1), %r, ulocal(layout.crew-factions, %qC, %1), %r, ulocal(layout.crew-members, %qC, %1))
 
-&layout.crew_pools [v(d.cgf)]=strcat(divider(Pools, %1), %r, multicol(strcat(Hold:, |, ulocal(f.get-player-stat-or-default, %0, hold, Strong), |, Heat:, |, ulocal(f.get-player-stat-or-zero, %0, heat), /, ulocal(f.get-player-stat-or-default, %0, max heat, 9), |, Coin:, |, ulocal(f.get-player-stat-or-zero, %0, crew coin), /, ulocal(f.get-vault-max, %0), |, Crew XP:, |, ulocal(f.get-xp, %0, Crew, unspent), /10, |, Wanted Level:, |, ulocal(f.get-player-stat-or-zero, %0, wanted level), /4), * 7 * 5 * 5, 0, |, %1))
+&layout.crew-coin [v(d.cgf)]=strcat(multicol(strcat(Crew Coin:, |, ulocal(f.get-player-stat-or-zero, %0, crew coin), /, ulocal(f.get-vault-max, %0)), 15 5 * 5 * 15, 0, |, %1))
+
+&layout.crew-heat [v(d.cgf)]=strcat(divider(Heat and Wanted Levels, %1), %r, multicol(strcat(Heat:, |, ulocal(f.get-player-stat-or-zero, %0, heat), /, ulocal(f.get-player-stat-or-default, %0, max heat, 9), |, Wanted Level:, |, ulocal(f.get-player-stat-or-zero, %0, wanted level), /4, |, Hold:, |, ulocal(f.get-player-stat-or-default, %0, hold, Strong)), 15 5 * 5 * 8, 0, |, %1))
 
 &layout.crew-abilities [v(d.cgf)]=strcat(divider(Crew Abilities, %1), %r, multicol(ulocal(f.get-player-stat, %0, Crew Abilities), * *, 0, |, %1))
 
@@ -117,9 +119,15 @@
 
 &layout.crew-map [v(d.cgf)]=strcat(divider(Holdings, %1), %r, ulocal(layout.crew-map-format, %0, %1, ulocal(f.get-player-stat-or-default, %0, crew type, blank)))
 
+@@ TODO: Add a list of unmapped claims after the crew map.
+
+@@ TODO: Track Turf as a separate number, max 6. Accord changes it, so does that one that lets your Wanted Level count as turf, Fiends.
+
+@@ TODO: Separate crew sheet for Jail Claims.
+
 &layout.crew-map-format [v(d.cgf)]=edit(formattext(edit(ulocal(layout.crew-map.%2, %0, %1), |, @), 0, %1), @, |)
 
-&layout.crew-xp_triggers [v(d.cgf)]=strcat(divider(Crew XP Triggers, %1), %r, formattext(strcat(*, %b, ulocal(f.get-player-stat-or-default, %0, crew xp triggers, Select your crew type to show this information.), %r, * Contend with challenges above your current station., %r, * Bolster your crew's reputation or develop a new one., %r, * Express the goals%, drives%, inner conflict%, or essential nature of the crew.), 0, %1))
+&layout.crew-xp_triggers [v(d.cgf)]=strcat(divider(strcat(Crew XP, %b, %(, ulocal(f.get-xp, %0, Crew, unspent), /10, %)), %1), %r, formattext(strcat(*, %b, ulocal(f.get-player-stat-or-default, %0, crew xp triggers, Select your crew type to show this information.), %r, * Contend with challenges above your current station., %r, * Bolster your crew's reputation or develop a new one., %r, * Express the goals%, drives%, inner conflict%, or essential nature of the crew.), 0, %1))
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew maps
