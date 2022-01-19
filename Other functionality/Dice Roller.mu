@@ -39,12 +39,14 @@ Switches:
 @@ Output: Roll results|Successes|Mixed|Failures|Highest|Lowest
 &f.roll-dice [v(d.dr)]=strcat(setq(S, setr(M, setr(F, setr(H, 0)))), setq(L, 6), iter(switch(%0, 0, 1 2, lnum(%0)), strcat(setr(R, die(1, 6)), case(1, gte(%qR, 6), setq(S, inc(%qS)), gte(%qR, 4), setq(M, inc(%qM)), setq(F, inc(%qF))), if(gt(%qR, %qH), setq(H, %qR)), if(lt(%qR, %qL), setq(L, %qR)))), |%qS|%qM|%qF|%qH|%qL)
 
+&f.colorize-die-roll [v(d.dr)]=if(t(%1), iter(%0, ansi(case(itext(0), 6, ch, 5, hg, 4, hg, xh), itext(0))), edit(%0, lmin(%0), ansi(hg, lmin(%0))))
+
 @@ %0 - player
 @@ %1 - dice to roll
 @@ %2 - stat to Roll
 @@ %3 - is resistance roll
 @@ %4 - destination
-&layout.sentence [v(d.dr)]=squish(strcat(alert(Dice), %b, setq(R, ulocal(f.roll-dice, %1)), ulocal(layout.destination, %4, %0), %b, ulocal(f.get-name, %0) rolled, %b, if(t(%2), cat(poss(%0), %2%,, %1), %1), %b, plural(%1, die, dice)%, and got, %b, iter(first(%qR, |), ulocal(layout.die-roll, itext(0)))., %b, ulocal(layout.[if(%3, resistance, result)], %1, %qR, %0)))
+&layout.sentence [v(d.dr)]=squish(strcat(alert(Dice), %b, setq(R, ulocal(f.roll-dice, %1)), ulocal(layout.destination, %4, %0), %b, ulocal(f.get-name, %0) rolled, %b, if(t(%2), cat(poss(%0), %2%,, %1), %1), %b, plural(%1, die, dice)%, and got, %b, ulocal(f.colorize-die-roll, first(%qR, |), %1)., %b, ulocal(layout.[if(%3, resistance, result)], %1, %qR, %0)))
 
 @@ %0 - number of dice
 @@ %1 - roll results
@@ -55,8 +57,6 @@ Switches:
 @@ %0 - destination
 @@ %1 - player
 &layout.destination [v(d.dr)]=switch(%0, %1, To yourself:, loc(%1),, ulocal(f.find-player, %0, %1), cat(To, ulocal(f.get-name, %0):), if(cand(isdbref(%0), hastype(%0, THING)), cat(To, name(%0):), switch(%0, * *, cat(To, itemize(iter(%0, ulocal(f.get-name, itext(0)),, |), |):))))
-
-&layout.die-roll [v(d.dr)]=ansi(case(%0, 6, ch, 5, hg, 4, hg, xh), %0)
 
 &layout.crit [v(d.dr)]=ansi(ch, critical success)!
 
