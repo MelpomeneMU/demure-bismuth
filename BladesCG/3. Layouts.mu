@@ -88,7 +88,7 @@
 
 &layout.crew1 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew-heat, %qC, %1), %r, ulocal(layout.crew-coin, %qC, %1), %r, ulocal(layout.crew-abilities, %qC, %1), %r, ulocal(layout.crew-upgrades, %qC, %1), %r, ulocal(layout.crew-xp_triggers, %qC, %1))
 
-&layout.crew2 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew-map, %qC, %1), %r, ulocal(layout.crew-cohorts, %qC, %1), %r, ulocal(layout.crew-contacts, %qC, %1), %r, ulocal(layout.crew-factions, %qC, %1), %r, ulocal(layout.crew-members, %qC, %1))
+&layout.crew2 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew-map, %qC, %1), %r, ulocal(layout.crew-cohorts, %qC, %1), %r, ulocal(layout.crew-contacts, %qC, %1), %r, ulocal(layout.crew-factions, %qC, %1), %r, ulocal(layout.crew-members, %qC, %1))
 
 &layout.crew-coin [v(d.cgf)]=strcat(multicol(strcat(Crew Coin:, |, ulocal(f.get-player-stat-or-zero, %0, crew coin), /, ulocal(f.get-vault-max, %0)), 15 5 * 5 * 15, 0, |, %1))
 
@@ -115,7 +115,7 @@
 
 &layout.crew-upgrades [v(d.cgf)]=strcat(divider(Upgrades, %1), %r, setq(U, ulocal(f.get-player-stat, %0, Upgrades)), setq(M, ulocal(f.replace-upgrades, xget(%vD, strcat(d.upgrades., ulocal(f.get-player-stat, %0, Crew Type))), %qU)), setq(M, strcat(%qM, |, ulocal(f.get-extra-crew-upgrades, %qU, %qM))), setq(M, squish(trim(%qM, b, |), |)), setq(L, xget(%vD, d.upgrades.lair)), setq(T, xget(%vD, d.upgrades.training)), setq(Q, xget(%vD, d.upgrades.quality)), setq(W, div(getremainingwidth(%1), 2)), multicol(fliplist(strcat(divider(Crew, %qW), |, %qM, |, divider(Quality, %qW), |, ulocal(f.replace-upgrades, %qQ, %qU), repeat(|, sub(add(words(%qL, |), words(%qT, |)), add(words(%qM, |), words(%qQ, |)))), |, divider(Lair, %qW), |, ulocal(f.replace-upgrades, %qL, %qU), |, divider(Training, %qW), |, ulocal(f.replace-upgrades, %qT, %qU)), 2, |), * *, 0, |, %1))
 
-&layout.crew-members [v(d.cgf)]=strcat(divider(Members, %1), %r, multicol(iter(ulocal(f.get-crew-members, %0), trim(cat(ulocal(f.get-name, itext(0), %1), if(t(member(itext(0), %0)), ansi(g, %(Statter%)), if(not(isapproved(itext(0))), ansi(ch, %(Provisional%)))), ulocal(f.get-crew_title, itext(0)))),, |), * *, 0, |, %1))
+&layout.crew-members [v(d.cgf)]=strcat(divider(Members, %1), %r, multicol(iter(ulocal(f.get-crew-members, %0), trim(cat(ulocal(f.get-name, itext(0), %1), case(1, ulocal(f.is-founding-member, itext(0), %0), ansi(cg, %(Founder%)), ulocal(f.is-probationary-member, itext(0), %0), ansi(ch, %(Probationary%))), ulocal(f.get-crew_title, itext(0)))),, |), * *, 0, |, %1))
 
 &layout.crew-map [v(d.cgf)]=strcat(divider(Holdings, %1), %r, ulocal(layout.crew-map-format, %0, %1, ulocal(f.get-player-stat-or-default, %0, crew type, blank)))
 

@@ -5,6 +5,9 @@
 @@ This is how long crew invitations last - default is 3 days.
 &d.crew-invitation-time [v(d.cgdb)]=259200
 
+@@ 3888000 = 45 days (60 * 60 * 24 * 45)
+&d.crew-probationary-period [v(d.cgdb)]=3888000
+
 @@ If this is 'msg', the code will use the msg command to send notes to players. If it's anything else, the code will first try to @pemit, then will send @mail.
 &d.message-method [v(d.cgdb)]=msg
 

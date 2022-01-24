@@ -1,5 +1,5 @@
 Jobs customizations
-  req/social etc
+  req/social etc, fix up req to work like a +command
 Board customizations
 	Crews board
 Channel creations
@@ -13,5 +13,11 @@ Crew code
 	Crew approval process
 	Vote to boot people (optional)
 	Invite-sharing (optional)
-Spend and regain Stress on the fly
 Downtime system
+	Spend and regain Stress
+	Think about how to calculate and award coin to a crew when they have claims that grant them extra coin.
+
+Grid
+Wiki
+	News
+	Help

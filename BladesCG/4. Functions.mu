@@ -291,3 +291,17 @@
 &f.colorize-die-roll [v(d.cgf)]=if(t(%1), iter(%0, ansi(case(itext(0), 6, ch, 5, hg, 4, hg, xh), itext(0))), edit(%0, lmin(%0), ansi(hg, lmin(%0))))
 
 &f.get-max-healing-clock [v(d.cgf)]=if(ulocal(f.has-list-stat, %0, Abilities, Vigorous), 3, 4)
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Crew
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ %0: player dbref
+@@ %1: crew object
+&f.is-founding-member [v(d.cgf)]=cand(t(member(ulocal(f.get-player-stat, %0, crew object), %1)), if(t(setr(D, ulocal(f.get-player-stat, %1, crew approved date))), lt(unprettytime(xget(%0, last(lattr(%0/_crew-join-%1-*)))), unprettytime(%qD)), 1))
+
+&f.is-probationary-member [v(d.cgf)]=cand(t(member(ulocal(f.get-player-stat, %0, crew object), %1)), not(ulocal(f.is-founding-member, %0, %1)), if(ulocal(f.is-crew-approved, %1), lt(sub(secs(), unprettytime(xget(%0, last(lattr(%0/_crew-join-%1-*))))), xget(%vD, d.crew-probationary-period)), 0))
+
+&f.is-full-member [v(d.cgf)]=cand(t(member(ulocal(f.get-player-stat, %0, crew object), %1)), cor(ulocal(f.is-founding-member, %0, %1), not(ulocal(f.is-probationary-member, %0, %1))))
+
+&f.is-crew-approved [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, crew approved date))
