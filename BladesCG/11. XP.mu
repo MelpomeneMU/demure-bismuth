@@ -1,5 +1,11 @@
 /*
 
++xp
++xp <player> - staff
++xp/award <player>=<#> <reason>
++xp/award <player>/<track>=<#> <reason>
++xp/track <track>=<#>
+
 +adv - view your log
 +adv/crew - view your crew's advancements
 +adv <player> - view their log
@@ -43,7 +49,7 @@
 
 &layout.crew-xp_comments [v(d.cgf)]=if(t(setr(V, ulocal(f.get-advancements, %0, Crew, unspent))), cat(%r*, Your crew has %qV unspent, plural(%qV, Advancement, Advancements).))
 
-&layout.xp [v(d.cgf)]=strcat(header(XP and Advancements, %1), %r, if(setr(S, not(ulocal(f.is_expert, %0))), strcat(multicol(strcat(|, ansi(first(themecolors())u, Total XP), |, ansi(first(themecolors())u, Current/Max XP), |, ansi(first(themecolors())u, Advancements Spent/\Total), ulocal(layout.xp_track, %0, Insight), ulocal(layout.xp_track, %0, Prowess), ulocal(layout.xp_track, %0, 	Resolve), ulocal(layout.xp_track, %0, Playbook), |, ansi(first(themecolors()), Untracked), |, setr(U, ulocal(f.get-xp, %0, Untracked, total)), setq(T, ulocal(layout.xp_comments, %0, %qU, %qS)), if(t(%qT), |||)), * 12 * 25, 0, |, %1), if(t(%qT), strcat(%r, formattext(%qT%r, 0, %1))))), setq(C, ulocal(f.get-player-stat, %0, crew object)), setq(T, ulocal(layout.crew-xp_comments, %qC)), multicol(strcat(|, ansi(first(themecolors())u, Total XP), |, ansi(first(themecolors())u, Current/Max XP), |, ansi(first(themecolors())u, Advancements Spent/\Total), ulocal(layout.xp_track, %qC, Crew)), * 12 * 25, 0, |, %1), if(t(%qT), strcat(formattext(%qT, 0, %1))), %r, footer(cat(ulocal(f.get-total-advancements, %0, spent), Advancements spent out of, ulocal(f.get-total-advancements, %0, total) total.), %1))
+&layout.xp [v(d.cgf)]=strcat(header(XP and Advancements, %1), %r, if(setr(S, not(ulocal(f.is_expert, %0))), strcat(multicol(strcat(|, ansi(first(themecolors())u, Total XP), |, ansi(first(themecolors())u, Current/Max XP), |, ansi(first(themecolors())u, Advancements Spent/\Total), ulocal(layout.xp_track, %0, Insight), ulocal(layout.xp_track, %0, Prowess), ulocal(layout.xp_track, %0, 	Resolve), ulocal(layout.xp_track, %0, Playbook), |, ansi(first(themecolors()), Untracked), |, setr(U, ulocal(f.get-xp, %0, Untracked, total)), setq(T, ulocal(layout.xp_comments, %0, %qU, %qS)), if(t(%qT), |||)), * 12 * 25, 0, |, %1), if(t(%qT), strcat(%r, formattext(%qT%r, 0, %1))))), setq(C, ulocal(f.get-player-stat, %0, crew object)), setq(T, ulocal(layout.crew-xp_comments, %qC)), multicol(strcat(|, ansi(first(themecolors())u, Total XP), |, ansi(first(themecolors())u, Current/Max XP), |, ansi(first(themecolors())u, Advancements Spent/\Total), ulocal(layout.xp_track, %qC, Crew)), * 12 * 25, 0, |, %1), if(t(%qT), strcat(formattext(%qT, 0, %1))), setq(L, ulocal(f.get-last-X-logs, %0, _xp-, 5)), if(t(%qL), strcat(%r, divider(Last 5 XP logs, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), setq(L, ulocal(f.get-last-X-logs, %0, _stat.advancement_, 5)), if(t(%qL), strcat(%r, divider(Last 5 Advancement logs %(+adv for more%), %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), setq(L, ulocal(f.get-last-X-logs, %0, _stat.crew_advancement_, 5)), if(t(%qL), strcat(%r, divider(Last 5 Crew Advancement logs %(+adv/crew for more%), %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(cat(ulocal(f.get-total-advancements, %0, spent), Advancements spent out of, ulocal(f.get-total-advancements, %0, total) total.), %1))
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ +xp/award
@@ -57,7 +63,7 @@
 @@ %1: Value
 @@ %2: Caller
 @@ %3: XP Track
-&tr.xp-award [v(d.cg)]=@assert isstaff(%2)={ @trigger me/tr.error=%2, You must be staff to award XP to players.; }; @assert t(setr(P, ulocal(f.find-player, %0, %2)))={ @trigger me/tr.error=%2, Could not find a player named '%0'.; }; @assert t(setr(T, finditem(setr(L, xget(%vD, d.xp_tracks)), %3, |)))={ @trigger me/tr.error=%2, '%3' is not a valid XP track. Valid tracks are [ulocal(layout.list, %qL)].; }; @assert isnum(%1)={ @trigger me/tr.error=%2, '%1' is not a number.; }; @eval setq(N, ulocal(f.get-name, %qP, %2)); @assert isapproved(%qP)={ @trigger me/tr.error=%2, %qN is not approved and cannot receive XP.; };  @assert cor(not(strmatch(%qT, Crew)), t(setr(C, ulocal(f.get-player-stat, %qP, crew object))))={ @trigger me/tr.error=%2, %qN doesn't currently have a crew set up and cannot receive Crew XP.; }; @assert cor(strmatch(%qT, Crew), not(ulocal(f.is_expert, %qP)))={ @trigger me/tr.error=%2, %qN is an Expert and cannot receive %qT XP.; }; @trigger me/tr.increase-track=%qT, %1, %qP, %2, add;
+&tr.xp-award [v(d.cg)]=@assert isstaff(%2)={ @trigger me/tr.error=%2, You must be staff to award XP to players.; }; @assert t(setr(P, ulocal(f.find-player, %0, %2)))={ @trigger me/tr.error=%2, Could not find a player named '%0'.; }; @assert t(setr(T, finditem(setr(L, xget(%vD, d.xp_tracks)), %3, |)))={ @trigger me/tr.error=%2, '%3' is not a valid XP track. Valid tracks are [ulocal(layout.list, %qL)].; }; @eval setq(V, if(isnum(first(%1)), first(%1), 0)); @eval strcat(setq(R, if(isnum(first(%1)), rest(%1), %1)), setq(R, squish(trim(switch(%qR, for *, rest(%qR), %qR))))); @assert t(%qR)={ @trigger me/tr.error=%2, Can't figure out what your reason for granting this XP was.; }; @assert cand(gt(%qV, 0), lte(%qV, 10))={ @trigger me/tr.error=%2, %qV must be a number between 1 and 10.; }; @eval setq(N, ulocal(f.get-name, %qP, %2)); @assert isapproved(%qP)={ @trigger me/tr.error=%2, %qN is not approved and cannot receive XP.; }; @assert cor(not(strmatch(%qT, Crew)), t(setr(C, ulocal(f.get-player-stat, %qP, crew object))))={ @trigger me/tr.error=%2, %qN doesn't currently have a crew set up and cannot receive Crew XP.; }; @assert cor(strmatch(%qT, Crew), not(ulocal(f.is_expert, %qP)))={ @trigger me/tr.error=%2, %qN is an Expert and cannot receive %qT XP.; }; @trigger me/tr.increase-track=%qT, %qV, %qP, %2, add, '%qR';
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ +xp
@@ -86,7 +92,8 @@
 @@ %2: player
 @@ %3: actor
 @@ %4: action
-&tr.increase-track [v(d.cg)]=@eval setq(C, switch(%qT, Crew, ulocal(f.get-player-stat, %2, crew object), %2)); @eval setq(X, ulocal(f.get-xp, %qC, %0, total)); @eval setq(M, ulocal(f.get-xp, %qC, %0, max)); @eval setq(U, add(%1, ulocal(f.get-xp, %qC, %0, unspent))); @eval setq(A, ulocal(f.get-advancements, %qC, %0, total)); @eval setq(G, if(gt(%qM, 0), if(gt(%qU, %qM), div(%qU, %qM), eq(%qU, %qM)))); @set %qC=[ulocal(f.get-stat-location-on-player, xp.%0.total)]:[setr(V, add(%qX, %1))]; @set %qC=[ulocal(f.get-stat-location-on-player, advancements.%0.total)]:[if(t(%qG), add(%qA, %qG), %qA)]; @trigger me/tr.success=%3, ulocal(layout.%4_track, %0, %1, %2, %3, %qG);
+@@ %5: reason, if any
+&tr.increase-track [v(d.cg)]=@eval setq(C, switch(%qT, Crew, ulocal(f.get-player-stat, %2, crew object), %2)); @eval setq(X, ulocal(f.get-xp, %qC, %0, total)); @eval setq(M, ulocal(f.get-xp, %qC, %0, max)); @eval setq(U, add(%1, ulocal(f.get-xp, %qC, %0, unspent))); @eval setq(A, ulocal(f.get-advancements, %qC, %0, total)); @eval setq(G, if(gt(%qM, 0), if(gt(%qU, %qM), div(%qU, %qM), eq(%qU, %qM)))); @set %qC=[ulocal(f.get-stat-location-on-player, xp.%0.total)]:[setr(V, add(%qX, %1))]; @set %qC=[ulocal(f.get-stat-location-on-player, advancements.%0.total)]:[if(t(%qG), add(%qA, %qG), %qA)]; @trigger me/tr.success=%3, ulocal(layout.%4_track, %0, %1, %2, %3, %qG, %5); @trigger me/tr.log=%2, _xp-, %3, switch(%4, add, Awarded %1 XP for %5., Moved %1 Untracked XP to the %0 track.);
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ +adv/spend
@@ -100,7 +107,7 @@
 @@ %1: advancement type - player or crew
 @@ %2: advancement note
 @@ %3: logging player
-&tr.log-advancement [v(d.cg)]=@set %0=[ulocal(f.get-next-id-attr, %0, ulocal(f.get-stat-location-on-player, strcat(switch(%1, c*, crew_), advancement_)))]:%2;
+&tr.log-advancement [v(d.cg)]=@trigger me/tr.log=%0, ulocal(f.get-stat-location-on-player, strcat(switch(%1, c*, crew_), advancement_)), %3, %2;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ +adv/log
@@ -108,11 +115,11 @@
 
 &layout.stat-advancement [v(d.cgf)]=cat(Purchased, ulocal(f.get-singular-stat-name, %2), ulocal(f.get-pretty-value, %2, %1, %3, %4).)
 
-&layout.advancement [v(d.cgf)]=cat(first(prettytime()), if(isdbref(%1), ulocal(f.get-name, %1): %0, ulocal(layout.stat-advancement, %0, %1, %2, %3, %4)))
+&layout.advancement [v(d.cgf)]=if(isdbref(%1), ulocal(f.get-name, %1): %0, ulocal(layout.stat-advancement, %0, %1, %2, %3, %4))
 
-&layout.advancement_log [v(d.cgf)]=strcat(header(cat(Advancement log, -, ulocal(f.get-name, %0)), %1), %r, formattext(strcat(setq(A, iter(lattr(strcat(%0, /, ulocal(f.get-stat-location-on-player, advancement_, ), *)), xget(%0, itext(0)),, |)), if(t(%qA), %qA, No advancements yet.)), 0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1))
+&layout.advancement_log [v(d.cgf)]=strcat(header(cat(Advancement log, -, ulocal(f.get-name, %0)), %1), %r, formattext(strcat(setq(A, iter(ulocal(f.get-last-X-logs, %0, ulocal(f.get-stat-location-on-player, advancement_, ), 100), ulocal(layout.log, xget(%0, itext(0))),, |)), if(t(%qA), %qA, No advancements yet.)), 0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1))
 
-&layout.crew_advancement_log [v(d.cgf)]=strcat(header(cat(Crew advancement log, -, ulocal(f.get-crew-name, %0)), %1), %r, formattext(strcat(setq(A, iter(lattr(strcat(%0, /, ulocal(f.get-stat-location-on-player, crew_advancement_), *)), xget(%0, itext(0)),, |)), if(t(%qA), %qA, No crew advancements yet.)), 0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1))
+&layout.crew_advancement_log [v(d.cgf)]=strcat(header(cat(Crew advancement log, -, ulocal(f.get-crew-name, %0)), %1), %r, formattext(strcat(setq(A, iter(ulocal(f.get-last-X-logs, %0, ulocal(f.get-stat-location-on-player, crew_advancement_), 100), ulocal(layout.log, xget(%0, itext(0))),, |)), if(t(%qA), %qA, No crew advancements yet.)), 0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1))
 
 &c.+adv [v(d.cg)]=$+adv:@pemit %#=ulocal(layout.advancement_log, %#, %#);
 
@@ -122,6 +129,6 @@
 
 &c.+adv/crew_player [v(d.cg)]=$+adv/crew *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to view player Advancements.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @break strmatch(%0, *=*); @pemit %#=ulocal(layout.crew_advancement_log, %qP, %#);
 
-&c.+adv/log_add [v(d.cg)]=$+ad v/log *=*:@break strmatch(%0, */*); @assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to add to a player's Advancements log.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @trigger me/tr.log-advancement=%qP, player, ulocal(layout.advancement, %1, %#), %#; @trigger me/tr.success=%#, cat(You logged an advancement note on, ulocal(f.get-name, %qP, %#), stating: %1; );
+&c.+adv/log_add [v(d.cg)]=$+ad v/log *=*:@break strmatch(%0, */*); @assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to add to a player's Advancements log.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @trigger me/tr.log-advancement=%qP, player, ulocal(layout.advancement, %1, %#), %#; @trigger me/tr.success=%#, cat(You logged an advancement note on, ulocal(f.get-name, %qP, %#), stating: %1);
 
 &c.+adv/log_add_type [v(d.cg)]=$+adv/log */*=*:@break strmatch(%0, */*); @assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to add to a player's Advancements log.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(T, finditem(Crew|Player, %1, |)))={ @trigger me/tr.error=%#, '%1' is not a type of Advancement log entry. Available types are Player and Crew.; }; @trigger me/tr.log-advancement=%qP, %qT, ulocal(layout.advancement, %2, %#), %#; @trigger me/tr.success=%#, cat(You logged an advancement note on, ulocal(f.get-name, %qP, %#), stating: %2; );
