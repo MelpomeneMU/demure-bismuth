@@ -279,7 +279,7 @@
 
 &f.get-player-downtime-per-week [v(d.cgf)]=if(cand(ulocal(f.is_expert, %0), ulocal(f.has-list-stat, ulocal(f.get-player-stat, %0, crew object), Crew Abilities, All Hands)), 2, 1)
 
-&f.get-last-10-downtimes [v(d.cgf)]=extract(revwords(lattr(%0/_downtime-*)), 1, 10)
+&f.get-player-downtime-per-score [v(d.cgf)]=if(cand(ulocal(f.is_expert, %0), ulocal(f.has-list-stat, ulocal(f.get-player-stat, %0, crew object), Crew Abilities, All Hands)), 1, 2)
 
 @@ %0 - number of dice
 @@ Output: 1-3: 1; 4-5: 2; 6: 3; crit: 5
