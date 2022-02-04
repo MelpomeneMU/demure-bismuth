@@ -14,6 +14,9 @@
 @@ This is how the crew invitation will look.
 &d.crew_invitation_flair [v(d.cgdb)]=alert(Crew Invitation)
 
+@@ Send important emits to this channel.
+&d.monitor-channel [v(d.cgdb)]=Monitor
+
 @@ TODO: Add advanced abilities from pg 234. These aren't "special abilities", they're Advances (costs the same?) and they may go in a different section. Might also come with some hidden bio fields like "which Iruvian path are you on" but I don't think we vitally *need* that.
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
