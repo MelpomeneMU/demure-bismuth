@@ -37,10 +37,13 @@
 
 &d.choosable-stats [v(d.cgdb)]=Abilities|Friends|Ally|Rival|Gear|XP Triggers|Favorite|Crew Abilities|Upgrades|Contacts|Crew XP Triggers
 
-&d.addable-stats [v(d.cgdb)]=Abilities|Friends|Crew Abilities|Upgrades
+@@ Stats you can "+stat/add <stat>=<item>":
+&d.addable-stats [v(d.cgdb)]=Abilities|Friends|Crew Abilities|Upgrades|Claims
 
+@@ Stats you can "+stat/add <stat>=<item>" at CG:
 &d.cg-addable-stats [v(d.cgdb)]=Upgrades|Abilities|Friends|Contacts|Crew Abilities
 
+@@ Stats you can "+stat/set <stat>=<value>" OR "+stat/add <stat>=<item>":
 &d.settable-addable-stats [v(d.cgdb)]=Abilities|Contacts|Friends|Traumas|Crew Abilities
 
 &d.faction.questions [v(d.cgdb)]=Hunting|Helped|Harmed|Friendly|Unfriendly
@@ -58,7 +61,7 @@
 &d.crew-stats-that-default [v(d.cgdb)]=Contacts|Favorite|Crew Abilities|Crew XP Triggers
 
 @@ Stuff we want to be settable by staff but don't want players to mess with.
-&d.staff-only-stats [v(d.cgdb)]=Heat|Crew Coin|Wanted Level|Hold|Stress|Traumas|Healing|Coin
+&d.staff-only-stats [v(d.cgdb)]=Heat|Crew Coin|Wanted Level|Hold|Stress|Traumas|Healing|Coin|Claims
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat aliases
@@ -114,7 +117,7 @@
 
 &d.value.traumas [v(d.cgdb)]=Cold|Haunted|Obsessed|Paranoid|Reckless|Soft|Unstable|Vicious
 
-&d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Age|Look
+&d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Vice Purveyor|Age|Look
 
 &d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire
 
@@ -240,7 +243,7 @@
 
 @@ TODO: Add Preferred Operation Type?
 
-&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew Abilities|Contacts|Favorite|Factions|Upgrades|Heat|Crew Coin|Wanted Level|Hold
+&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew Abilities|Contacts|Favorite|Factions|Upgrades|Heat|Crew Coin|Wanted Level|Hold|Claims
 
 &d.value.heat [v(d.cgdb)]=0|1|2|3|4|5|6|7|8|9
 

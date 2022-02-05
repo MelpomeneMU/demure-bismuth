@@ -47,7 +47,17 @@
 
 @@ TODO: +crew/lock
 
-&c.+crew/lock [v(d.cg)]=$+crew/lock:@eval setq(C, ulocal(f.get-player-stat, %#, crew object)); @assert t(%qC)={ @trigger me/tr.error=%#, You don't currently have a crew set up. +crew/create <name> to start one.; }; @assert not(hasattr(%qC, _stat.crew_locked))={ @trigger me/tr.error=%#, Your crew is already locked.; }; @set %qC=_stat.crew_locked:[time()]; @dolist/delimit | [xget(%vD, d.crew-stats-that-default)]={ @set %qC=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %qC, ##)]; }; @set %qC=ulocal(f.get-stat-location-on-player, crew coin):[sub(2, ulocal(f.get-total-faction-coin, %qC))]; @set %qC=ulocal(f.get-stat-location-on-player, heat):0; @set %qC=ulocal(f.get-stat-location-on-player, vaults):0; @set %qC=ulocal(f.get-stat-location-on-player, wanted level):0; @set %qC=ulocal(f.get-stat-location-on-player, xp.crew.max):10; @trigger me/tr.success=%#, You locked your crew.;
+&layout.hunting [v(d.cgf)]=if(t(setr(F, ulocal(f.get-player-stat, %0, faction.hunting))), strcat(first(%qF, |): This faction claims the crew's hunting ground. The crew paid, %b, rest(%qF, |), %b, coin to keep them happy%, resulting in a status of, %b, ulocal(f.get-faction-status, %qC, first(%qF, |)).))
+
+&layout.helped [v(d.cgf)]=if(t(setr(F, ulocal(f.get-player-stat, %0, faction.helped))), strcat(first(%qF, |): This faction helped the crew gain an Upgrade. The crew paid, %b, rest(%qF, |), %b, coin to thank them%, resulting in a status of, %b, ulocal(f.get-faction-status, %qC, first(%qF, |)).))
+
+&layout.harmed [v(d.cgf)]=if(t(setr(F, ulocal(f.get-player-stat, %0, faction.harmed))), strcat(first(%qF, |): This faction was harmed when the crew got an Upgrade. The crew paid, %b, rest(%qF, |), %b, coin to pacify them%, resulting in a status of, %b, ulocal(f.get-faction-status, %qC, first(%qF, |)).))
+
+&layout.friendly [v(d.cgf)]=if(t(setr(F, ulocal(f.get-player-stat, %0, faction.friendly))), strcat(first(%qF, |): This faction is, if(t(rest(%qF, |)), strcat(%b, extremely)), %b, friendly to the crew's Favorite Contact%, resulting in a status of, %b, ulocal(f.get-faction-status, %qC, first(%qF, |)).))
+
+&layout.unfriendly [v(d.cgf)]=if(t(setr(F, ulocal(f.get-player-stat, %0, faction.unfriendly))), strcat(first(%qF, |): This faction is, if(t(rest(%qF, |)), strcat(%b, extremely)), %b,  unfriendly to the crew's Favorite Contact%, resulting in a status of, %b, ulocal(f.get-faction-status, %qC, first(%qF, |)).))
+
+&c.+crew/lock [v(d.cg)]=$+crew/lock:@eval setq(C, ulocal(f.get-player-stat, %#, crew object)); @assert t(%qC)={ @trigger me/tr.error=%#, You don't currently have a crew set up. +crew/create <name> to start one.; }; @assert not(hasattr(%qC, _stat.crew_locked))={ @trigger me/tr.error=%#, Your crew is already locked.; }; @set %qC=_stat.crew_locked:[prettytime()]; @dolist/delimit | [xget(%vD, d.crew-stats-that-default)]={ @set %qC=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %qC, ##)]; }; @set %qC=ulocal(f.get-stat-location-on-player, crew coin):[sub(2, ulocal(f.get-total-faction-coin, %qC))]; @set %qC=ulocal(f.get-stat-location-on-player, xp.crew.max):10; @trigger me/tr.log=%qC, _faction-, %#, ulocal(layout.hunting, %qC); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.helped, %qC); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.harmed, %qC); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.friendly, %qC); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.unfriendly, %qC); @trigger me/tr.success=%#, You locked your crew.;
 
 @@ TODO: see how this works out. It sets the crew channel up ONCE... unless the original no longer exists. If the original gets deleted, the crew can assign a new one. Otherwise, they'll have to ask staff.
 

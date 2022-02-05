@@ -1,5 +1,9 @@
 /*
 
+TODO: Way to mark the turf maps.
+
+TODO: Way to change Faction statuses once the player is out of CG.
+
 +cg/approve Alice=Go have fun, you crazy kids!
 +cg/unapprove <name>=Unapproved at player request.
 
@@ -142,7 +146,7 @@ TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not,
 @@ Commands - TODO: redo these!
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+stats/lock [v(d.cg)]=$+stats/lock:@assert not(hasattr(%#, _stat.locked))={ @trigger me/tr.error=%#, Your stats are already locked.; };  @set %#=_stat.locked:[time()]; @dolist/delimit | [xget(%vD, d.stats-that-default)]={ @set %#=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %#, ##)]; }; @set %#=ulocal(f.get-stat-location-on-player, xp.insight.max):[setr(M, switch(setr(P, ulocal(f.get-player-stat, %#, Playbook)), Vampire, 8, 6))]; @set %#=ulocal(f.get-stat-location-on-player, xp.prowess.max):%qM; @set %#=ulocal(f.get-stat-location-on-player, xp.resolve.max):%qM; @set %#=ulocal(f.get-stat-location-on-player, xp.playbook.max):[switch(%qP, Vampire, 10, 8)]; @trigger me/tr.success=%#, You locked your stats.;
+&c.+stats/lock [v(d.cg)]=$+stats/lock:@assert not(hasattr(%#, _stat.locked))={ @trigger me/tr.error=%#, Your stats are already locked.; };  @set %#=_stat.locked:[prettytime()]; @dolist/delimit | [xget(%vD, d.stats-that-default)]={ @set %#=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %#, ##)]; }; @set %#=ulocal(f.get-stat-location-on-player, xp.insight.max):[setr(M, switch(setr(P, ulocal(f.get-player-stat, %#, Playbook)), Vampire, 8, 6))]; @set %#=ulocal(f.get-stat-location-on-player, xp.prowess.max):%qM; @set %#=ulocal(f.get-stat-location-on-player, xp.resolve.max):%qM; @set %#=ulocal(f.get-stat-location-on-player, xp.playbook.max):[switch(%qP, Vampire, 10, 8)]; @trigger me/tr.success=%#, You locked your stats.;
 
 @@ TODO: Figure out how stats/lock and unlock interact with jobs.
 
@@ -204,7 +208,7 @@ TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not,
 @@ %2 - player
 @@ %3 - player doing the setting
 @@ %4 - adding or removing
-&tr.add-stat [v(d.cg)]=@eval [setq(A, ulocal(f.get-addable-stats, %3))]; @assert t(setr(S, ulocal(f.is-addable-stat, %0)))={ @trigger me/tr.error=%3, Cannot find '%0' as an [case(%4, 1, removable, addable)] stat. [case(%4, 1, Removable, Addable)] stats are: [ulocal(layout.list, %qA)]; }; @assert ulocal(f.is-allowed-to-edit-stat, %2, %3, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))), cand(t(finditem(Friends|Contacts, %qS, |)), t(setr(V, %1))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.add-or-remove-[if(hasattr(me, strcat(tr.add-or-remove-, setr(T, ulocal(f.get-stat-location, %qS)))), %qT, stat)]=%qS, %qV, %2, %3, %4;
+&tr.add-stat [v(d.cg)]=@eval [setq(A, ulocal(f.get-addable-stats, %3))]; @assert t(setr(S, ulocal(f.is-addable-stat, %0, %3)))={ @trigger me/tr.error=%3, Cannot find '%0' as an [case(%4, 1, removable, addable)] stat. [case(%4, 1, Removable, Addable)] stats are: [ulocal(layout.list, %qA)]; }; @assert ulocal(f.is-allowed-to-edit-stat, %2, %3, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))), cand(t(finditem(Friends|Contacts, %qS, |)), t(setr(V, %1))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.add-or-remove-[if(hasattr(me, strcat(tr.add-or-remove-, setr(T, ulocal(f.get-stat-location, %qS)))), %qT, stat)]=%qS, %qV, %2, %3, %4;
 
 @@ %0 - stat
 @@ %1 - value
@@ -227,7 +231,7 @@ TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not,
 @@ %1 - value
 @@ %2 - player
 @@ %3 - player doing the setting
-&tr.set-stat [v(d.cg)]=@assert t(setr(S, ulocal(f.is-stat, %0, %2, %3)))={ @trigger me/tr.error=%3, '%0' does not appear to be a stat. Valid stats are: [ulocal(layout.list, ulocal(f.list-stats, %0, %2, %3))]; }; @assert cor(not(t(ulocal(f.is-addable-stat, %0))), t(finditem(xget(%vD, d.settable-addable-stats), %qS, |)))={ @force %3=+stat/add [if(not(strmatch(%2, %3)), %2/)]%0=%1; }; @assert ulocal(f.is-allowed-to-edit-stat, %2, %3, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.set-[case(1, t(ulocal(f.is-action, %qS)), action, ulocal(f.is-crew-stat, %qS), crew-stat, ulocal(f.is-full-list-stat, %qS), full-list-stat, final-stat)]=%qS, %qV, %2, %3;
+&tr.set-stat [v(d.cg)]=@assert t(setr(S, ulocal(f.is-stat, %0, %2, %3)))={ @trigger me/tr.error=%3, '%0' does not appear to be a stat. Valid stats are: [ulocal(layout.list, ulocal(f.list-stats, %0, %2, %3))]; }; @assert cor(not(t(ulocal(f.is-addable-stat, %0, %3))), t(finditem(xget(%vD, d.settable-addable-stats), %qS, |)))={ @force %3=+stat/add [if(not(strmatch(%2, %3)), %2/)]%0=%1; }; @assert ulocal(f.is-allowed-to-edit-stat, %2, %3, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.set-[case(1, t(ulocal(f.is-action, %qS)), action, ulocal(f.is-crew-stat, %qS), crew-stat, ulocal(f.is-full-list-stat, %qS), full-list-stat, final-stat)]=%qS, %qV, %2, %3;
 
 @@ %0 - stat
 @@ %1 - value

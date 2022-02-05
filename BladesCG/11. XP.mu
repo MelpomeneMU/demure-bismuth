@@ -93,7 +93,7 @@
 @@ %3: actor
 @@ %4: action
 @@ %5: reason, if any
-&tr.increase-track [v(d.cg)]=@eval setq(C, switch(%qT, Crew, ulocal(f.get-player-stat, %2, crew object), %2)); @eval setq(X, ulocal(f.get-xp, %qC, %0, total)); @eval setq(M, ulocal(f.get-xp, %qC, %0, max)); @eval setq(U, add(%1, ulocal(f.get-xp, %qC, %0, unspent))); @eval setq(A, ulocal(f.get-advancements, %qC, %0, total)); @eval setq(G, if(gt(%qM, 0), if(gt(%qU, %qM), div(%qU, %qM), eq(%qU, %qM)))); @set %qC=[ulocal(f.get-stat-location-on-player, xp.%0.total)]:[setr(V, add(%qX, %1))]; @set %qC=[ulocal(f.get-stat-location-on-player, advancements.%0.total)]:[if(t(%qG), add(%qA, %qG), %qA)]; @trigger me/tr.success=%3, ulocal(layout.%4_track, %0, %1, %2, %3, %qG, %5); @trigger me/tr.log=%2, _xp-, %3, switch(%4, add, Awarded %1 XP for %5., Moved %1 Untracked XP to the %0 track.);
+&tr.increase-track [v(d.cg)]=@eval setq(C, switch(%qT, Crew, ulocal(f.get-player-stat, %2, crew object), %2)); @eval setq(X, ulocal(f.get-xp, %qC, %0, total)); @eval setq(M, ulocal(f.get-xp, %qC, %0, max)); @eval setq(U, add(%1, ulocal(f.get-xp, %qC, %0, unspent))); @eval setq(A, ulocal(f.get-advancements, %qC, %0, total)); @eval setq(G, if(gt(%qM, 0), if(gt(%qU, %qM), div(%qU, %qM), eq(%qU, %qM)))); @set %qC=[ulocal(f.get-stat-location-on-player, xp.%0.total)]:[setr(V, add(%qX, %1))]; @set %qC=[ulocal(f.get-stat-location-on-player, advancements.%0.total)]:[if(t(%qG), add(%qA, %qG), %qA)]; @trigger me/tr.success=%3, ulocal(layout.%4_track, %0, %1, %2, %3, %qG, %5); @trigger me/tr.log=%2, _xp-, %3, switch(%4, add, Awarded %1 XP for '%5'., Moved %1 Untracked XP to the %0 track.);
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ +adv/spend

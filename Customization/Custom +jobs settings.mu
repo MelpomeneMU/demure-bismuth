@@ -25,19 +25,25 @@
 +bucket/create PLOTS=Plot info & questions
 +bucket/create REQUESTS=Player requests
 +bucket/create SOCIAL=Game culture and PvP issues.
++bucket/create DOWNTIME=Non-LTP downtime jobs.
++bucket/create LTP=Long Term Projects.
++bucket/create CHARACTERS=Character updates.
 
 /*
  .o:{ Bucket List },.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.:o.
   Name        Flags    Description                  # Pct  C  A  D  Due  ARTS
  .o:,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,:o.
-  BUILD       V---M--  Special buildings, typos     1 20%  1  2  2    0     -
+  BUILD       V---M--  Special buildings, typos     1  8%  1  2  2    0     -
   CG          V---M--  Character creation/statting  0  0%  1  2  2    0     -
+  CHARACTERS  V------  Character updates.           0  0%  1  2  2    0     -
   CODE        V---M--  Bugs & code requests         0  0%  1  2  2    0     -
+  DOWNTIME    V---M--  Non-LTP downtime jobs.       5 42%  1  2  2    0     -
   FACTION     V---M--  Faction changes & updates    0  0%  1  2  2    0     -
+  LTP         V---M--  Long Term Projects.          2 17%  1  2  2    0     -
   PLOTS       V---M--  Plot info & questions        0  0%  1  2  2    0     -
-  PUBLIC      V---MP-  Everyone can see this.       1 20%  1  2  2    0    0d
+  PUBLIC      V---MP-  Everyone can see this.       1  8%  1  2  2    0    0d
   QUERY       V---M--  Query bucket                 0  0%  1  2  2  168     -
-  REQUESTS    V---M--  Player requests              3 60%  1  2  2  168    0d
+  REQUESTS    V---M--  Player requests              3 25%  1  2  2  168    0d
   SOCIAL      V---M--  Game culture and PvP issues  0  0%  1  2  2   72     -
  .o:,.,.,.,.,{ V=Viewing H=Hidden P=Published M=Myjobs L=Locked S=Summary }:o.
 */
@@ -96,6 +102,15 @@
 &logfile [search(ETHING=t(member(name(##), SOCIAL)))]=sociallog
 &priority [search(ETHING=t(member(name(##), SOCIAL)))]=1
 &MLETTER_OTH [search(ETHING=t(member(name(##), SOCIAL)))]=You have alerted staff to a social issue regarding '[get(%0/TITLE)]': %r%r%3%r%r[repeat(-, 75)]%rSee '[ansi(h, +help myjobs)]' for help on how to display and add to your jobs.%r%rPlease give staff at least [u(me/TURNAROUND)] hours from the date of this mail to process your request. If it's urgent, contact [xget(%vZ, d.staff-email-address)] or page a member of +staff right away.
+
+&access [search(ETHING=t(member(name(##), LTP)))]=[u(%va/FN_STAFFALL, %#)]
+&public [search(ETHING=t(member(name(##), LTP)))]=1
+
+&access [search(ETHING=t(member(name(##), DOWNTIME)))]=[u(%va/FN_STAFFALL, %#)]
+&public [search(ETHING=t(member(name(##), DOWNTIME)))]=1
+
+&access [search(ETHING=t(member(name(##), CHARACTERS)))]=[u(%va/FN_STAFFALL, %#)]
+&public [search(ETHING=t(member(name(##), CHARACTERS)))]=1
 
 @@ Set the default bucket to REQUESTS since REQ is gone.
 &f.get.bucket [v(d.jrs)]=udefault(d.%0.bucket, REQUESTS)

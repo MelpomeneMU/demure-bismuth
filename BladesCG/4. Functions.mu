@@ -277,20 +277,36 @@
 @@ Downtimes
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&f.get-player-downtime-per-week [v(d.cgf)]=if(cand(ulocal(f.is_expert, %0), ulocal(f.has-list-stat, ulocal(f.get-player-stat, %0, crew object), Crew Abilities, All Hands)), 2, 1)
+&f.is-expert-with-all-hands [v(d.cgf)]=cand(ulocal(f.is_expert, %0), ulocal(f.has-list-stat, ulocal(f.get-player-stat, %0, crew object), Crew Abilities, All Hands))
 
-&f.get-player-downtime-per-score [v(d.cgf)]=if(cand(ulocal(f.is_expert, %0), ulocal(f.has-list-stat, ulocal(f.get-player-stat, %0, crew object), Crew Abilities, All Hands)), 1, 2)
+&f.get-player-downtime-per-week [v(d.cgf)]=case(1, ulocal(f.is-expert-with-all-hands, %0), 2, 1)
+
+&f.get-player-downtime-per-score [v(d.cgf)]=case(1, ulocal(f.is-expert-with-all-hands, %0), 3, 2)
 
 @@ %0 - number of dice
-@@ Output: 1-3: 1; 4-5: 2; 6: 3; crit: 5
+@@ Output: Roll|Result
+@@ Result: 1-3: 1; 4-5: 2; 6: 3; crit: 5
 @@ Registers: D: Roll results; S: Successes; M: Mixed; F: Failures; H: Highest; L: Lowest; R: the number rolled.
 &f.roll-to-heal [v(d.cgf)]=strcat(setq(S, setr(M, setr(F, setr(H, 0)))), setq(L, 6), setq(D, iter(switch(%0, 0, 1 2, lnum(%0)), strcat(setr(R, die(1, 6)), case(1, gte(%qR, 6), setq(S, inc(%qS)), gte(%qR, 4), setq(M, inc(%qM)), setq(F, inc(%qF))), if(gt(%qR, %qH), setq(H, %qR)), if(lt(%qR, %qL), setq(L, %qR))))), ulocal(f.colorize-die-roll, %qD, %0), |, case(1, eq(%0, 0), case(1, gt(%qL, 5), 3, gt(%qL, 3), 2, 1), gt(%qS, 1), 5, t(%qS), 3, t(%qM), 2, 1))
+
+&f.get-lowest-attribute [v(d.cgf)]=min(ulocal(f.get-player-attribute, %0, Insight), ulocal(f.get-player-attribute, %0, Prowess), ulocal(f.get-player-attribute, %0, Resolve))
+
+@@ %0 - dice to roll
+@@ Output: Roll|Single numeric result
+@@ Registers: D: Roll results; S: Successes; M: Mixed; F: Failures; H: Highest; L: Lowest; R: the number rolled.
+&f.roll-to-indulge [v(d.cgf)]=strcat(setq(S, setr(M, setr(F, setr(H, 0)))), setq(L, 6), setq(D, iter(switch(%0, 0, 1 2, lnum(%0)), strcat(setr(R, die(1, 6)), case(1, gte(%qR, 6), setq(S, inc(%qS)), gte(%qR, 4), setq(M, inc(%qM)), setq(F, inc(%qF))), if(gt(%qR, %qH), setq(H, %qR)), if(lt(%qR, %qL), setq(L, %qR))))), ulocal(f.colorize-die-roll, %qD, %0), |, if(eq(%0, 0), %qL, %qH))
 
 @@ %0: the results
 @@ %1: the number of dice rolled
 &f.colorize-die-roll [v(d.cgf)]=if(t(%1), iter(%0, ansi(case(itext(0), 6, ch, 5, hg, 4, hg, xh), itext(0))), edit(%0, lmin(%0), ansi(hg, lmin(%0))))
 
 &f.get-max-healing-clock [v(d.cgf)]=if(ulocal(f.has-list-stat, %0, Abilities, Vigorous), 3, 4)
+
+&f.get-max-rep [v(d.cgf)]=max(sub(12, ulocal(f.get-turf, %0)), 6)
+
+&f.get-turf [v(d.cgf)]=add(if(ulocal(f.has-list-stat, %0, Crew Abilities, Fiends), ulocal(f.get-player-stat-or-zero, %0, Wanted Level), 0), if(ulocal(f.has-list-stat, %0, Crew Abilities, Accord), ladd(iter(ulocal(f.get-player-stat, %0, Factions), gt(first(itext(0)), 2), |)), 0), ladd(iter(ulocal(f.get-mapped-turf-list, %0), t(ulocal(f.mark-map, %0, itext(0))))), ladd(iter(ulocal(f.get-player-stat, %0, Claims), strmatch(itext(0), *Turf*), |)))
+
+&f.get-mapped-turf-list [v(d.cgf)]=switch(ulocal(f.get-player-stat, %0, Crew Type), Assassins, B2 B4, Bravos, A2 B2 B4 B5, Cult, B1 B2 B4 B5, Hawkers, A1 B1 B2 B4, Shadows, A2 B4 C4, Smugglers, A1 B2 B4 B5)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew
