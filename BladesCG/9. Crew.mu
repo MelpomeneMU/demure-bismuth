@@ -1,4 +1,4 @@
-@@ TODO: +crew <name> doesn't work.
+@@ TODO: Code to raise a crew's tier.
 
 @@ TODO: Figure out a way to give a crew claims. +claim/award <name>=<blah> - but we also need to award claims that are mapped. +claim/award <name>=C1 for example.
 

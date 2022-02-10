@@ -38,7 +38,7 @@
 &d.choosable-stats [v(d.cgdb)]=Abilities|Friends|Ally|Rival|Gear|XP Triggers|Favorite|Crew Abilities|Upgrades|Contacts|Crew XP Triggers
 
 @@ Stats you can "+stat/add <stat>=<item>":
-&d.addable-stats [v(d.cgdb)]=Abilities|Friends|Crew Abilities|Upgrades|Claims
+&d.addable-stats [v(d.cgdb)]=Abilities|Friends|Crew Abilities|Upgrades|Claims|Traumas
 
 @@ Stats you can "+stat/add <stat>=<item>" at CG:
 &d.cg-addable-stats [v(d.cgdb)]=Upgrades|Abilities|Friends|Contacts|Crew Abilities

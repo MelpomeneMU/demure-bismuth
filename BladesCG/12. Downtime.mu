@@ -11,8 +11,7 @@
 	- Wrench tried to give you 2 coins, but your coin purse, crew vault, and stash were all full.
 	- Wrench gave you 2 coins.
 
-
-TODO: Auto-DT-dispenser
+TODO: Auto-DT-dispenser & log cleanups
 
 +dt/+downtime
 	+dt/recover <#>
@@ -20,7 +19,7 @@ TODO: Auto-DT-dispenser
 	+dt/heat
 	+dt/indulge or +dt/vice
 	+dt/train <track>
-*	+dt/buy <#> - spend <#> coin to buy <#> downtime
+	+dt/buy <#> - spend <#> coin to buy <#> downtime
 	+dt/award <player>=<reason> (staff-only)
 	+dt/award <player>=<#> <reason> (staff-only)
 +health
@@ -32,9 +31,12 @@ TODO: Auto-DT-dispenser
 	+stress/clear
 	+trauma/add <trauma>
 +coin
+* +coin/stash <#> - stash some of your coins
+* +coin/unstash <#> - withdraw from your stash
 *	+coin/withdraw <#> - withdraw coin from your crew's vault
 *	+coin/deposit <#> - deposit coin into your crew's vault
-*	+coin/award <player>=<#> <reason> (staff-only)
+	+coin/pay <name>=<#> - pay coin to another player
+	+coin/award <player>=<#> <reason> (staff-only)
 +heat
 	+heat/gain
 	+heat/gain <#>
@@ -54,7 +56,7 @@ TODO: Auto-DT-dispenser
 
 &layout.downtime [v(d.cgf)]=strcat(header(ulocal(f.get-name, %0, %1)'s downtime, %1), %r, formattext(strcat(Available:, %b, ulocal(f.get-player-stat-or-zero, %0, downtime), %r, Gaining:, %b, ulocal(f.get-player-downtime-per-week, %0), %b, per week, %b, +, %b, ulocal(f.get-player-downtime-per-score, %0), %b, per score, %r%r, Spend a downtime to:, %r%t, +dt/heat - reduce your crew's Heat, if(setr(S, not(ulocal(f.is_expert, %0))), strcat(%r%t, +dt/indulge - indulge your Vice and recover Stress)), %r%t, if(strmatch(ulocal(f.get-player-stat, %0, Playbook), Vampire), +dt/feed - feed to recover from Harm, strcat(+dt/recover <#> - roll <#> to recover from Harm, %r%t)), if(t(%qS), strcat(+dt/train <track> - train in an XP track (gains 1 XP), %r%t)), Acquire an Asset - open a job to do this, %r%t, Make progress on a long term project - open a job to do this), 0, %1), setq(L, ulocal(f.get-last-X-logs, %0, _downtime-)), if(t(%qL), strcat(%r, divider(Last 10 downtimes, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(, %1))
 
-+dt demo
+&layout.player-coin [v(d.cgf)]=strcat(ulocal(layout.coin, %0, %1), %r, ulocal(layout.crew-coin, ulocal(f.get-player-stat, %0, crew object), %1), setq(L, ulocal(f.get-last-X-logs, %0, _coin-)), if(t(%qL), strcat(%r, divider(Last 10 coin logs, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(, %1))
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ View Commands
@@ -68,9 +70,9 @@ TODO: Auto-DT-dispenser
 
 &c.+downtime_staff [v(d.cg)]=$+downtime *:@force %#=+dt %0;
 
-&c.+coin [v(d.cg)]=$+coin: @pemit %#=strcat(ulocal(layout.coin, %#, %#), ulocal(layout.crew-coin, %#, %#), %r, footer(, %#));
+&c.+coin [v(d.cg)]=$+coin: @pemit %#=ulocal(layout.player-coin, %#, %#);
 
-&c.+coin_staff [v(d.cg)]=$+coin *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to view a player's stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @pemit %#=strcat(ulocal(layout.coin, %qP, %#), ulocal(layout.crew-coin, %qP, %#), %r, footer(, %#));
+&c.+coin_staff [v(d.cg)]=$+coin *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to view a player's stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @pemit %#=ulocal(layout.player-coin, %qP, %#);
 
 &c.+heat [v(d.cg)]=$+heat: @pemit %#=ulocal(layout.subsection, crew-heat, %#, %#);
 
@@ -94,7 +96,11 @@ TODO: Auto-DT-dispenser
 
 &c.+dt/award [v(d.cg)]=$+dt/award *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to modify a player's stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(V, if(isnum(first(%1)), first(%1), ulocal(f.get-player-downtime-per-score, %qP))); @eval strcat(setq(R, if(isnum(first(%1)), rest(%1), %1)), setq(R, squish(trim(switch(%qR, for *, rest(%qR), %qR))))); @assert t(%qR)={ @trigger me/tr.error=%#, Can't figure out what your reason for granting this downtime was.; }; @assert cand(gt(%qV, 0), lte(%qV, 10))={ @trigger me/tr.error=%#, %qV must be a number between 1 and 10.; }; @set %qP=[setr(L, ulocal(f.get-stat-location-on-player, downtime))]:[add(xget(%qP, %qL), %qV)]; @trigger me/tr.log-downtime=%qP, %#, Awarded %qV downtime for '%qR'.; @trigger me/tr.stat-setting-messages=cat(You award, ulocal(f.get-name, %qP, %#), %qV, downtime for '%qR'.), ulocal(f.get-name, %#, %qP) awards you %qV downtime for '%qR'., %qP, %#, Downtime;
 
-@@ &c.+dt/log [v(d.cg)]=$+dt/log *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to modify a player's stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @trigger me/tr.log-downtime=%qP, %#, Note: %1; @trigger me/tr.stat-setting-messages=cat(You add the following note to, ulocal(f.get-name, %qP, %#)'s, downtime log:, %1), cat(ulocal(f.get-name, %#, %qP) adds the following note to your downtime log:, %1), %qP, %#, Downtime;
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Buying downtime
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&c.+dt/buy [v(d.cg)]=$+dt/buy*: @eval setq(V, switch(%0, %b*, trim(%0), * *, rest(%0), 1)); @assert cand(isnum(%qV), gt(%qV, 0), lte(%qV, 10))={ @trigger me/tr.error=%#, %qV must be a number between 1 and 10.; }; @assert gte(setr(C, ulocal(f.get-player-stat-or-zero, %#, coin)), %qV)={ @trigger me/tr.error=%#, You have %qC coin%, not enough to buy %qV downtime.; }; @set %#=[setr(L, ulocal(f.get-stat-location-on-player, downtime))]:[add(xget(%#, %qL), %qV)]; @set %#=[ulocal(f.get-stat-location-on-player, coin)]:[sub(%qC, %qV)]; @trigger me/tr.log-downtime=%#, %#, Bought %qV downtime with coin.; @trigger me/tr.log=%#, _coin-, %#, Spent %qV coin on downtime.; @trigger me/tr.success=%#, You buy %qV downtime for %qV coin. You now have [ulocal(f.get-player-stat, %#, downtime)] downtime and [ulocal(f.get-player-stat-or-zero, %#, coin)] coin.;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Healing
@@ -165,3 +171,37 @@ TODO: Auto-DT-dispenser
 &c.+rep_staff [v(d.cg)]=$+rep *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to view a player's stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; };@assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, cat(ulocal(f.get-name, %qP), isn't on a crew%, so, subj(%qP), plural(%qP, doesn't, don't) have a real rep.); }; @pemit %#=ulocal(layout.crew-rep, %qC, %#);
 
 &c.+rep/award [v(d.cg)]=$+rep/award *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to modify a player's stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP) is not part of a crew and cannot gain rep.; }; @eval setq(V, if(isnum(first(%1)), first(%1), 0)); @eval strcat(setq(R, if(isnum(first(%1)), rest(%1), %1)), setq(R, squish(trim(switch(%qR, for *, rest(%qR), %qR))))); @assert t(%qR)={ @trigger me/tr.error=%#, Can't figure out what your reason for granting this downtime was.; }; @eval setq(M, sub(ulocal(f.get-max-rep, %qC), setr(A, ulocal(f.get-player-stat, %qC, Rep)))); @assert t(%qM)={ @trigger me/tr.error=%#, This crew cannot receive any more rep - they need to buy up their Tier!; };  @assert cand(gt(%qV, 0), lte(%qV, %qM))={ @trigger me/tr.error=%#, %qV must be a number between 1 and %qM.; }; @set %qC=[ulocal(f.get-stat-location-on-player, rep)]:[add(%qA, %qV)]; @trigger me/tr.log=%qP, _rep-, %#, Awarded %qV rep for '%qR'.; @trigger me/tr.stat-setting-messages=cat(You award, ulocal(f.get-name, %qP, %#), %qV, rep for '%qR'.), ulocal(f.get-name, %#, %qP) awards you %qV rep for '%qR'., %qP, %#, Rep; @trigger me/tr.crew-emit=%qC, ulocal(f.get-name, %#) awards the crew +%qV rep for '%qR'.;
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Award Coin
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&layout.coin-log [v(d.cgf)]=strcat(Awarded %0 coin for '%1'., if(t(%2), %b%2 coin overflowed into the crew vault.), if(t(%3), %b%3 coin overflowed into the stash.))
+
+&layout.coin-awarded [v(d.cgf)]=cat(You award, ulocal(f.get-name, %0), %1, coin for '%2'., if(t(%3), %3 coin overflowed into the crew vault.), if(t(%4), %b%4 coin overflowed into the stash.))
+
+&layout.coin-received [v(d.cgf)]=cat(ulocal(f.get-name, %0), awards you, %1, coin for '%2'., if(t(%3), %3 coin overflowed into the crew vault.), if(t(%4), %b%4 coin overflowed into your stash.))
+
+&layout.coin-crew-overflow [v(d.cgf)]=cat(ulocal(f.get-name, %0), awards, ulocal(f.get-name, %1), %2 coin%, and %3 of, poss(%1), coin overflowed into the crew's coffers.)
+
+@@ V: Value to deposit
+@@ C: Crew object
+@@ M: Current coin on player
+@@ X: Max in crew vault
+@@ Y: Current crew vault
+@@ S: Current in stash
+@@ D: Amount to put on the player
+@@ E: Amount to put with the crew
+@@ F: Amount to put in the player's stash
+@@ A: Remaining to disburse
+&c.+coin/award [v(d.cg)]=$+coin/award *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to modify a player's stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(V, if(isnum(first(%1)), first(%1), 0)); @eval strcat(setq(R, if(isnum(first(%1)), rest(%1), %1)), setq(R, squish(trim(switch(%qR, for *, rest(%qR), %qR))))); @assert t(%qR)={ @trigger me/tr.error=%#, Can't figure out what your reason for granting this coin was.; }; @eval setq(M, ulocal(f.get-player-stat, %qP, Coin)); @eval setq(C, ulocal(f.get-player-stat, %qP, crew object)); @eval setq(X, if(t(%qC), ulocal(f.get-vault-max, %qC), 0)); @eval setq(Y, ulocal(f.get-player-stat-or-zero, %qC, crew coin)); @eval setq(S, ulocal(f.get-player-stat-or-zero, %qP, Stash)); @eval setq(A, %qV); @eval if(lte(add(%qM, %qA), 4), strcat(setq(D, add(%qM, %qA)), setq(E, 0), setq(F, 0), setq(A, 0)), strcat(setq(D, 4), setq(A, sub(%qA, sub(4, %qM))), if(lte(add(%qY, %qA), %qX), strcat(setq(E, add(%qY, %qA)), setq(F, 0), setq(A, 0)), strcat(setq(E, %qX), setq(A, sub(%qA, sub(%qX, %qY))), if(lte(add(%qS, %qA), 40), strcat(setq(F, add(%qS, %qA)), setq(A, 0)), strcat(setq(F, 40), setq(A, sub(%qA, sub(40, %qS))))))))); @assert eq(%qA, 0)={ @trigger me/tr.error=%#, Could not distribute %qV coin without %qA extra coin being lost. Please choose a lower number of coin.; }; @set %qP=[ulocal(f.get-stat-location-on-player, Coin)]:%qD; @set %qC=ulocal(f.get-stat-location-on-player, Crew Coin):%qE; @set %qP=[ulocal(f.get-stat-location-on-player, Stash)]:%qF; @trigger me/tr.log=%qP, _coin-, %#, ulocal(layout.coin-log, %qV, %qR, %qE, %qF); @trigger me/tr.stat-setting-messages=ulocal(layout.coin-awarded, %qP, %qV, %qR, %qE, %qF), ulocal(layout.coin-received, %#, %qV, %qR, %qE, %qF), %qP, %#, Coin; @if t(%qE)={ @trigger me/tr.crew-emit=%qC, ulocal(layout.coin-crew-overflow, %#, %qP, %qV, %qE); };
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Paying coin to other players
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&layout.coin-paid [v(d.cgf)]=cat(You pay, ulocal(f.get-name, %0, %1), %2 coin for '%3'. You now have %4 coin.)
+
+&layout.coin-paid-received [v(d.cgf)]=cat(ulocal(f.get-name, %0, %1), pays you, %2 coin for '%3'. You now have %4 coin.)
+
+&c.+coin/pay [v(d.cg)]=$+coin/pay *=*: @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert cand(isapproved(%#), isapproved(%qP))={ @trigger me/tr.error=%#, You and your payee must be approved before you can give them coin.; }; @eval setq(V, if(isnum(first(%1)), first(%1), 0)); @assert not(strmatch(%#, %qP))={ @trigger me/tr.error=%#, You cannot pay yourself coin.; }; @eval strcat(setq(R, if(isnum(first(%1)), rest(%1), %1)), setq(R, squish(trim(switch(%qR, for *, rest(%qR), %qR))))); @assert t(%qR)={ @trigger me/tr.error=%#, Can't figure out what your reason for paying this coin was.; }; @assert cand(isnum(%qV), gt(%qV, 0), lte(%qV, 10))={ @trigger me/tr.error=%#, %qV must be a number between 1 and 10.; }; @assert gte(setr(C, ulocal(f.get-player-stat-or-zero, %#, coin)), %qV)={ @trigger me/tr.error=%#, You have %qC coin%, not enough to pay [ulocal(f.get-name, %qP, %#)] %qV.; }; @assert lte(add(setr(D, ulocal(f.get-player-stat-or-zero, %qP, coin)), %qV), 4)={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) can't receive %qV coin%, it won't fit in [poss(%qP)] pockets.; }; @eval setq(L, ulocal(f.get-stat-location-on-player, coin)); @set %qP=%qL:[add(%qD, %qV)]; @set %#=%qL:[sub(%qC, %qV)]; @trigger me/tr.log=%#, _coin-, %#, setr(M, Paid [ulocal(f.get-name, %qP, %#)] %qV coin for '%qR'.); @trigger me/tr.log=%qP, _coin-, %#, %qM; @trigger me/tr.stat-setting-messages=ulocal(layout.coin-paid, %qP, %#, %qV, %qR, ulocal(f.get-player-stat-or-zero, %#, coin)), ulocal(layout.coin-paid-received, %#, %qP, %qV, %qR, ulocal(f.get-player-stat-or-zero, %qP, coin)), %qP, %#, Coin; @cemit [xget(%vD, d.monitor-channel)]=[cat(prettytime(), ulocal(f.get-name, %#):, %qM)];
