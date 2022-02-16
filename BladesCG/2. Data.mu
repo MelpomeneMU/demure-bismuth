@@ -17,6 +17,12 @@
 @@ Send important emits to this channel.
 &d.monitor-channel [v(d.cgdb)]=Monitor
 
+@@ These logs will be regularly purged of old items. The rules are:
+@@ - Keep the top 20 log entries.
+@@ - Keep any log entries that have happened in the past 7 days.
+@@ - Anything else gets deleted.
+&d.logs-to-clear [v(d.cgdb)]=_downtime- _crew-coin- _coin- _xp- _rep-
+
 @@ TODO: Add advanced abilities from pg 234. These aren't "special abilities", they're Advances (costs the same?) and they may go in a different section. Might also come with some hidden bio fields like "which Iruvian path are you on" but I don't think we vitally *need* that.
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@

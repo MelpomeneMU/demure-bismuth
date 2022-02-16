@@ -14,7 +14,6 @@ Crew code
 	Vote to boot people (optional)
 	Invite-sharing (optional)
 Downtime system
-	Spend and regain Stress
 	Think about how to calculate and award coin to a crew when they have claims that grant them extra coin.
 Sharps and Badges system
 Finger:
