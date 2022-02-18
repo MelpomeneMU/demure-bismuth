@@ -1,6 +1,4 @@
 /*
-TODO: Test auto-DT-dispenser
-
 +dt/+downtime
 	+dt/recover <#>
 	+dt/feed
@@ -15,7 +13,7 @@ TODO: Test auto-DT-dispenser
 +health
 	+harm <injury>
 	+harm <#> <injury>
-*	+harm/clear <player> (staff-only) - clear player's harm after they've hit max?
+	+harm/clear <player> (staff-only) - clear player's harm completely
 +stress/+trauma
 	+stress/gain
 	+stress/gain <#>
@@ -39,8 +37,8 @@ TODO: Test auto-DT-dispenser
 	+rep/award <player>=<#> <reason>
 
 TODO: Maybe add reason fields to stress and heat, and add actual logging for them?
-
 */
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Daily
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -252,3 +250,29 @@ TODO: Maybe add reason fields to stress and heat, and add actual logging for the
 &c.+coin/withdraw [v(d.cg)]=$+coin/withdraw*:@assert t(setr(C, ulocal(f.get-player-stat, %#, crew object)))={ @trigger me/tr.error=%#, You're not in a crew and can't withdraw coin.; }; @eval setq(V, switch(%0, %b*, trim(%0), * *, rest(%0), 1)); @assert cand(isint(%qV), gt(%qV, 0), lte(%qV, 4))={ @trigger me/tr.error=%#, %qV must be a number between 1 and 4.; }; @assert lte(add(setr(O, ulocal(f.get-player-stat-or-zero, %#, coin)), %qV), 4)={ @trigger me/tr.error=%#, Your pockets can only hold 4 coin and you already have %qO. You can't withdraw %qV from your crew's vault.; }; @assert gte(setr(S, ulocal(f.get-player-stat-or-zero, %qC, crew coin)), %qV)={ @trigger me/tr.error=%#, Your crew doesn't have %qV coin to withdraw in their vault - they only have %qS.; }; @set %qC=[ulocal(f.get-stat-location-on-player, crew coin)]:[sub(%qS, %qV)]; @set %#=[ulocal(f.get-stat-location-on-player, coin)]:[add(%qO, %qV)]; @trigger me/tr.log=%#, _coin-, %#, Withdrew %qV coin from the crew vault.; @trigger me/tr.log=%qC, _crew-coin-, %#, Withdrew %qV coin.; @trigger me/tr.success=%#, You withdraw %qV coin from the crew vault. You now have [ulocal(f.get-player-stat-or-zero, %#, coin)] coin and the crew has [ulocal(f.get-player-stat-or-zero, %qC, crew coin)] in the vault.;
 
 &c.+coin/withdraw_staff [v(d.cg)]=$+coin/withdraw *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to change a player's stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, %qN is not in a crew and can't receive crew coin.; }; @eval setq(V, if(isint(first(%1)), first(%1), 0)); @eval strcat(setq(R, if(isint(first(%1)), rest(%1), %1)), setq(R, squish(trim(switch(%qR, for *, rest(%qR), %qR))))); @assert t(%qR)={ @trigger me/tr.error=%#, Can't figure out what your reason for withdrawing this crew coin was.; }; @assert cand(isint(%qV), gt(%qV, 0), lte(%qV, 16))={ @trigger me/tr.error=%#, %qV must be a number between 1 and 16.; }; @assert gte(setr(S, ulocal(f.get-player-stat-or-zero, %qC, crew coin)), %qV)={ @trigger me/tr.error=%#, This crew doesn't have %qV coin - they only have %qS in their vault.; }; @set %qC=[ulocal(f.get-stat-location-on-player, crew coin)]:[sub(%qS, %qV)]; @trigger me/tr.log=%#, _crew-coin-, %#, Took %qV crew coin for '%qR'.; @trigger me/tr.stat-setting-messages=cat(You take %qV crew coin from, ulocal(f.get-name, %qP, %#)'s crew for '%qR'.), ulocal(f.get-name, %#) takes %qV crew coin from your crew's vault for '%qR'., %qP, %#, Crew Coin;
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ +heal and +harm
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+
+&f.get-harm-field [v(d.cgf)]=case(%1, 3, if(hasattr(%0, _health-4), #-1 DEAD CHARACTER, if(hasattr(%0, _health-3), _health-4, _health-3)), case(strcat(hasattr(%0, _health-%1-1), hasattr(%0, _health-%1-2)), 00, _health-%1-1, 10, _health-%1-2, ulocal(f.get-harm-field, %0, add(%1, 1))))
+
+&f.get-highest-health-level [v(d.cgf)]=trim(iter(4 3 2-2 2-1 1-2 1-1, if(hasattr(%0, _health-[itext(0)]), strcat(_health-, itext(0)))))
+
+&layout.harm [v(d.cgf)]=cat(alert(Health), ulocal(f.get-name, %0), inflicted a, %chlevel %1%cn, harm on, obj(%0)self, called, %ch%2%cn., ulocal(layout.health-status, %0, %1, %2))
+
+&layout.harm-text [v(d.cgf)]=if(hasattr(%0, _health-%1), cat(indent()-, xget(%0, _health-%1), strcat(%(, Level, %b, first(%1, -), %,, %b, switch(%1, 4, catastrophic%, permanent consequences, 3, needs help or to spend stress to act, 2*, -1 die to related rolls, less effect in related rolls), %))))
+
+&layout.health-status [v(d.cgf)]=strcat(setq(H, squish(trim(iter(4 3 2-2 2-1 1-2 1-1, ulocal(layout.harm-text, %0, itext(0)),, |), b, |), |)), cat(capstr(subj(%0)), if(t(%qH), strcat(plural(%0, is, are), %b, suffering from the following ailments:, %r, edit(%qH, |, %r)), plural(%0, is, are) perfectly healthy.)))
+
+&c.+health [v(d.cg)]=$+health:@pemit %#=ulocal(layout.subsection, health, %#, %#, 1)
+
+&c.+harm [v(d.cg)]=$+harm *:@eval setq(L, if(isint(first(edit(%0, L,))), strcat(first(edit(%0, L,)), setq(D, rest(%0))), if(isint(last(edit(%0, L,))), strcat(last(edit(%0, L,)), setq(D, revwords(rest(revwords(%0))))), strcat(1, setq(D, %0))))); @assert t(match(1 2 3, %qL))={ @trigger me/tr.error=%#, You can only suffer a level 1%, 2%, or 3 harm.; }; @assert t(%qD)={ @trigger me/tr.error=%#, You must enter a description of the harm.; }; @assert t(setr(F, ulocal(f.get-harm-field, %#, %qL)))={ @trigger me/tr.error=%#, Your character has taken all available levels of harm and has suffered catastrophic%, permanent consequences.; }; @assert cor(not(strmatch(%qF, _health-4)), gettimer(%#, health-doom, %qD))={ @eval settimer(%#, health-doom, 600, %qD); @trigger me/tr.message=%#, Taking this level of harm will have catastrophic%, permanent consequences for your character. Are you sure? If yes%, send %ch+harm %0%cn again within 10 minutes. The time is now [prettytime()].; }; @set %#=%qF:%qD; @set %#=_health-clock:[setq(C, xget(%#, _health-clock))]; @if t(%qC)={ @trigger me/tr.message=%#, Because you have taken harm%, your healing clock has been reset from %qC to 0.; }; @trigger me/tr.remit-or-pemit=%L, ulocal(layout.harm, %#, %qL, %qD), %#; @trigger me/tr.alert-to-monitor=%#, Takes a L%qL harm called '%qD'.; @assert t(ulocal(f.get-harm-field, %#, %qL))={ @trigger me/tr.remit-or-pemit=%L, cat(alert(Health), ulocal(f.get-name, %#) has taken all available levels of harm and has suffered catastrophic%, permanent consequences.), %#; @trigger %vA/trig_create=%#, xget(%vD, d.characters-bucket), 1, cat(Max Harm:, ulocal(f.get-name, %#)), cat(ulocal(f.get-name, %#), has taken the maximum possible level of harm and this will have catastrophic consequences%, such as limb loss or sudden death.); };
+
+&c.+harm/clear [v(d.cg)]=$+harm/clear *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to change a player's stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert t(setr(F, revwords(ulocal(f.get-highest-health-level, %qP))))={ @trigger me/tr.error=%#, %qN isn't currently wounded and cannot have harm cleared.; }; @wipe %qP/_health-1-*; @wipe %qP/_health-2-*; @wipe %qP/_health-3; @wipe %qP/_health-4; @trigger me/tr.stat-setting-messages=Cleared %qN's injuries completely., ulocal(f.get-name, %#, %qP) clears your injuries completely., %qP, %#, Health;
+
+&c.+hurt [v(d.cg)]=$+hurt *: @force %#=+harm %0;
+
+&c.+heal [V(d.cg)]=$+heal*:@break strmatch(%0, th); @trigger me/tr.error=%#, Healing costs downtime. +dt/recover <#> to spend downtime and roll to heal.;
+
