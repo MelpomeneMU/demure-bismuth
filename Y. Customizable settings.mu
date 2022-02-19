@@ -120,11 +120,13 @@
 
 &d.allowed-who-fields [v(d.bd)]=Alias|Apparent Age|Connection Info|Connection Time|DBref|Doing|Gender|IC Full Name|Street Alias|Expert Type|IC Pronouns|Idle|Last IP|Location|Mail Stats|Name|Note|OOC Pronouns|Played-by|Position|Private Alts|Public Alts|Quote|RP Prefs|Short-desc|Staff Notes|Status|Themesong|Timezone|Wiki
 
-&d.section.ic_info [v(d.bd)]=Apparent Age|Gender|IC Full Name|Street Alias|Crew Title|Expert Type|IC Pronouns|Played-by|Short-desc|Wiki|Themesong|Quote
+&d.section.ic_info [v(d.bd)]=Apparent Age|Gender|IC Full Name|Crew|Street Alias|Crew Title|Expert Type|IC Pronouns|Played-by|Short-desc|Wiki|Themesong|Quote
 
 &d.finger-settable-fields [v(d.bd)]=Apparent Age|Gender|IC Full Name|Street Alias|Crew Title|IC Pronouns|OOC Pronouns|Played-by|Position|Public Alts|Quote|RP Prefs|Short-desc|Themesong|Timezone|Wiki
 
 &f.get-expert_type [v(d.bf)]=xget(%0, _stat.expert_type)
+
+&f.get-crew [v(d.bf)]=strcat(xget(setr(C, xget(%0, _stat.crew_object)), _stat.crew_name), %b, %(, setq(T, default(%qC/_stat.tier, 0)), if(t(%qT), roman(%qT), %qT), %))
 
 &f.get-crew_title [v(d.bf)]=xget(%0, d.crew_title)
 
