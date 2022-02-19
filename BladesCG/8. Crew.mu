@@ -1,6 +1,23 @@
-@@ TODO: Code to raise a crew's tier.
+/*
++crew
++crew <name> (staff-only)
++crew/<page> - view a  page of the crew's sheet
++crew/<page> <player> (staff-only)
 
-@@ TODO: Figure out a way to give a crew claims. +claim/award <name>=<blah> - but we also need to award claims that are mapped. +claim/award <name>=C1 for example.
++crew/create <crew>
++crew/channel <channel>
++crew/channel <player>=<channel> (staff-only)
++crew/lock
++crew/join <crew>
++crew/invite <player>
++crew/boot <player>
++crew/leave
+* +crew/transfer <player>
+* +crew/transfer <playerA>=<playerB> (staff-only)
+
+*/
+
+@@ TODO: Code to raise a crew's tier.
 
 &c.+crew [v(d.cg)]=$+crew*:@break switch(%0, /*, 1, * *, 1, 0); @force %#=+sheet/crew%0;
 

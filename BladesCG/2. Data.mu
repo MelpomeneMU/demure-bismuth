@@ -305,6 +305,42 @@
 
 &d.contacts.smugglers [v(d.cgdb)]=Elynn, a dock worker|Rolan, a drug dealer|Sera, an arms dealer|Nyelle, a spirit trafficker|Decker, an anarchist|Esme, a tavern owner
 
+&d.map.assassins [v(d.cgdb)]=Training Rooms|Vice Den|Fixer|Informants|Hagfish Farm|Victim Trophies|Turf|Turf|Cover Operation|Protection Racket|Infirmary|Envoy|Cover Identities|City Records
+
+&d.map.bravos [v(d.cgdb)]=Barracks|Turf|Terrorized Citizens|Informants|Protection Racket|Fighting Pits|Turf|Turf|Turf|Infirmary|B.C. Intimidation|Street Fence|Warehouses|B.C. Confederates
+
+&d.map.cult [v(d.cgdb)]=Cloister|Vice Den|Offeratory|Ancient Obelisk|Ancient Tower|Turf|Turf|Turf|Turf|Spirit Well|Ancient Gate|Sanctuary|Sacred Nexus|Ancient Altar
+
+&d.map.hawkers [v(d.cgdb)]=Turf|Personal Clothier|Local Graft|Lookouts|Informants|Turf|Turf|Turf|Luxury Venue|Foreign Market|Vice Den|Surplus Cache|Cover Operation|Cover Identities
+
+&d.map.shadows [v(d.cgdb)]=Interr. Chamber|Turf|Loyal Fence|Gambling Den|Tavern|Drug Den|Informants|Turf|Lookouts|Hagfish Farm|Infirmary|Covert Drop|Turf|Secret Pathways
+
+&d.map.smugglers [v(d.cgdb)]=Turf|Side Business|Luxury Fence|Vice Den|Tavern|Ancient Gate|Turf|Turf|Turf|Secret Routes|Informants|Fleet|Cover Operation|Warehouse
+
+&d.map-h-joins.assassins [v(d.cgdb)]=A1-A2 A3 A4-A5 B1 B2-B3-B4-B5 C1-C2 C3 C4-C5
+
+&d.map-h-joins.bravos [v(d.cgdb)]=A1-A2-A3 A4-A5 B1-B2-B3-B4-B5 C1-C2 C3-C4-C5
+
+&d.map-h-joins.cult [v(d.cgdb)]=A1-A2-A3 A4-A5 B1-B2-B3-B4-B5 C1-C2 C3 C4-C5
+
+&d.map-h-joins.hawkers [v(d.cgdb)]=A1-A2 A3 A4-A5 B1 B2-B3-B4-B5 C1-C2 C3 C4-C5
+
+&d.map-h-joins.shadows [v(d.cgdb)]=A1-A2-A3 A4-A5 B1-B2-B3-B4-B5 C1-C2 C3-C4-C5
+
+&d.map-h-joins.smugglers [v(d.cgdb)]=A1-A2-A3 A4-A5 B1 B2-B3-B4-B5 C1-C2 C3 C4-C5
+
+&d.map-v-joins.assassins [v(d.cgdb)]=||||||||_|
+
+&d.map-v-joins.bravos [v(d.cgdb)]=|_||||||||
+
+&d.map-v-joins.cult [v(d.cgdb)]=|||_|_||||
+
+&d.map-v-joins.hawkers [v(d.cgdb)]=|||||||||_
+
+&d.map-v-joins.shadows [v(d.cgdb)]=|_||||||_|
+
+&d.map-v-joins.smugglers [v(d.cgdb)]=||||||||||
+
 &d.upgrades [v(d.cgdb)]=d.upgrades.lair d.upgrades.quality d.upgrades.training d.upgrades.assassins d.upgrades.bravos d.upgrades.cult d.upgrades.hawkers d.upgrades.shadows d.upgrades.smugglers
 
 &d.upgrades.lair [v(d.cgdb)]=[ ] [ ] Carriage|[ ] [ ] Boat|[ ] [ ] Vehicle|[ ] Hidden|[ ] Quarters|[ ] [ ] Secure|[ ] [ ] Vault|[ ] Workshop

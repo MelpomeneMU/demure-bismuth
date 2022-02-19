@@ -85,7 +85,7 @@
 
 &f.get-crew-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.crew_abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
-&f.is-crew-stat [v(d.cgf)]=cand(t(setr(S, finditem(ulocal(f.list-crew-stats), %0, |))), strmatch(%qS, %0))
+&f.is-crew-stat [v(d.cgf)]=cor(cand(t(setr(S, finditem(ulocal(f.list-crew-stats), %0, |))), strmatch(%qS, %0)), t(member(Map A1|Map A2|Map A3|Map A4|Map A5|Map B1|Map B2|Map B4|Map B5|Map C1|Map C2|Map C3|Map C4|Map C5, %0, |)))
 
 &f.list-crew-stats [v(d.cgf)]=strcat(xget(%vD, d.crew_bio), |, xget(%vD, d.crew-stats))
 
@@ -249,7 +249,7 @@
 @@ %0: player
 @@ %1: stat list to look on
 @@ %2: stat to look for
-&f.has-list-stat [v(d.cgf)]=switch(%1, Upgrades, t(ulocal(f.find-upgrade, ulocal(f.get-player-stat, %0, %1), switch(%2, *\]*, trim(last(%2, \])), %2))), Faction, t(finditem(iter(ulocal(f.get-player-stat, %0, %1), rest(itext(0)), |, |), if(isnum(first(%2)), rest(%2), %1))), t(finditem(ulocal(f.get-player-stat, %0, %1), %2, |)))
+&f.has-list-stat [v(d.cgf)]=switch(%1, Upgrades, t(ulocal(f.find-upgrade, ulocal(f.get-player-stat, %0, %1), switch(%2, *\]*, trim(last(%2, \])), %2))), Factions, t(finditem(iter(ulocal(f.get-player-stat, %0, %1), rest(itext(0)), |, |), if(isnum(first(%2)), rest(%2), %2), |)), t(finditem(ulocal(f.get-player-stat, %0, %1), %2, |)))
 
 &f.get-lifestyle [v(d.cgf)]=div(ulocal(f.get-player-stat, %0, Stash), 10)
 
@@ -307,6 +307,16 @@
 &f.get-turf [v(d.cgf)]=add(if(ulocal(f.has-list-stat, %0, Crew Abilities, Fiends), ulocal(f.get-player-stat-or-zero, %0, Wanted Level), 0), if(ulocal(f.has-list-stat, %0, Crew Abilities, Accord), ladd(iter(ulocal(f.get-player-stat, %0, Factions), gt(first(itext(0)), 2), |)), 0), ladd(iter(ulocal(f.get-mapped-turf-list, %0), t(ulocal(f.mark-map, %0, itext(0))))), ladd(iter(ulocal(f.get-player-stat, %0, Claims), strmatch(itext(0), *Turf*), |)))
 
 &f.get-mapped-turf-list [v(d.cgf)]=switch(ulocal(f.get-player-stat, %0, Crew Type), Assassins, B2 B4, Bravos, A2 B2 B4 B5, Cult, B1 B2 B4 B5, Hawkers, A1 B1 B2 B4, Shadows, A2 B4 C4, Smugglers, A1 B2 B4 B5)
+
+&f.get-map-key [v(d.cgf)]=default(strcat(%0, /, ulocal(f.get-stat-location-on-player, Map %1)), extract(xget(%vD, strcat(d.map., ulocal(f.get-player-stat, %0, Crew Type))), switch(%1, A*, rest(%1, A), B*, add(5, if(gt(setr(I, rest(%1, B)), 2), -1, 0), %qI), add(9, rest(%1, C))), 1, |))
+
+&f.get-map-h-join [v(d.cgf)]=edit(mid(strip(edit(xget(%vD, strcat(d.map-h-joins., ulocal(f.get-player-stat, %0, Crew Type))), %b, _), ABC12345), dec(switch(%1, A*, rest(%1, A), B*, add(5, rest(%1, B)), add(10, rest(%1, C)))), 1), _, %b)
+
+&f.get-map-v-join [v(d.cgf)]=mid(xget(%vD, strcat(d.map-v-joins., ulocal(f.get-player-stat, %0, Crew Type))), dec(switch(%1, A*, rest(%1, A), B*, add(5, rest(%1, B)), add(10, rest(%1, C)))), 1)
+
+@@ %0: crew object
+@@ %1: stat name
+&f.has-mapped-stat [v(d.cgf)]=ladd(cat(switch(%1, Covert Drop, if(strmatch(ulocal(f.get-player-stat, %0, Crew Type), Shadows), t(ulocal(f.get-player-stat, %0, Map C3)), 0), Loyal Fence, if(strmatch(ulocal(f.get-player-stat, %0, Crew Type), Shadows), t(ulocal(f.get-player-stat, %0, Map A3)), 0)))
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew
