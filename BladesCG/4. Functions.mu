@@ -85,7 +85,7 @@
 
 &f.get-crew-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.crew_abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
-&f.is-crew-stat [v(d.cgf)]=cor(cand(t(setr(S, finditem(ulocal(f.list-crew-stats), %0, |))), strmatch(%qS, %0)), t(member(Map A1|Map A2|Map A3|Map A4|Map A5|Map B1|Map B2|Map B4|Map B5|Map C1|Map C2|Map C3|Map C4|Map C5, %0, |)))
+&f.is-crew-stat [v(d.cgf)]=cor(cand(t(setr(S, finditem(ulocal(f.list-crew-stats), %0, |))), strmatch(%qS, %0)), t(member(xget(%vD, d.map-list), %0, |)))
 
 &f.list-crew-stats [v(d.cgf)]=strcat(xget(%vD, d.crew_bio), |, xget(%vD, d.crew-stats))
 
@@ -316,7 +316,7 @@
 
 @@ %0: crew object
 @@ %1: stat name
-&f.has-mapped-stat [v(d.cgf)]=ladd(cat(switch(%1, Covert Drop, if(strmatch(ulocal(f.get-player-stat, %0, Crew Type), Shadows), t(ulocal(f.get-player-stat, %0, Map C3)), 0), Loyal Fence, if(strmatch(ulocal(f.get-player-stat, %0, Crew Type), Shadows), t(ulocal(f.get-player-stat, %0, Map A3)), 0)))
+&f.has-mapped-stat [v(d.cgf)]=t(ladd(cat(iter(xget(%vD, d.map-list), strmatch(ulocal(f.get-player-stat, %0, itext(0)), %1), |), iter(ulocal(f.get-player-stat, %0, Claims), strmatch(itext(0), %1), |))))
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew

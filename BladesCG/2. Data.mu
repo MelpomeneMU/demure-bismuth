@@ -21,7 +21,7 @@
 @@ - Keep the top 20 log entries.
 @@ - Keep any log entries that have happened in the past 7 days.
 @@ - Anything else gets deleted.
-&d.logs-to-clear [v(d.cgdb)]=_downtime- _crew-coin- _coin- _xp- _rep-
+&d.logs-to-clear [v(d.cgdb)]=_downtime- _crew-coin- _coin- _xp- _rep- _heat- _stress-
 
 @@ TODO: Add advanced abilities from pg 234. These aren't "special abilities", they're Advances (costs the same?) and they may go in a different section. Might also come with some hidden bio fields like "which Iruvian path are you on" but I don't think we vitally *need* that.
 
@@ -68,6 +68,8 @@
 
 @@ Stuff we want to be settable by staff but don't want players to mess with.
 &d.staff-only-stats [v(d.cgdb)]=Heat|Crew Coin|Wanted Level|Hold|Stress|Traumas|Healing|Coin|Claims
+
+&d.map-list [v(d.cgdb)]=Map A1|Map A2|Map A3|Map A4|Map A5|Map B1|Map B2|Map B4|Map B5|Map C1|Map C2|Map C3|Map C4|Map C5
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat aliases
@@ -309,7 +311,7 @@
 
 &d.map.bravos [v(d.cgdb)]=Barracks|Turf|Terrorized Citizens|Informants|Protection Racket|Fighting Pits|Turf|Turf|Turf|Infirmary|B.C. Intimidation|Street Fence|Warehouses|B.C. Confederates
 
-&d.map.cult [v(d.cgdb)]=Cloister|Vice Den|Offeratory|Ancient Obelisk|Ancient Tower|Turf|Turf|Turf|Turf|Spirit Well|Ancient Gate|Sanctuary|Sacred Nexus|Ancient Altar
+&d.map.cult [v(d.cgdb)]=Cloister|Vice Den|Offertory|Ancient Obelisk|Ancient Tower|Turf|Turf|Turf|Turf|Spirit Well|Ancient Gate|Sanctuary|Sacred Nexus|Ancient Altar
 
 &d.map.hawkers [v(d.cgdb)]=Turf|Personal Clothier|Local Graft|Lookouts|Informants|Turf|Turf|Turf|Luxury Venue|Foreign Market|Vice Den|Surplus Cache|Cover Operation|Cover Identities
 
