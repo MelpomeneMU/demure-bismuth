@@ -118,7 +118,10 @@
 
 @@ Code idea: +temproom Tavern > makes you a random tavern with desc, randomized name, etc.
 
-&d.allowed-who-fields [v(d.bd)]=Alias|Apparent Age|Connection Info|Connection Time|DBref|Doing|Gender|IC Full Name|Street Alias|Expert Type|IC Pronouns|Idle|Last IP|Location|Mail Stats|Name|Note|OOC Pronouns|Played-by|Position|Private Alts|Public Alts|Quote|RP Prefs|Short-desc|Staff Notes|Status|Themesong|Timezone|Wiki
+@@ Changed the name of IC Handle to Street Alias and IC Occupation to Expert Type, added Crew.
+&d.allowed-who-fields [v(d.bd)]=Alias|Apparent Age|Connection Info|Connection Time|DBref|Doing|Gender|IC Full Name|Street Alias|Expert Type|IC Pronouns|Idle|Last IP|Location|Mail Stats|Name|Note|OOC Pronouns|Played-by|Position|Private Alts|Public Alts|Quote|RP Prefs|Short-desc|Staff Notes|Status|Themesong|Timezone|Wiki|Crew
+
+@force me=@edit [v(d.bd)]/d.who-field-widths=$, %%b20
 
 &d.section.ic_info [v(d.bd)]=Apparent Age|Gender|IC Full Name|Crew|Street Alias|Crew Title|Expert Type|IC Pronouns|Played-by|Short-desc|Wiki|Themesong|Quote
 
@@ -129,5 +132,7 @@
 &f.get-crew [v(d.bf)]=strcat(xget(setr(C, xget(%0, _stat.crew_object)), _stat.crew_name), %b, %(, setq(T, default(%qC/_stat.tier, 0)), if(t(%qT), roman(%qT), %qT), %))
 
 &f.get-crew_title [v(d.bf)]=xget(%0, d.crew_title)
+
+&f.get-street_alias [v(d.bf)]=xget(%0, d.street_alias)
 
 &jobs [v(d.pp)]=BTCMO
