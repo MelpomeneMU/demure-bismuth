@@ -62,15 +62,15 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 &d.default-room-fields [v(d.bd)]=Name|Idle|Badge|Short-desc
 
-&f.get-badge [v(d.bf)]=default(%0/_public-badge, %b)
+&f.get-badge [v(d.bf)]=default(%0/_public-badge, if(gte(setr(S, default(%0/_total-sharps, 0)), 10), strcat(%b, switch(%qS, >9, Noob, >25, Regular, >50, Seasoned, >75, Veteran, Ancient One))))
 
 @@ Add Badges to +finger
 
 @edit [v(d.bd)]/d.section.ooc_info=$, |Sharps|Public Badge|Badges
 
-&f.get-sharps [v(d.bf)]=itemize(default(%0/_sharps, 0), |)
+&f.get-sharps [v(d.bf)]=strcat(default(%0/_sharps, 0), /, setr(S, default(%0/_total-sharps, 0)), if(gte(%qS, 10), strcat(%b, %(, switch(%qS, >9, Noob, >25, Regular, >50, Seasoned, >75, Veteran, Ancient One), %))))
 
-&f.get-public_badge [v(d.bf)]=itemize(default(%0/_public-badge, None), |)
+&f.get-public_badge [v(d.bf)]=xget(%0, _public-badge)
 
 &f.get-badges [v(d.bf)]=itemize(remove(default(%0/_badges, None), default(%0/_public-badge, None), |, |), |)
 
@@ -128,9 +128,11 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 @@ Sharps, badges, and noms views
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&layout.sharps_and_badges [v(d.sb)]=strcat(header(cat(Sharps and badges for, ulocal(f.get-name, %0, %1)), %1), %r, edit(multicol(strcat(Sharps:, %b, default(%0/_sharps, 0), |, rjust(strcat(Public Badge:, %b, default(%0/_public-badge, None)), sub(div(getremainingwidth(%1), 2), 1), _)), * *, 0, |, %1), _, %b), %r, formattext(cat(Badges:, ulocal(layout.list, setr(B, default(%0/_badges, None)))), 0, %1), if(not(strmatch(%qB, None)), strcat(%r, divider(Badge meanings, %1), %r, formattext(iter(%qB, cat(itext(0):, ulocal(f.get-badge-meaning, ulocal(f.find-badge-by-name, itext(0)))), |, %r), 0, %1))), if(cand(cor(isstaff(%1), strmatch(%0, %1)), t(setr(L, ulocal(f.get-last-X-logs, %0, _nom-)))), strcat(%r, divider(Last 10 +noms, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), if(cand(cor(isstaff(%1), strmatch(%0, %1)), t(setr(L, ulocal(f.get-last-X-logs, %0, _sharps-)))), strcat(%r, divider(Last 10 sharps and badges logs, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(, %1))
+&layout.sharps_and_badges [v(d.sb)]=strcat(header(cat(Sharps and badges for, ulocal(f.get-name, %0, %1)), %1), %r, multicol(strcat(Sharps:, %b, default(%0/_sharps, 0), |, Total sharps:, %b, default(%0/_total-sharps, 0), |, Public Badge:, %b, default(%0/_public-badge, None)), 18 18 *, 0, |, %1), if(not(strmatch(setr(B, default(%0/_badges, None)), None)), strcat(%r, divider(Badge meanings, %1), %r, formattext(iter(%qB, cat(itext(0):, ulocal(f.get-badge-meaning, ulocal(f.find-badge-by-name, itext(0)))), |, %r), 0, %1))), if(cand(cor(isstaff(%1), strmatch(%0, %1)), t(setr(L, ulocal(f.get-last-X-logs, %0, _nom-)))), strcat(%r, divider(Last 10 +noms, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), if(cand(cor(isstaff(%1), strmatch(%0, %1)), t(setr(L, ulocal(f.get-last-X-logs, %0, _sharps-)))), strcat(%r, divider(Last 10 sharps and badges logs, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(, %1))
 
 &c.+sharps [v(d.sb)]=$+sharps:@pemit %#=ulocal(layout.sharps_and_badges, %#, %#)
+
+&c.+sharp [v(d.sb)]=$+sharp:@force %#=+sharps;
 
 &c.+badges [v(d.sb)]=$+badges:@force %#=+sharps;
 
@@ -184,3 +186,14 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 &c.+badge/reactivate [v(d.sb)]=$+badge/reactivate *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %0.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @wipe %vD/[edit(%qB, BADGE-, status-)]; @trigger me/tr.success=%#, You reactivate the badge %qN.;
 
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Sharps awarding and spending
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&c.+sharps/award [v(d.sb)]=$+sharps/award *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage sharps.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(V, if(isint(first(%1)), first(%1), 0)); @eval strcat(setq(R, if(isint(first(%1)), rest(%1), %1)), setq(R, squish(trim(switch(%qR, for *, rest(%qR), %qR))))); @assert t(%qR)={ @trigger me/tr.error=%#, Can't figure out what your reason for granting these sharps was.; }; @assert cand(isint(%qV), gte(%qV, 1), lte(%qV, 100))={ @trigger me/tr.error=%#, Sharps amount must be an integer between 1 and 100.; }; @set %qP=_sharps:[add(xget(%qP, _sharps), %qV)]; @set %qP=_total-sharps:[add(xget(%qP, _total-sharps), %qV)]; @trigger me/tr.success=%#, cat(You award, ulocal(f.get-name, %qP, %#), %qV sharps for '%qR'.); @trigger me/tr.log=%qP, _sharps-, %#, Awarded %qV sharps for '%qR'.; @trigger me/tr.message=%qP, cat(ulocal(f.get-name, %#, %qP) awards you %qV sharps for '%qR'.);
+
+&c.+sharps/awardall [v(d.sb)]=$+sharps/awardall *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage sharps.; }; @assert t(%1)={ @trigger me/tr.error=%#, Can't figure out what your reason for granting these sharps was.; }; @assert cand(isint(%0), gte(%0, 1), lte(%0, 100))={ @trigger me/tr.error=%#, Sharps amount must be an integer between 1 and 100.; }; @assert gettimer(%#, sharp-mass-award, %0=%1)={ @trigger me/tr.message=%#, You are about to award everyone connected %0 sharps because '%1'. Are you sure? If yes%, type %ch+sharps/awardall %0=%1%cn again within 10 minutes. The time is now [prettytime()].; @eval settimer(%#, sharp-mass-award, 600, %0=%1); }; @dolist search(EPLAYER=hasflag(##, connected))={ @force %#=+sharps/award ##=%0 %1; };
+
+&c.+sharps/spend [v(d.sb)]=$+sharps/spend *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage sharps.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(V, if(isint(first(%1)), first(%1), 0)); @eval strcat(setq(R, if(isint(first(%1)), rest(%1), %1)), setq(R, squish(trim(switch(%qR, for *, rest(%qR), %qR))))); @assert t(%qR)={ @trigger me/tr.error=%#, Can't figure out what your reason for granting these sharps was.; }; @assert cand(isint(%qV), gte(%qV, 1), lte(%qV, 100))={ @trigger me/tr.error=%#, Sharps amount must be an integer between 1 and 100.; }; @assert lte(%qV, setr(E, xget(%qP, _sharps)))={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) only has %qE sharps - %qV is too many.; }; @set %qP=_sharps:[sub(%qE, %qV)]; @trigger me/tr.success=%#, cat(You spend %qV of, ulocal(f.get-name, %qP, %#)'s, sharps for '%qR'.); @trigger me/tr.log=%qP, _sharps-, %#, Spent %qV sharps for '%qR'.; @trigger me/tr.message=%qP, ulocal(f.get-name, %#, %qP) spends %qV of your sharps for '%qR'.;
+
+&c.+sharp/alias [v(d.sb)]=$+sharp/* *=*: @force %#=+sharps/%0 %1=%2;
