@@ -95,13 +95,41 @@ n
 
 @name here=Chargen - Expert Walkthrough - Details
 
+@set here=INHERIT
+
 @name O=Back <O>;o;out;exit;back;b;
+
+@force me=&vF here=[v(d.cgf)]
 
 &d.redirect-poses.[num(here)] [v(d.bd)]=Chargen
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TNow it's time to set a few details about your character.%R%R%T%ch+stat/set Look=<your short description>%cn%R%R%T%ch@desc me=<your normal description>%cn - does not need to be long! Use %%R to create a line break and %%T to indent.%R%R%TOptional: %ch+stat/set Name=<your character's full name>%cn%R%R%TOnce those are set, type %ch+stats/lock%cn and you will be ready for approval!%R%R%TAll conversation in this room goes to the Chargen channel.%R
+@desc here=%R%TNow it's time to set a few details about your character.%R%R%T%ch+stat/set Look=<your short description>%cn%R%R%T%ch@desc me=<your normal description>%cn - does not need to be long! Use %%R to create a line break and %%T to indent.%R%R%TOptional: %ch+stat/set Name=<your character's full name>%cn%R%R%TOnce those are set, hit %chNext%cn!%R%R%TAll conversation in this room goes to the Chargen channel.%R
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Expert walkthrough - Final Step
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
++dig Finish Up
+
+@name FU=Finish Up <Next>;fu;f;finish;up;next;n;
+
+n
+
+@name here=Chargen - Expert Walkthrough - Finishing Up
+
+@set here=INHERIT
+
+@name O=Back <O>;o;out;exit;back;b;
+
+@force me=&vF here=[v(d.cgf)]
+
+&d.redirect-poses.[num(here)] [v(d.bd)]=Chargen
+
+&short-desc here=All chat in this room goes to the Chargen channel.
+
+@desc here=%R%TLook your sheet over one last time. When you're sure you're ready, type %ch+stats/lock%cn. That will lock your sheet - you can still change your mind but you'll have to ask staff to change your sheet for you - and you'll be flagged as ready for approval.%R%R%TStaff will be examining your sheet for:%R%T%R%T* Does your character fit into the theme OK?%R%T* Desc can't be underage.%R%T* Desc should be at least one (relevant) sentence long.%R%T* Anything missing? Any [ulocal(%vF/layout.fail)] marks on the CG check?%R%R%TAll conversation in this room goes to the Chargen channel.%R
 
 @force me=@open [escape(v(d.parent_room_exit_name))]=[v(d.cg_parent_room)]
 
