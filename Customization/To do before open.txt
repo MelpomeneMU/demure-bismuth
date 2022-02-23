@@ -13,7 +13,6 @@ Crew code
 	Crew approval process
 	Vote to boot people (optional)
 	Invite-sharing (optional)
-Sharps and Badges system
 
 Grid
 Wiki
