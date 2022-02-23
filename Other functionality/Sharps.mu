@@ -55,6 +55,8 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 +badges/all - list all the badges and maybe some stats about who's got them
 
++badges/info <badge> - get info about a particular badge
+
 */
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -139,7 +141,7 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 @daily [v(d.sb)]=@trigger me/tr.clean-old-player-logs=_nom-; @trigger me/tr.wipe-weekly-nom-stats;
 
-&tr.wipe-weekly-nom-stats [v(d.sb)]=@break gettimer(%vD, global-noms); @eval settimer(%vD, global-noms, 604800); @wipe %vD/global-noms-*; @set %vD=last-reset:[prettytime()];
+&tr.wipe-weekly-nom-stats [v(d.sb)]=@break gettimer(%vD, global-noms); @eval settimer(%vD, global-noms, 604795); @wipe %vD/global-noms-*; @set %vD=last-reset:[prettytime()];
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Basic functions
@@ -158,7 +160,7 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 &f.get-badge-status [v(d.sb)]=default(strcat(%vD, /, edit(%0, BADGE-, status-)), Active)
 
-&f.get-badge-players [v(d.sb)]=default(strcat(%vD, /, edit(%0, BADGE-, players-)), None)
+&f.get-badge-players [v(d.sb)]=default(strcat(%vD, /, edit(%0, BADGE-, players-)), if(t(setr(S, xget(%vD, edit(%0, BADGE-, sharpcount-)))), words(search(EPLAYER=gt(default(##/_total-sharps, 0), %qS))) players, None))
 
 @@ %0: name
 &f.find-badge-by-name [v(d.sb)]=if(t(%0), first(iter(lattr(%vD/badge-*), if(strmatch(strip(ulocal(f.get-badge-name, itext(0))), strip(%0)*), itext(0)))))
@@ -207,9 +209,9 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 &c.+sharps/alias [v(d.sb)]=$+sharps/*:@break switch(first(%0), awardall, 1, award, 1, spend, 1, 0); @eval setq(A, switch(%0, * *, rest(%0))); @assert strmatch(%qA, *=*)={ @pemit %#=error(); }; @switch/first %0=aa*, { @force %#=+sharps/awardall %qA; }, a*, { @force %#=+sharps/award %qA; }, s*, { @force %#=+sharps/spend %qA; }, { @pemit %#=error(); };
 
-&c.+badge/alias [v(d.sb)]=$+badge/*:@break switch(first(%0), award, 1, awardall, 1, remove, 1, removeall, 1, create, 1, retire, 1, reactivate, 1, destroy, 1, show, 1, 0); @eval setq(A, switch(%0, * *, rest(%0))); @switch/first 1=strmatch(%qA, *=*), { @switch/first %0=a*, { @force %#=+badge/award %qA; }, r*, { @force %#=+badge/remove %qA; }, d*, { @force %#=+badge/remove %qA; }, c*, { @force %#=+badge/create %qA; }, { @pemit %#=error(); }; }, t(%qA), { @switch/first %0=a*, { @force %#=+badge/awardall %qA; }, rem*, { @force %#=+badge/removeall %qA; }, ret*, { @force %#=+badge/retire %qA; }, rea*, { @force %#=+badge/reactivate %qA; }, d*, { @force %#=+badge/destroy %qA; }, s*, { @force %#=+badge/show %qA; }, { @pemit %#=error(); }; }, { @force %#=+badges/%0; };
+&c.+badge/alias [v(d.sb)]=$+badge/*:@break switch(first(%0), award, 1, awardall, 1, remove, 1, removeall, 1, create, 1, retire, 1, reactivate, 1, destroy, 1, show, 1, info, 1, 0); @eval setq(A, switch(%0, * *, rest(%0))); @switch/first 1=strmatch(%qA, *=*), { @switch/first %0=a*, { @force %#=+badge/award %qA; }, r*, { @force %#=+badge/remove %qA; }, d*, { @force %#=+badge/remove %qA; }, c*, { @force %#=+badge/create %qA; }, { @pemit %#=error(); }; }, t(%qA), { @switch/first %0=a*, { @force %#=+badge/awardall %qA; }, i*, { @force %#=+badge/info %qA; }, rem*, { @force %#=+badge/removeall %qA; }, ret*, { @force %#=+badge/retire %qA; }, rea*, { @force %#=+badge/reactivate %qA; }, d*, { @force %#=+badge/destroy %qA; }, s*, { @force %#=+badge/show %qA; }, { @pemit %#=error(); }; }, { @force %#=+badges/%0; };
 
-&c.+badges/alias [v(d.sb)]=$+badges/*:@break switch(%0, all, 1, 0); @switch/first %0=a*, { @force %#=+badges/all; }, { @pemit %#=error(); };
+&c.+badges/alias [v(d.sb)]=$+badges/*:@break switch(%0, all, 1, 0); @eval setq(A, switch(%0, * *, rest(%0))); @switch/first %0=a*, { @force %#=+badges/all; }, i*, { @assert t(%qA)={ @pemit %#=error(); }; @force %#=+badge/info %qA; }, { @pemit %#=error(); };
 
 &c.+nom_alias [v(d.sb)]=$+nom *: @break strmatch(%0, *=*); @force %#=+noms %0;
 
@@ -218,14 +220,17 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 &c.+badge_alias [v(d.sb)]=$+badge *: @force %#=+badges %0;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ All badges
+@@ Badge info
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-@@ TODO: Implement paging because this is probably going to be too large.
+&layout.badges [v(d.sb)]=strcat(header(All badges, %1), %r, edit(multicol(iter(lattr(%vD/badge-*), strcat(switch(ulocal(f.get-badge-status, itext(0)), R*, %ch%cxR%cn, _), |, ulocal(f.get-badge-name, itext(0))),, |), 1 * 1 * 1 *, 0, |, %1), _, %b), %r, footer(, %1))
 
-&layout.badges [v(d.sb)]=strcat(header(All badges, %1), formattext(iter(lattr(%vD/badge-*), cat(ulocal(f.get-badge-name, itext(0)):, ulocal(f.get-badge-meaning, itext(0)), %r - Players awarded:, ulocal(layout.list, ulocal(f.get-badge-players, itext(0))), %r - Created, ulocal(f.get-badge-creation-date, itext(0)), by, ulocal(f.get-badge-creator, itext(0)), %r - Status:, ulocal(f.get-badge-status, itext(0))),, %r), 0, %1), %r, footer(, %1))
+&layout.badge [v(d.sb)]=strcat(header(ulocal(f.get-badge-name, %0), %1), %r, formattext(strcat(Meaning:, %b, ulocal(f.get-badge-meaning, %0), %r%r, Players:, %b, ulocal(layout.list, ulocal(f.get-badge-players, %0)), %r, Status:, %b, ulocal(f.get-badge-status, %0), %r, Created, %b, ulocal(f.get-badge-creation-date, %0), %b, by, %b, ulocal(f.get-badge-creator, %0)), 0, %1), %r, footer(, %1))
 
 &c.+badges/all [v(d.sb)]=$+badges/all: @pemit %#=ulocal(layout.badges, %#, %#);
+
+&c.+badge/info [v(d.sb)]=$+badge/info *: @assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %0.; }; @pemit %#=ulocal(layout.badge, %qB, %#);
+
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Badge creation and destruction
