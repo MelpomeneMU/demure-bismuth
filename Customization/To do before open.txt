@@ -6,8 +6,7 @@ Channel creations
 	LFG channel
 
 CG
-	Clean up the approval process.
-	Add job messages to +stat/lock and +crew/lock.
+	Add job messages to +crew/lock.
 Crew code
 	Probies (not optional)
 	Crew approval process
