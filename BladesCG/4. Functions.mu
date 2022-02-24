@@ -331,3 +331,11 @@
 &f.is-full-member [v(d.cgf)]=cand(t(member(ulocal(f.get-player-stat, %0, crew object), %1)), cor(ulocal(f.is-founding-member, %0, %1), not(ulocal(f.is-probationary-member, %0, %1))))
 
 &f.is-crew-approved [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, crew approved date))
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Jobs
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ %0: player
+@@ %1: number of job or job dbref
+&f.can-add-to-job [v(d.cgf)]=cand(not(hasflag(%0, GUEST)), cor(isdbref(setr(J, %1)), isdbref(setr(J, ulocal(%vA/fn_find-job, %1)))), cor(cand(ulocal(%vA/is_public, %qJ), t(match(xget(%qJ, opened_by), %0))), ulocal(%vA/fn_myaccesscheck, parent(%qJ), %0, %qJ)), not(hasattr(%qJ, locked)))

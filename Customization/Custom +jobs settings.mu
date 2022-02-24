@@ -62,6 +62,7 @@
 @@ WARNING: Fire the commands below at least one second AFTER the commands above have been run.
 
 @@ Transparent means all players can see the job bucket and any jobs in it. They can add to the job as if they owned it.
+
 @@ TODO: Make sure that's actually true. Right now it looks like "transparent" makes it so they can only SEE it. Not add to it. WTF, +jobs.
 
 &transparent [search(ETHING=t(member(name(##), FACTION)))]=
@@ -78,12 +79,22 @@
 &public [search(ETHING=t(member(name(##), PUBLIC)))]=1
 &publish [search(ETHING=t(member(name(##), PUBLIC)))]=1
 &hook_cre [search(ETHING=t(member(name(##), PUBLIC)))]=@set %0/COMMENT_1=no_inherit
+&HOOK_ADD [search(ETHING=t(member(name(##), PUBLIC)))]=@set %0/[dec(get(%0/NUM_COMMENT))]=no_inherit
 
 &access [search(ETHING=t(member(name(##), FACTION)))]=[u(%va/FN_STAFFALL, %#)]
 &public [search(ETHING=t(member(name(##), FACTION)))]=1
 
 &access [search(ETHING=t(member(name(##), CG)))]=[u(%va/FN_STAFFALL, %#)]
 &public [search(ETHING=t(member(name(##), CG)))]=1
+&turnaround [search(ETHING=t(member(name(##), CG)))]=168
+
+&hook_oth [search(ETHING=t(member(name(##), CG)))]=@set [xget(%0, opened_by)]=_chargen-job:%0;
+
+@force me=&vC [search(ETHING=t(member(name(##), CG)))]=[v(d.cg)]
+
+&hook_apr [search(ETHING=t(member(name(##), CG)))]=@set [xget(%0, opened_by)]=_chargen-job:; @trigger %vC/tr.approve-player=xget(%0, opened_by), %1;
+
+&MLETTER_OTH [search(ETHING=t(member(name(##), CG)))]=You have requested character approval from staff. The job is '[name(%0)]: [get(%0/TITLE)]':%r%r%3%r%r[divider(Help, %2)]%r See '[ansi(h, +help myjobs)]' for help on how to display and add to your jobs.%r[divider(Turnaround, %2)]%r Our motto for chargen jobs is: "This is the fun part! Woohoo!" That means we'll rarely keep you waiting. We'll wait up to a week for responses, but hopefully you're more excited to play than that.%r%r The official turnaround time for CG jobs is [div(u(me/TURNAROUND), 24)] days. If you haven't heard from us by then, please reach out with a message on this +job or by paging us. Our actual turnaround time is typically much quicker, and depending on how responsive each player is, you can expect a decision within 1-3 days.
 
 &access [search(ETHING=t(member(name(##), PLOTS)))]=[u(%va/FN_STAFFALL, %#)]
 &public [search(ETHING=t(member(name(##), PLOTS)))]=1

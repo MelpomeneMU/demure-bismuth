@@ -1,103 +1,31 @@
 /*
++stat/set <player>/<stat>=<value>
++stat/add <player>/<stat>=<value>
++stat/remove <player>/<stat>=<value>
++stat/set <stat>=<value>
++stat/add <stat>=<value>
++stat/remove <stat>=<value>
 
-+cg/approve Alice=Go have fun, you crazy kids!
-+cg/unapprove <name>=Unapproved at player request.
++stats/clear
++stats/lock
++stats/unlock <player>
 
-+cg/reject Bob=Your name is Bobbitus Maximus. That's not in-theme. Please remove or change it and get back to us.
-	- Unlocks their character
-	- Shows them the notice at login or in a message if they're logged in
++approve <player>=<comment>
++unapprove <player>=<comment>
++freeze <player>=<comment>
++unfreeze <player>=<comment>
++retire <player>=<comment>
 
-+cg/status - shows the status of your CG app
-
-+cg/status <name> - shows their status and approval history if you're staff, and if not, just shows approved date.
-
-+stat/set stat=value
-+stat/set special ability=value
-etc.
-
-+claim/award <player>=<claim>
-
-Cohort commands:
-
-+cohort/create <name>=<cohort type> - makes a  cohort and sets you up as editing that cohort
-
-+cohort/edit <name> - for editing a cohort you've already made
-
-+cohort/set <stat>=<value>
-+cohort/add <stat>=<value>
-+cohort/remove <stat>=<value>
-
-+cohort/destroy <name> - will ask "are you sure".
-
-Staff Cohort commands:
-
-+cohort/create <player>/<name>=<cohort type>
-
-+cohort/edit <player>/<name>
-
-+cohort/destroy <player>/<cohort>
-
-Example Cohort setting:
-
-First we decided we wanted a badass fashionista with a skill at hats:
-
-+cohort/create Aramina the Bold=Rook
-+cohort/set Specialty=Haberdasher
-+cohort/add Edge=Independent
-+cohort/add Edge=Tenacious
-+cohort/add Flaw=Principled
-+cohort/add Flaw=Unreliable
-
-Then we decided to get some skulks:
-
-+cohort/create The Sly Brothers=Skulks
-+cohort/add Edge=Independent
-+cohort/add Flaw=Principled
-
-But that's not right, so we nuked them:
-
-+cohort/destroy The Sly Brothers
-+cohort/destroy The Sly Brothers=YES
-
-We decided to focus on just one cohort:
-
-+cohort/edit Aramina
-
-Maybe make it an extra strong cohort, and a gang instead of an Expert:
-
-+cohort/add Type=Rover
-+cohort/set Cohort Type=Gang
-
-Rename this Gang to something appropriate:
-
-+cohort/set Name=Fog Kids
-
-And we're done!
-
- .o:,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.{ Cohorts },.,.,.,.,.,.,.,.,.,.,.,.,.,.,.:o.
- . Fog Kids (Gang of Rooks and Rovers)                                       .
- . Edges & Flaws: Independent, Tenacious, Principled, and Unreliable         .
- . Scale: 0, Quality: 0                                                      .
- .o:,.,.,.,.,.,.,.,.,.,.,.,.,{ ................ }.,.,.,.,.,.,.,.,.,.,.,.,.,:o.
-
-Factions:
-
-+factions - full list
-+faction/set <type>=<name>
-+faction/pay <Hunting|Helped|Harmed>=<0|1|2>
-
-+faction/set <player>/<question>=<faction name>
-+faction/set <player>/<faction name>=<#> <reason> (staff-only) set faction status after CG
-
-+faction/log
-+faction/log <player> (staff-only)
+Redo aliases:
++stat/del
++stat/rem
 
 TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not, this only really applies to staff because only staff can keep going after 4+ upgrades)
 
 */
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Layouts specifically for CG messages
+@@ Layouts for CG messages
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 @@ %0 - stat
@@ -141,24 +69,51 @@ TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not,
 
 &layout.cohort-max [v(d.cgf)]=if(strmatch(%2, %3), Creating this cohort would take you over 4 points of Upgrades. You currently have %0. Move some points around before you create this cohort., cat(Creating this cohort would take, ulocal(layout.who-statting, %0, %1, %2, %3), over 4 points of Upgrades. They currently have %0. Move some points around before you create this cohort.))
 
-
 @@ TODO: Add all other "you" style error messages here (so you can swap them to player-style if it's a staffer doing the setting)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Commands - TODO: redo these!
+@@ Lock and unlock
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+stats/lock [v(d.cg)]=$+stats/lock:@assert not(hasattr(%#, _stat.locked))={ @trigger me/tr.error=%#, Your stats are already locked.; };  @set %#=_stat.locked:[prettytime()]; @dolist/delimit | [xget(%vD, d.stats-that-default)]={ @set %#=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %#, ##)]; }; @set %#=ulocal(f.get-stat-location-on-player, xp.insight.max):[setr(M, switch(setr(P, ulocal(f.get-player-stat, %#, Playbook)), Vampire, 8, 6))]; @set %#=ulocal(f.get-stat-location-on-player, xp.prowess.max):%qM; @set %#=ulocal(f.get-stat-location-on-player, xp.resolve.max):%qM; @set %#=ulocal(f.get-stat-location-on-player, xp.playbook.max):[switch(%qP, Vampire, 10, 8)]; @trigger me/tr.success=%#, You locked your stats.;
+&layout.chargen-job [v(d.cgf)]=strcat(ulocal(f.get-name, %0) is ready to be approved., %r%r%b, Staff will be looking for:%R%T* Does your character fit into the theme OK?%R%T* Desc can't be underage.%R%T* Desc should be at least one (relevant) sentence long.%R%T* Anything missing? Any, %b, ulocal(layout.fail), %b, marks on the CG check?, %r%r%b, If you have any questions%, please add them to this job!)
 
-@@ TODO: Figure out how stats/lock and unlock interact with jobs.
+&c.+stats/lock [v(d.cg)]=$+stats/lock:@assert not(hasattr(%#, _stat.locked))={ @trigger me/tr.error=%#, Your stats are already locked.; }; @trigger me/tr.lock-stats=%#; @if cand(isdbref(setr(J, xget(%#, _chargen-job))), ulocal(f.can-add-to-job, %#, %qJ))={ @trigger %vA/trig_add=%qJ, cat(ulocal(f.get-name, %#) has locked, poss(%#), stats again.), %#, ADD; @trigger me/tr.success=%#, You locked your stats. A comment has been added to your CG job to let staff know to take another look.; @trigger %vA/trig_broadcast=%#, cat(CG:, name(%qJ):, %N locked, poss(%#) stats again.), ADD; }, { @trigger %vA/trig_create=%#, xget(%vD, d.CG-bucket), 1, ulocal(f.get-name, %#): Ready for approval, ulocal(layout.chargen-job, %#); @trigger me/tr.success=%#, You locked your stats. A job has been created with staff to examine your character. Type %ch+myjobs%cn to see it.; }
 
-@@ TODO: CAN players unlock their stats? maybe they shouldn't be able to!
+&tr.lock-stats [v(d.cg)]=@set %0=_stat.locked:[prettytime()]; @dolist/delimit | [xget(%vD, d.stats-that-default)]={ @set %0=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %0, ##)]; }; @set %0=ulocal(f.get-stat-location-on-player, xp.insight.max):[setr(M, switch(setr(P, ulocal(f.get-player-stat, %0, Playbook)), Vampire, 8, 6))]; @set %0=ulocal(f.get-stat-location-on-player, xp.prowess.max):%qM; @set %0=ulocal(f.get-stat-location-on-player, xp.resolve.max):%qM; @set %0=ulocal(f.get-stat-location-on-player, xp.playbook.max):[switch(%qP, Vampire, 10, 8)]; 
 
-&c.+stats/unlock [v(d.cg)]=$+stats/unlock*:@assert not(isapproved(%#))={ @assert cand(lte(sub(secs(), xget(%#, _stat.unlock-request)), 600), match(trim(%0), YES))={ @set %#=_stat.unlock-request:[secs()];@trigger me/tr.message=%#, Warning: You are currently approved. Unlocking your stats will remove your approval. You'll need to get approved again to go IC! Are you sure? If so, type +stats/unlock YES within the next 10 minutes. It is now [prettytime()].; }; @trigger me/tr.unlock_stats=%#; }; @trigger me/tr.unlock_stats=%#;
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Unlock stats
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&tr.unlock_stats [v(d.cg)]=@set %0=_stat.locked:; @set %0=!APPROVED; @trigger me/tr.success=%0, You have unlocked your stats. You can't be approved until you lock them again. Happy editing!;
+&c.+stats/unlock [v(d.cg)]=$+stats/unlock *:@assert isstaff(%#)={ @trigger me/tr.error=%#, Only staff can unlock players' stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert hasattr(%#, _stat.locked)={ @trigger me/tr.error=%#, %qN's stats are not currently locked and cannot be unlocked.; }; @assert gettimer(%#, unlock-%qP)={ @trigger me/tr.message=%#, You're about to unlock %qN's stats. This will put them back into CG and let them make changes according to CG rules. It will almost certainly mess up their sheet if they have any advancements. Are you sure? If so%, hit %ch+stats/unlock %qN%cn again within the next 10 minutes. The time is now [prettytime()].; @eval settimer(%#, unlock-%qP, 600); }; @trigger me/tr.unlock_stats=%#, %qP;
 
-&c.+approve [v(d.cg)]=$+approve *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to approve people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert hasattr(%#, _stat.locked)={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) has not locked [poss(%qP)] stats yet and cannot be approved.; }; @set %qP=APPROVED; @set %qP=[ulocal(f.get-stat-location-on-player, approved date)]:[prettytime()]; @set %qP=[ulocal(f.get-stat-location-on-player, approved by)]:[ulocal(f.get-name, %#)] (%#); @trigger me/tr.success=%#, You approved [ulocal(f.get-name, %qP, %#)]. Be sure to let them know!;
+&tr.unlock_stats [v(d.cg)]=@set %0=_stat.locked:; @set %0=!APPROVED; @trigger me/tr.success=%0, cat(You have unlocked, ulocal(f.get-name, %1, %0)'s, stats.); @trigger me/tr.message=%1, ulocal(f.get-name, %0, %1) has unlocked your stats. You can't be approved until you lock them again. Happy editing!;
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Approval
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&c.+approve [v(d.cg)]=$+approve *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to approve people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert hasattr(%qP, _stat.locked)={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) has not locked [poss(%qP)] stats yet and cannot be approved.; }; @assert t(%1)={ @trigger me/tr.error=%#, Please enter a reason for approval.; }; @trigger me/tr.approve-player=%qP, %#, %1; @trigger me/tr.success=%#, You approved [ulocal(f.get-name, %qP, %#)] with the comment '%1'.; @trigger me/tr.message=%qP, ulocal(f.get-name, %#, %qP) approved your character with the comment '%1'. Congratulations!; 
+
+&tr.approve-player [v(d.cg)]=@trigger me/tr.lock-stats=%0; @set %0=APPROVED; @set %0=[ulocal(f.get-stat-location-on-player, approved date)]:[prettytime()]; @set %0=[ulocal(f.get-stat-location-on-player, approved by)]:[ulocal(f.get-name, %1)] (%1); @trigger me/tr.log=%0, _app-, %1, Approved with comment '%2'.;
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Unapproval
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&c.+unapprove [v(d.cg)]=$+unapprove *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to unapprove people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert isapproved(%qP)={ @trigger me/tr.error=%#, %qN is not approved so cannot be unapproved.; }; @assert t(%1)={ @trigger me/tr.error=%#, Please enter a reason for unapproval. The player will see this message.; }; @trigger me/tr.unapprove-player=%qP, %#, %1; @trigger me/tr.success=%#, You unapproved [ulocal(f.get-name, %qP, %#)] with the comment '%1'.; @trigger me/tr.message=%qP, You have been unapproved by [ulocal(f.get-name, %#, %qP)] with the comment '%1'.; 
+
+&tr.unapprove-player [v(d.cg)]=@set %0=!APPROVED; @set %0=[ulocal(f.get-stat-location-on-player, approved date)]:; @set %0=[ulocal(f.get-stat-location-on-player, approved by)]:; @trigger me/tr.log=%0, _app-, %1, Unapproved with comment '%2'.; @trigger me/tr.tel-unapproved-player=%0, %1;
+
+&tr.tel-unapproved-player [v(d.cg)]=@if cand(not(default(d.allow-unapproved-players-IC, 0)), not(ulocal(f.is-location-ooc, loc(%0))))={ @trigger me/tr.travel_to_destination=v(d.ooc), %0, %1, sent by; };
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Retirement
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&c.+retire [v(d.cg)]=$+retire *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to retire people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert isapproved(%qP)={ @trigger me/tr.error=%#, %qN is not approved so cannot be retired.; }; @assert t(%1)={ @trigger me/tr.error=%#, Please enter a reason for retirement. The player will see this message.; }; @assert gettimer(%#, retire-%qP)={ @trigger me/tr.message=%#, You are about to permanently retire %qN. The character cannot be restored. Are you sure? If yes%, type %ch+retire %0=%1%cn again within the next 10 minutes. The time is now [prettytime()].; @eval settimer(%#, retire-%qP, 600); }; @trigger me/tr.retire-player=%qP, %#, %1; @trigger me/tr.success=%#, You retired [ulocal(f.get-name, %qP, %#)] with the comment '%1'.;
+
+&tr.retire-player [v(d.cg)]=@trigger me/tr.unapprove-player=%0, %1, %2; @set %0=[ulocal(f.get-stat-location-on-player, retired date)]:[prettytime()]; @set %0=[ulocal(f.get-stat-location-on-player, retired by)]:[ulocal(f.get-name, %1)] (%1); @trigger me/tr.log=%qP, _app-, %#, Retired with comment '%2'.;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ +stat commands for staffers
@@ -189,10 +144,6 @@ TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not,
 &c.+stat/del [v(d.cg)]=$+stat/del*:@force %#=+stat/remove [switch(%0, %b*, trim(%0), rest(%0))];
 
 &c.+stat/rem [v(d.cg)]=$+stat/rem*:@break strmatch(%0, ove *); @force %#=+stat/remove [switch(%0, %b*, trim(%0), rest(%0))];
-
-&c.+cohort/del [v(d.cg)]=$+cohort/del*:@force %#=+cohort/remove [switch(%0, %b*, trim(%0), rest(%0))];
-
-&c.+cohort/rem [v(d.cg)]=$+cohort/rem*:@break strmatch(%0, ove *); @force %#=+cohort/remove [switch(%0, %b*, trim(%0), rest(%0))];
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat-setting triggers
@@ -253,119 +204,3 @@ TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not,
 &tr.set-crew-stat [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %2, %3)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-crew-stats, %0, %1, %2, %3); }; @assert not(ulocal(f.is-full-list-stat, %0))={ @trigger me/tr.set-full-list-stat=%0, %1, %qC, %3; }; @trigger me/tr.set-final-stat=%0, %1, %qC, %3;
 
 &tr.set-full-list-stat [v(d.cg)]=@trigger me/tr.set-final-stat=%0, setr(0, xget(%vD, strcat(d., ulocal(f.get-stat-location, %0), ., if(t(%1), %1)))), %2, %3, if(t(%1), the %ch%1%cn list: [ulocal(layout.list, %q0)]);
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ +cohorts
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&c.+cohorts [v(d.cg)]=$+cohorts:@pemit %#=ulocal(layout.subsection, crew-cohorts, %#, %#);
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Create cohorts
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&c.+cohort/create [v(d.cg)]=$+cohort/create *=*: @break strmatch(%0, */*);@assert t(setr(C, ulocal(f.get-player-stat, %#, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %#, %#); }; @assert t(%0)={ @trigger me/tr.error=%#, You must enter a name for the new cohort.; }; @eval strcat(setq(V, ulocal(f.get-cohort-stat-pretty-value, Types, %1)), setq(T, switch(%1, *s, Gang, V*, Vehicle, Expert))); @assert cand(t(%qV), t(%qT))={ @trigger me/tr.error=%#, Couldn't figure out what kind of cohort to create. Options are: [ulocal(layout.list, ulocal(f.list-cohort-stat-pretty-values, Types))]. If you want to make an Expert instead of a Gang%, leave off the "s" at the end of the type.; }; @trigger me/tr.create-cohort=%0, %qV, %#, %#, %qT;
-
-&c.+cohort/create_staff [v(d.cg)]=$+cohort/create */*=*: @assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to create cohorts for players.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %qP, %#); }; @assert t(%1)={ @trigger me/tr.error=%#, You must enter a name for the new cohort.; }; @eval strcat(setq(V, ulocal(f.get-cohort-stat-pretty-value, Types, %2)), setq(T, switch(%2, *s, Gang, V*, Vehicle, Expert))); @assert cand(t(%qV), t(%qT))={ @trigger me/tr.error=%#, Couldn't figure out what kind of cohort to create. Options are: [ulocal(layout.list, ulocal(f.list-cohort-stat-pretty-values, Types))]. If you want to make an Expert instead of a Gang%, leave off the "s" at the end of the type.; }; @trigger me/tr.create-cohort=%1, %qV, %qP, %#, %qT;
-
-@@ %0 - name
-@@ %1 - type
-@@ %2 - player
-@@ %3 - player doing the setting
-@@ %4 - gang or expert type
-&tr.create-cohort [v(d.cg)]=@assert cand(valid(attrname, setr(L, ulocal(f.get-stat-location-on-player, cohort_type.%0))), lte(strlen(%qL), 60))={ @trigger me/tr.error=%3, The name '%0' cannot be translated into a valid attribute name%, which means it won't work. Please change the name or open a job with staff requesting a fix.; }; @assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %2, %3)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-crew-stats, Cohort, %0, %2, %3); }; @eval setq(T, ulocal(f.count-upgrades, %qC)); @eval setq(A, ulocal(f.is-allowed-to-break-stat-setting-rules, %3, %2)); @assert cor(not(strmatch(%1, Vehicle)), not(t(finditem(iter(ulocal(f.get-player-stat, %0, Cohorts), ulocal(f.get-cohort-stat, %0, itext(0), Cohort Type), |, |), Vehicle, |))), %qA)={ @trigger me/tr.error=%3, Players may only have one Vehicle cohort.; }; @assert cor(not(strmatch(%1, Vehicle)), ulocal(f.has-list-stat, %qC, Crew Abilities, Like Part of the Family), %qA)={ @trigger me/tr.error=%3, Players must have the Crew Ability "Like Part of the Family" to take a Vehicle as a cohort.; }; @assert cor(not(strmatch(%1, Vehicle)), ulocal(f.has-list-stat, %qC, Upgrades, Vehicle), %qA)={ @trigger me/tr.error=%3, You must have the Upgrade "Vehicle" to take a Vehicle as a cohort.; }; @assert cor(lte(add(%qT, 2), 4), strmatch(%1, Vehicle), %qA)={ @trigger me/tr.error=%3, ulocal(layout.cohort-max, %qT, 0, %2, %3); }; @eval setq(E, xget(%2, ulocal(f.get-stat-location-on-player, Cohorts))); @assert not(member(%qE, %1, |))={ @trigger me/tr.error=%3, Player already has the Cohort '%1'.; }; @trigger me/tr.add-or-remove-stat=Cohorts, %0, %qC, %3, 0, Cohort; @set %qC=ulocal(f.get-stat-location-on-player, cohort_type.%0):%4; @set %qC=ulocal(f.get-stat-location-on-player, types.%0):%1; @set %3=_stat.cohort.editing:%qC/%0; @pemit %3=strcat(header(Cohort, %3), %r, multicol(ulocal(layout.cohort, %2, %0), *, 0, |, %3), %r, footer(, %3));
-
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Destroy cohorts
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&c.+cohort/destroy [v(d.cg)]=$+cohort/destroy *:@break strmatch(%0, */*); @assert t(setr(C, ulocal(f.get-player-stat, %#, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %#, %#); }; @assert ulocal(f.is-allowed-to-edit-crew, %#, %#)={ @trigger me/tr.error=%#, You can't edit your crew once it's locked.; }; @assert t(setr(N, ulocal(f.find-cohort, %qC, first(%0, =))))={ @trigger me/tr.error=%#, Could not find a cohort matching '[first(%0, =)]' in your crew.; }; @assert cand(gettimer(%#, cohort-destroy, %qN), match(rest(%0, =), YES))={ @eval settimer(%#, cohort-destroy, 600, %qN); @trigger me/tr.message=%#, This will destroy your cohort '%ch%qN%cn'. If you would like to continue%, type %ch+cohort/destroy %qN=YES%cn within the next 10 minutes. It is now [prettytime()].; }; @wipe %#/_stat.*.[ulocal(f.get-stat-location, %qN)]; @trigger me/tr.add-or-remove-stat=Cohorts, %qN, %qC, %#, 1, Cohort;
-
-&c.+cohort/destroy_staff [v(d.cg)]=$+cohort/destroy */*: @assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to destroy a player's cohort.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %qP, %#); }; @assert ulocal(f.is-allowed-to-edit-crew, %#, %qP)={ @trigger me/tr.error=%#, You can't edit your crew once it's locked.; }; @assert t(setr(N, ulocal(f.find-cohort, %qC, first(%1, =))))={ @trigger me/tr.error=%#, Could not find a cohort matching '[first(%1, =)]' in [ulocal(f.get-name, %qP, %#)]'s crew.; }; @assert cand(gettimer(%qP, cohort-destroy, %qN), match(rest(%1, =), YES))={ @eval settimer(%qP, cohort-destroy, 600, %qN); @trigger me/tr.message=%#, This will destroy [ulocal(f.get-player-stat, %qP, Crew Name)]'s cohort '%ch%qN%cn'. If you would like to continue%, type %ch+cohort/destroy [ulocal(f.get-name, %qP, %#)]/%qN=YES%cn within the next 10 minutes. It is now [prettytime()].; }; @wipe %qP/_stat.*.[ulocal(f.get-stat-location, %qN)]; @trigger me/tr.add-or-remove-stat=Cohorts, %qN, %qC, %#, 1, Cohort;
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Cohort editing
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&c.+cohort/edit [v(d.cg)]=$+cohort/edit *:@break strmatch(%0, */*); @assert t(setr(C, ulocal(f.get-player-stat, %#, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %#, %#); }; @assert ulocal(f.is-allowed-to-edit-crew, %#, %#)={ @trigger me/tr.error=%#, You can't edit your crew once it's locked.; }; @assert t(setr(N, ulocal(f.find-cohort, %qC, first(%0, =))))={ @trigger me/tr.error=%#, Could not find a cohort matching '[first(%0, =)]' in your crew.; }; @set %#=_stat.cohort.editing:%#/%qN; @trigger me/tr.success=%#, You are now editing the %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn cohort '%ch%qN%cn'.; 
-
-&c.+cohort/edit_staff [v(d.cg)]=$+cohort/edit */*: @assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to edit a player's cohort.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %qP, %#); }; @assert ulocal(f.is-allowed-to-edit-crew, %#, %qP)={ @trigger me/tr.error=%#, You can't edit your crew once it's locked.; }; @assert t(setr(N, ulocal(f.find-cohort, %qC, first(%1, =))))={ @trigger me/tr.error=%#, Could not find a cohort matching '[first(%1, =)]' in [ulocal(f.get-name, %qP, %#)]'s crew.; }; @set %#=_stat.cohort.editing:%qP/%qN; @trigger me/tr.success=%#, You are now editing the %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn cohort '%ch%qN%cn'.;
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Set cohort stats - this turned out to be way more massive than expected...
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&c.+cohort/set [v(d.cg)]=$+cohort/set *=*: @eval strcat(setq(E, xget(%#, _stat.cohort.editing)), setq(P, first(%qE, /)), setq(N, rest(%qE, /))); @assert cand(t(%qP), t(%qN))={ @trigger me/tr.error=%#, You are not currently editing a Cohort. Type %ch+cohort/edit <name>%cn first.; }; @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %qP, %#); }; @assert ulocal(f.is-allowed-to-edit-crew, %qC, %#)={ @trigger me/tr.error=%#, You can't edit a crew once it's locked.; }; @assert t(ulocal(f.find-cohort, %qC, %qN))={ @trigger me/tr.error=%#, Could not find a Cohort matching '%qN' in %ch[ulocal(f.get-player-stat, %qC, Crew Name)]%cn. Did it get destroyed or renamed?; }; @assert t(setr(S, ulocal(f.find-cohort-stat-name, %0)))={ @trigger me/tr.error=%#, Could not find a Cohort stat named '%0'. Valid stats are: [ulocal(layout.list, xget(%vD, d.cohort.stats))].; }; @assert not(ulocal(f.is-addable-cohort-stat, %qS))={ @force %#=+cohort/add %qS=%1; }; @assert t(setr(V, ulocal(f.get-cohort-stat-pretty-value, %qS, %1)))={ @trigger me/tr.error=%#, '%1' is not a valid value for %qS. Valid values are [ulocal(layout.list, ulocal(f.list-cohort-stat-pretty-values, %qS))].; }; @assert cor(not(strmatch(%qS, Specialty)), strmatch(ulocal(f.get-cohort-stat, %qC, %qN, Cohort Type), Expert))={ @trigger me/tr.error=%#, Gangs cannot have Specialties. %ch+cohort/set Cohort Type=Expert%cn if you want this cohort to have a Specialty.; }; @assert cor(not(strmatch(%qS, Name)), cand(valid(attrname, setr(W, ulocal(f.get-stat-location-on-player, cohort_type.%1))), lte(strlen(%qW), 60)))={ @trigger me/tr.error=%#, The name '%1' cannot be translated into a valid attribute name%, which means it won't work. Please change the name or open a job with staff requesting a fix.; }; @assert cor(not(strmatch(%qS, Name)), not(t(setr(A, finditem(ulocal(f.get-player-stat, %qC, Cohorts), %1, |)))), not(strmatch(%qA, %1)))={ @trigger me/tr.error=%#, There is already a cohort named %qA.; }; @set %qC=ulocal(f.get-stat-location-on-player, %qS.%qN):%qV; @trigger me/tr.success=%#, You set the %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn cohort %ch%qN%cn's %qS to %ch%qV%cn.; @trigger me/tr.crew-emit=%qC, ulocal(f.get-name, %#) set the crew Cohort %ch%qN%cn's %qS to %ch%qV%cn.; @assert not(strmatch(%qS, Name))={ @set %#=_stat.cohort.editing:%qC/%1; @set %qC=[ulocal(f.get-stat-location-on-player, Cohorts)]:[replace(setr(L, ulocal(f.get-player-stat, %qC, Cohorts)), member(%qL, %qN, |), %1, |, |)]; @dolist lattr(strcat(%qC, /, ulocal(f.get-stat-location-on-player, *.%qN)))={ @mvattr %qC=##, ulocal(f.get-stat-location, strcat(extract(##, 1, 2, .), ., %1)); }; };
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Add Flaws, Edges, and Types to a cohort
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&c.+cohort/add [v(d.cg)]=$+cohort/add *=*: @eval strcat(setq(E, xget(%#, _stat.cohort.editing)), setq(P, first(%qE, /)), setq(N, rest(%qE, /))); @assert cand(t(%qP), t(%qN))={ @trigger me/tr.error=%#, You are not currently editing a Cohort. Type %ch+cohort/edit <name>%cn first.; }; @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %qP, %#); }; @assert ulocal(f.is-allowed-to-edit-crew, %qC, %#)={ @trigger me/tr.error=%#, You can't edit a crew once it's locked.; }; @assert t(ulocal(f.find-cohort, %qC, %qN))={ @trigger me/tr.error=%#, Could not find a Cohort matching '%qN' in %ch[ulocal(f.get-player-stat, %qC, Crew Name)]%cn. Did it get destroyed or renamed?; }; @assert t(setr(S, ulocal(f.find-cohort-stat-name, %0)))={ @trigger me/tr.error=%#, Could not find a Cohort stat named '%0'. Valid stats are: [ulocal(layout.list, xget(%vD, d.cohort.stats))].; }; @assert ulocal(f.is-addable-cohort-stat, %qS)={ @force %#=+cohort/set %qS=%1; }; @assert t(setr(V, ulocal(f.get-cohort-stat-pretty-value, %qS, %1, setr(O, ulocal(f.get-cohort-stat, %qC, %qN, cohort_type)))))={ @trigger me/tr.error=%#, '%1' is not a valid value for %qS. Valid values are [ulocal(layout.list, ulocal(f.list-cohort-stat-pretty-values, %qS, %qO))].; }; @assert cor(not(strmatch(%qS, Types)), not(strmatch(%qO, Vehicle)))={ @trigger me/tr.error=%#, Vehicles cannot have additional Types.; };  @eval setq(E, ulocal(f.get-cohort-stat, %qC, %qN, %qS)); @assert not(t(finditem(%qE, %qV, |)))={ @trigger me/tr.error=%#, '%qV' is already one of this Cohort's %qS.; };  @assert lte(inc(words(ulocal(f.get-cohort-stat, %qC, %qN, %qS), |)), 2)={ @trigger me/tr.error=%#, Adding %qV would take you over 2 %qS. Remove one or more existing %qS before adding a new one.; }; @eval setq(T, ulocal(f.count-upgrades, %qC)); @assert cor(not(strmatch(%qS, Types)), ulocal(f.is-allowed-to-break-stat-setting-rules, %#, %qC), lte(add(%qT, 2), 4))={ @trigger me/tr.error=%#, ulocal(layout.upgrade-max, %qT, 0, %qC, %#); }; @set %qC=[ulocal(f.get-stat-location-on-player, %qS.%qN)]:[trim(%qE|%qV, b, |)]; @trigger me/tr.success=%#, You add '%ch[if(cand(strmatch(%qS, Types), strmatch(ulocal(f.get-cohort-stat, %qC, %qN, cohort type), Expert)), mid(%qV, 0, dec(strlen(%qV))), %qV)]%cn' to %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn cohort %ch%qN%cn's %qS.; @trigger me/tr.crew-emit=%qC, ulocal(f.get-name, %#) added '%ch[if(cand(strmatch(%qS, Types), strmatch(ulocal(f.get-cohort-stat, %qC, %qN, cohort type), Expert)), mid(%qV, 0, dec(strlen(%qV))), %qV)]%cn' to the crew's Cohort %ch%qN%cn's %qS.;
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Remove Flaws, Edges, and Types from a cohort
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&c.+cohort/remove [v(d.cg)]=$+cohort/remove *=*: @eval strcat(setq(E, xget(%#, _stat.cohort.editing)), setq(P, first(%qE, /)), setq(N, rest(%qE, /))); @assert cand(t(%qP), t(%qN))={ @trigger me/tr.error=%#, You are not currently editing a Cohort. Type %ch+cohort/edit <name>%cn first.; }; @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %qP, %#); }; @assert ulocal(f.is-allowed-to-edit-crew, %qC, %#)={ @trigger me/tr.error=%#, You can't edit a crew once it's locked.; }; @assert t(ulocal(f.find-cohort, %qC, %qN))={ @trigger me/tr.error=%#, Could not find a Cohort matching '%qN' in %ch[ulocal(f.get-player-stat, %qC, Crew Name)]%cn. Did it get destroyed or renamed?; }; @assert t(setr(S, ulocal(f.find-cohort-stat-name, %0)))={ @trigger me/tr.error=%#, Could not find a Cohort stat named '%0'. Valid stats are: [ulocal(layout.list, xget(%vD, d.cohort.stats))].; }; @assert t(setr(V, ulocal(f.get-cohort-stat-pretty-value, %qS, %1, setr(O, ulocal(f.get-cohort-stat, %qC, %qN, cohort_type)))))={ @trigger me/tr.error=%#, '%1' is not a valid value for %qS. Valid values are [ulocal(layout.list, ulocal(f.list-cohort-stat-pretty-values, %qS, %qO))].; }; @assert ulocal(f.is-addable-cohort-stat, %qS)={ @force %#=+cohort/set %qS=%1; }; @eval setq(E, ulocal(f.get-cohort-stat, %qC, %qN, %qS)); @assert t(finditem(%qE, %qV, |))={ @trigger me/tr.error=%#, '%qV' is not one of this Cohort's %qS.; }; @assert gt(words(%qE, |), 1)={ @trigger me/tr.error=%#, Removing %qV would take the cohort down to no %qS. Add new %qS before you remove this one.; };  @set %qC=[ulocal(f.get-stat-location-on-player, %qS.%qN)]:[remove(%qE, %qV, |, |)]; @trigger me/tr.success=%#, You remove '%ch[if(cand(strmatch(%qS, Types), strmatch(ulocal(f.get-cohort-stat, %qC, %qN, cohort type), Expert)), mid(%qV, 0, dec(strlen(%qV))), %qV)]%cn' from %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn cohort %ch%qN%cn's %qS.; @trigger me/tr.crew-emit=%qC, ulocal(f.get-name, %#) removed '%ch[if(cand(strmatch(%qS, Types), strmatch(ulocal(f.get-cohort-stat, %qC, %qN, cohort type), Expert)), mid(%qV, 0, dec(strlen(%qV))), %qV)]%cn' from the crew's Cohort %ch%qN%cn's %qS.;
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Factions
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&layout.faction-log [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), setq(L, ulocal(f.get-last-X-logs, %qC, _faction-, 99)), if(t(%qL), strcat(header(cat(Last 99 faction logs, for, ulocal(f.get-crew-name, %qC)), %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%qC, itext(0))),, %r), 0, %1), %r, footer(, %1)), cat(alert(Faction logs), No logs found for this crew.)))
-
-&layout.factions [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), header(All Factions, %1), %r, setq(F, ulocal(f.get-player-stat, %qC, Factions)), setq(H, ulocal(f.get-player-stat, %qC, hunting grounds)), setq(W, getremainingwidth(%1, 2)), edit(multicol(fliplist(iter(xget(%vD, d.factions), strcat(divider(ulocal(f.convert-stat-to-title, itext(0)), %qW), |, iter(xget(%vD, itext(0)), cat(_, ulocal(f.get-faction-status, %qC, itext(0)), strcat(itext(0), if(t(member(xget(%vD, ulocal(f.get-stat-location, d.%qH.factions)), itext(0), |)), %ch%cy *%cn))), |, |)),, |), 2, |), * *, 0, |), _, %b), %r, footer(%ch%cy*%cn indicates factions that claim this crew's hunting grounds, %1))
-
-&c.+factions [v(d.cg)]=$+factions:@pemit %#=ulocal(layout.factions, %#, %#);
-
-&c.+factions_player [v(d.cg)]=$+factions *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to view a player's factions.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %qP, %#); }; @pemit %#=ulocal(layout.subsection, crew-factions, %qC, %#);
-
-&c.+faction/log [v(d.cg)]=$+faction/log:@pemit %#=ulocal(layout.faction-log, %#, %#);
-
-&c.+faction/log_player [v(d.cg)]=$+faction/log *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to view a player's factions.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, ulocal(layout.crew-object-error, %0, %1, %qP, %#); }; @pemit %#=ulocal(layout.faction-log, %qC, %#);
-
-&c.+fact [v(d.cg)]=$+fact*: @break cand(strmatch(%0, ions*), not(strmatch(%0, ions/*))); @break strmatch(%0, ion/log*); @break switch(%0, /log*, 1, ions/log*, 1, 0)={ @force %#=+faction/log [switch(%0, %b*, trim(%0), rest(%0))]; }; @break strmatch(%0, ion/*); @force %#=+factions [switch(%0, %b*, trim(%0), rest(%0))];
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ +faction/set
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&c.+faction/set [v(d.cg)]=$+faction/set *=*:@break strmatch(%0, */*); @trigger me/tr.faction-set=%0, %1, %#, %#;
-
-&c.+faction/set_staff [v(d.cg)]=$+faction/set */*=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to set a crew's factions.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @if isnum(first(%2))={ @trigger me/tr.faction-set-number=%2, %1, %qP, %#; }, { @trigger me/tr.faction-set=%1, %2, %qP, %#; };
-
-&tr.faction-set-number [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert t(setr(F, finditem(setr(L, switch(%qQ, Hunting, xget(%vD, ulocal(f.get-stat-location, d.%qH.factions)), ulocal(f.get-all-factions))), %1, |)))={ @trigger me/tr.error=%3, '%1' is not a valid Faction. [if(lte(words(%qL, |), 10), cat(Available factions are, ulocal(layout.list, %qL).), You can view the list of factions with +factions.)]; }; @eval setq(V, if(isint(first(%0)), first(%0), 0)); @eval strcat(setq(R, if(isint(first(%0)), rest(%0), %0)), setq(R, squish(trim(switch(%qR, for *, rest(%qR), %qR))))); @assert t(%qR)={ @trigger me/tr.error=%3, Can't figure out what your reason for changing this faction relationship was.; }; @assert cand(isint(%qV), gte(%qV, -3), lte(%qV, 3))={ @trigger me/tr.error=%3, %qV must be a number between -3 and +3.; }; @eval setq(E, ulocal(f.get-player-stat, %qC, Factions)); @eval if(ulocal(f.has-list-stat, %qC, Factions, %qF), strcat(setq(I, member(iter(%qE, rest(itext(0)), |, |), %qF, |)), setq(E, replace(%qE, %qI, strip(ulocal(f.get-faction-status-color, %qV)) %qF, |, |))), setq(E, trim(strcat(%qE, |, strip(ulocal(f.get-faction-status-color, %qV)) %qF), b, |))); @trigger me/tr.set-final-stat=Factions, %qE, %qC, %3,, cat(You set, ulocal(f.get-crew-name, %qC)'s faction relationship with %ch%qF%cn to, ulocal(f.get-faction-status-color, %qV), because '%qR'.), cat(ulocal(f.get-name, %3), sets your crew's faction relationship with %ch%qF%cn to, ulocal(f.get-faction-status-color, %qV), because '%qR'.); @trigger me/tr.log=%qC, _faction-, %3, cat(Set relationship with %ch%qF%cn to, ulocal(f.get-faction-status-color, %qV), because '%qR'.);
-
-&tr.faction-set [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %qC, %3)={ @trigger me/tr.error=%3, You can't edit a crew once it's locked.; }; @assert t(setr(Q, finditem(xget(%vD, d.faction.questions), %0, |)))={ @trigger me/tr.error=%3, '%0' is not a valid Faction Question. Faction Questions are: [ulocal(layout.list, xget(%vD, d.faction.questions))].; }; @assert cor(not(strmatch(%qQ, Hunting)), t(setr(H, ulocal(f.get-player-stat, %qC, hunting grounds))))={ @trigger me/tr.error=%3, You can't choose the faction that claims this crew's Hunting Grounds until the crew's Hunting Grounds are set.; }; @assert t(setr(F, finditem(setr(L, switch(%qQ, Hunting, xget(%vD, ulocal(f.get-stat-location, d.%qH.factions)), ulocal(f.get-all-factions))), %1, |)))={ @trigger me/tr.error=%3, '%1' is not a valid Faction. [if(lte(words(%qL, |), 10), cat(Available factions are, ulocal(layout.list, %qL).), You can view the list of factions with +factions.)]; }; @assert case(%qQ, Helped, not(strmatch(%qF, first(ulocal(f.get-player-stat, %qC, faction.harmed), |))), Harmed, not(strmatch(%qF, first(ulocal(f.get-player-stat, %qC, faction.helped), |))), 1)={ @trigger me/tr.error=%3, The faction who helped this crew cannot be the same faction that harmed the crew.; }; @assert case(%qQ, Friendly, not(strmatch(%qF, first(ulocal(f.get-player-stat, %qC, faction.unfriendly), |))), Unfriendly, not(strmatch(%qF, first(ulocal(f.get-player-stat, %qC, faction.friendly), |))), 1)={ @trigger me/tr.error=%3, The faction who is friendly to this crew cannot be the same faction that is unfriendly to them.; }; @eval setq(T, rest(ulocal(f.get-player-stat-or-default, %qC, faction.%qQ, |0), |)); @set %qC=[ulocal(f.get-stat-location-on-player, faction.%qQ)]:%qF|%qT; @wipe %qC/[ulocal(f.get-stat-location-on-player, Factions)]; @trigger me/tr.recalculate-factions=%qC; @trigger me/tr.success=%3, You set %ch[ulocal(f.get-player-stat, %qC, Crew Name)]%cn's %qQ faction to %ch%qF%cn. [if(t(member(Friendly|Unfriendly, %qQ, |)), if(t(%qT), This crew has an intensified relationship with this faction, This crew has a normal relationship with this faction), This crew has paid them %qT coin)] for a total status of [ulocal(f.get-faction-status, %qC, %qF)].; @trigger me/tr.crew-emit=%qC, ulocal(f.get-name, %#) sets the crew's %qQ faction to %ch%qF%cn. [if(t(member(Friendly|Unfriendly, %qQ, |)), if(t(%qT), This crew has an intensified relationship with this faction, This crew has a normal relationship with this faction), This crew has paid them %qT coin)] for a total status of [ulocal(f.get-faction-status, %qC, %qF)].;
-
-&tr.recalculate-factions [v(d.cg)]=@eval setr(E, iter(xget(%vD, d.faction.questions), first(ulocal(f.get-player-stat, %0, strcat(faction., itext(0))), |), |, |)); @set %0=[ulocal(f.get-stat-location-on-player, Factions)]:[setunion(setr(L, stripansi(iter(%qE, cat(ulocal(f.get-faction-status, %0, itext(0)), itext(0)), |, |))), %qL, |)];
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ +faction/pay
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&c.+faction/pay [v(d.cg)]=$+faction/pay *=*:@break strmatch(%0, */*); @trigger me/tr.faction-pay=%0, %1, %#, %#;
-
-&c.+faction/pay_staff [v(d.cg)]=$+faction/pay */*=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to edit a crew's factions.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @trigger me/tr.faction-pay=%0, %1, %qP, %#;
-
-&c.+faction/boost [v(d.cg)]=$+faction/boost:@assert lte(rest(ulocal(f.get-player-stat, ulocal(f.get-player-stat, %#, crew object), strcat(faction., Friendly)), |), 0)={ @trigger me/tr.error=%#, You have already boosted your crew's relations with their Friendly and Unfriendly factions.; }; @trigger me/tr.faction-pay=Friendly, 1, %#, %#, You have increased this crew's reputation with their Friendly faction; @trigger me/tr.faction-pay=Unfriendly, -1, %#, %#, You have decreased this crew's reputation with their Unfriendly faction;
-
-&c.+faction/boost_staff [v(d.cg)]=$+faction/boost *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to edit a crew's factions.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert lte(rest(ulocal(f.get-player-stat, ulocal(f.get-player-stat, %qP, crew object), strcat(faction., Friendly)), |), 0)={ @trigger me/tr.error=%#, You have already boosted this crew's relations with their Friendly and Unfriendly factions.; }; @trigger me/tr.faction-pay=Friendly, 1, %qP, %#, You have increased this crew's reputation with their Friendly faction; @trigger me/tr.faction-pay=Unfriendly, -1, %qP, %#, You have decreased this crew's reputation with their Unfriendly faction;
-
-&c.+faction/unboost [v(d.cg)]=$+faction/unboost:@assert gt(rest(ulocal(f.get-player-stat, ulocal(f.get-player-stat, %#, crew object), strcat(faction., Friendly)), |), 0)={ @trigger me/tr.error=%#, Your crew's relations with their Friendly and Unfriendly factions are already unboosted.; }; @trigger me/tr.faction-pay=Friendly, 0, %#, %#, You have normalized this crew's reputation with their Friendly faction; @trigger me/tr.faction-pay=Unfriendly, 0, %#, %#, You have normalized this crew's reputation with their Unfriendly faction;
-
-&c.+faction/unboost_staff [v(d.cg)]=$+faction/unboost *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to edit a crew's factions.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert gt(rest(ulocal(f.get-player-stat, ulocal(f.get-player-stat, %qP, crew object), strcat(faction., Friendly)), |), 0)={ @trigger me/tr.error=%#, This crew's relations with their Friendly and Unfriendly factions are already unboosted.; }; @trigger me/tr.faction-pay=Friendly, 0, %qP, %#, You have normalized this crew's reputation with their Friendly faction; @trigger me/tr.faction-pay=Unfriendly, 0, %qP, %#, You have normalized this crew's reputation with their Unfriendly faction;
-
-&tr.faction-pay [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %qC, %3)={ @trigger me/tr.error=%3, You can't edit a crew once it's locked.; }; @assert t(setr(Q, finditem(setr(L, setdiff(xget(%vD, d.faction.questions), if(not(t(%4)), Friendly|Unfriendly), |)), %0, |)))={ @trigger me/tr.error=%3, '%0' is not a valid Faction Question that can be paid. Payable Faction Questions are: [ulocal(layout.list, %qL)].; }; @assert cor(not(strmatch(%qQ, Hunting)), t(setr(H, ulocal(f.get-player-stat, %qC, hunting grounds))))={ @trigger me/tr.error=%3, This crew can't pay the faction that claims their Hunting Grounds until they choose their Hunting Grounds.; }; @eval setq(T, ulocal(f.get-player-stat-or-default, %qC, faction.%qQ, |0)); @eval setq(F, first(%qT, |)); @assert t(%qF)={ @trigger me/tr.error=%3, The crew needs to set a %qQ faction before they can pay them.; }; @assert cand(isint(%1), cor(gte(%1, 0), strmatch(%qQ, Unfriendly)), lte(%1, switch(%qQ, Hunting, 2, 1)))={ @trigger me/tr.error=%3, '%1' is not a valid amount to pay. This crew can pay [ulocal(layout.list, lnum(switch(%qQ, Hunting, 3, 2),, |), or)] Coin.; }; @assert lte(add(setr(X, ulocal(f.get-total-faction-coin, %qC, %qQ)), %1), 2)={ @trigger me/tr.error=%3, Your crew has 2 coin total. %qX of it has already been spent.; }; @set %qC=[ulocal(f.get-stat-location-on-player, faction.%qQ)]:[replace(%qT, 2, %1, |, |)]; @wipe %qC/[ulocal(f.get-stat-location-on-player, Factions)]; @trigger me/tr.recalculate-factions=%qC; @trigger me/tr.success=%3, if(t(%4), %4, You have paid your crew's %qQ faction%, %ch%qF%cn%, %1 coin) for a total status of [ulocal(f.get-faction-status, %qC, %qF)].; @trigger me/tr.crew-emit=%qC, if(t(%4), edit(%4, You have, ulocal(f.get-name, %3) has), ulocal(f.get-name, %3) has paid the crew's %qQ faction%, %ch%qF%cn%, %1 coin) for a total status of [ulocal(f.get-faction-status, %qC, %qF)].;
-
-@@ TODO: Make it so that +faction/pay Unfriendly|Friendly just lower/raise intensity rather than costing coin or being rejected.
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ +claim/award
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&f.find-claim [v(d.cgf)]=if(t(member(A1 A2 A3 A4 A5 B1 B2 B4 B5 C1 C2 C3 C4 C5, ucstr(%1))), ulocal(f.get-map-key, %0, %1)|%1, if(t(setr(F, finditem(setr(L, xget(%vD, strcat(d.map., ulocal(f.get-player-stat, %0, crew type)))), %1, |))), strcat(%qF, |, switch(member(%qL, %qF, |), <6, A#$, 6, B1, 7, B2, 8, B4, 9, B5, strcat(C, inc(div(#$, 5))))), %1|0))
-
-&c.+claim/award [v(d.cg)]=$+claim/award *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to change a player's stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert t(setr(C, ulocal(f.get-player-stat, %qP, crew object)))={ @trigger me/tr.error=%#, %qN is not in a crew and can't have a claim set up.; }; @eval strcat(setq(M, ulocal(f.find-claim, %qC, %1)), setq(A, rest(%qM, |)), setq(M, first(%qM, |))); @assert t(%qM)={ @trigger me/tr.error=%#, '%1' couldn't be resolved into a claim.; }; @assert not(strmatch(%qM, B3))={ @trigger me/tr.error=%#, 'B3' is not a valid claim.; }; @assert t(%qM)={ @trigger me/tr.error=%#, Couldn't figure out what kind of claim to grant. You entered '%1'.; }; @assert not(t(ulocal(f.get-player-stat, %qC, Map %qA)))={ @trigger me/tr.error=%#, %qN's crew already has the claim %qA%, '%qM'.; }; @if t(%qA)={ @trigger me/tr.set-final-stat=Map %qA, %qM, %qC, %#,, cat(You award, ansi(h, ulocal(layout.whose-stat, Claims, %qM, %qC, %#)), claim '%ch%qM%cn'.), cat(ulocal(f.get-name, %#), awarded your crew the claim '%ch%qM%cn'.); }, { @trigger me/tr.add-or-remove-stat=Claims, %qM, %qC, %#; };

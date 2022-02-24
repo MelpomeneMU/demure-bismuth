@@ -136,3 +136,6 @@
 &f.get-street_alias [v(d.bf)]=xget(%0, d.street_alias)
 
 &jobs [v(d.pp)]=BTCMO
+
+@@ Show retired as a separate thing
+&layout.finger-footer [v(d.bf)]=cat(ulocal(f.get-status, %0, %1), case(1, isstaff(%0), staff, isapproved(%0), approved, if(t(xget(%0, _stat.retired_date)), retired and unapproved, unapproved)), ulocal(f.get-idle, %0, %1) idle)
