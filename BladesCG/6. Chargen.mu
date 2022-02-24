@@ -6,6 +6,11 @@
 +stat/add <stat>=<value>
 +stat/remove <stat>=<value>
 
+Aliases:
+
++stat/del
++stat/rem
+
 +stats/clear
 +stats/lock
 +stats/unlock <player>
@@ -15,12 +20,6 @@
 +freeze <player>=<comment>
 +unfreeze <player>=<comment>
 +retire <player>=<comment>
-
-Redo aliases:
-+stat/del
-+stat/rem
-
-TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not, this only really applies to staff because only staff can keep going after 4+ upgrades)
 
 */
 
@@ -113,7 +112,7 @@ TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not,
 
 &c.+retire [v(d.cg)]=$+retire *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to retire people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert isapproved(%qP)={ @trigger me/tr.error=%#, %qN is not approved so cannot be retired.; }; @assert t(%1)={ @trigger me/tr.error=%#, Please enter a reason for retirement. The player will see this message.; }; @assert gettimer(%#, retire-%qP)={ @trigger me/tr.message=%#, You are about to permanently retire %qN. The character cannot be restored. Are you sure? If yes%, type %ch+retire %0=%1%cn again within the next 10 minutes. The time is now [prettytime()].; @eval settimer(%#, retire-%qP, 600); }; @trigger me/tr.retire-player=%qP, %#, %1; @trigger me/tr.success=%#, You retired [ulocal(f.get-name, %qP, %#)] with the comment '%1'.;
 
-&tr.retire-player [v(d.cg)]=@trigger me/tr.unapprove-player=%0, %1, %2; @set %0=[ulocal(f.get-stat-location-on-player, retired date)]:[prettytime()]; @set %0=[ulocal(f.get-stat-location-on-player, retired by)]:[ulocal(f.get-name, %1)] (%1); @trigger me/tr.log=%qP, _app-, %#, Retired with comment '%2'.;
+&tr.retire-player [v(d.cg)]=@trigger me/tr.unapprove-player=%0, %1, %2; @set %0=[ulocal(f.get-stat-location-on-player, retired date)]:[prettytime()]; @set %0=[ulocal(f.get-stat-location-on-player, retired by)]:[ulocal(f.get-name, %1)] (%1); @trigger me/tr.log=%0, _app-, %1, Retired with comment '%2'.;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ +stat commands for staffers
@@ -135,11 +134,13 @@ TODO: Give players a way to clear all their upgrades/friends/etc. (Probably not,
 
 &c.+stat/remove [v(d.cg)]=$+stat/remove *=*: @break match(%0, */*); @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to remove.; }; @trigger me/tr.add-stat=%0, %1, %#, %#, 1;
 
-&c.+stat/clear [v(d.cg)]=$+stat/clear*: @assert not(hasattr(%#, _stat.locked))={ @trigger me/tr.error=%#, You can't clear your stats once they're locked.; };  @assert cand(gettimer(%#, clear-request), match(trim(%0), YES))={ @eval settimer(%#, clear-request, 600); @trigger me/tr.message=%#, This will clear all of your stats. If you would like to continue%, type %ch+stat/clear YES%cn within the next 10 minutes. It is now [prettytime()].; }; @wipe %#/_stat.*; @trigger me/tr.success=%#, Your stats have been cleared.;
+&c.+stats/clear [v(d.cg)]=$+stats/clear*: @assert not(hasattr(%#, _stat.locked))={ @trigger me/tr.error=%#, You can't clear your stats once they're locked.; }; @assert gettimer(%#, clear-request, if(t(trim(%0)), trim(%0), NO))={ @eval settimer(%#, clear-request, 600, YES); @trigger me/tr.message=%#, This will clear all of your stats and any crew stats you may have set on you. %(If you don't want to lose those%, +crew\/transfer <player> to give the crew to someone else before you +stats/clear.%) If you would like to continue%, type %ch+stat/clear YES%cn within the next 10 minutes. It is now [prettytime()].; }; @wipe %#/_stat.*; @trigger me/tr.success=%#, Your stats have been cleared.;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Aliases for commands
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&c.+stats [v(d.cg)]=$+stats*:@break strmatch(%0, /clear*); @force %#=+sheet%0
 
 &c.+stat/del [v(d.cg)]=$+stat/del*:@force %#=+stat/remove [switch(%0, %b*, trim(%0), rest(%0))];
 
