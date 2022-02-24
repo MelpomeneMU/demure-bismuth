@@ -12,7 +12,11 @@ Crew code
 	Probies (not optional)
 	Crew approval process
 	Vote to boot people (optional)
+	Booting established PCs after X days (optional)
 	Invite-sharing (optional)
+Census (optional)
+Report to check for alt-nomming - +nom/alts?
+
 
 Grid
 Wiki
