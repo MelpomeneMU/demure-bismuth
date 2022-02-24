@@ -68,7 +68,7 @@
 
 &layout.notes [v(d.cgf)]=strcat(divider(Notes, %1), %r, multicol(ulocal(f.get-player-notes, %0), *, 0, |, %1))
 
-&layout.footer [v(d.cgf)]=strcat(if(isapproved(%0), cat(Approved, ulocal(f.get-player-stat, %0, approved date)), Unapproved), %,, %b, setr(A, add(ulocal(f.get-advancements, %0, Insight, spent), ulocal(f.get-advancements, %0, Prowess, spent), ulocal(f.get-advancements, %0, Resolve, spent), ulocal(f.get-advancements, %0, Playbook, spent))), %b, plural(%qA, Advancement, Advancements))
+&layout.footer [v(d.cgf)]=strcat(if(isapproved(%0), cat(Approved, ulocal(f.get-player-stat, %0, approved date)), if(t(setr(R, ulocal(f.get-player-stat, %0, retired date))), Retired %qR, Unapproved)), %,, %b, setr(A, add(ulocal(f.get-advancements, %0, Insight, spent), ulocal(f.get-advancements, %0, Prowess, spent), ulocal(f.get-advancements, %0, Resolve, spent), ulocal(f.get-advancements, %0, Playbook, spent))), %b, plural(%qA, Advancement, Advancements))
 
 &layout.crew_footer [v(d.cgf)]=strcat(if(t(setr(D, ulocal(f.get-player-stat, %0, crew approved date))), cat(Approved, %qD), Unapproved), %,, %b, setr(A, ulocal(f.get-advancements, %0, Crew, spent)), %b, plural(%qA, Advancement, Advancements))
 
