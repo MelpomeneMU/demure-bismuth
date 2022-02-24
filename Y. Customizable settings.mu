@@ -129,7 +129,7 @@
 
 &f.get-expert_type [v(d.bf)]=xget(%0, _stat.expert_type)
 
-&f.get-crew [v(d.bf)]=strcat(xget(setr(C, xget(%0, _stat.crew_object)), _stat.crew_name), %b, %(, setq(T, default(%qC/_stat.tier, 0)), if(t(%qT), roman(%qT), %qT), %))
+&f.get-crew [v(d.bf)]=if(t(setr(N, xget(setr(C, xget(%0, _stat.crew_object)), _stat.crew_name))), strcat(%b, %(, setq(T, default(%qC/_stat.tier, 0)), if(t(%qT), roman(%qT), %qT), %)))
 
 &f.get-crew_title [v(d.bf)]=xget(%0, d.crew_title)
 
