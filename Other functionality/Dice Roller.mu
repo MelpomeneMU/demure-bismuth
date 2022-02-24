@@ -29,8 +29,6 @@ Switches:
 
 @force me=&d.dr me=[search(ETHING=t(member(name(##), Dice Roller <DR>, |)))]
 
-@force me=&d.jobs [v(d.dr)]=[search(ETHING=t(member(name(##), Job Global Object <JGO>, |)))]
-
 @force me=&va [v(d.dr)]=[xget(search(ETHING=t(member(name(##), Job Global Object <JGO>, |))), va)]
 
 @tel [v(d.dr)]=#2
