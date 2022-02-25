@@ -2,11 +2,15 @@
 @@ Settings
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-@@ This is how long crew invitations last - default is 3 days.
+@@ How much time do players have to accept a crew invitation? Default is 3 days. This value needs to be in seconds because someone might want it to be a short invite time like 10 minutes.
 &d.crew-invitation-time [v(d.cgdb)]=259200
 
-@@ 3888000 = 45 days (60 * 60 * 24 * 45)
-&d.crew-probationary-period [v(d.cgdb)]=3888000
+@@ How long before a crew member is considered a "full" member?
+&d.crew-probationary-period [v(d.cgdb)]=45
+
+@@ How long can a player be idle before they can be booted from their crew?
+@@ Default: 45 days
+&d.crew-idle-before-bootable [v(d.cgdb)]=45
 
 @@ If this is 'msg', the code will use the msg command to send notes to players. If it's anything else, the code will first try to @pemit, then will send @mail.
 &d.message-method [v(d.cgdb)]=msg
