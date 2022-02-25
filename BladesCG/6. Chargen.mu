@@ -84,9 +84,9 @@ Aliases:
 @@ Unlock stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+stats/unlock [v(d.cg)]=$+stats/unlock *:@assert isstaff(%#)={ @trigger me/tr.error=%#, Only staff can unlock players' stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert hasattr(%#, _stat.locked)={ @trigger me/tr.error=%#, %qN's stats are not currently locked and cannot be unlocked.; }; @assert gettimer(%#, unlock-%qP)={ @trigger me/tr.message=%#, You're about to unlock %qN's stats. This will put them back into CG and let them make changes according to CG rules. It will almost certainly mess up their sheet if they have any advancements. Are you sure? If so%, hit %ch+stats/unlock %qN%cn again within the next 10 minutes. The time is now [prettytime()].; @eval settimer(%#, unlock-%qP, 600); }; @trigger me/tr.unlock_stats=%#, %qP;
+&c.+stats/unlock [v(d.cg)]=$+stats/unlock *:@assert isstaff(%#)={ @trigger me/tr.error=%#, Only staff can unlock players' stats.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert hasattr(%qP, _stat.locked)={ @trigger me/tr.error=%#, %qN's stats are not currently locked and cannot be unlocked.; }; @assert gettimer(%#, unlock-%qP)={ @trigger me/tr.message=%#, You're about to unlock %qN's stats. This will put them back into CG and let them make changes according to CG rules. It will almost certainly mess up their sheet if they have any advancements. Are you sure? If so%, hit %ch+stats/unlock %qN%cn again within the next 10 minutes. The time is now [prettytime()].; @eval settimer(%#, unlock-%qP, 600); }; @trigger me/tr.unlock_stats=%qP, %#;
 
-&tr.unlock_stats [v(d.cg)]=@set %0=_stat.locked:; @set %0=!APPROVED; @trigger me/tr.success=%0, cat(You have unlocked, ulocal(f.get-name, %1, %0)'s, stats.); @trigger me/tr.message=%1, ulocal(f.get-name, %0, %1) has unlocked your stats. You can't be approved until you lock them again. Happy editing!;
+&tr.unlock_stats [v(d.cg)]=@set %0=_stat.locked:; @set %0=!APPROVED; @trigger me/tr.success=%1, cat(You have unlocked, ulocal(f.get-name, %0, %1)'s, stats.); @trigger me/tr.message=%0, ulocal(f.get-name, %1, %0) has unlocked your stats. You can't be approved until you lock them again. Happy editing!;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Approval
@@ -140,7 +140,7 @@ Aliases:
 @@ Aliases for commands
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+stats [v(d.cg)]=$+stats*:@break strmatch(%0, /clear*); @force %#=+sheet%0
+&c.+stats [v(d.cg)]=$+stats*:@break switch(%0, /clear*, 1, /lock, 1, /unlock *, 1, 0); @force %#=+sheet%0
 
 &c.+stat/del [v(d.cg)]=$+stat/del*:@force %#=+stat/remove [switch(%0, %b*, trim(%0), rest(%0))];
 
