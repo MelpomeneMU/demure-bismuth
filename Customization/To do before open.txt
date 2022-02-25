@@ -5,9 +5,8 @@ Board customizations
 Channel creations
 	LFG channel
 
-CG
-	Add job messages to +crew/lock.
 Crew code
+	Add job messages to +crew/lock.
 	Probies (not optional)
 	Crew approval process
 	Vote to boot people (optional)
