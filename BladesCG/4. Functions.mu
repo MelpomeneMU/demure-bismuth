@@ -324,11 +324,17 @@
 
 @@ %0: player dbref
 @@ %1: crew object
-&f.is-founding-member [v(d.cgf)]=cand(t(member(ulocal(f.get-player-stat, %0, crew object), %1)), if(t(setr(D, ulocal(f.get-player-stat, %1, crew approved date))), lt(unprettytime(xget(%0, last(lattr(%0/_crew-join-%1-*)))), unprettytime(%qD)), 1))
+&f.is-crew-member [v(d.cgf)]=t(member(ulocal(f.get-player-stat, %0, crew object), %1))
 
-&f.is-probationary-member [v(d.cgf)]=cand(t(member(ulocal(f.get-player-stat, %0, crew object), %1)), not(ulocal(f.is-founding-member, %0, %1)), if(ulocal(f.is-crew-approved, %1), lt(sub(secs(), unprettytime(xget(%0, last(lattr(%0/_crew-join-%1-*))))), xget(%vD, d.crew-probationary-period)), 0))
+&f.days-since-joined-crew [v(d.cgf)]=div(sub(secs(), xget(%0, last(lattr(%0/_crew-join-%1-*)))), 86400)
 
-&f.is-full-member [v(d.cgf)]=cand(t(member(ulocal(f.get-player-stat, %0, crew object), %1)), cor(ulocal(f.is-founding-member, %0, %1), not(ulocal(f.is-probationary-member, %0, %1))))
+&f.is-founding-member [v(d.cgf)]=cand(ulocal(f.is-crew-member, %0, %1), if(t(setr(D, ulocal(f.get-player-stat, %1, crew approved date))), lt(unprettytime(xget(%0, last(lattr(%0/_crew-join-%1-*)))), unprettytime(%qD)), 1))
+
+&f.is-probationary-member [v(d.cgf)]=cand(ulocal(f.is-crew-member, %0, %1), not(ulocal(f.is-founding-member, %0, %1)), if(ulocal(f.is-crew-approved, %1), lt(ulocal(f.days-since-joined-crew, %0, %1), xget(%vD, d.crew-probationary-period)), 0))
+
+&f.is-full-member [v(d.cgf)]=cand(ulocal(f.is-crew-member, %0, %1), cor(ulocal(f.is-founding-member, %0, %1), not(ulocal(f.is-probationary-member, %0, %1))))
+
+&f.is-idle-member [v(d.cgf)]=cand(ulocal(f.is-crew-member, %0, %1), gt(ulocal(f.days-since-last-connected, %0), xget(%vD, d.crew-idle-before-bootable)), not(strmatch(%0, %1)))
 
 &f.is-crew-approved [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, crew approved date))
 
