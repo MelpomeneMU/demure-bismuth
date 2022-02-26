@@ -47,8 +47,8 @@
 
 &d.choosable-stats [v(d.cgdb)]=Abilities|Friends|Ally|Rival|Gear|XP Triggers|Favorite|Crew Abilities|Upgrades|Contacts|Crew XP Triggers
 
-@@ Stats you can "+stat/add <stat>=<item>":
-&d.addable-stats [v(d.cgdb)]=Abilities|Friends|Crew Abilities|Upgrades|Claims|Traumas
+@@ Stats STAFF can "+stat/add <stat>=<item>":
+&d.addable-stats [v(d.cgdb)]=Upgrades|Abilities|Friends|Contacts|Crew Abilities|Claims|Traumas
 
 @@ Stats you can "+stat/add <stat>=<item>" at CG:
 &d.cg-addable-stats [v(d.cgdb)]=Upgrades|Abilities|Friends|Contacts|Crew Abilities
@@ -105,7 +105,17 @@
 
 &d.expert_bio [v(d.cgdb)]=Name|Alias|Crew|Expert Type|Character Type|Age|Look
 
-&d.value.expert_type [v(d.cgdb)]=Academic|Anarchist|Antiquarian|Apothecary|Arms Dealer|Assassin|Astronomer|Beggar|Blacksmith|Blood Dealer|Bluecoat|Bounty Hunter|Chemist|City Clerk|Cold Killer|Collector|Corpse Thief|Deal Broker|Dilettante|Dock Worker|Drug Dealer|Explorer|Extortionist|Gang Boss|Gang Leader|Information Broker|Jail-Bird|Locksmith|Magistrate|Master Architect|Merchant Lord|Noble|Occultist|Physicker|Pit Fighter|Priestess|Prostitute|Psychonaut|Pugilist|Sentinel|Servant|Smuggler|Spirit Trafficker|Spirit Warden|Spy|Tavern Owner|Vicious Noble|Vicious Thug|Ward Boss|Witch
+&d.value.expert_type [v(d.cgdb)]=Adept|Rook|Rover|Skulk|Thug
+
+&d.desc.expert_type.adept [v(d.cgdb)]=Scholars, tinkerers, occultists, and chemists.
+
+&d.desc.expert_type.rook [v(d.cgdb)]=Con artists, spies, and socialites.
+
+&d.desc.expert_type.rover [v(d.cgdb)]=Sailors, carriage drivers, and deathlands scavengers.
+
+&d.desc.expert_type.skulk [v(d.cgdb)]=Scouts, infiltrators, and thieves.
+
+&d.desc.expert_type.thug [v(d.cgdb)]=Killers, brawlers, and roustabouts.
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Restricted values at character generation
