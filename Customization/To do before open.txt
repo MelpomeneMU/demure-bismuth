@@ -6,10 +6,11 @@ Channel creations
 	LFG channel
 
 Crew code
-	Add job messages to +crew/lock.
 	Crew approval process
 Census (optional)
 Report to check for alt-nomming - +nom/alts?
+Get News and Help working.
+	Write help files.
 
 Optional CG code:
 	Test Vampire and make sure it works
@@ -21,5 +22,9 @@ Optional CG code:
 Grid
 Wiki
 	News
+		plots
+		build
+		harassment
+		setting
 	Help
 		Help template
