@@ -1,3 +1,4 @@
+@@ TODO: Redo gear the way we did Upgrades. Beware of the Leech's potions, those get weird.
 
 &f.get-player-load-list [v(d.cgf)]=if(t(finditem(ulocal(f.get-player-stat, %0, abilities), Mule, |)), Light:|1-5|Normal:|6-7|Heavy:|8|Encumbered:|9, Light:|1-3|Normal:|4-5|Heavy:|6|Encumbered:|7-9)
 
