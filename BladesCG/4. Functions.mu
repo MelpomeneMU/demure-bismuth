@@ -59,7 +59,7 @@
 
 &f.get-layout-bio-stats [v(d.cgf)]=strcat(setq(L, ulocal(f.get-player-bio-fields, %0)), null(iter(xget(%vD, d.manual-bio-stats), setq(L, remove(%qL, itext(0), |)), |)), %qL)
 
-&f.get-player-bio-fields [v(d.cgf)]=strcat(setq(P, xget(%0, ulocal(f.get-stat-location-on-player, Playbook))), setq(E, xget(%0, ulocal(f.get-stat-location-on-player, Expert Type))), if(t(%qE), xget(%vD, d.expert_bio), strcat(setq(F, xget(%vD, d.bio)), setq(F, strcat(%qF, |, xget(%vD, d.bio.%qP))), setq(F, setdiff(%qF, xget(%vD, d.bio.%qP.exclude), |, |)), squish(trim(%qF, b, |), |))))
+&f.get-player-bio-fields [v(d.cgf)]=if(ulocal(f.is_expert, %0), xget(%vD, d.expert_bio), strcat(setq(P, xget(%0, ulocal(f.get-stat-location-on-player, Playbook))), setq(F, xget(%vD, d.bio)), setq(F, strcat(%qF, |, xget(%vD, d.bio.%qP))), setq(F, setdiff(%qF, xget(%vD, d.bio.%qP.exclude), |, |)), squish(trim(%qF, b, |), |)))
 
 &f.get-player-abilities [v(d.cgf)]=strcat(setq(P, xget(%0, ulocal(f.get-stat-location-on-player, Playbook))), setq(F, default(%vD/d.abilities.[edit(%qP, %b, _)], ulocal(f.get-abilities))), squish(trim(%qF, b, |), |))
 
@@ -108,7 +108,7 @@
 
 &f.get-stat-location-on-player [v(d.cgf)]=switch(%0, Look, short-desc, Name, d.ic_full_name, Alias, d.street_alias, edit(%0, %b, _, ^, _stat.))
 
-&f.get-stats [v(d.cgf)]=strcat(setq(S, xget(%vD, d.scoundrel-stats)), squish(trim(strcat(%qS, |, setdiff(ulocal(f.get-player-bio-fields, %0), Crew, |, |), |, setdiff(xget(%vD, d.expert_bio), Crew, |, |), |, if(t(ulocal(f.get-player-stat, %0, crew object)), ulocal(f.get-crew-stats))), b, |), |))
+&f.get-stats [v(d.cgf)]=squish(trim(strcat(xget(%vD, d.scoundrel-stats), |, setdiff(ulocal(f.get-player-bio-fields, %0), Crew, |, |), |, setdiff(xget(%vD, d.expert_bio), Crew, |, |), |, if(t(ulocal(f.get-player-stat, %0, crew object)), ulocal(f.get-crew-stats))), b, |), |)
 
 &f.get-crew-stats [v(d.cgf)]=xget(%vD, d.crew_bio)|Favorite
 
@@ -177,7 +177,7 @@
 @@  Setter must be allowed to break stat-setting rules
 @@  Actions may not advance to 4 unless the player's crew has Mastery or the player is a vampire.
 @@ Returns the "pretty" value - AKA "Bodyguard" instead of "bod".
-&f.get-pretty-value [v(d.cgf)]=if(cand(t(strlen(setr(0, ulocal(f.get-valid-value, %0, %1, %2)))), cor(not(finditem(ulocal(f.list-restricted-values, %0), %q0, |)), cand(isapproved(%2), case(1, t(ulocal(f.is-action, %0)), lte(%1, ulocal(f.get-max-action, %2)), strmatch(%0, Stress), ulocal(f.get-max-stress, %2), strmatch(%0, Traumas), ulocal(f.get-max-trauma, %2), 1)))), %q0)
+&f.get-pretty-value [v(d.cgf)]=if(cand(t(strlen(setr(0, ulocal(f.get-valid-value, %0, %1, %2)))), cor(not(finditem(ulocal(f.list-restricted-values, %0), %q0, |)), ulocal(f.is-allowed-to-break-stat-setting-rules, %3, %2), cand(isapproved(%2), case(1, t(ulocal(f.is-action, %0)), lte(%1, ulocal(f.get-max-action, %2)), strmatch(%0, Stress), ulocal(f.get-max-stress, %2), strmatch(%0, Traumas), ulocal(f.get-max-trauma, %2), 1)))), %q0)
 
 &f.get-max-action [v(d.cgf)]=if(cor(ulocal(f.has-list-stat, ulocal(f.get-player-stat, %0, crew object), Upgrades, Mastery), strmatch(ulocal(f.get-player-stat, %0, Playbook), Vampire)), 4, 3)
 
