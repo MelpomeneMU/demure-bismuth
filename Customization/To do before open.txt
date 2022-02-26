@@ -7,14 +7,16 @@ Channel creations
 
 Crew code
 	Add job messages to +crew/lock.
-	Probies (not optional)
 	Crew approval process
-	Vote to boot people (optional)
-	Booting established PCs after X days (optional)
-	Invite-sharing (optional)
 Census (optional)
 Report to check for alt-nomming - +nom/alts?
 
+Optional CG code:
+	Test Vampire and make sure it works
+	Fix up Hulls
+	Test Ghost
+	Clean up playbook creation
+	Crew: Vote to boot people
 
 Grid
 Wiki
