@@ -73,15 +73,17 @@
 
 &f.get-playbook-default [v(d.cgf)]=strcat(setq(F, if(cand(t(%0), switch(%1, XP Triggers, 1, Friends, 1, Gear, 1, Abilities, 1, 0)), xget(%vD, strcat(d., ulocal(f.get-stat-location, %1), ., %0)))), if(switch(%1, Abilities, 1, 0), first(%qF, |), %qF))
 
-&f.get-crew-default [v(d.cgf)]=strcat(setq(F, if(strmatch(%1, Favorite), ulocal(f.get-list-default, %2, %1, Contacts), if(cand(t(%0), switch(%1, Crew XP Triggers, 1, Crew Abilities, 1, Contacts, 1, Favorite, 1, 0)), xget(%vD, strcat(d., ulocal(f.get-stat-location, %1), ., %0))))), if(switch(%1, Crew Abilities, 1, Favorite, 1, 0), first(%qF, |), %qF))
+&f.get-crew-default [v(d.cgf)]=strcat(setq(F, if(strmatch(%1, Favorite), ulocal(f.get-first-default, %2, Contacts), if(cand(t(%0), switch(%1, Crew XP Triggers, 1, Crew Abilities, 1, Contacts, 1, Favorite, 1, 0)), xget(%vD, strcat(d., ulocal(f.get-stat-location, %1), ., %0))))), if(switch(%1, Crew Abilities, 1, Favorite, 1, 0), first(%qF, |), %qF))
 
-&f.get-list-default [v(d.cgf)]=strcat(setq(F, ulocal(f.get-player-stat, %0, %2)), first(%qF, |))
+&f.get-first-default [v(d.cgf)]=first(ulocal(f.get-player-stat, %0, %1), |)
+
+&f.get-last-default [v(d.cgf)]=strcat(setq(L, ulocal(f.get-player-stat, %0, %1)), last(diffset(%qL, first(%qL, |), |, |), |))
 
 @@ %0: Player
 @@ %1: Stat name
 @@ %2: Is crew stat
 @@ %3: Crew object
-&f.get-stat-default [v(d.cgf)]=if(%2, ulocal(f.get-crew-default, xget(%3, ulocal(f.get-stat-location-on-player, Crew Type)), %1, %3), ulocal(f.get-playbook-default, xget(%0, ulocal(f.get-stat-location-on-player, Playbook)), %1))
+&f.get-stat-default [v(d.cgf)]=if(%2, ulocal(f.get-crew-default, xget(%3, ulocal(f.get-stat-location-on-player, Crew Type)), %1, %3), switch(%1, Ally, ulocal(f.get-first-default, %0, Friends), Rival, ulocal(f.get-last-default, %0, Friends), ulocal(f.get-playbook-default, xget(%0, ulocal(f.get-stat-location-on-player, Playbook)), %1)))
 
 &f.get-crew-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.crew_abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
@@ -138,7 +140,7 @@
 
 &f.get-full-list-stat-values [v(d.cgf)]=iter(lattr(strcat(%vD, /, d., ulocal(f.get-stat-location, %0), ., *)), title(lcstr(last(itext(0), .))),, |)
 
-&f.list-values [v(d.cgf)]=case(1, t(ulocal(f.is-action, %0)), xget(%vD, d.value.action), ulocal(f.is-full-list-stat, %0), ulocal(f.get-full-list-stat-values, %0, %1), t(finditem(Ally, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, rival), |), t(finditem(Rival, %0, |)), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, ally), |), t(finditem(Favorite, %0, |)), ulocal(f.get-player-stat, %1, contacts), strmatch(Abilities, %0), ulocal(f.get-abilities), t(finditem(Crew Ability|Crew Abilities, %0, |)), ulocal(f.get-crew-abilities), strmatch(%0, Upgrade*), ulocal(f.get-upgrades), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
+&f.list-values [v(d.cgf)]=case(1, t(ulocal(f.is-action, %0)), xget(%vD, d.value.action), ulocal(f.is-full-list-stat, %0), ulocal(f.get-full-list-stat-values, %0, %1), strmatch(Ally, %0), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, rival), |), strmatch(Rival, %0), remove(ulocal(f.get-player-stat, %1, friends), ulocal(f.get-player-stat, %1, ally), |), strmatch(Favorite, %0), ulocal(f.get-player-stat, %1, contacts), strmatch(Abilities, %0), ulocal(f.get-abilities), t(finditem(Crew Ability|Crew Abilities, %0, |)), ulocal(f.get-crew-abilities), strmatch(%0, Upgrade*), ulocal(f.get-upgrades), xget(%vD, ulocal(f.get-stat-location, d.value.%0)))
 
 @@ These expect a tickable stat, in one of the following formats:
 @@  [ ] Stat name here
