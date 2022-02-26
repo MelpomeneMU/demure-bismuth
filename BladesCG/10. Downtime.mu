@@ -2,6 +2,7 @@
 +dt/+downtime
 	+dt/recover <#>
 	+dt/feed
+*	+dt/recharge - clears 5 Drain
 	+dt/heat
 	+dt/indulge or +dt/vice
 	+dt/train <track>
@@ -21,6 +22,9 @@
 	+stress/gain <#>=<reason>
 	+stress/clear
 	+trauma/add <trauma>
+* +drain - same as stress but goes to 10
+* +gloom - trauma for ghosts
+* +wear - replaces trauma for Hulls
 +coin
 	+coin/stash <#> - stash some of your coins
 	+coin/unstash <#> - withdraw from your stash
