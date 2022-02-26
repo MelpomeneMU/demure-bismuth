@@ -66,7 +66,7 @@
 
 &d.xp_tracks [v(d.cgdb)]=Insight|Prowess|Resolve|Playbook|Crew|Untracked
 
-&d.stats-that-default [v(d.cgdb)]=Friends|Abilities|Gear|XP Triggers
+&d.stats-that-default [v(d.cgdb)]=Friends|Ally|Rival|Abilities|Gear|XP Triggers
 
 &d.crew-stats-that-default [v(d.cgdb)]=Contacts|Favorite|Crew Abilities|Crew XP Triggers
 
