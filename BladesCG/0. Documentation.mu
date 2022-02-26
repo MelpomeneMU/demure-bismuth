@@ -8,7 +8,8 @@ Commands:
 
 Chargen:
 	+stat/set <stat>=<value>
-	+stat/clear - clear your stats. Will ask if you're sure first.
+	+stat/add <stat>=<value>
+	+stats/clear - clear your stats. Will ask if you're sure first.
 	+stats/lock - lock your stats and request approval.
 	+stats/unlock - unlock your stats. Will ask if you're sure before proceeding if you're already approved.
 
@@ -48,110 +49,5 @@ Healing and harming:
 	+harm Gravely insulted
 	+harm L2 Defenestrated
 	+heal 1, 2, 3, or 5 - tick your healing clock based on your healer's rolls. When the clock reaches 4, you heal a level of harm.
-
-Pools:
-	+take 1 stress
-	+take stress|drain|gloom
-	+take trauma=<which>
-	+vice???
-
-TODO:
-
-When crew name is set: set crew (could just have them be the same??)
-
-When crew is set: check for a player that has a crew named exactly that or something similar and set it to that (good reason not to have them be the same?)
-
-Remember to change the footer for +sheet/crew to reflect the crew advancement not the player
-
-When the player sets their playbook, default their equipment/friends/etc to the listed ones for that playbook if available
-
-
- =[ Name ] ===================================================================
- Playbook: Hound           Crew: The Rooks            Heritage: Akorosi
- Background: Military      Vice: Obligation
- =============================================================================
- Insight  (2/6 XP)     4   Prowess  (0/6 XP)     1   Resolve  (0/6 XP)     2
- Hunt                  1   Finesse               0   Attune                2
- Study                 1   Prowl                 0   Command               2
- Survey                1   Skirmish              1   Consort               0
- Tinker                1   Wreck                 0   Sway                  0
- =====================[ Special abilities (4/8 XP) ]=========================
- Leader                    Not to be trifled with    Arcane Fighter
- Battleborn                Sharpshooter
- =================================[ Health ]=================================
-   3 [                                                         ] Need help
-   2 [                            ][                           ] -1d
-   1 [          Shanked           ][       Spiked drink        ] Less effect
- ===============================[ Pools ]=====================================
- Stress              8/9   Trauma              2/4   Healing             1/4
- Traumas: Reckless, Cold
- ============================[ XP Triggers ]==================================
- * You addressed a challenge with Guile or Hyper-positivity
- * You roll a desparate action
- * You express your beliefs, drives, heritage, or background
- * You struggled with issues from your vice or traumas during a session
- ===============================[ Approved 08/01/2021, 5 advancements, 6 XP ]=
-
-Page 2:
-
- ==============================[ Friends ]====================================
- Jimbob the candlestick maker                (rival) Jasper the bravo
- Shinji the mech pilot                       Beatrice the bellmaker
- ===============================[ Armor ]=====================================
- Armor                 1   Heavy Armor           0   Special Armor         0
- ============================[ Load: Heavy ]==================================
- Fine pistols 1L                             A blade or two
- Fine long rifle 2L                          Armor
- Electroplasmic ammunition                   Disguise (Wardens)
- Ghost-hunting horse
- Spyglass 1L
- ===========================[ Long-term projects ]============================
- 3/6 Get a key to the prison
- =================================[ Notes ]===================================
- Name is a blah bleh bloo
- On 08/01/2021, Name finished a 12-count long term project to: Steal 3 cannons
- ===============================[ Approved 08/01/2021, 5 advancements, 2 XP ]=
-
-Crew sheet ideas:
-  ___________   ___________   ___________   ___________   ___________
- |x          | |x          | |x          | |           | |           |
- |           |-|           | |           |-|           | |           |
- |___________| |___________| |___________| |___________| |___________|
-  _____|_____   ___________   ___________   ___________   ___________
- |           | |           | |           | |           | |           |
- |           |-|           | |   LAIR    |-|           | |           |
- |___________| |___________| |___________| |___________| |___________|
-  _____|_____   ___________   ___________   ___________   ___________
- |x          | |           | |x          | |           | |           |
- |           |-|           | |           |-|           | |           |
- |___________| |___________| |___________| |___________| |___________|
-
-Claims:
-[X] Lair
-[ ] Luxury Fence
-[ ] Etc
-
- =[ Tier 0 - Name ]===========================================================
- Name: Fancy Smugglers     Type: Smugglers           Reputation: Daring
- Lair: A dark dank basement beneath an old cannery.
- ================================[ Claims ]===================================
- Lair                      Luxury Fence              Turf
- ================================[ Pools ]====================================
- Rep                8/11   Hold             Strong   XP                 6/10
- Heat                8/9   Wanted level        2/4   Coin                1/4
- Vaults              2/4
- ============================[ Special Abilities ]============================
- Like Part of the Family   All Hands
- =================================[ Upgrades ]================================
- Hawker's rigging          Ironhook contacts         Elite Rooks
- =================================[ Contacts ]================================
- List of names goes here
- =================================[ Members ]=================================
- List of names goes here
- =================================[ Cohorts ]=================================
- Name - Gang/Expert - notes
- ============================[ Faction Status ]===============================
- -1 Wraiths                -2 Bluecoats              +1 Lord Scurlock
- ===============================[ Approved 08/01/2021, 5 advancements, 6 XP ]=
 
 */
