@@ -1,62 +1,65 @@
 /*
-+crew
-+crew <name> (staff-only)
-+crew/<page> - view a  page of the crew's sheet
-+crew/<page> <player> (staff-only)
+Crew sheet:
+	+crew
+	+crew <name> (staff-only)
+	+crew/<page> - view a  page of the crew's sheet
+	+crew/<page> <player> (staff-only)
 
 Crew chargen:
+	+crew/create <crew>
+	+crew/channel <channel>
+	+crew/channel <player>=<channel> (staff-only)
+	+crew/lock
 
-+crew/create <crew>
-+crew/channel <channel>
-+crew/channel <player>=<channel> (staff-only)
-+crew/lock
+	+cohorts
+	+cohort/create <name>=<type>
+	+cohort/create <player>/<name>=<type>
+	+cohort/destroy <name>=<type>
+	+cohort/destroy <player>/<name>=<type>
+	+cohort/edit <name>
+	+cohort/edit <player>/<name>
+	+cohort/set <stat>=<value>
+	+cohort/add <stat>=<value>
+	+cohort/remove <stat>=<value>
 
-+cohorts
-+cohort/create <name>=<type>
-+cohort/create <player>/<name>=<type>
-+cohort/destroy <name>=<type>
-+cohort/destroy <player>/<name>=<type>
-+cohort/edit <name>
-+cohort/edit <player>/<name>
-+cohort/set <stat>=<value>
-+cohort/add <stat>=<value>
-+cohort/remove <stat>=<value>
+	+factions
+	+factions <player>
+	+faction/log
+	+faction/log <player>
+	+faction/set <type>=<faction>
+	+faction/set <player>/<type>=<faction>
+	+faction/pay <type>=<#>
+	+faction/pay <player>/<type>=<#>
+	+faction/boost
+	+faction/boost <player>
+	+faction/unboost
+	+faction/unboost <player>
 
-+factions
-+factions <player>
-+faction/log
-+faction/log <player>
-+faction/set <type>=<faction>
-+faction/set <player>/<type>=<faction>
-+faction/pay <type>=<#>
-+faction/pay <player>/<type>=<#>
-+faction/boost
-+faction/boost <player>
-+faction/unboost
-+faction/unboost <player>
-
-Post-CG crew commands:
-
-+crew/join <crew>
-+crew/invite <player>
-+crew/boot <player>
-+crew/leave
-* +crew/transfer <player>
-* +crew/transfer <playerA>=<playerB> (staff-only)
-
-Someday:
-*	+crew/vote <boot or invite>=<player>
-*	+crew/yes <player>=<boot or invite>
-*	+crew/no <player>=<boot or invite>
-
-+faction/set <player>/<faction>=<#>
-+claim/award <player>=<name or map number>
+Crew membership and management:
+	+crew/join <crew>
+	+crew/invite <player>
+	+crew/boot <player>
+	+crew/leave
+	* +crew/transfer <player>
+	* +crew/transfer <playerA>=<playerB> (staff-only)
+	Someday maybe a crew voting system:
+		*	+crew/set voting system=<system> - decide how inviting and booting is done. You must have a crew channel to use any system that requires more than one approval.
+			- Anarchy: Anyone in the crew who is a full member can issue an invite/boot an eligible player. (Default right now!)
+			- Majority: Announce the vote. Wait a week. Tally the votes. If the yeas have it, the person gets invited/booted.
+			- Tyranny: Only the founder can issue invites or boot people.
+		*	+crew/invite <player> - shows on the crew channel "Name wants to invite Player to the crew. If you agree, type +crew/invite Player within the next X days. Y more invites required before the final invitation will be issued."
+		*	+crew/boot <player> - same as invite.
+		*	+crew/noinvite <player> - cast a "no" vote to inviting the player
+		*	+crew/noboot <player> - cast a "no" vote to booting the player
+		* +crew/votes - list the votes right now
+		* +crew/vote <#>=<yes or no> - same as /invite or /noinvite, etc.
 
 Staff commands:
-
-* +crew/unlock <player>
-* +crew/approve <player>
-* +crew/unapprove <player>
+	+faction/set <player>/<faction>=<#>
+	+claim/award <player>=<name or map number>
+	* +crew/unlock <player>
+	* +crew/approve <player>
+	* +crew/unapprove <player>
 
 TODO: Code to raise a crew's tier.
 
@@ -92,13 +95,19 @@ TODO: Code to raise a crew's tier.
 @@ Create a crew
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
+@@ TODO: Don't allow crew names to exactly match. (Do we really need a check for that? Depends how invites work I suppose...)
+
 &c.+crew/create [v(d.cg)]=$+crew/create *:@break strmatch(%0, *=*); @assert not(isapproved(%#))={ @trigger me/tr.error=%#, You must be unapproved to create a new crew. Open a new +request to get unapproved and start working on it.; }; @assert cor(not(setr(C, ulocal(f.get-player-stat, %#, crew object))), t(member(%qC, %#)), gettimer(%#, crew.new, if(strmatch(%0, *=*), if(t(rest(%0, =)), rest(%0, =), NO), NO)))={ @trigger me/tr.message=%#, This will take you out of your existing crew%, [ulocal(f.get-player-stat, %qC, Crew Name)]. If you're sure you want to proceed%, type '+crew/create %0=YES' within the next 15 minutes. The time is now [prettytime()].; @eval settimer(%#, crew.new, 900, YES); }; @set %#=[ulocal(f.get-stat-location-on-player, crew object)]:%#; @set %#=[ulocal(f.get-stat-location-on-player, crew name)]:%0; @set %#=[ulocal(f.get-next-id-attr, %#, _crew-join-%#-)]:[prettytime()]; @trigger me/tr.success=%#, You have started a new crew called '%0'.;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Join a crew
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+crew/join [v(d.cg)]=$+crew/join *:@break strmatch(%0, *=*); @eval setq(R, search(EPLAYER=cand(t(member(ulocal(f.get-player-stat, ##, crew object), ##)), strmatch(ulocal(f.get-player-stat, ##, crew name), %0*)))); @assert t(%qR)={ @trigger me/tr.error=%#, Couldn't find a crew named '%0'.; }; @assert eq(words(%qR), 1)={ @trigger me/tr.error=%#, There are multiple crews that start with '%0': [itemize(iter(%qR, ulocal(f.get-player-stat, itext(0), crew name),, |), |)].; }; @eval setq(T, xget(%vD, d.crew-invitation-time)); @assert t(gettimer(%#, crew.invite-%qR))={ @trigger me/tr.error=%#, You have not been invited to join that crew within the last [secs2hrs(%qT)]. Message [ulocal(f.get-name, %qR, %#)] for an invitation.; }; @assert not(member(setr(C, ulocal(f.get-player-stat, %#, crew object)), %#))={ @assert not(t(setdiff(ulocal(f.get-crew-members, %qC), %#)))={ @trigger me/tr.error=%#, You have existing crew members. Before you can join another crew%, you need to %ch+crew\/transfer <player>%cn control of your current crew to someone else.; }; @assert gettimer(%#, crew.join, if(strmatch(%0, *=*), if(t(rest(%0, =)), rest(%0, =), NO), NO))={ @trigger me/tr.message=%#, This will take you out of your existing crew%, [ulocal(f.get-player-stat, %qC, Crew Name)]. If you're sure you want to proceed%, type '+crew/join %0=YES' within the next 15 minutes. The time is now [prettytime()].; @eval settimer(%#, crew.join, 900, YES); }; }; @set %#=[ulocal(f.get-stat-location-on-player, crew object)]:%qR; @set %#=[ulocal(f.get-next-id-attr, %#, _crew-join-%qR-)]:[prettytime()]; @trigger me/tr.success=%#, You have joined the %ch[ulocal(f.get-player-stat, %qR, crew name)]%cn crew.; @trigger me/tr.crew-emit=%qR, ulocal(f.get-name, %#) joined the crew.; @trigger me/tr.crew-channel-invite=%#, %qR;
+&c.+crew/join [v(d.cg)]=$+crew/join *:@eval setq(R, search(EPLAYER=cand(t(member(ulocal(f.get-player-stat, ##, crew object), ##)), strmatch(ulocal(f.get-player-stat, ##, crew name), first(%0, =)*)))); @assert t(%qR)={ @trigger me/tr.error=%#, Couldn't find a crew named '[first(%0, =)]'.; }; @assert eq(words(%qR), 1)={ @trigger me/tr.error=%#, There are multiple crews that start with '[first(%0, =)]': [itemize(iter(%qR, ulocal(f.get-player-stat, itext(0), crew name),, |), |)].; }; @eval setq(T, xget(%vD, d.crew-invitation-time)); @assert t(gettimer(%#, crew.invite-%qR))={ @trigger me/tr.error=%#, You have not been invited to join that crew within the last [secs2hrs(%qT)]. Message [ulocal(f.get-name, %qR, %#)] for an invitation.; }; @assert not(member(setr(C, ulocal(f.get-player-stat, %#, crew object)), %#))={  @assert not(t(setdiff(ulocal(f.get-crew-members, %qC), %#)))={ @trigger me/tr.error=%#, You have existing crew members. Before you can join another crew%, you need to %ch+crew\/transfer <player>%cn control of your current crew to someone else.; }; @assert gettimer(%#, crew.join, if(strmatch(%0, *=*), if(t(rest(%0, =)), rest(%0, =), NO), NO))={ @trigger me/tr.message=%#, This will take you out of your existing crew%, [ulocal(f.get-player-stat, %qC, Crew Name)]. If you're sure you want to proceed%, type '+crew/join %0=YES' within the next 15 minutes. The time is now [prettytime()].; @eval settimer(%#, crew.join, 900, YES); };  @trigger me/tr.join-crew=%qR, %#; }; @trigger me/tr.join-crew=%qR, %#;
+
+@@ %0: crew object
+@@ %1: player joining
+&tr.join-crew [v(d.cg)]=@set %1=[ulocal(f.get-stat-location-on-player, crew object)]:%0; @set %1=[ulocal(f.get-next-id-attr, %1, _crew-join-%0-)]:[prettytime()]; @trigger me/tr.success=%1, You have joined the %ch[ulocal(f.get-player-stat, %0, crew name)]%cn crew.; @trigger me/tr.crew-emit=%0, ulocal(f.get-name, %1) joined the crew.; @set %1=_crewgen-job:[setr(J, xget(%0, _crewgen-job))]; @set %qJ=opened_by:[setunion(xget(%qJ, opened_by), %1)]; @trigger me/tr.crew-channel-invite=%1, %0;
 
 @@ %0: player to invite
 @@ %1: crew object
@@ -114,19 +123,15 @@ TODO: Code to raise a crew's tier.
 @@ Leave a crew
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+crew/leave [v(d.cg)]=$+crew/leave:@assert t(setr(C, ulocal(f.get-player-stat, %#, crew object)))={ @trigger me/tr.error=%#, You don't appear to be in a crew.; }; @assert not(isapproved(%#))={ @trigger me/tr.error=%#, You're already approved and can't leave your crew without staff assistance. Please reach out to staff with %chreq/social <title>=<problem>%cn. Alternately%, you can try joining a new crew.; }; @set %#=ulocal(f.get-stat-location-on-player, crew object):; @trigger me/tr.success=%#, You have left your old crew.; @trigger me/tr.crew-emit=%qC, ulocal(f.get-name, %#) has left the crew.;
-
-@@ TODO: Consider force-booting them off the crew channel?
+&c.+crew/leave [v(d.cg)]=$+crew/leave:@assert t(setr(C, ulocal(f.get-player-stat, %#, crew object)))={ @trigger me/tr.error=%#, You don't appear to be in a crew.; }; @assert not(isapproved(%#))={ @trigger me/tr.error=%#, You're already approved and can't leave your crew without staff assistance. Please reach out to staff with %chreq/social <title>=<problem>%cn. Alternately%, you can try joining a new crew.; }; @set %#=ulocal(f.get-stat-location-on-player, crew object):; @trigger me/tr.success=%#, You have left your old crew.; @trigger me/tr.crew-emit=%qC, ulocal(f.get-name, %#) has left the crew. This does not remove the player from the crew channel. The owner may want to +channel/boot <channel>=<player> if the player is no longer welcome.;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Invite someone into the crew
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-@@ TODO: See about making it so that ALL players who are non-probies have the power to invite new players.
+&layout.crew-invitation [v(d.cgf)]=cat(You have been invited to join, setr(0, ulocal(f.get-player-stat, %0, crew name)), by, ulocal(f.get-name, %2, %1)., To accept this invitation%, type %ch+crew/join %q0., This invitation is good for, secs2hrs(xget(%vD, d.crew-invitation-time)).)
 
-&layout.crew-invitation [v(d.cgf)]=cat(You have been invited to join, setr(0, ulocal(f.get-player-stat, %0, crew name)), by, ulocal(f.get-name, %0, %1)., To accept this invitation%, type %ch+crew/join %q0., This invitation is good for, secs2hrs(xget(%vD, d.crew-invitation-time)).)
-
-&c.+crew/invite [v(d.cg)]=$+crew/invite *:@eval setq(C, ulocal(f.get-player-stat, %#, crew object)); @assert t(%qC)={ @trigger me/tr.error=%#, You don't currently have a crew set up. +crew/create <name> to start one.; }; @assert t(member(%qC, %#))={ @trigger me/tr.error=%#, You must be the crew's statter in order to invite people. Message [ulocal(f.get-name, %qR, %#)] to issue the invitation.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert not(t(setinter(ulocal(f.get-crew-members, %qC), %qP)))={ @trigger me/tr.error=%#, %qN is already a member of [ulocal(f.get-player-stat, %qC, crew name)].; }; @eval settimer(%qP, crew.invite-%qC, setr(D, xget(%vD, d.crew-invitation-time))); @trigger me/tr.success=%#, You have issued an invitation to %qN to join [ulocal(f.get-player-stat, %qC, crew name)]. This invitation is good for [secs2hrs(%qD)].; @trigger me/tr.crew-emit=%qC, cat(ulocal(f.get-name, %#) invited, ulocal(f.get-name, %qP) to join the crew.); @break t(member(xget(%vD, d.message-method), msg))={ @set %#=msg-send-crew_invitation:[default(%#/msg-send-crew_invitation, xget(%vD, d.crew_invitation_flair))]; @trigger me/tr.msg-player=crew_invitation, %qP=:sends: [ulocal(layout.crew-invitation, %qC, %qP)], %#; }; @assert andflags(%qP, C!D)={ @mail/quick %qP/Crew Invitation: [ulocal(f.get-player-stat, %qC, crew name)]=[ulocal(layout.crew-invitation, %0, %qP)]; }; @trigger me/tr.pemit=%qP, ulocal(layout.crew-invitation, %0, %qP), %#;
+&c.+crew/invite [v(d.cg)]=$+crew/invite *:@eval setq(C, ulocal(f.get-player-stat, %#, crew object)); @assert t(%qC)={ @trigger me/tr.error=%#, You don't currently have a crew set up. +crew/create <name> to start one.; }; @assert ulocal(f.is-full-member, %#, %qC)={ @trigger me/tr.error=%#, You must be a non-probationary member of the crew in order to invite people. Find a full member to issue the invitation.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert not(t(setinter(ulocal(f.get-crew-members, %qC), %qP)))={ @trigger me/tr.error=%#, %qN is already a member of [ulocal(f.get-player-stat, %qC, crew name)].; }; @eval settimer(%qP, crew.invite-%qC, setr(D, xget(%vD, d.crew-invitation-time))); @trigger me/tr.success=%#, You have issued an invitation to %qN to join [ulocal(f.get-player-stat, %qC, crew name)]. This invitation is good for [secs2hrs(%qD)].; @trigger me/tr.crew-emit=%qC, cat(ulocal(f.get-name, %#) invited, ulocal(f.get-name, %qP) to join the crew.); @break t(member(xget(%vD, d.message-method), msg))={ @set %#=msg-send-crew_invitation:[default(%#/msg-send-crew_invitation, xget(%vD, d.crew_invitation_flair))]; @trigger me/tr.msg-player=crew_invitation, %qP, [ulocal(layout.crew-invitation, %qC, %qP, %#)], %#; }; @assert andflags(%qP, C!D)={ @mail/quick %qP/Crew Invitation: [ulocal(f.get-player-stat, %qC, crew name)]=[ulocal(layout.crew-invitation, %0, %qP, %#)]; }; @trigger me/tr.pemit=%qP, ulocal(layout.crew-invitation, %0, %qP, %#), %#;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew transfers
@@ -153,7 +158,11 @@ TODO: Code to raise a crew's tier.
 
 &layout.unfriendly [v(d.cgf)]=if(t(setr(F, ulocal(f.get-player-stat, %0, faction.unfriendly))), strcat(first(%qF, |): This faction is, if(t(rest(%qF, |)), strcat(%b, extremely)), %b,  unfriendly to the crew's Favorite Contact%, resulting in a status of, %b, ulocal(f.get-faction-status, %qC, first(%qF, |)).))
 
-&c.+crew/lock [v(d.cg)]=$+crew/lock:@eval setq(C, ulocal(f.get-player-stat, %#, crew object)); @assert t(%qC)={ @trigger me/tr.error=%#, You don't currently have a crew set up. +crew/create <name> to start one.; }; @assert not(hasattr(%qC, _stat.crew_locked))={ @trigger me/tr.error=%#, Your crew is already locked.; }; @set %qC=_stat.crew_locked:[prettytime()]; @dolist/delimit | [xget(%vD, d.crew-stats-that-default)]={ @set %qC=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %qC, ##)]; }; @set %qC=ulocal(f.get-stat-location-on-player, crew coin):[sub(2, ulocal(f.get-total-faction-coin, %qC))]; @set %qC=ulocal(f.get-stat-location-on-player, xp.crew.max):10; @trigger me/tr.log=%qC, _faction-, %#, ulocal(layout.hunting, %qC); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.helped, %qC); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.harmed, %qC); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.friendly, %qC); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.unfriendly, %qC); @trigger me/tr.success=%#, You locked your crew.; @trigger me/tr.crew-emit=%qC, %N locked the crew for editing. No further changes can be made.;
+&layout.crew-job [v(d.cgf)]=strcat(The crew, %b, ulocal(f.get-crew-name, %0) is ready to be approved., %r%r%b, Staff will be looking for:%R%T* Does the crew fit into the theme OK?%R%T* Anything missing? Any, %b, ulocal(layout.fail), %b, marks on the CG check?, %r%r%b, If you have any questions%, please add them to this job!)
+
+&c.+crew/lock [v(d.cg)]=$+crew/lock:@eval setq(C, ulocal(f.get-player-stat, %#, crew object)); @assert t(%qC)={ @trigger me/tr.error=%#, You don't currently have a crew set up. +crew/create <name> to start one.; }; @assert not(hasattr(%qC, _stat.crew_locked))={ @trigger me/tr.error=%#, Your crew is already locked.; }; @assert gettimer(%#, crew-lock)={ @trigger me/tr.message=%#, You are about to lock your crew's stats. This will create a crew job (or add a note to your existing crew job if you already have one) and no one will be able to make any further changes to your crew's sheet. Are you sure? If yes%, type %ch+crew/lock%cn again within the next 10 minutes. The time is now [prettytime()].; @eval settimer(%#, crew-lock, 600); }; @trigger me/tr.lock-crew-stats=%qC; @if cand(isdbref(setr(J, xget(%#, _crewgen-job))), ulocal(f.can-add-to-job, %#, %qJ))={ @trigger %vA/trig_add=%qJ, cat(ulocal(f.get-name, %#) has locked, poss(%#), crew stats again.), %#, ADD; @trigger me/tr.success=%#, You locked your crew's stats. A comment has been added to your crew job to let staff know to take another look.; @trigger %vA/trig_broadcast=%#, cat(CREW:, name(%qJ):, ulocal(f.get-name, %#), locked, poss(%#) crew stats again.), ADD; }, { @trigger %vA/trig_create=%#, xget(%vD, d.CREW-bucket), 1, ulocal(f.get-crew-name, %#): Ready for approval, ulocal(layout.crew-job, %#), ulocal(f.get-crew-members, %qC); @trigger me/tr.success=%#, You locked your crew's stats. A job has been created with staff to examine your crew. Type %ch+myjobs%cn to see it.; }; @trigger me/tr.crew-emit=%qC, ulocal(f.get-name, %#) locked the crew for editing. No further changes can be made. Every crew member should be able to see the new job tracking this process - use +myjobs to see it!;
+
+&tr.lock-crew-stats [v(d.cg)]=@set %0=_stat.crew_locked:[prettytime()]; @dolist/delimit | [xget(%vD, d.crew-stats-that-default)]={ @set %0=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %0, ##)]; }; @set %0=ulocal(f.get-stat-location-on-player, crew coin):[sub(2, ulocal(f.get-total-faction-coin, %0))]; @set %0=ulocal(f.get-stat-location-on-player, xp.crew.max):10; @trigger me/tr.log=%0, _faction-, %#, ulocal(layout.hunting, %0); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.helped, %0); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.harmed, %0); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.friendly, %0); @trigger me/tr.log=%#, _faction-, %#, ulocal(layout.unfriendly, %0);
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Setting up the crew channel
@@ -161,9 +170,9 @@ TODO: Code to raise a crew's tier.
 
 @@ TODO: see how this works out. It sets the crew channel up ONCE... unless the original no longer exists. If the original gets deleted, the crew can assign a new one. Otherwise, they'll have to ask staff.
 
-&c.+crew/channel [v(d.cg)]=$+crew/channel *:@break strmatch(%0, *=*); @eval setq(C, ulocal(f.get-player-stat, %#, crew object)); @assert t(%qC)={ @trigger me/tr.error=%#, You don't currently have a crew set up. +crew/create <name> to start one.; }; @assert cor(not(t(setr(O, xget(%qC, setr(L, ulocal(f.get-stat-location-on-player, crew channel object)))))), not(isdbref(%qO)))={ @trigger me/tr.error=%#, Your crew already has a crew channel. You'll need to put in a request with staff to change it.; }; @assert not(t(setr(E, u(%vH/f.get-channel-by-name-error, %#, %0, 1))))={ @trigger me/tr.error=%#, %qE; }; @assert ulocal(%vH/f.can-modify-channel, %#, %qN)={ @trigger me/tr.error=%#, You are not in control of %qT%, so you can't set it as your crew channel. Get the channel owner to do it or talk to staff.; }; @set %qC=%qL:%qN; @set %qC=[ulocal(f.get-stat-location-on-player, crew channel name)]:%qT; @trigger me/tr.success=%#, You set your crew's channel to %qT. New players will be prompted to join that channel when they join your crew.; @cemit %qT=%N sets this channel as the designated crew channel for %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn.;
+&c.+crew/channel [v(d.cg)]=$+crew/channel *:@break strmatch(%0, *=*); @eval setq(C, ulocal(f.get-player-stat, %#, crew object)); @assert t(%qC)={ @trigger me/tr.error=%#, You don't currently have a crew set up. +crew/create <name> to start one.; }; @assert cor(not(t(setr(O, xget(%qC, setr(L, ulocal(f.get-stat-location-on-player, crew channel object)))))), not(isdbref(%qO)))={ @trigger me/tr.error=%#, Your crew already has a crew channel. You'll need to put in a request with staff to change it.; }; @assert not(t(setr(E, u(%vH/f.get-channel-by-name-error, %#, %0, 1))))={ @trigger me/tr.error=%#, %qE; }; @assert ulocal(%vH/f.can-modify-channel, %#, %qN)={ @trigger me/tr.error=%#, You are not in control of %qT%, so you can't set it as your crew channel. Get the channel owner to do it or talk to staff.; }; @set %qC=%qL:%qN; @set %qC=[ulocal(f.get-stat-location-on-player, crew channel name)]:%qT; @trigger me/tr.success=%#, You set your crew's channel to %qT. New players will be prompted to join that channel when they join your crew.; @cemit %qT=ulocal(f.get-name, %#) sets this channel as the designated crew channel for %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn.;
 
-&c.+crew/channel_staff [v(d.cg)]=$+crew/channel *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to change a crew's channel.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(C, ulocal(f.get-player-stat, %qP, crew object)); @assert t(%qC)={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) doesn't currently have a crew set up.; }; @assert not(t(setr(E, u(%vH/f.get-channel-by-name-error, %#, %1, 0))))={ @trigger me/tr.error=%#, %qE; }; @assert ulocal(%vH/f.can-modify-channel, %#, %qN)={ @trigger me/tr.error=%#, You are not in control of %qT%, so you can't set it as someone's crew channel.; }; @set %qC=[ulocal(f.get-stat-location-on-player, crew channel object)]:%qN; @set %qC=[ulocal(f.get-stat-location-on-player, crew channel name)]:%qT; @trigger me/tr.success=%#, You set the crew channel for %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn to %qT. New players will be prompted to join that channel when they join the crew.; @cemit %qT=%N sets this channel as the designated crew channel for %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn.;
+&c.+crew/channel_staff [v(d.cg)]=$+crew/channel *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to change a crew's channel.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(C, ulocal(f.get-player-stat, %qP, crew object)); @assert t(%qC)={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) doesn't currently have a crew set up.; }; @assert not(t(setr(E, u(%vH/f.get-channel-by-name-error, %#, %1, 0))))={ @trigger me/tr.error=%#, %qE; }; @assert ulocal(%vH/f.can-modify-channel, %#, %qN)={ @trigger me/tr.error=%#, You are not in control of %qT%, so you can't set it as someone's crew channel.; }; @set %qC=[ulocal(f.get-stat-location-on-player, crew channel object)]:%qN; @set %qC=[ulocal(f.get-stat-location-on-player, crew channel name)]:%qT; @trigger me/tr.success=%#, You set the crew channel for %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn to %qT. New players will be prompted to join that channel when they join the crew.; @cemit %qT=ulocal(f.get-name, %#) sets this channel as the designated crew channel for %ch[ulocal(f.get-player-stat, %qC, crew name)]%cn.;
 
 @@ %0: crew object
 @@ %1: what to emit
@@ -270,9 +279,7 @@ TODO: Code to raise a crew's tier.
 
 &c.+faction/unboost_staff [v(d.cg)]=$+faction/unboost *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to edit a crew's factions.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert gt(rest(ulocal(f.get-player-stat, ulocal(f.get-player-stat, %qP, crew object), strcat(faction., Friendly)), |), 0)={ @trigger me/tr.error=%#, This crew's relations with their Friendly and Unfriendly factions are already unboosted.; }; @trigger me/tr.faction-pay=Friendly, 0, %qP, %#, You have normalized this crew's reputation with their Friendly faction; @trigger me/tr.faction-pay=Unfriendly, 0, %qP, %#, You have normalized this crew's reputation with their Unfriendly faction;
 
-&tr.faction-pay [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %qC, %3)={ @trigger me/tr.error=%3, You can't edit a crew once it's locked.; }; @assert t(setr(Q, finditem(setr(L, setdiff(xget(%vD, d.faction.questions), if(not(t(%4)), Friendly|Unfriendly), |)), %0, |)))={ @trigger me/tr.error=%3, '%0' is not a valid Faction Question that can be paid. Payable Faction Questions are: [ulocal(layout.list, %qL)].; }; @assert cor(not(strmatch(%qQ, Hunting)), t(setr(H, ulocal(f.get-player-stat, %qC, hunting grounds))))={ @trigger me/tr.error=%3, This crew can't pay the faction that claims their Hunting Grounds until they choose their Hunting Grounds.; }; @eval setq(T, ulocal(f.get-player-stat-or-default, %qC, faction.%qQ, |0)); @eval setq(F, first(%qT, |)); @assert t(%qF)={ @trigger me/tr.error=%3, The crew needs to set a %qQ faction before they can pay them.; }; @assert cand(isint(%1), cor(gte(%1, 0), strmatch(%qQ, Unfriendly)), lte(%1, switch(%qQ, Hunting, 2, 1)))={ @trigger me/tr.error=%3, '%1' is not a valid amount to pay. This crew can pay [ulocal(layout.list, lnum(switch(%qQ, Hunting, 3, 2),, |), or)] Coin.; }; @assert lte(add(setr(X, ulocal(f.get-total-faction-coin, %qC, %qQ)), %1), 2)={ @trigger me/tr.error=%3, Your crew has 2 coin total. %qX of it has already been spent.; }; @set %qC=[ulocal(f.get-stat-location-on-player, faction.%qQ)]:[replace(%qT, 2, %1, |, |)]; @wipe %qC/[ulocal(f.get-stat-location-on-player, Factions)]; @trigger me/tr.recalculate-factions=%qC; @trigger me/tr.success=%3, if(t(%4), %4, You have paid your crew's %qQ faction%, %ch%qF%cn%, %1 coin) for a total status of [ulocal(f.get-faction-status, %qC, %qF)].; @trigger me/tr.crew-emit=%qC, if(t(%4), edit(%4, You have, ulocal(f.get-name, %3) has), ulocal(f.get-name, %3) has paid the crew's %qQ faction%, %ch%qF%cn%, %1 coin) for a total status of [ulocal(f.get-faction-status, %qC, %qF)].;
-
-@@ TODO: Make it so that +faction/pay Unfriendly|Friendly just lower/raise intensity rather than costing coin or being rejected.
+&tr.faction-pay [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %qC, %3)={ @trigger me/tr.error=%3, You can't edit a crew once it's locked.; }; @assert t(setr(Q, finditem(setr(L, setdiff(xget(%vD, d.faction.questions), if(not(t(%4)), Friendly|Unfriendly), |)), %0, |)))={ @trigger me/tr.error=%3, '%0' is not a valid Faction Question that can be paid. Payable Faction Questions are: [ulocal(layout.list, %qL)].; }; @assert cor(not(strmatch(%qQ, Hunting)), t(setr(H, ulocal(f.get-player-stat, %qC, hunting grounds))))={ @trigger me/tr.error=%3, This crew can't pay the faction that claims their Hunting Grounds until they choose their Hunting Grounds.; }; @eval setq(T, ulocal(f.get-player-stat-or-default, %qC, faction.%qQ, |0)); @eval setq(F, first(%qT, |)); @assert t(%qF)={ @trigger me/tr.error=%3, The crew needs to set a %qQ faction before they can pay them.; }; @assert cand(isint(%1), cor(gte(%1, 0), strmatch(%qQ, Unfriendly)), lte(%1, switch(%qQ, Hunting, 2, 1)))={ @trigger me/tr.error=%3, '%1' is not a valid amount to pay. This crew can pay [ulocal(layout.list, lnum(switch(%qQ, Hunting, 2, 1),, |), or)] Coin to their %qQ faction.; }; @assert lte(add(setr(X, ulocal(f.get-total-faction-coin, %qC, %qQ)), %1), 2)={ @trigger me/tr.error=%3, Your crew has 2 coin total. %qX of it has already been spent.; }; @set %qC=[ulocal(f.get-stat-location-on-player, faction.%qQ)]:[replace(%qT, 2, %1, |, |)]; @wipe %qC/[ulocal(f.get-stat-location-on-player, Factions)]; @trigger me/tr.recalculate-factions=%qC; @trigger me/tr.success=%3, if(t(%4), %4, You have paid your crew's %qQ faction%, %ch%qF%cn%, %1 coin) for a total status of [ulocal(f.get-faction-status, %qC, %qF)].; @trigger me/tr.crew-emit=%qC, if(t(%4), edit(%4, You have, ulocal(f.get-name, %3) has), ulocal(f.get-name, %3) has paid the crew's %qQ faction%, %ch%qF%cn%, %1 coin) for a total status of [ulocal(f.get-faction-status, %qC, %qF)].;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ +claim/award
