@@ -19,9 +19,6 @@
 
 @force me=&va [v(d.cgf)]=[xget(search(ETHING=t(member(name(##), Job Global Object <JGO>, |))), va)]
 
-@@ Downtime bucket - expected to be named DOWNTIME
-@force me=&d.downtime-bucket [v(d.cgdb)]=[search(ETHING=t(member(name(##), DOWNTIME, |)))]
-
 @@ Characters bucket - expected to be named CHARACTERS
 @force me=&d.characters-bucket [v(d.cgdb)]=[search(ETHING=t(member(name(##), CHARACTERS, |)))]
 
