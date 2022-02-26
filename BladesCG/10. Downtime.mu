@@ -1,16 +1,21 @@
 /*
 +dt/+downtime
 	+dt/recover <#>
-	+dt/feed
-*	+dt/recharge - clears 5 Drain
+	+dt/need - ghost vice-clearing
+*	+dt/feed - clears Stress and Heals!!
+		*	Account for Functional Vice here.
+*	+dt/fuel - clears 5 Drain, cannot Overindulge
 	+dt/heat
 	+dt/indulge or +dt/vice
+		*	Account for Functional Vice here.
+*	+dt/vice <#> - roll a specific number when indulging
 	+dt/train <track>
 	+dt/spend <#>=<reason>
 	+dt/buy <#> - spend <#> coin to buy <#> downtime
 	+dt/award <player>=<reason> (staff-only)
 	+dt/award <player>=<#> <reason> (staff-only)
 	+dt/spend <player>=<#> <reason> (staff-only)
+*	+fv <#> - adjust your last vice roll by -2 to +2 with Functional Vice
 +health
 	+harm <injury>
 	+harm <#> <injury>
@@ -36,11 +41,16 @@
 	+coin/spend <player>=<#> <reason> (staff-only)
 	+coin/deposit <player>=<#> <reason> (staff-only) - award crew coin
 	+coin/withdraw <player>=<#> <reason> (staff-only) - withdraw crew coin
+*	+coin/heal - spend coin to improve the outcome of your last recovery roll
 +heat
 	+heat/gain <reason>
 	+heat/gain <#>=<reason>
 +rep
 	+rep/award <player>=<#> <reason>
+*	+rep/spend <#> - spend a point of Rep to get a point of Downtime
+*	+rep/spend <player>=<#> <reason>
+
+TODO: Check the math on Rep. You can bank up to 12 rep, but if you've got 6 turf, you only spend 6 to level up your gang.  But that costs a lot of coin you may not have to spare, so when you're tier 2-3 or so and you've got like 10 rep and 3 coin?  You definitely don't want to spend that coin for downtimes, because coin is your bottleneck in going up a tier.
 */
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -57,7 +67,7 @@
 @@ Layouts
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&layout.downtime [v(d.cgf)]=strcat(header(ulocal(f.get-name, %0, %1)'s downtime, %1), %r, formattext(strcat(Available:, %b, ulocal(f.get-player-stat-or-zero, %0, downtime), %r, Gaining:, %b, ulocal(f.get-player-downtime-per-week, %0), %b, per week, %b, +, %b, ulocal(f.get-player-downtime-per-score, %0), %b, per score, %r, Buy downtime with coin: +dt/buy <#>, %r%r, Spend a downtime to:, %r%t, +dt/heat - reduce your crew's Heat, if(setr(S, not(ulocal(f.is_expert, %0))), strcat(%r%t, +dt/indulge - indulge your Vice and recover Stress)), %r%t, if(strmatch(ulocal(f.get-player-stat, %0, Playbook), Vampire), +dt/feed - feed to recover from Harm, strcat(+dt/recover <#> - roll <#> to recover from Harm, %r%t)), if(t(%qS), strcat(+dt/train <track> - train in an XP track (gains XP), %r%t)), Acquire an Asset - open a job to do this, %r%t, Make progress on a long term project - open a job to do this), 0, %1), setq(L, ulocal(f.get-last-X-logs, %0, _downtime-)), if(t(%qL), strcat(%r, divider(Last 10 downtimes, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(, %1))
+&layout.downtime [v(d.cgf)]=strcat(header(ulocal(f.get-name, %0, %1)'s downtime, %1), %r, formattext(strcat(Available:, %b, ulocal(f.get-player-stat-or-zero, %0, downtime), %r, Gaining:, %b, ulocal(f.get-player-downtime-per-week, %0), %b, per week, %b, +, %b, ulocal(f.get-player-downtime-per-score, %0), %b, per score, %r, Buy downtime with coin: +dt/buy <#>, %r%r, Spend a downtime to:, %r%t, +dt/heat - reduce your crew's Heat, if(setr(S, not(ulocal(f.is_expert, %0))), strcat(%r%t, +dt/indulge - indulge your Vice and recover Stress)), %r%t, if(strmatch(ulocal(f.get-player-stat, %0, Playbook), Vampire), +dt/feed - feed to recover from Harm, strcat(+dt/recover <#> - roll <#> to recover from Harm, %r%t)), if(t(%qS), strcat(+dt/train <track> - train in an XP track (gains XP), %r%t)), Acquire an Asset - req/acquire <title>=<text>, %r%t, Start or progress a Long Term Project - req/ltp <title>=<text>), 0, %1), setq(L, ulocal(f.get-last-X-logs, %0, _downtime-)), if(t(%qL), strcat(%r, divider(Last 10 downtimes, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(, %1))
 
 &layout.player-coin [v(d.cgf)]=strcat(ulocal(layout.coin, %0, %1), %r, ulocal(layout.crew-coin, setr(C, ulocal(f.get-player-stat, %0, crew object)), %1), if(t(setr(L, ulocal(layout.crew-coin-buffs, %qC))), formattext(strcat(%r, After-score crew coin buffs:, %r%r, iter(%qL, cat(*, itext(0)), |, %r)), 0, %1)), setq(L, ulocal(f.get-last-X-logs, %0, _coin-)), if(t(%qL), strcat(%r, divider(Last 10 coin logs, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), setq(L, ulocal(f.get-last-X-logs, setr(C, ulocal(f.get-player-stat, %0, crew object)), _crew-coin-)), if(t(%qL), strcat(%r, divider(Last 10 crew coin logs, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%qC, itext(0))),, %r), 0, %1))), %r, footer(, %1))
 
