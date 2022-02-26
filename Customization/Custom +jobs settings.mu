@@ -22,6 +22,7 @@
 +bucket/create PUBLIC=Everyone can see this.
 +bucket/create FACTION=Faction changes & updates
 +bucket/create CG=Character creation/statting
++bucket/create CREW=Crew creation/statting
 +bucket/create PLOTS=Plot info & questions
 +bucket/create REQUESTS=Player requests
 +bucket/create SOCIAL=Game culture and PvP issues.
@@ -61,28 +62,44 @@
 
 @@ WARNING: Fire the commands below at least one second AFTER the commands above have been run.
 
-@@ Transparent means all players can see the job bucket and any jobs in it. They can add to the job as if they owned it.
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Clear the transparent flag on all built-in buckets except PUBLIC
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-@@ TODO: Make sure that's actually true. Right now it looks like "transparent" makes it so they can only SEE it. Not add to it. WTF, +jobs.
+@@ Transparent means all players can see the job bucket and any jobs in it.
 
-&transparent [search(ETHING=t(member(name(##), FACTION)))]=
-&transparent [search(ETHING=t(member(name(##), CG)))]=
-&transparent [search(ETHING=t(member(name(##), PLOTS)))]=
-&transparent [search(ETHING=t(member(name(##), REQUESTS)))]=
-&transparent [search(ETHING=t(member(name(##), SOCIAL)))]=
 &transparent [search(ETHING=t(member(name(##), BUILD)))]=
 &transparent [search(ETHING=t(member(name(##), CODE)))]=
 &transparent [search(ETHING=t(member(name(##), QUERY)))]=
 &transparent [search(ETHING=t(member(name(##), PUBLIC)))]=1
 
-&access [search(ETHING=t(member(name(##), PUBLIC)))]=[u(%va/FN_STAFFALL, %#)]
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ PUBLIC bucket
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ Let everyone comment on every job in the bucket.
+&access [search(ETHING=t(member(name(##), PUBLIC)))]=not(haspower(%#, GUEST))
+
+@@ Accessible to +myjobs
 &public [search(ETHING=t(member(name(##), PUBLIC)))]=1
-&publish [search(ETHING=t(member(name(##), PUBLIC)))]=1
+
+@@ Let the players see the first comment.
 &hook_cre [search(ETHING=t(member(name(##), PUBLIC)))]=@set %0/COMMENT_1=no_inherit
-&HOOK_ADD [search(ETHING=t(member(name(##), PUBLIC)))]=@set %0/[dec(get(%0/NUM_COMMENT))]=no_inherit
+
+@@ If the job is published, let the players see EVERY comment. Otherwise they only see the first one and their own.
+&HOOK_ADD [search(ETHING=t(member(name(##), PUBLIC)))]=@if hasattr(%0, transparent)={ @set %0/COMMENT_[dec(get(%0/NUM_COMMENT))]=no_inherit; }
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ FACTIONS bucket
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &access [search(ETHING=t(member(name(##), FACTION)))]=[u(%va/FN_STAFFALL, %#)]
+
 &public [search(ETHING=t(member(name(##), FACTION)))]=1
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ CG bucket
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &access [search(ETHING=t(member(name(##), CG)))]=[u(%va/FN_STAFFALL, %#)]
 &public [search(ETHING=t(member(name(##), CG)))]=1
@@ -96,32 +113,97 @@
 
 &MLETTER_OTH [search(ETHING=t(member(name(##), CG)))]=You have requested character approval from staff. The job is '[name(%0)]: [get(%0/TITLE)]':%r%r%3%r%r[divider(Help, %2)]%r See '[ansi(h, +help myjobs)]' for help on how to display and add to your jobs.%r[divider(Turnaround, %2)]%r Our motto for chargen jobs is: "This is the fun part! Woohoo!" That means we'll rarely keep you waiting. We'll wait up to a week for responses, but hopefully you're more excited to play than that.%r%r The official turnaround time for CG jobs is [div(u(me/TURNAROUND), 24)] days. If you haven't heard from us by then, please reach out with a message on this +job or by paging us. Our actual turnaround time is typically much quicker, and depending on how responsive each player is, you can expect a decision within 1-3 days.
 
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Crew bucket
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&access [search(ETHING=t(member(name(##), CREW)))]=[u(%va/FN_STAFFALL, %#)]
+&public [search(ETHING=t(member(name(##), CREW)))]=1
+&turnaround [search(ETHING=t(member(name(##), CREW)))]=240
+
+&hook_oth [search(ETHING=t(member(name(##), CREW)))]=@dolist [xget(%0, opened_by)]={ @set ##=_crewgen-job:%0; };
+
+@force me=&vC [search(ETHING=t(member(name(##), CREW)))]=[v(d.cg)]
+
+&hook_apr [search(ETHING=t(member(name(##), CREW)))]=@dolist [xget(%0, opened_by)]={ @set ##=_crewgen-job:; }; @trigger %vC/tr.approve-crew=xget(%0, opened_by), %1;
+
+&hook_cre [search(ETHING=t(member(name(##), CREW)))]=@set %0/COMMENT_1=no_inherit
+
+&HOOK_ADD [search(ETHING=t(member(name(##), CREW)))]=@break isstaff(%1); @set %0/COMMENT_[dec(get(%0/NUM_COMMENT))]=no_inherit; 
+
+&MLETTER_OTH [search(ETHING=t(member(name(##), CREW)))]=You have requested crew approval from staff. The job is '[name(%0)]: [get(%0/TITLE)]':%r%r%3%r%r[divider(Help, %2)]%r See '[ansi(h, +help myjobs)]' for help on how to display and add to your jobs.%r[divider(Turnaround, %2)]%r The official turnaround time for CREW jobs is [div(u(me/TURNAROUND), 24)] days. If you haven't heard from us by then, please reach out with a message on this +job or by paging us. Our actual turnaround time is typically much quicker, and depending on how responsive the players are, you can expect a decision within 2-5 days.
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ PLOTS bucket
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
 &access [search(ETHING=t(member(name(##), PLOTS)))]=[u(%va/FN_STAFFALL, %#)]
+
 &public [search(ETHING=t(member(name(##), PLOTS)))]=1
 
+&MLETTER_OTH [search(ETHING=t(member(name(##), PLOTS)))]=You have requested '[name(%0)]: [get(%0/TITLE)]' from staff: %r%r%3%r%r[divider(, %2)]%r See '[ansi(h, +help myjobs)]' for help on how to display and add to your jobs.%r%r Please give staff at least [div(u(me/TURNAROUND), 24)] days from the date of this mail to process your request.
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ REQUESTS
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
 &access [search(ETHING=t(member(name(##), REQUESTS)))]=[u(%va/FN_STAFFALL, %#)]
+
 &public [search(ETHING=t(member(name(##), REQUESTS)))]=1
+
 &hook_cre [search(ETHING=t(member(name(##), REQUESTS)))]=@set %0/COMMENT_1=no_inherit
+
 &turnaround [search(ETHING=t(member(name(##), REQUESTS)))]=168
+
 &logfile [search(ETHING=t(member(name(##), REQUESTS)))]=reqlog
-&MLETTER_OTH [search(ETHING=t(member(name(##), REQUESTS)))]=You have requested '[name(%0)]: [get(%0/TITLE)]' from staff: %r%r%3%r%r[repeat(-, 75)]%rSee '[ansi(h, +help myjobs)]' for help on how to display and add to your jobs.%r%rPlease give staff at least [div(u(me/TURNAROUND), 24)] days from the date of this mail to process your request.
+
+&MLETTER_OTH [search(ETHING=t(member(name(##), REQUESTS)))]=You have requested '[name(%0)]: [get(%0/TITLE)]' from staff: %r%r%3%r%r[divider(, %2)]%r See '[ansi(h, +help myjobs)]' for help on how to display and add to your jobs.%r%r Please give staff at least [div(u(me/TURNAROUND), 24)] days from the date of this mail to process your request.
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ SOCIAL
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &access [search(ETHING=t(member(name(##), SOCIAL)))]=[u(%va/FN_STAFFALL, %#)]
+
 &public [search(ETHING=t(member(name(##), SOCIAL)))]=1
+
 &hook_cre [search(ETHING=t(member(name(##), SOCIAL)))]=@set %0/COMMENT_1=no_inherit
-&turnaround [search(ETHING=t(member(name(##), SOCIAL)))]=72
+
+&turnaround [search(ETHING=t(member(name(##), SOCIAL)))]=48
+
 &logfile [search(ETHING=t(member(name(##), SOCIAL)))]=sociallog
-&priority [search(ETHING=t(member(name(##), SOCIAL)))]=1
-&MLETTER_OTH [search(ETHING=t(member(name(##), SOCIAL)))]=You have alerted staff to a social issue regarding '[get(%0/TITLE)]': %r%r%3%r%r[repeat(-, 75)]%rSee '[ansi(h, +help myjobs)]' for help on how to display and add to your jobs.%r%rPlease give staff at least [u(me/TURNAROUND)] hours from the date of this mail to process your request. If it's urgent, contact [xget(%vZ, d.staff-email-address)] or page a member of +staff right away.
+
+&priority [search(ETHING=t(member(name(##), SOCIAL)))]=2
+
+&MLETTER_OTH [search(ETHING=t(member(name(##), SOCIAL)))]=You have alerted staff to a social issue regarding '[get(%0/TITLE)]': %r%r%3%r%r[divider(, %2)]%r See '[ansi(h, +help myjobs)]' for help on how to display and add to your jobs.%r%r Please give staff at least [u(me/TURNAROUND)] hours from the date of this mail to process your request. If it's urgent, contact [xget(%vZ, d.staff-email-address)] or page a member of +staff right away.
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ LTP bucket
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &access [search(ETHING=t(member(name(##), LTP)))]=[u(%va/FN_STAFFALL, %#)]
+
 &public [search(ETHING=t(member(name(##), LTP)))]=1
 
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ DOWNTIME bucket
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
 &access [search(ETHING=t(member(name(##), DOWNTIME)))]=[u(%va/FN_STAFFALL, %#)]
+
 &public [search(ETHING=t(member(name(##), DOWNTIME)))]=1
 
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ CHARACTERS bucket
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
 &access [search(ETHING=t(member(name(##), CHARACTERS)))]=[u(%va/FN_STAFFALL, %#)]
+
 &public [search(ETHING=t(member(name(##), CHARACTERS)))]=1
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ More settings
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 @@ Set the default bucket to REQUESTS since REQ is gone.
 &f.get.bucket [v(d.jrs)]=udefault(d.%0.bucket, REQUESTS)
