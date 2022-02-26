@@ -12,7 +12,7 @@
 @@ %1 - viewer
 &layout.page1 [v(d.cgf)]=if(ulocal(f.is_expert, %0), ulocal(layout.simple, %0, %1), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.actions, %0, %1), %r, ulocal(layout.abilities, %0, %1), %r, ulocal(layout.health, %0, %1), %r, ulocal(layout.stress, %0, %1), %r, ulocal(layout.xp_triggers, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1)))
 
-&layout.page2 [v(d.cgf)]=if(ulocal(f.is_expert, %0), null(No second page.), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.bio, %0, %1), %r, ulocal(layout.friends, %0, %1), %r, ulocal(layout.gear, %0, %1), %r, ulocal(layout.projects, %0, %1), %r, ulocal(layout.notes, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1)))
+&layout.page2 [v(d.cgf)]=if(ulocal(f.is_expert, %0), null(No second page.), strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.friends, %0, %1), %r, ulocal(layout.gear, %0, %1), %r, ulocal(layout.projects, %0, %1), ulocal(layout.notes, %0, %1), footer(ulocal(layout.footer, %0, %1), %1)))
 
 &layout.simple [v(d.cgf)]=strcat(header(ulocal(layout.name, %0, %1), %1), %r, ulocal(layout.simple-bio, %0, %1), %r, ulocal(layout.coin, %0, %1), %r, footer(ulocal(layout.footer, %0, %1), %1))
 
@@ -64,15 +64,15 @@
 
 &layout.gear-item [v(d.cgf)]=switch(%0, %[*%]*, %0, cat(%[, %], %0))
 
-&layout.projects [v(d.cgf)]=strcat(divider(Long-term projects, %1), %r, multicol(ulocal(f.get-player-projects, %0), *, 0, |, %1))
+&layout.projects [v(d.cgf)]=if(t(setr(L, ulocal(f.get-player-projects, %0))),  strcat(divider(Long-term projects, %1), %r, multicol(%qL, *, 0, |, %1), %r))
 
-&layout.notes [v(d.cgf)]=strcat(divider(Notes, %1), %r, multicol(ulocal(f.get-player-notes, %0), *, 0, |, %1))
+&layout.notes [v(d.cgf)]=if(t(setr(L, ulocal(f.get-player-notes, %0))), strcat(divider(Notes, %1), %r, multicol(%qL, *, 0, |, %1), %r))
 
 &layout.footer [v(d.cgf)]=strcat(if(isapproved(%0), cat(Approved, ulocal(f.get-player-stat, %0, approved date)), if(t(setr(R, ulocal(f.get-player-stat, %0, retired date))), Retired %qR, Unapproved)), %,, %b, setr(A, add(ulocal(f.get-advancements, %0, Insight, spent), ulocal(f.get-advancements, %0, Prowess, spent), ulocal(f.get-advancements, %0, Resolve, spent), ulocal(f.get-advancements, %0, Playbook, spent))), %b, plural(%qA, Advancement, Advancements))
 
 &layout.crew_footer [v(d.cgf)]=strcat(if(t(setr(D, ulocal(f.get-player-stat, %0, crew approved date))), cat(Approved, %qD), Unapproved), %,, %b, setr(A, ulocal(f.get-advancements, %0, Crew, spent)), %b, plural(%qA, Advancement, Advancements))
 
-&layout.subsection [v(d.cgf)]=strcat(ulocal(ulocal(f.get-stat-location, layout.%0), %1, %2), %r, footer(ulocal(strcat(layout., switch(%0, crew*, crew_), footer), switch(%0, crew*, ulocal(f.get-player-stat, %1, crew object), %1), %2), %2))
+&layout.subsection [v(d.cgf)]=strcat(ulocal(ulocal(f.get-stat-location, layout.%0), %1, %2), if(cor(not(t(setr(M, finditem(page1 page2, %0)))), not(strmatch(%0, %qM))), strcat(%r, footer(ulocal(strcat(layout., switch(%0, crew*, crew_), footer), switch(%0, crew*, ulocal(f.get-player-stat, %1, crew object), %1), %2), %2))))
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew sheet
@@ -80,15 +80,13 @@
 
 &layout.crew_name [v(d.cgf)]=header(if(t(%0), strcat(ulocal(f.get-player-stat-or-default, %0, Crew name, No crew name set), %b, %(, Tier, %b, ulocal(f.get-player-stat-or-zero, %0, Crew Tier), %), if(isstaff(%1), strcat(%b, %(, %0, %)))), No crew selected), %1)
 
-@@ TODO: Consider revamping the crew bio. It's so multi-liney...
-
 &layout.crew-rep-line [v(d.cgf)]=formattext(strcat(Reputation:, %b, ulocal(f.get-player-stat-or-default, %0, Reputation, Not set), %b, %(, ulocal(f.get-player-stat-or-zero, %0, Rep), /, ulocal(f.get-max-rep, %0), %)), 0, %1)
 
 &layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.crew_bio), Lair|Crew Name|Hunting Grounds|Reputation, |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), Not set)), |, |), * *, 0, |, %1), %r, ulocal(layout.crew-rep-line, %0), %r, formattext(strcat(Hunting Grounds:, %b, ulocal(f.get-player-stat-or-default, %0, Hunting Grounds, Not set), %b, \[, first(ulocal(f.get-player-stat-or-default, %0, faction.hunting, Faction not set|), |), \], %r, Lair:, %b, ulocal(f.get-player-stat-or-default, %0, Lair, Not set)), 0, %1))
 
 &layout.crew1 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew-heat, %qC, %1), %r, ulocal(layout.crew-coin, %qC, %1), %r, ulocal(layout.crew-abilities, %qC, %1), %r, ulocal(layout.crew-upgrades, %qC, %1), %r, ulocal(layout.crew-xp_triggers, %qC, %1))
 
-&layout.crew2 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew-map, %qC, %1), %r, ulocal(layout.crew-cohorts, %qC, %1), %r, ulocal(layout.crew-contacts, %qC, %1), %r, ulocal(layout.crew-factions, %qC, %1), %r, ulocal(layout.crew-members, %qC, %1))
+&layout.crew2 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew-map, %qC, %1), %r, ulocal(layout.crew-cohorts, %qC, %1), ulocal(layout.crew-contacts, %qC, %1), %r, ulocal(layout.crew-factions, %qC, %1), %r, ulocal(layout.crew-members, %qC, %1))
 
 &layout.crew-coin [v(d.cgf)]=strcat(multicol(strcat(Crew Coin:, |, ulocal(f.get-player-stat-or-zero, %0, crew coin), /, ulocal(f.get-vault-max, %0)), 15 5 * 5 * 15, 0, |, %1))
 
@@ -102,7 +100,7 @@
 
 @@ TODO: Someday AFTER initial open, add Cohort Harm.
 
-&layout.crew-cohorts [v(d.cgf)]=strcat(divider(Cohorts, %1), %r, multicol(iter(ulocal(f.get-player-stat, %0, Cohorts), ulocal(layout.cohort, %0, itext(0)), |, |), *, 0, |, %1))
+&layout.crew-cohorts [v(d.cgf)]=if(t(setr(C, ulocal(f.get-player-stat, %0, Cohorts))), strcat(divider(Cohorts, %1), %r, multicol(iter(%qC, ulocal(layout.cohort, %0, itext(0)), |, |), *, 0, |, %1), %r))
 
 &layout.crew-factions [v(d.cgf)]=strcat(divider(Factions, %1), %r, multicol(ulocal(f.get-player-stat, %0, Factions), * *, 0, |, %1))
 
