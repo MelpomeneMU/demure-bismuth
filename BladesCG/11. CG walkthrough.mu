@@ -61,7 +61,7 @@ e
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TBecoming an Expert starts with choosing your Expert Type. Below is a list of available Expert Types, which are "jobs" your character performs in-game.%R%R[multicol(xget(%vD, d.value.expert_type), * * *, 0, |, getremainingwidth(%#), 1)]%R%R%T%ch+stat/set Expert Type=<your choice>%cn and hit Next!%R%R%TAll conversation in this room goes to the Chargen channel.%R
+@desc here=%R%TBecoming an Expert starts with choosing your Expert Type. Below is a list of available Expert Types, along with simple descriptions.%R%R[multicol(iter(xget(%vD, d.value.expert_type), strcat(itext(0), |, xget(%vD, strcat(d.desc.expert_type., itext(0)))), |, |), 10 *, 0, |, getremainingwidth(%#), 1)]%R%R%T%ch+stat/set Expert Type=<your choice>%cn and hit Next!%R%R%TAll conversation in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Expert walkthrough - Character Type
@@ -82,6 +82,26 @@ n
 &short-desc here=All chat in this room goes to the Chargen channel.
 
 @desc here=%R%TCharacter type should be a sentence or three at the most, explaining a little about the character. Details are not needed, just the broad strokes. Here's an example: A swashbuckling pirate from the Dagger Isles who leads a crew of misfits!%R%R%T%ch+stat/set Character Type=<short explanation of your character type>%cn and hit Next!%R%R%TAll conversation in this room goes to the Chargen channel.%R
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Expert walkthrough - Look and desc
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
++dig Look and Desc
+
+@name LD=Look and Desc <Next>;ld;next;n;
+
+n
+
+@name here=Chargen - Expert Walkthrough - Look and Desc
+
+@name O=Back <O>;o;out;exit;back;b;
+
+&d.redirect-poses.[num(here)] [v(d.bd)]=Chargen
+
+&short-desc here=All chat in this room goes to the Chargen channel.
+
+@desc here=%R%TEverybody looks like something. What does your character look like?%R%R%T%ch+stat/set Look=<your short description>%cn%R%R%T%ch@desc me=<your normal description>%cn - does not need to be long! Use %%R if you want to create a line break and %%T if you want to indent.%R%R%TOur general requirements are:%R%R%T* Must be at least one relevant sentence long (no "I'll do this later!").%R%T* Matches your selected Age (not under-age).%R%T* Must be in-theme.%R%T* Links are allowed, but must be accompanied by a sentence to help those of us who can't click the link right away.%R%R%TOnce you're done here, hit %chNext%cn!%R%R%TAll conversation in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Expert walkthrough - Details
@@ -105,7 +125,7 @@ n
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TNow it's time to set a few details about your character.%R%R%T%ch+stat/set Look=<your short description>%cn%R%R%T%ch@desc me=<your normal description>%cn - does not need to be long! Use %%R to create a line break and %%T to indent.%R%R%TOptional: %ch+stat/set Name=<your character's full name>%cn%R%R%TOnce those are set, hit %chNext%cn!%R%R%TAll conversation in this room goes to the Chargen channel.%R
+@desc here=%R%TThe following details are all optional. You don't have to set them, but if you want to, they'll show up on your sheet.%r%r[multicol(strcat(%chName%cn, |, Your character's full IC name, |, %chHeritage%cn, |, Akoros%, Iruvia%, Severos%, Skovland%, The Dagger Isles%, or Tycheros, |, %chBackground%cn, |, Academic%, Labor%, Law%, Military%, Noble%, Trade%, or Underworld, |, %chAlias%cn, |, Your character's street alias), 15 *, 0, |, getremainingwidth(%#), 1)]%R%R%TIf you want to set one of the above fields, type %ch+stat/set <field>=<value>%cn. Since these are all optional, you can skip this page entirely if you like. When you're ready, hit %chNext%cn.%R%R%TAll conversation in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Expert walkthrough - Final Step
@@ -556,8 +576,7 @@ n
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TYour crew's special abilities are granted to every member of the crew. Some abilities add extra dice; some grant special powers. You can choose any Crew Ability you like, but to keep things simple, here are the iconic abilities available to yours:%R%R[multicol(ulocal(%vF/f.get-player-crew-abilities, %#), * *, 0, |, getremainingwidth(%#), 1)]%R%R%TTo set your crew's ability, type %ch+stat/set Crew Ability=<your choice>%cn. If you're not sure what to pick, leave it alone - the default is the first item on the list, and it's usually a very good choice.%R%R%TAll chat in this room goes to the Chargen channel.%R
-
+@desc here=%R%TYour crew's special abilities are granted to every member of the crew. Some abilities add extra dice; some grant special powers. You can choose any Crew Ability you like, but to keep things simple, here are the iconic abilities available to your crew type:%R%R[multicol(ulocal(%vF/f.get-player-crew-abilities, %#), * *, 0, |, getremainingwidth(%#), 1)]%R%R%TTo set your crew's ability, type %ch+stat/set Crew Ability=<your choice>%cn. If you're not sure what to pick, leave it alone - the default is the first item on the list, and it's usually a very good choice.%R%R%TAll chat in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew Creation Walkthrough - Crew Upgrades
@@ -661,7 +680,7 @@ n
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TEvery crew comes with built-in contacts. New ones can be gained in play, but these form the core of your starting group. You'll notice these are the same for every Crew Type, and there's a reason for that - people who run in the same circles know the same people, and it gives you a pre-built connection with other players.%R%R%TYour starting Contact list is determined by your Crew Type. If you want to change it, you can %ch+stat/set Contacts=<a different Crew Type>%cn. You can see your contacts list with %ch+crew/Contacts%cn.%R%R%TSelect one of those Contacts to be your crew's Favorite Contact with %ch+stat/set Favorite=<name>%cn, or you can leave it at the default.%R%R%TAll chat in this room goes to the Chargen channel.%R
+@desc here=%R%TEvery crew comes with built-in contacts. New ones can be gained in play, but these form the core of your starting group. You'll notice these are the same for every Crew Type, and there's a reason for that - people who run in the same circles know the same people, and it gives you a pre-built connection with other players.%R%R%TYour starting Contact list is determined by your Crew Type. If you want to change it, you can %ch+stat/set Contacts=<a different Crew Type>%cn. You can see your contacts list with %ch+crew/Contacts%cn.%R%R%TIf you're feeling particularly creative, you can create your own list of contacts for your crew. They should follow the format, "<name>, a <adjective> <job>" - for example, "Regis Hawthorne, a bloodthirsty pirate". You can mix and match contacts from the book or make up your own. %ch+stat/add Contacts=<contact>%cn to do so. You will need at 6 total Contacts.%R%R%TSelect one of those Contacts to be your crew's Favorite Contact with %ch+stat/set Favorite=<name>%cn, or you can leave it at the default of the first one on the list.%R%R%TAll chat in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew Creation Walkthrough - Factions

@@ -103,7 +103,7 @@
 
 &d.manual-bio-stats [v(d.cgdb)]=Expert Type|Character Type|Look
 
-&d.expert_bio [v(d.cgdb)]=Name|Alias|Crew|Expert Type|Character Type|Age|Look
+&d.expert_bio [v(d.cgdb)]=Name|Heritage|Background|Alias|Crew|Expert Type|Character Type|Age|Look
 
 &d.value.expert_type [v(d.cgdb)]=Adept|Rook|Rover|Skulk|Thug
 
@@ -129,7 +129,7 @@
 @@ Scoundrel stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.scoundrel-stats [v(d.cgdb)]=Hunt|Study|Survey|Tinker|Finesse|Prowl|Skirmish|Wreck|Attune|Command|Consort|Sway|Stress|Traumas|Healing|Load|Coin
+&d.scoundrel-stats [v(d.cgdb)]=Hunt|Study|Survey|Tinker|Finesse|Prowl|Skirmish|Wreck|Attune|Command|Consort|Sway|Stress|Traumas|Healing|Load|Coin|Playbook
 
 &d.value.coin [v(d.cgdb)]=0|1|2|3|4
 
