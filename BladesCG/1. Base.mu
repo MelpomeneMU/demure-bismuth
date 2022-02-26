@@ -28,6 +28,9 @@
 @@ CG bucket - expected to be named CG
 @force me=&d.CG-bucket [v(d.cgdb)]=[search(ETHING=t(member(name(##), CG, |)))]
 
+@@ CREW bucket - expected to be named CREW
+@force me=&d.CREW-bucket [v(d.cgdb)]=[search(ETHING=t(member(name(##), CREW, |)))]
+
 &tr.error [v(d.cg)]=@pemit %0=cat(alert(Error), %1);
 
 &tr.message [v(d.cg)]=@pemit %0=cat(alert(Alert), %1);
