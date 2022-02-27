@@ -1,7 +1,3 @@
-Jobs customizations
-  req/social etc, fix up req to work like a +command
-Board customizations
-	Crews board
 Channel creations
 	LFG channel
 
@@ -11,6 +7,7 @@ Census (optional)
 Report to check for alt-nomming - +nom/alts?
 Get News and Help working.
 	Write help files.
+Events code (mandatory)
 
 Optional CG code:
 	Test Vampire and make sure it works
