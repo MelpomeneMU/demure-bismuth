@@ -1,20 +1,16 @@
 Channel creations
 	LFG channel
 
-Crew code
-	Crew approval process
-Census (optional)
-Report to check for alt-nomming - +nom/alts?
 Get News and Help working.
 	Write help files.
-Events code (mandatory)
+Report to check for alt-nomming - +nom/alts?
+Census (optional)
 
 Optional CG code:
 	Test Vampire and make sure it works
 	Fix up Hulls
 	Test Ghost
 	Clean up playbook creation
-	Crew: Vote to boot people
 
 Grid
 Wiki
@@ -25,3 +21,4 @@ Wiki
 		setting
 	Help
 		Help template
+		Events code help
