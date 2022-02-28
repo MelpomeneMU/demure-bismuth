@@ -28,7 +28,9 @@
 @@ %4: number of advancements, if any
 &layout.move_track [v(d.cgf)]=if(strmatch(%2, %3), strcat(You move %1 Untracked XP to the %0 track., if(t(%4), cat(, You have gained %4, plural(%4, Advancement, Advancements).))), cat(You move %1 of, ulocal(f.get-name, %2, %3)'s, Untracked XP to, poss(%2), %0 track., if(t(%4), cat(, title(subj(%2)), plural(%2, has, have), gained %4, plural(%4, Advancement, Advancements).))))
 
-&layout.add_track [v(d.cgf)]=if(strmatch(%2, %3), strcat(You add %1 XP to the %0 track., if(t(%4), cat(, You have gained %4, plural(%4, Advancement, Advancements).))), cat(You add %1 XP to, ulocal(f.get-name, %2, %3)'s, %0 track., if(t(%4), cat(, title(subj(%2)), plural(%2, has, have), gained %4, plural(%4, Advancement, Advancements).))))
+&layout.add_track [v(d.cgf)]=strcat(You add %1 XP to, %b, ulocal(if(strmatch(%0, Crew), f.get-crew-name, f.get-name), %2, %3)'s %0 track, if(t(%5), %bfor %5)., if(t(%4), cat(, title(subj(%2)), plural(%2, has, have), gained %4, plural(%4, Advancement, Advancements).)))
+
+&layout.add_alert [v(d.cgf)]=strcat(ulocal(f.get-name, %3) awards, %b, if(strmatch(%0, Crew), the crew, you), %b, %1 %0 XP, if(t(%5), %bfor %5)., if(t(%4), cat(, You have gained %4, plural(%4, Advancement, Advancements).)))
 
 &layout.spend_track [v(d.cgf)]=cat(You spend %1, plural(%1, Advancement, Advancements), from, ulocal(layout.whose-stat, %4, %1, %2, %3), %0 track.)
 
@@ -93,7 +95,7 @@
 @@ %3: actor
 @@ %4: action
 @@ %5: reason, if any
-&tr.increase-track [v(d.cg)]=@eval setq(C, switch(%qT, Crew, ulocal(f.get-player-stat, %2, crew object), %2)); @eval setq(X, ulocal(f.get-xp, %qC, %0, total)); @eval setq(M, ulocal(f.get-xp, %qC, %0, max)); @eval setq(U, add(%1, ulocal(f.get-xp, %qC, %0, unspent))); @eval setq(A, ulocal(f.get-advancements, %qC, %0, total)); @eval setq(G, if(gt(%qM, 0), if(gt(%qU, %qM), div(%qU, %qM), eq(%qU, %qM)))); @set %qC=[ulocal(f.get-stat-location-on-player, xp.%0.total)]:[setr(V, add(%qX, %1))]; @set %qC=[ulocal(f.get-stat-location-on-player, advancements.%0.total)]:[if(t(%qG), add(%qA, %qG), %qA)]; @trigger me/tr.success=%3, ulocal(layout.%4_track, %0, %1, %2, %3, %qG, %5); @trigger me/tr.log=%2, _xp-, %3, switch(%4, add, Awarded %1 XP for '%5'., Moved %1 Untracked XP to the %0 track.);
+&tr.increase-track [v(d.cg)]=@eval setq(C, switch(%qT, Crew, ulocal(f.get-player-stat, %2, crew object), %2)); @eval setq(X, ulocal(f.get-xp, %qC, %0, total)); @eval setq(M, ulocal(f.get-xp, %qC, %0, max)); @eval setq(U, add(%1, ulocal(f.get-xp, %qC, %0, unspent))); @eval setq(A, ulocal(f.get-advancements, %qC, %0, total)); @eval setq(G, if(gt(%qM, 0), if(gt(%qU, %qM), div(%qU, %qM), eq(%qU, %qM)))); @set %qC=[ulocal(f.get-stat-location-on-player, xp.%0.total)]:[setr(V, add(%qX, %1))]; @set %qC=[ulocal(f.get-stat-location-on-player, advancements.%0.total)]:[if(t(%qG), add(%qA, %qG), %qA)]; @trigger me/tr.stat-setting-mess	ages=ulocal(layout.%4_track, %0, %1, %2, %3, %qG, %5), ulocal(if(strmatch(%4, add), layout.add_alert, layout.move_track), %0, %1, %2, %3, %qG, %5), %qC, %3, %0 XP; @trigger me/tr.log=%qC, _xp-, %3, switch(%4, add, Awarded %1 XP for '%5'., Moved %1 Untracked XP to the %0 track.);
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ +adv/spend

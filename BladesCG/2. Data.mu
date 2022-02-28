@@ -265,7 +265,7 @@
 
 @@ TODO: Add Preferred Operation Type?
 
-&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew Abilities|Contacts|Favorite|Factions|Upgrades|Heat|Crew Coin|Wanted Level|Hold|Claims
+&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew XP|Crew Abilities|Contacts|Favorite|Factions|Upgrades|Heat|Crew Coin|Wanted Level|Hold|Claims
 
 &d.value.heat [v(d.cgdb)]=0|1|2|3|4|5|6|7|8|9
 
