@@ -8,7 +8,7 @@
 @@ %0: player doing the editing
 @@ %1: player being edited
 @@ %2: stat to be edited
-&f.is-allowed-to-edit-stat [v(d.cgf)]=cor(not(hasattr(%1, _stat.locked)), t(member(xget(%vD, d.stats_editable_after_chargen), %2, |)), ulocal(f.is-allowed-to-break-stat-setting-rules, %0, %1))
+&f.is-allowed-to-edit-stat [v(d.cgf)]=cor(not(hasattr(%1, if(ulocal(f.is-crew-stat, %2), _stat.crew_locked, _stat.locked))), t(member(xget(%vD, d.stats_editable_after_chargen), %2, |)), ulocal(f.is-allowed-to-break-stat-setting-rules, %0, %1))
 
 @@ %0: player doing the editing
 @@ %1: crew object being edited
@@ -95,7 +95,9 @@
 
 @@ %0: Player
 @@ %1: Stat name
-&f.get-player-stat [v(d.cgf)]=strcat(setq(N, ulocal(f.resolve-stat-name, %1)), setq(O, xget(%0, ulocal(f.get-stat-location-on-player, crew object))), setq(I, ulocal(f.is-crew-stat, %qN)), if(cand(not(strmatch(%qO, %0)), %qI), ulocal(f.get-player-stat, %qO, %qN), strcat(setq(V, xget(%0, ulocal(f.get-stat-location-on-player, %qN))), if(cand(t(%qV), if(switch(%qN, Rival, 1, Ally, 1, Favorite, 1, 0), t(finditem(ulocal(f.list-valid-values, %qN, %0), %qV, |)), 1)), %qV, ulocal(f.get-stat-default, %0, %qN, %qI, %qO)))))
+&f.get-player-stat [v(d.cgf)]=if(t(setr(V, xget(%0, ulocal(f.get-stat-location-on-player, %1)))), %qV, strcat(setq(N, ulocal(f.resolve-stat-name, %1)), setq(O, xget(%0, ulocal(f.get-stat-location-on-player, crew object))), setq(I, ulocal(f.is-crew-stat, %qN)), if(cand(not(strmatch(%qO, %0)), %qI), ulocal(f.get-player-stat, %qO, %qN), strcat(setq(V, xget(%0, ulocal(f.get-stat-location-on-player, %qN))), if(cand(t(%qV), if(switch(%qN, Rival, 1, Ally, 1, Favorite, 1, 0), t(finditem(ulocal(f.list-valid-values, %qN, %0), %qV, |)), 1)), %qV, ulocal(f.get-stat-default, %0, %qN, %qI, %qO))))))
+
+th ulocal(v(d.cgf)/f.get-player-stat, %#, crew object)
 
 &f.get-player-stat-or-zero [v(d.cgf)]=ulocal(f.get-player-stat-or-default, %0, %1, 0)
 
