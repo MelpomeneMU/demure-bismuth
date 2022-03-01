@@ -239,12 +239,11 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 &layout.badges [v(d.sb)]=strcat(header(All badges, %1), %r, edit(multicol(iter(lattr(%vD/badge-*), strcat(switch(ulocal(f.get-badge-status, itext(0)), R*, %ch%cxR%cn, _), |, ulocal(f.get-badge-name, itext(0))),, |), 1 * 1 * 1 *, 0, |, %1), _, %b), %r, footer(, %1))
 
-&layout.badge [v(d.sb)]=strcat(header(ulocal(f.get-badge-name, %0), %1), %r, formattext(strcat(Meaning:, %b, ulocal(f.get-badge-meaning, %0), %r%r, Players:, %b, ulocal(layout.list, ulocal(f.get-badge-players, %0)), %r, Status:, %b, ulocal(f.get-badge-status, %0), %r, Created, %b, ulocal(f.get-badge-creation-date, %0), %b, by, %b, ulocal(f.get-badge-creator, %0)), 0, %1), %r, footer(, %1))
+&layout.badge [v(d.sb)]=strcat(header(ulocal(f.get-badge-name, %0), %1), %r, formattext(strcat(Meaning:, %b, ulocal(f.get-badge-meaning, %0), %r%r, if(isstaff(%1), strcat(Players:, %b, ulocal(layout.list, ulocal(f.get-badge-players, %0)), %r)), Status:, %b, ulocal(f.get-badge-status, %0), %r, Created, %b, ulocal(f.get-badge-creation-date, %0), %b, by, %b, ulocal(f.get-badge-creator, %0)), 0, %1), %r, footer(, %1))
 
 &c.+badges/all [v(d.sb)]=$+badges/all: @pemit %#=ulocal(layout.badges, %#, %#);
 
 &c.+badge/info [v(d.sb)]=$+badge/info *: @assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %0.; }; @pemit %#=ulocal(layout.badge, %qB, %#);
-
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Badge creation and destruction
@@ -286,7 +285,7 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 @@ Badge showing and hiding
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+badge/hide [v(d.sb)]=$+badge/hide *:@assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert t(finditem(strcat(xget(%#, _badges), |, ulocal(f.get-sharp-badge, %#)), %qN, |))={ @trigger me/tr.error=%#, You don't have the badge '%qN'.; }; @assert not(member(xget(%#, _hidden-badges), %qN, |))={ @trigger me/tr.error=%#, You're already hiding your %qN badge.; }; @set %#=_hidden-badges:[unionset(xget(%#, _hidden-badges), %qN, |, |)]; @trigger me/tr.success=%#, You hide your %qN badge from +badges.;
+&c.+badge/hide [v(d.sb)]=$+badge/hide *:@assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert t(finditem(strcat(xget(%#, _badges), |, ulocal(f.get-sharp-badge, %#)), %qN, |))={ @trigger me/tr.error=%#, You don't have the badge '%qN'.; }; @assert not(member(xget(%#, _hidden-badges), %qN, |))={ @trigger me/tr.error=%#, You're already hiding your %qN badge.; }; @set %#=_hidden-badges:[unionset(xget(%#, _hidden-badges), %qN, |, |)]; @trigger me/tr.success=%#, You hide your %qN badge from +badges.; @if strmatch(xget(%#, _worn-badge), %qN)={ @force %qN=+unwear %qN; };
 
 &c.+badge/show [v(d.sb)]=$+badge/show *:@assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert t(finditem(strcat(xget(%#, _badges), |, ulocal(f.get-sharp-badge, %#)), %qN, |))={ @trigger me/tr.error=%#, You don't have the badge '%qN'.; }; @assert t(member(xget(%#, _hidden-badges), %qN, |))={ @trigger me/tr.error=%#, You're not hiding your %qN badge.; }; @set %#=_hidden-badges:[diffset(xget(%#, _hidden-badges), %qN, |, |)]; @trigger me/tr.success=%#, You unhide your %qN badge from +badges.;
 
