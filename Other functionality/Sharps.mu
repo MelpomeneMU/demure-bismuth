@@ -18,8 +18,8 @@ In addition, having a certain number of total Sharps gives you a badge for each 
 
 The commands needed are:
 
-+sharps - see your sharps and the last 10 gains/spends
-+sharps <player>
++sharps - see your sharps and badges and the last 10 gains/spends
++sharps <player> - only shows badge info unless you're staff or <player>
 +sharps/award <player>=<#> <reason>
 +sharps/awardall <#>=<reason> - give everybody connected some sharps
 +sharps/spend <player>=<#> <reason>
@@ -49,7 +49,11 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 +badges - list your badges
 
-+badge/show <badge> - show one of your badges alongside your name in the OOC rooms, defaults to your first badge if you have one.
++badge/wear <badge> - display one of your badges alongside your name in the OOC rooms
++badge/unwear <badge> - remove that badge
+
++badge/hide <badge> - hide a badge you've earned
++badge/show <badge> - show a badge you've hidden
 
 +badges <name> - list all the player's badges and their descriptions (anyone can do this, this info is not private)
 
@@ -121,19 +125,29 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 @@ Add Badges to +finger
 
-@edit [v(d.bd)]/d.section.ooc_info=$, |Sharps|Public Badge|Badges
+@edit [v(d.bd)]/d.section.ooc_info=$, |Worn Badge|Badges
 
 @force me=&vS [v(d.bd)]=[v(d.sb)]
 
-@@ Global display functions
+@@ Global display functions.
 
-&f.get-badge [v(d.bf)]=default(%0/_public-badge, ulocal(%vS/f.get-sharp-badge, %0))
+&f.get-badge [v(d.bf)]=default(%0/_worn-badge, ulocal(%vS/f.get-sharp-badge, %0))
 
-&f.get-sharps [v(d.bf)]=strcat(default(%0/_sharps, 0), /, default(%0/_total-sharps, 0), if(t(setr(S, ulocal(%vS/f.get-sharp-badge, %0))), strcat(%b, %(, %qS, %))))
+&f.get-worn_badge [v(d.bf)]=xget(%0, _worn-badge)
 
-&f.get-public_badge [v(d.bf)]=xget(%0, _public-badge)
+&f.get-badges [v(d.bf)]=itemize(diffset(default(%0/_badges, None), strcat(default(%0/_worn-badge, None), |, xget(%0, _hidden-badges)), |, |), |)
 
-&f.get-badges [v(d.bf)]=itemize(remove(default(%0/_badges, None), default(%0/_public-badge, None), |, |), |)
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ If you're using Job points, this will give the staffer who finishes the
+@@ job a sharp and a job point.
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&TRIG_POINTS [v(JOB_VC)]=@set %0=_job-points:[inc(default(%0/_job-points, 0))];@set %0=_total-sharps:[inc(default(%0/_total-sharps, 0))]; @set %0=_sharps:[inc(default(%0/_sharps, 0))]; @trigger %vZ/tr.log=%0, _sharps-, Jobs, Awarded 1 for '%1'.; 
+
+&HOOK_APR [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Approved, get(%0/TITLE));
+&HOOK_DEL [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Deleted, get(%0/TITLE));
+&HOOK_DNY [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Denied, get(%0/TITLE));
+&HOOK_COM [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Completed, get(%0/TITLE));
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Daily code
@@ -169,7 +183,7 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 @@ Sharps, badges, and noms views
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&layout.sharps_and_badges [v(d.sb)]=strcat(header(cat(Sharps and badges for, ulocal(f.get-name, %0, %1)), %1), %r, edit(multicol(strcat(Sharps:, %b, default(%0/_sharps, 0), |, Total sharps:, %b, default(%0/_total-sharps, 0), |, rjust(strcat(Public Badge:, %b, if(t(setr(P, ulocal(f.get-badge, %0))), %qP, None)), sub(getremainingwidth(%#), 37), _)), 15 20 *, 0, |, %1), _, %b), if(not(strmatch(setr(B, default(%0/_badges, None)), None)), strcat(%r, divider(Badges, %1), %r, formattext(iter(setunion(%qB, ulocal(f.get-sharp-badge, %0), |, |), cat(*, itext(0):, ulocal(f.get-badge-meaning, ulocal(f.find-badge-by-name, itext(0)))), |, %r), 0, %1))), if(cand(cor(isstaff(%1), strmatch(%0, %1)), t(setr(L, ulocal(f.get-last-X-logs, %0, _sharps-)))), strcat(%r, divider(Last 10 sharps and badges logs, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(, %1))
+&layout.sharps_and_badges [v(d.sb)]=strcat(header(cat(Badges for, ulocal(f.get-name, %0, %1)), %1), %r, if(cor(isstaff(%1), strmatch(%0, %1)), edit(multicol(strcat(Sharps:, %b, default(%0/_sharps, 0), |, Total sharps:, %b, default(%0/_total-sharps, 0), |, rjust(strcat(Worn Badge:, %b, if(t(setr(P, ulocal(f.get-badge, %0))), %qP, None)), sub(getremainingwidth(%#), 37), _)), 15 20 *, 0, |, %1), _, %b), formattext(cat(Worn badge:, if(t(setr(P, ulocal(f.get-badge, %0))), %qP, None)), 0, %1)), if(not(strmatch(setr(B, default(%0/_badges, None)), None)), strcat(%r, divider(Badges, %1), %r, formattext(iter(setunion(%qB, ulocal(f.get-sharp-badge, %0), |, |), cat(*, itext(0):, ulocal(f.get-badge-meaning, ulocal(f.find-badge-by-name, itext(0)))), |, %r), 0, %1))), if(cand(cor(isstaff(%1), strmatch(%0, %1)), t(setr(L, ulocal(f.get-last-X-logs, %0, _sharps-)))), strcat(%r, divider(Last 10 sharps and badges logs, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(, %1))
 
 &layout.noms [v(d.sb)]=strcat(header(cat(+noms for, ulocal(f.get-name, %0, %1)), %1), setq(L, ulocal(f.get-last-X-logs, %0, _nom-)), %r, formattext(if(t(%qL), iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), None yet.), 0, %1), %r, footer(, %1))
 
@@ -209,7 +223,7 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 &c.+sharps/alias [v(d.sb)]=$+sharps/*:@break switch(first(%0), awardall, 1, award, 1, spend, 1, 0); @eval setq(A, switch(%0, * *, rest(%0))); @assert strmatch(%qA, *=*)={ @pemit %#=error(); }; @switch/first %0=aa*, { @force %#=+sharps/awardall %qA; }, a*, { @force %#=+sharps/award %qA; }, s*, { @force %#=+sharps/spend %qA; }, { @pemit %#=error(); };
 
-&c.+badge/alias [v(d.sb)]=$+badge/*:@break switch(first(%0), award, 1, awardall, 1, remove, 1, removeall, 1, create, 1, retire, 1, reactivate, 1, destroy, 1, show, 1, info, 1, 0); @eval setq(A, switch(%0, * *, rest(%0))); @switch/first 1=strmatch(%qA, *=*), { @switch/first %0=a*, { @force %#=+badge/award %qA; }, r*, { @force %#=+badge/remove %qA; }, d*, { @force %#=+badge/remove %qA; }, c*, { @force %#=+badge/create %qA; }, { @pemit %#=error(); }; }, t(%qA), { @switch/first %0=a*, { @force %#=+badge/awardall %qA; }, i*, { @force %#=+badge/info %qA; }, rem*, { @force %#=+badge/removeall %qA; }, ret*, { @force %#=+badge/retire %qA; }, rea*, { @force %#=+badge/reactivate %qA; }, d*, { @force %#=+badge/destroy %qA; }, s*, { @force %#=+badge/show %qA; }, { @pemit %#=error(); }; }, { @force %#=+badges/%0; };
+&c.+badge/alias [v(d.sb)]=$+badge/*:@break switch(first(%0), award, 1, awardall, 1, remove, 1, removeall, 1, create, 1, retire, 1, reactivate, 1, destroy, 1, show, 1, hide, 1, wear, 1, unwear, 1, info, 1, 0); @eval setq(A, switch(%0, * *, rest(%0))); @switch/first 1=strmatch(%qA, *=*), { @switch/first %0=a*, { @force %#=+badge/award %qA; }, r*, { @force %#=+badge/remove %qA; }, d*, { @force %#=+badge/remove %qA; }, c*, { @force %#=+badge/create %qA; }, { @pemit %#=error(); }; }, t(%qA), { @switch/first %0=a*, { @force %#=+badge/awardall %qA; }, i*, { @force %#=+badge/info %qA; }, rem*, { @force %#=+badge/removeall %qA; }, ret*, { @force %#=+badge/retire %qA; }, rea*, { @force %#=+badge/reactivate %qA; }, d*, { @force %#=+badge/destroy %qA; }, s*, { @force %#=+badge/show %qA; }, h*, { @force %#=+badge/hide %qA; }, w*, { @force %#=+badge/wear %qA; }, u*, { @force %#=+badge/unwear %qA; }, { @pemit %#=error(); }; }, { @force %#=+badges/%0; };
 
 &c.+badges/alias [v(d.sb)]=$+badges/*:@break switch(%0, all, 1, 0); @eval setq(A, switch(%0, * *, rest(%0))); @switch/first %0=a*, { @force %#=+badges/all; }, i*, { @assert t(%qA)={ @pemit %#=error(); }; @force %#=+badge/info %qA; }, { @pemit %#=error(); };
 
@@ -244,15 +258,11 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 @@ Badge awarding and revoking/removing
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+badge/award [v(d.sb)]=$+badge/award *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(B, ulocal(f.find-badge-by-name, %1)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert strmatch(ulocal(f.get-badge-status, %qB), Active)={ @trigger me/tr.error=%#, %qN is a retired badge - no one else may be awarded it.; }; @assert not(t(finditem(xget(%qP, _badges), %qN, |)))={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) already has the badge '%qN'.; }; @set %qP=_badges:[squish(trim(strcat(xget(%qP, _badges), |, %qN), b, |), |)]; @set %qP=_public-badge:[default(%qP/_public-badge, %qN)]; @set %vD=[edit(%qB, BADGE-, players-)]:[squish(trim(strcat(xget(%vD, edit(%qB, BADGE-, players-)), |, ulocal(f.get-name, %qP)), b, |), |)]; @trigger me/tr.success=%#, cat(You award, ulocal(f.get-name, %qP, %#), the %qN badge.); @trigger me/tr.log=%qP, _sharps-, %#, Awarded the %qN badge.; @trigger me/tr.message=%qP, cat(ulocal(f.get-name, %#, %qP) awards you the %qN badge!, if(strmatch(xget(%qP, _public-badge), %qN), This badge has been set as your default public badge%, and will appear beside your name in the OOC rooms.), Here is your new badge's meaning:, ulocal(f.get-badge-meaning, %qB));
+&c.+badge/award [v(d.sb)]=$+badge/award *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(B, ulocal(f.find-badge-by-name, %1)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert strmatch(ulocal(f.get-badge-status, %qB), Active)={ @trigger me/tr.error=%#, %qN is a retired badge - no one else may be awarded it.; }; @assert not(t(finditem(xget(%qP, _badges), %qN, |)))={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) already has the badge '%qN'.; }; @set %qP=_badges:[squish(trim(strcat(xget(%qP, _badges), |, %qN), b, |), |)]; @set %vD=[edit(%qB, BADGE-, players-)]:[squish(trim(strcat(xget(%vD, edit(%qB, BADGE-, players-)), |, ulocal(f.get-name, %qP)), b, |), |)]; @trigger me/tr.success=%#, cat(You award, ulocal(f.get-name, %qP, %#), the %qN badge.); @trigger me/tr.log=%qP, _sharps-, %#, Awarded the %qN badge.; @trigger me/tr.message=%qP, cat(ulocal(f.get-name, %#, %qP) awards you the %qN badge! You can wear it with %ch+badge/wear %qN%cn. Here is your new badge's meaning:, ulocal(f.get-badge-meaning, %qB));
 
 &c.+badge/awardall [v(d.sb)]=$+badge/awardall *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %0.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert strmatch(ulocal(f.get-badge-status, %qB), Active)={ @trigger me/tr.error=%#, %qN is a retired badge - no one else may be awarded it.; }; @assert gettimer(%#, badge-mass-award, %qN)={ @trigger me/tr.message=%#, You are about to award everyone connected the badge '%qN'. Are you sure? If yes%, type %ch+badge/awardall %0%cn again within 10 minutes. The time is now [prettytime()].; @eval settimer(%#, badge-mass-award, 600, %qN); }; @dolist search(EPLAYER=hasflag(##, connected))={ @force %#=+badge/award ##=%qN; };
 
-&c.+badge/remove [v(d.sb)]=$+badge/remove *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(B, ulocal(f.find-badge-by-name, %1)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert t(finditem(xget(%qP, _badges), %qN, |))={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) doesn't have the badge '%qN'.; }; @assert gettimer(%#, remove-%qP, %qN)={ @trigger me/tr.message=%#, You are about to remvoe the badge %qN from [ulocal(f.get-name, %qP, %#)]. Are you sure? If so%, type %ch+badge/remove %0=%1%cn again within the next 10 minutes. The time is now [prettytime()].; @eval settimer(%#, remove-%qP, 600, %qN); }; @set %qP=_badges:[remove(xget(%qP, _badges), %qN, |, |)]; @set %qP=_public-badge:[edit(xget(%qP, _public-badge), %qN,)]; @set %vD=[edit(%qB, BADGE-, players-)]:[remove(xget(%vD, edit(%qB, BADGE-, players-)), ulocal(f.get-name, %qP), |, |)]; @trigger me/tr.success=%#, cat(You remove, ulocal(f.get-name, %qP, %#)'s, %qN badge.); @trigger me/tr.log=%qP, _sharps-, %#, Removed the %qN badge.; @trigger me/tr.message=%qP, cat(ulocal(f.get-name, %#, %qP) removes your %qN badge., if(not(t(ulocal(f.get-badge, %qP))), Your public badge has been reset. +badge/show <badge> for one of your other badges to show something else.));
-
-&c.+badge/revoke [v(d.sb)]=$+badge/revoke *=*: @force %#=+badge/remove %0=%1;
-
-&c.+badge/rem [v(d.sb)]=$+badge/rem *=*: @force %#=+badge/remove %0=%1;
+&c.+badge/remove [v(d.sb)]=$+badge/remove *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(B, ulocal(f.find-badge-by-name, %1)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert t(finditem(xget(%qP, _badges), %qN, |))={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) doesn't have the badge '%qN'.; }; @assert gettimer(%#, remove-%qP, %qN)={ @trigger me/tr.message=%#, You are about to remvoe the badge %qN from [ulocal(f.get-name, %qP, %#)]. Are you sure? If so%, type %ch+badge/remove %0=%1%cn again within the next 10 minutes. The time is now [prettytime()].; @eval settimer(%#, remove-%qP, 600, %qN); }; @set %qP=_badges:[remove(xget(%qP, _badges), %qN, |, |)]; @set %qP=_worn-badge:[edit(xget(%qP, _worn-badge), %qN,)]; @set %vD=[edit(%qB, BADGE-, players-)]:[remove(xget(%vD, edit(%qB, BADGE-, players-)), ulocal(f.get-name, %qP), |, |)]; @trigger me/tr.success=%#, cat(You remove, ulocal(f.get-name, %qP, %#)'s, %qN badge.); @trigger me/tr.log=%qP, _sharps-, %#, Removed the %qN badge.; @trigger me/tr.message=%qP, cat(ulocal(f.get-name, %#, %qP) removes your %qN badge., if(not(t(ulocal(f.get-badge, %qP))), Your worn badge has been reset. +badge/wear <badge> to wear one of your other badges.));
 
 &c.+badge/removeall [v(d.sb)]=$+badge/removeall *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %0.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert gettimer(%#, badge-mass-remove, %qN)={ @trigger me/tr.message=%#, You are about to remove the badge '%qN' from everyone who has it. Are you sure? If yes%, type %ch+badge/removeall %0%cn again within 10 minutes. The time is now [prettytime()].; @eval settimer(%#, badge-mass-remove, 600, %qN); }; @dolist search(EPLAYER=t(member(xget(##, _badges), %qN, |)))={ @force %#=+badge/remove ##=%qN; };
 
@@ -265,10 +275,20 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 &c.+badge/reactivate [v(d.sb)]=$+badge/reactivate *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %0.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @wipe %vD/[edit(%qB, BADGE-, status-)]; @trigger me/tr.success=%#, You reactivate the badge %qN.;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Badge showing
+@@ Badge wearing/unwearing
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+badge/show [v(d.sb)]=$+badge/show *:@assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert t(finditem(strcat(xget(%#, _badges), |, ulocal(f.get-sharp-badge, %#)), %qN, |))={ @trigger me/tr.error=%#, You don't have the badge '%qN'.; }; @set %#=_public-badge:%qN; @trigger me/tr.success=%#, You put your %qN badge on display.;
+&c.+badge/wear [v(d.sb)]=$+badge/wear *:; @assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert t(finditem(strcat(xget(%#, _badges), |, ulocal(f.get-sharp-badge, %#)), %qN, |))={ @trigger me/tr.error=%#, You don't have the badge '%qN'.; }; @set %#=_worn-badge:%qN; @trigger me/tr.success=%#, You wear your %qN badge so that it will show up in the OOC rooms.;
+
+&c.+badge/unwear [v(d.sb)]=$+badge/unwear *:; @assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert t(finditem(strcat(xget(%#, _badges), |, ulocal(f.get-sharp-badge, %#)), %qN, |))={ @trigger me/tr.error=%#, You don't have the badge '%qN'.; }; @set %#=_worn-badge:; @trigger me/tr.success=%#, You take off your %qN badge so that it won't show up in the OOC rooms.;
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Badge showing and hiding
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&c.+badge/hide [v(d.sb)]=$+badge/hide *:@assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert t(finditem(strcat(xget(%#, _badges), |, ulocal(f.get-sharp-badge, %#)), %qN, |))={ @trigger me/tr.error=%#, You don't have the badge '%qN'.; }; @assert not(member(xget(%#, _hidden-badges), %qN, |))={ @trigger me/tr.error=%#, You're already hiding your %qN badge.; }; @set %#=_hidden-badges:[unionset(xget(%#, _hidden-badges), %qN, |, |)]; @trigger me/tr.success=%#, You hide your %qN badge from +badges.;
+
+&c.+badge/show [v(d.sb)]=$+badge/show *:@assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %1.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert t(finditem(strcat(xget(%#, _badges), |, ulocal(f.get-sharp-badge, %#)), %qN, |))={ @trigger me/tr.error=%#, You don't have the badge '%qN'.; }; @assert t(member(xget(%#, _hidden-badges), %qN, |))={ @trigger me/tr.error=%#, You're not hiding your %qN badge.; }; @set %#=_hidden-badges:[diffset(xget(%#, _hidden-badges), %qN, |, |)]; @trigger me/tr.success=%#, You unhide your %qN badge from +badges.;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Sharps awarding and spending
