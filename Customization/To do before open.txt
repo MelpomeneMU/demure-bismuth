@@ -1,6 +1,7 @@
 Channel creations
 	LFG channel
 
+Temprooms
 Get News and Help working.
 	Write help files.
 Report to check for alt-nomming - +nom/alts?
