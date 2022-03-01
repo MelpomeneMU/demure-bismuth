@@ -144,10 +144,10 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 &TRIG_POINTS [v(JOB_VC)]=@set %0=_job-points:[inc(default(%0/_job-points, 0))];@set %0=_total-sharps:[inc(default(%0/_total-sharps, 0))]; @set %0=_sharps:[inc(default(%0/_sharps, 0))]; @trigger %vZ/tr.log=%0, _sharps-, Jobs, Awarded 1 for '%1'.; 
 
-&HOOK_APR [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Approved, get(%0/TITLE));
-&HOOK_DEL [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Deleted, get(%0/TITLE));
-&HOOK_DNY [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Denied, get(%0/TITLE));
-&HOOK_COM [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Completed, get(%0/TITLE));
+&HOOK_APR [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Approved job:, get(%0/TITLE));
+&HOOK_DEL [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Deleted job:, get(%0/TITLE));
+&HOOK_DNY [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Denied job:, get(%0/TITLE));
+&HOOK_COM [v(JOB_VC)]=@trigger [v(VA)]/TRIG_LOG=%0,[v(VA)]; @trigger me/TRIG_POINTS=%1, cat(Completed job:, get(%0/TITLE));
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Daily code
