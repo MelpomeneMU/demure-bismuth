@@ -84,7 +84,6 @@
 
 @@ All communication in room # will go to this channel. You can add as many of these as you like. Users will be alerted that they need to join the channel to see the rest of the conversation if they're not already on the channel. To disable, just remove this attribute. This functionality can be used to direct convo from, say, the Chargen room to the Chargen channel, the OOC room to the Public channel, etc.
 &d.redirect-poses.#0 [v(d.bd)]=Public
-&d.redirect-poses.#39 [v(d.bd)]=Chargen
 
 @@ Set this to the DBref of your quiet room and any other room you want silent.
 @force me=&d.gag-emits [v(d.bd)]=[v(d.qr)]

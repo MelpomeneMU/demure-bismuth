@@ -31,6 +31,7 @@ cg
 
 @force me=&d.cgr me=num(here);
 
+&d.redirect-poses.[num(here)] [v(d.bd)]=Chargen
 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
