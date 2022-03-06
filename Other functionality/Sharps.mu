@@ -61,6 +61,20 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 +badges/info <badge> - get info about a particular badge
 
++name/title <player>=<title> - set a player's OOC title (presumably after they've spent Sharps) - staff-only
+
+TODO: Award default badges in a daily rather than the way we're doing it now.
+
+TODO: Add chart of costs?
+
+TODO: Noms counts reset weekly.
+
+TODO: Make +nom/anon and +nom/silent and let them be mixed.
+
+TODO: Make noms reason optional.
+
+TODO: Prepare to include ascii art in badges, both in the names and the descriptions.
+
 */
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -131,7 +145,7 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 @@ Global display functions.
 
-&f.get-badge [v(d.bf)]=default(%0/_worn-badge, ulocal(%vS/f.get-sharp-badge, %0))
+&f.get-badge [v(d.bf)]=xget(%0, _worn-badge)
 
 &f.get-worn_badge [v(d.bf)]=xget(%0, _worn-badge)
 
@@ -312,3 +326,16 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 &f.calc-nom-sharps [v(d.sb)]=switch(ulocal(f.get-total-past-noms, %0, %1), <1, 1, <2, .5, <5, .25, .1)
 
 &c.+nom_player [v(d.sb)]=$+nom *=*: @assert isapproved(%#)={ @trigger me/tr.error=%#, You must be approved to hand out +noms.; };  @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert not(strmatch(%qP, %#))={ @trigger me/tr.error=%#, You can't +nom yourself.; }; @assert t(%1)={ @trigger me/tr.error=%#, Could not figure out the reason you want to +nom this person.; }; @assert not(gettimer(%#, nom-%qP))={ @trigger me/tr.error=%#, You can't +nom the same person more than once per day. You will be able to +nom this person again in [getremainingtime(%#, nom-%qP)].; }; @assert t(setr(S, ulocal(f.calc-nom-sharps, %#, %qP)))={ @trigger me/tr.error=%#, Could not figure out how many sharps to award.; };  @trigger me/tr.log=%qP, _nom-, %#, %1; @trigger me/tr.log=%qP, _sharps-, %#, cat(Awarded %qS, plural(%qS, sharp, sharps) with a +nom.); @set %qP=_total-sharps:[add(%qS, xget(%qP, _total-sharps))]; @eval setq(L, ulocal(f.get-total-past-noms, %#, %qP)); @set %qP=_sharps:[add(%qS, xget(%qP, _sharps))]; @set %#=_past-noms:[setunion(setdiff(xget(%#, _past-noms), %qP-%qL), %qP-[inc(%qL)])]; @eval setq(G, ulocal(f.get-global-noms, %#, given)); @set %vD=global-noms-given:[setunion(setdiff(xget(%vD, global-noms-given), %#-%qG), %#-[inc(%qG)])]; @eval setq(R, ulocal(f.get-global-noms, %qP, received)); @set %vD=global-noms-received:[setunion(setdiff(xget(%vD, global-noms-received), %qP-%qR), %qP-[inc(%qR)])]; @eval settimer(%#, nom-%qP, 86400); @trigger me/tr.success=%#, cat(You +nom, ulocal(f.get-name, %qP, %#), for %qS Sharps with the following comment: %1); @trigger me/tr.message=%qP, cat(ulocal(f.get-name, %#, %qP) +noms you for %qS Sharps with the following comment: %1); 
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ A sharps reward: +name/title <player>=<title>
+@@ Requires Channels.mu if you want it to set up their comtitle on Public too.
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.public-channel [v(d.sbd)]=Public
+
+&c.+name/title [v(d.sb)]=$+name/title *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, Only staff can set up a player's name/title.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @set %qP=_name-highlights:%1; @trigger me/tr.set-public-channel-comtitle=%qP, %1; @trigger me/tr.success=%#, You set [ulocal(f.get-name, %qP, %#)]'s name highlight to '%1'.; @trigger me/tr.message=%qP, ulocal(f.get-name, %#, %qP) sets your name highlight to '%1'.;
+
+&tr.set-public-channel-comtitle [v(d.sb)]=@eval u(%vH/f.get-channel-by-name-error, %0, xget(%vD, d.public-channel)); @break t(%qE); @if setr(S, not(t(member(xget(%qN, bypass-comtitle-restrictions), %0))))={ @set %qN=bypass-comtitle-restrictions:[setunion(xget(%qN, bypass-comtitle-restrictions), %0)]; }; @force %0=+channel/title %qT=%1; @if %qS={ @wait 1={ @set %qN=bypass-comtitle-restrictions:[setdiff(xget(%qN, bypass-comtitle-restrictions), %0)]; }; };
+
+@set [v(d.sb)]/c.+name/title=no_parse
