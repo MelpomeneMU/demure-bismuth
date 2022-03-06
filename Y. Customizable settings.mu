@@ -79,8 +79,8 @@
 @@ Default poll (shows when you type DOING or +who). Max length is 45 characters. This is a MUX limit.
 &d.default-poll [v(d.bd)]=Whatcha doing?
 
-@@ Travel categories, separated by |. These will be specific to your game and could include categories like "Retail" or "Market" depending on your setting. Your players will group their businesses under these categories. The only default is "OOC", so that you can add OOC destinations like the OOC room, the RP Nexus, Chargen, etc.
-&d.travel.categories [v(d.bd)]=OOC
+@@ Travel categories, separated by |. These will be specific to your game and could include categories like "Retail" or "Market" depending on your setting. Your players will group their businesses under these categories. The only default is "OOC Rooms", so that you can add OOC destinations like the OOC room, the RP Nexus, Chargen, etc.
+&d.travel.categories [v(d.bd)]=OOC Rooms
 
 @@ All communication in room # will go to this channel. You can add as many of these as you like. Users will be alerted that they need to join the channel to see the rest of the conversation if they're not already on the channel. To disable, just remove this attribute. This functionality can be used to direct convo from, say, the Chargen room to the Chargen channel, the OOC room to the Public channel, etc.
 &d.redirect-poses.#0 [v(d.bd)]=Public
@@ -122,7 +122,7 @@
 
 @force me=@edit [v(d.bd)]/d.who-field-widths=$, %%b20
 
-&d.section.ic_info [v(d.bd)]=Apparent Age|Gender|IC Full Name|Crew|Street Alias|Crew Title|Expert Type|IC Pronouns|Played-by|Short-desc|Wiki|Themesong|Quote
+&d.section.ic_info [v(d.bd)]=Apparent Age|Gender|IC Full Name|Street Alias|Crew|Crew Title|Expert Type|IC Pronouns|Played-by|Short-desc|Wiki|Themesong|Quote
 
 &d.finger-settable-fields [v(d.bd)]=Apparent Age|Gender|IC Full Name|Street Alias|Crew Title|IC Pronouns|OOC Pronouns|Played-by|Position|Public Alts|Quote|RP Prefs|Short-desc|Themesong|Timezone|Wiki
 
