@@ -23,6 +23,10 @@
 
 cg
 
++travel/add CG
+
++travel/cat here=OOC
+
 @name here=Character Generation
 
 &short-desc here=A place for working on characters. All chat goes to the Chargen channel.
