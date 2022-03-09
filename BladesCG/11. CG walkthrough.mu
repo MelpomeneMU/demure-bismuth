@@ -106,7 +106,7 @@ n
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TEverybody looks like something. What does your character look like?%R%R%T%ch+stat/set Look=<your short description>%cn%R%R%T%ch@desc me=<your normal description>%cn - does not need to be long! Use %%R if you want to create a line break and %%T if you want to indent.%R%R%TOur general requirements are:%R%R%T* Must be at least one relevant sentence long (no "I'll do this later!").%R%T* Matches your selected Age (not under-age).%R%T* Must be in-theme.%R%T* Links are allowed, but must be accompanied by a sentence to help those of us who can't click the link right away.%R%R%TOnce you're done here, hit %chNext%cn!%R%R%TAll conversation in this room goes to the Chargen channel.%R
+@desc here=%R%TEverybody looks like something. What does your character look like?%R%R%T%ch+stat/set Look=<your short description>%cn%R%R%T%ch+desc me=<your normal description>%cn - does not need to be long! Use %%R if you want to create a line break and %%T if you want to indent.%R%R%TOur general requirements are:%R%R%T* Must be at least one relevant sentence long (no "I'll do this later!").%R%T* Matches your selected Age (not under-age).%R%T* Must be in-theme.%R%T* Links are allowed, but must be accompanied by a sentence to help those of us who can't click the link right away.%R%R%TOnce you're done here, hit %chNext%cn!%R%R%TAll conversation in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Expert walkthrough - Details
@@ -202,7 +202,7 @@ n
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TNext, you'll want to fill out your biographical information. This is the basic stat Those fields are:%R%R[multicol(iter(setdiff(ulocal(%vF/f.get-player-bio-fields, %#), Playbook|Crew|Expert Type|Character Type, |, |), itext(0)|[ulocal(%vF/f.get-field-note, itext(0))], |, |), 20 *, 0, |, getremainingwidth(%#), 1)]%R%R%TTo set each field, type %ch+stat/set <field>=<your choice>%cn.%R%R%TWhile you're at it, set your description with %ch@desc me=<your description>%cn - use %%R for line breaks and %%T to indent. It doesn't need to be long.%R%R%TAll chat in this room goes to the Chargen channel.%R
+@desc here=%R%TNext, you'll want to fill out your biographical information. This is the basic stat Those fields are:%R%R[multicol(iter(setdiff(ulocal(%vF/f.get-player-bio-fields, %#), Playbook|Crew|Expert Type|Character Type, |, |), itext(0)|[ulocal(%vF/f.get-field-note, itext(0))], |, |), 20 *, 0, |, getremainingwidth(%#), 1)]%R%R%TTo set each field, type %ch+stat/set <field>=<your choice>%cn.%R%R%TWhile you're at it, set your description with %ch+desc me=<your description>%cn - use %%R for line breaks and %%T to indent. It doesn't need to be long.%R%R%TAll chat in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Scoundrel walkthrough - Actions
