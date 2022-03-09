@@ -1,9 +1,6 @@
-Channel creations
-	LFG channel
-
-Temprooms
 Get News and Help working.
 	Write help files.
+Sharps updates
 Report to check for alt-nomming - +nom/alts?
 Census (optional)
 
@@ -12,6 +9,9 @@ Optional CG code:
 	Fix up Hulls
 	Test Ghost
 	Clean up playbook creation
+
+Optional other code:
+	Theme for Myrddin's BBS v5
 
 Grid
 Wiki

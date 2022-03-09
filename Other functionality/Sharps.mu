@@ -73,6 +73,8 @@ TODO: Make +nom/anon and +nom/silent and let them be mixed.
 
 TODO: Make noms reason optional.
 
+TODO: Send +noms to a channel somewhere.
+
 TODO: Prepare to include ascii art in badges, both in the names and the descriptions.
 
 */
