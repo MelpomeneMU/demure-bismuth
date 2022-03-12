@@ -31,7 +31,7 @@ Switches:
 
 @force me=&va [v(d.dr)]=[xget(search(ETHING=t(member(name(##), Job Global Object <JGO>, |))), va)]
 
-@tel [v(d.dr)]=#2
+@tel [v(d.dr)]=[config(master_room)]
 
 &d.monitor-channel [v(d.dr)]=Monitor
 

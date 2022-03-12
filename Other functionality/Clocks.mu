@@ -39,7 +39,7 @@ Clocks are auto-destroyed about one day after they are completed.
 
 @force me=&d.clocks me=[search(ETHING=t(member(name(##), Clocks, |)))]
 
-@tel [v(d.clocks)]=#2
+@tel [v(d.clocks)]=[config(master_room)]
 
 @@ =============================================================================
 @@ Infrastructure

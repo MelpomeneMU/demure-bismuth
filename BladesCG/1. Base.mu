@@ -36,4 +36,4 @@
 
 @tel [v(d.cgdb)]=[v(d.cgf)]
 @tel [v(d.cgf)]=[v(d.cg)]
-@tel [v(d.cg)]=#2
+@tel [v(d.cg)]=[config(master_room)]

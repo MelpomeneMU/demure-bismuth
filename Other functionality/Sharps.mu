@@ -101,7 +101,7 @@ TODO: Prepare to include ascii art in badges, both in the names and the descript
 
 @tel [v(d.sbd)]=[v(d.sb)]
 
-@tel [v(d.sb)]=#2
+@tel [v(d.sb)]=[config(master_room)]
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Default Badges
