@@ -33,6 +33,9 @@
 @@ Data for chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
+@@ Stats that are on their own lines in the bio section of the sheet.
+&d.manual-bio-stats [v(d.cgdb)]=Expert Type|Character Type|Vice Purveyor|Look|Lair|Crew Name|Hunting Grounds|Reputation
+
 &d.sheet-sections [v(d.cgdb)]=Page1|Page2|Bio|Actions|Abilities|Health|Pools|XP Triggers|Friends|Gear|Projects|Notes|Crew1|Crew2
 
 &d.crew-sheet-sections [v(d.cgdb)]=Crew1|Crew2|Bio|Abilities|Upgrades|Contacts|Factions|XP Triggers|Members|Map|Cohorts
@@ -101,9 +104,10 @@
 @@ Expert stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.manual-bio-stats [v(d.cgdb)]=Expert Type|Character Type|Look
-
 &d.expert_bio [v(d.cgdb)]=Name|Heritage|Background|Alias|Crew|Expert Type|Character Type|Age|Look
+
+@@ Bio stats that are required at CG
+&d.required-expert-bio [v(d.cgdb)]=Name|Expert Type|Character Type|Age
 
 &d.value.expert_type [v(d.cgdb)]=Adept|Rook|Rover|Skulk|Thug
 
@@ -140,6 +144,9 @@
 &d.value.traumas [v(d.cgdb)]=Cold|Haunted|Obsessed|Paranoid|Reckless|Soft|Unstable|Vicious
 
 &d.bio [v(d.cgdb)]=Name|Alias|Playbook|Crew|Heritage|Background|Vice|Vice Purveyor|Age|Look
+
+@@ Bio stats that are required at CG
+&d.required-scoundrel-bio [v(d.cgdb)]=Name|Playbook|Heritage|Background|Vice|Vice Purveyor|Age
 
 &d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire
 
@@ -262,6 +269,9 @@
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.crew_bio [v(d.cgdb)]=Crew Name|Crew Type|Reputation|Hunting Grounds|Lair|Lair District
+
+@@ Bio stats that are required at CG
+&d.required-crew-bio [v(d.cgdb)]=Crew Name|Crew Type|Reputation|Hunting Grounds|Lair|Lair District
 
 @@ TODO: Add Preferred Operation Type?
 

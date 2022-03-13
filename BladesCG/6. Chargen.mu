@@ -17,9 +17,9 @@ Aliases:
 
 +approve <player>=<comment>
 +unapprove <player>=<comment>
-+freeze <player>=<comment>
-+unfreeze <player>=<comment>
 +retire <player>=<comment>
+
+TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, or Consort and will allow you to bypass the default restrictions.
 
 */
 
@@ -58,7 +58,7 @@ Aliases:
 
 &layout.crew-object-error [v(d.cgf)]=if(strmatch(%2, %3), You must +crew/join <Crew Name> or +crew/create <Crew Name> first., ulocal(f.get-name, %2, %3) must join a crew or create a crew first.)
 
-&layout.cannot-edit-crew-stats [v(d.cgf)]=if(strmatch(%1, %2), Your crew stat %0 cannot be changed after the crew has been approved. You will need to open a job with staff., setr(N, ulocal(f.get-name, %1, %2))'s crew stats are currently locked. To edit them%, you must %ch+crew/unlock %qN%cn.)
+&layout.cannot-edit-crew-stats [v(d.cgf)]=if(strmatch(%1, %2), Your crew stat %0 cannot be changed after the crew has been locked. You will need to open a job with staff., setr(N, ulocal(f.get-name, %1, %2))'s crew stats are currently locked. To edit them%, you must %ch+crew/unlock %qN%cn.)
 
 &layout.player_does_not_have_stat [v(d.cgf)]=if(strmatch(%2, %3), You don't have the %0 '%1'., ulocal(layout.who-statting, %0, %1, %2, %3) does not have the %0 '%1'.)
 
@@ -155,27 +155,27 @@ Aliases:
 @@ %2: settee
 @@ %3: setter
 @@ %4: stat we're setting
-&tr.stat-setting-messages [v(d.cg)]=@trigger me/tr.success=%3, %0; @if ulocal(f.is-crew-stat, %4)={ @trigger me/tr.crew-emit=ulocal(f.get-player-stat, %2, crew object), %1, %2; }, { @assert strmatch(%2, %3)={ @trigger me/tr.success=%2, %1; }; };
+&tr.stat-setting-messages [v(d.cg)]=@if ulocal(f.is-crew-stat, %4)={ @trigger me/tr.crew-emit=ulocal(f.get-player-stat, %2, crew object), %1, %2; @assert strmatch(%2, %3)={ @trigger me/tr.success=%3, %0; }; }, { @trigger me/tr.success=%3, %0; @assert strmatch(%2, %3)={ @trigger me/tr.success=%2, %1; }; };
 
 @@ %0 - stat
 @@ %1 - value
 @@ %2 - player
 @@ %3 - player doing the setting
 @@ %4 - adding or removing
-&tr.add-stat [v(d.cg)]=@eval [setq(A, ulocal(f.get-addable-stats, %3))]; @assert t(setr(S, ulocal(f.is-addable-stat, %0, %3)))={ @trigger me/tr.error=%3, Cannot find '%0' as an [case(%4, 1, removable, addable)] stat. [case(%4, 1, Removable, Addable)] stats are: [ulocal(layout.list, %qA)]; }; @assert ulocal(f.is-allowed-to-edit-stat, %2, %3, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))), cand(t(finditem(Friends|Contacts, %qS, |)), t(setr(V, %1))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.add-or-remove-[if(hasattr(me, strcat(tr.add-or-remove-, setr(T, ulocal(f.get-stat-location, %qS)))), %qT, stat)]=%qS, %qV, %2, %3, %4;
+&tr.add-stat [v(d.cg)]=@eval [setq(A, ulocal(f.get-addable-stats, %3))]; @assert t(setr(S, ulocal(f.is-addable-stat, %0, %3)))={ @trigger me/tr.error=%3, Cannot find '%0' as an [case(%4, 1, removable, addable)] stat. [case(%4, 1, Removable, Addable)] stats are: [ulocal(layout.list, %qA)]; }; @assert ulocal(f.is-allowed-to-edit-stat, %3, %2, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))), cand(t(finditem(Friends|Contacts, %qS, |)), t(setr(V, %1))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.add-or-remove-[if(hasattr(me, strcat(tr.add-or-remove-, setr(T, ulocal(f.get-stat-location, %qS)))), %qT, stat)]=%qS, %qV, %2, %3, %4;
 
 @@ %0 - stat
 @@ %1 - value
 @@ %2 - player
 @@ %3 - player doing the setting
 @@ %4 - adding or removing
-&tr.add-or-remove-stat [v(d.cg)]=@assert ulocal(f.is-allowed-to-edit-stat, %2, %3)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %1, %2, %3); }; @eval strcat(setq(E, ulocal(f.get-player-stat, %2, %0)), setq(I, ulocal(f.find-list-index, %qE, %1))); @if t(%4)={ @trigger me/tr.remove-final-stat=%0, %1, %2, %3, %qE, %qI; }, { @trigger me/tr.add-final-stat=%0, %1, %2, %3, %qE, %qI; };
+&tr.add-or-remove-stat [v(d.cg)]=@assert ulocal(f.is-allowed-to-edit-stat, %3, %2, %0)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %1, %2, %3); }; @eval strcat(setq(E, ulocal(f.get-player-stat, %2, %0)), setq(I, ulocal(f.find-list-index, %qE, %1))); @if t(%4)={ @trigger me/tr.remove-final-stat=%0, %1, %2, %3, %qE, %qI; }, { @trigger me/tr.add-final-stat=%0, %1, %2, %3, %qE, %qI; };
 
 &tr.add-final-stat [v(d.cg)]=@assert cor(not(t(%1)), not(t(%5)))={ @trigger me/tr.error=%3, Player already has the %0 '%1'.; }; @eval setq(C, if(ulocal(f.is-crew-stat, %0), ulocal(f.get-player-stat, %2, crew object), %2)); @eval setq(E, trim(strcat(xget(%qC, ulocal(f.get-stat-location-on-player, %0)), |, %1), b, |)); @eval setq(E, if(cand(not(t(%1)), eq(words(%qE, |), 1)),, %qE)); @eval setq(A, ulocal(f.is-allowed-to-break-stat-setting-rules, %3, %2)); @assert cor(not(t(%1)), not(strmatch(%0, Abilities)), eq(words(%qE, |), 1), %qA)={ @trigger me/tr.error=%3, Player already has a Special Ability. Please remove one before adding this one.; }; @assert cor(not(strmatch(%0, Friends)), lte(words(%qE, |), 5), %qA)={ @trigger me/tr.error=%3, Player already has 5 Friends - remove one before adding more.; }; @assert cor(not(strmatch(%0, Contacts)), lte(words(%qE, |), 6), %qA)={ @trigger me/tr.error=%3, This crew already has 6 Contacts - remove one before adding more.; }; @set %qC=[ulocal(f.get-stat-location-on-player, %0)]:%qE; @assert t(%1)={ @trigger me/tr.stat-setting-messages=ulocal(layout.set-message, %0, %1, %2, %3), ulocal(layout.staff-set-alert, %0, %1, %2, %3), %2, %3, %0; }; @trigger me/tr.stat-setting-messages=ulocal(layout.add-message, %0, %1, %2, %3), ulocal(layout.staff-add-alert, %0, %1, %2, %3), %2, %3, %0;
 
 &tr.remove-final-stat [v(d.cg)]=@assert t(%5)={ @trigger me/tr.error=%3, Player doesn't have the %0 '%1'.; }; @eval setq(V, extract(%4, %5, 1, |, |)); @eval setq(E, ldelete(%4, %5, |, |)); @set %2=[ulocal(f.get-stat-location-on-player, %0)]:%qE; @trigger me/tr.stat-setting-messages=ulocal(layout.remove-message, %0, %qV, %2, %3), ulocal(layout.staff-remove-alert, %0, %1, %2, %3), %2, %3, %0;
 
-&tr.add-or-remove-upgrades [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %qC, %3)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-crew-stats, %0, %1, %2, %3); }; @eval strcat(setq(E, ulocal(f.get-player-stat, %qC, Upgrades)), setq(I, ulocal(f.find-upgrade, %qE, %1))); @if t(%4)={ @trigger me/tr.remove-upgrades=%0, %1, %qC, %3, %qE, %qI; }, { @trigger me/tr.add-upgrades=%0, %1, %qC, %3, %qE, %qI; };
+&tr.add-or-remove-upgrades [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %3, %qC)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-crew-stats, %0, %1, %2, %3); }; @eval strcat(setq(E, ulocal(f.get-player-stat, %qC, Upgrades)), setq(I, ulocal(f.find-upgrade, %qE, %1))); @if t(%4)={ @trigger me/tr.remove-upgrades=%0, %1, %qC, %3, %qE, %qI; }, { @trigger me/tr.add-upgrades=%0, %1, %qC, %3, %qE, %qI; };
 
 &tr.add-upgrades [v(d.cg)]=@eval if(t(%5), strcat(setq(E, %4), setq(I, %5)), strcat(setq(U, ulocal(f.get-upgrades-with-boxes)), setq(M, ulocal(f.find-upgrade, %qU, %1)), setq(E, strcat(%4, |, extract(%qU, %qM, 1, |))), setq(E, trim(%qE, b, |)), setq(I, words(%qE, |)))); @assert cand(t(%qE), t(%qI))={ @trigger me/tr.error=%3, There was an issue figuring out which value to add.; }; @eval setq(N, ulocal(f.tick-tickable, extract(%qE, %qI, 1, |))); @eval setq(E, replace(%qE, %qI, %qN, |, |)); @eval setq(T, add(ulocal(f.count-ticks, %qE), ulocal(f.get-total-cohort-cost, %2))); @assert strmatch(%qE, \[X\]*)={ @trigger me/tr.error=%3, Could not tick the upgrade box.; }; @assert not(strmatch(%qE, %4))={ @trigger me/tr.error=%3, Cannot add %ch%1%cn - it is already added and has no additional boxes to mark.; }; @assert cor(ulocal(f.is-allowed-to-break-stat-setting-rules, %3, %2), lte(%qT, 4))={ @trigger me/tr.error=%3, ulocal(layout.upgrade-max, sub(%qT, ulocal(f.count-ticks, %qN)), 0, %2, %3); }; @set %2=ulocal(f.get-stat-location-on-player, %0):%qE; @trigger me/tr.stat-setting-messages=ulocal(layout.add-message, Upgrades, %1, %2, %3, eq(words(%qE, |), words(%4, |))), ulocal(layout.staff-add-alert, Upgrades, %1, %2, %3), %2, %3, Upgrades;
 
@@ -185,7 +185,7 @@ Aliases:
 @@ %1 - value
 @@ %2 - player
 @@ %3 - player doing the setting
-&tr.set-stat [v(d.cg)]=@assert t(setr(S, ulocal(f.is-stat, %0, %2, %3)))={ @trigger me/tr.error=%3, '%0' does not appear to be a stat. Valid stats are: [ulocal(layout.list, ulocal(f.list-stats, %0, %2, %3))]; }; @assert cor(not(t(ulocal(f.is-addable-stat, %0, %3))), t(finditem(xget(%vD, d.settable-addable-stats), %qS, |)))={ @force %3=+stat/add [if(not(strmatch(%2, %3)), %2/)]%0=%1; }; @assert ulocal(f.is-allowed-to-edit-stat, %2, %3, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-stats, %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.set-[case(1, t(ulocal(f.is-action, %qS)), action, ulocal(f.is-crew-stat, %qS), crew-stat, ulocal(f.is-full-list-stat, %qS), full-list-stat, final-stat)]=%qS, %qV, %2, %3;
+&tr.set-stat [v(d.cg)]=@assert t(setr(S, ulocal(f.is-stat, %0, %2, %3)))={ @trigger me/tr.error=%3, '%0' does not appear to be a stat. Valid stats are: [ulocal(layout.list, ulocal(f.list-stats, %0, %2, %3))]; }; @assert cor(not(t(ulocal(f.is-addable-stat, %0, %3))), t(finditem(xget(%vD, d.settable-addable-stats), %qS, |)))={ @force %3=+stat/add [if(not(strmatch(%2, %3)), %2/)]%0=%1; }; @eval setq(I, ulocal(f.is-crew-stat, %qS)); @assert ulocal(f.is-allowed-to-edit-[if(%qI, crew, stat)], %3, %2, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-[if(%qI, stats, crew-stats)], %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.set-[case(1, t(ulocal(f.is-action, %qS)), action, %qI, crew-stat, ulocal(f.is-full-list-stat, %qS), full-list-stat, final-stat)]=%qS, %qV, %2, %3;
 
 @@ %0 - stat
 @@ %1 - value
@@ -202,6 +202,6 @@ Aliases:
 @@ %3 - player doing the setting
 &tr.set-action [v(d.cg)]=@assert strcat(setq(T, ulocal(f.get-total-player-actions, %2, %0)), cor(lte(add(%qT, %1), 7), ulocal(f.is-allowed-to-break-stat-setting-rules, %3, %2)))={ @trigger me/tr.error=%3, Setting your %0 to %1 would take you over 7 points of actions. Reduce your action total to move the dots around.; }; @trigger me/tr.set-final-stat=%0, %1, %2, %3;
 
-&tr.set-crew-stat [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %2, %3)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-crew-stats, %0, %1, %2, %3); }; @assert not(ulocal(f.is-full-list-stat, %0))={ @trigger me/tr.set-full-list-stat=%0, %1, %qC, %3; }; @trigger me/tr.set-final-stat=%0, %1, %qC, %3;
+&tr.set-crew-stat [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %3, %2)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-crew-stats, %0, %1, %2, %3); }; @assert not(ulocal(f.is-full-list-stat, %0))={ @trigger me/tr.set-full-list-stat=%0, %1, %qC, %3; }; @trigger me/tr.set-final-stat=%0, %1, %qC, %3;
 
 &tr.set-full-list-stat [v(d.cg)]=@trigger me/tr.set-final-stat=%0, setr(0, xget(%vD, strcat(d., ulocal(f.get-stat-location, %0), ., if(t(%1), %1)))), %2, %3, if(t(%1), the %ch%1%cn list: [ulocal(layout.list, %q0)]);

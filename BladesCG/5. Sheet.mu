@@ -1,6 +1,8 @@
 
 &c.+sheet [v(d.cg)]=$+sheet:@pemit %#=ulocal(layout.page1, %#, %#); @assert hasattr(%#, _stat.locked)={ @pemit %#=strcat(%r, ulocal(layout.cg-errors, %#, %#)); };
 
+&c.sheet [v(d.cg)]=$sheet*:@force %#=+sheet%0;
+
 &c.+sheet_player [v(d.cg)]=$+sheet *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to view someone else's sheet.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @pemit %#=ulocal(layout.page1, %qP, %#); @assert isapproved(%qP)={ @pemit %#=strcat(%r, ulocal(layout.cg-errors, %qP, %#)); };
 
 &c.+sheet_all [v(d.cg)]=$+sheet/all:@pemit %#=ulocal(layout.page1, %#, %#); @pemit %#=ulocal(layout.page2, %#, %#); @assert hasattr(%#, _stat.locked)={ @pemit %#=strcat(%r, ulocal(layout.cg-errors, %#, %#)); };

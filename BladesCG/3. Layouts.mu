@@ -22,11 +22,13 @@
 
 &layout.name [v(d.cgf)]=strcat(ulocal(f.get-name, %0, %1), if(isstaff(%1), strcat(%b, %(, %0, %))))
 
-&layout.bio [v(d.cgf)]=strcat(multicol(ulocal(layout.player-bio, %0, %1), * *, 0, |, %1), %r, formattext(cat(Look:, shortdesc(%0, %1)), 0, %1))
+&layout.bio [v(d.cgf)]=strcat(multicol(ulocal(layout.player-bio, %0, %1), * *, 0, |, %1), %r, formattext(strcat(Vice Purveyor:, %b, ulocal(f.get-player-stat-or-default, %0, Vice Purveyor, ulocal(layout.not-set, %0, Vice Purveyor)), %r, Look:, %b, shortdesc(%0, %1)), 0, %1))
 
-&layout.simple-bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.expert_bio), Look|Character Type, |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), Not set)), |, |), * *, 0, |, %1), %r, divider(, %1), %r, formattext(cat(Character Type:, ulocal(f.get-player-stat-or-default, %0, Character Type, Not set))), %r, formattext(cat(Look:, ulocal(f.get-player-stat-or-default, %0, Look, Not set))))
+&layout.not-set [v(d.cgf)]=if(cor(strmatch(%1, faction.hunting), t(grab(xget(%vD, strcat(d.required-, if(ulocal(f.is-crew-stat, %1), crew, if(ulocal(f.is_expert, %0), expert, scoundrel)), -bio)), %1, |))), %ch%crNot set%cn, Not set)
 
-&layout.player-bio [v(d.cgf)]=iter(ulocal(f.get-layout-bio-stats, %0), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), Not set)), |, |)
+&layout.simple-bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.expert_bio), Look|Character Type, |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), ulocal(layout.not-set, %0, itext(0)))), |, |), * *, 0, |, %1), %r, divider(, %1), %r, formattext(cat(Character Type:, ulocal(f.get-player-stat-or-default, %0, Character Type, ulocal(layout.not-set, %0, Character Type)))), %r, formattext(cat(Look:, ulocal(f.get-player-stat-or-default, %0, Look, ulocal(layout.not-set, %0, Look)))))
+
+&layout.player-bio [v(d.cgf)]=iter(ulocal(f.get-layout-bio-stats, %0), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), ulocal(layout.not-set, %0, itext(0)))), |, |)
 
 &layout.actions [v(d.cgf)]=strcat(divider(Actions, %1), %r, multicol(ulocal(layout.player-actions, %0), * 1 2 * 1 2 * 1, 1, |, %1))
 
@@ -80,9 +82,9 @@
 
 &layout.crew_name [v(d.cgf)]=header(if(t(%0), strcat(ulocal(f.get-player-stat-or-default, %0, Crew name, No crew name set), %b, %(, Tier, %b, ulocal(f.get-player-stat-or-zero, %0, Crew Tier), %), if(isstaff(%1), strcat(%b, %(, %0, %)))), No crew selected), %1)
 
-&layout.crew-rep-line [v(d.cgf)]=formattext(strcat(Reputation:, %b, ulocal(f.get-player-stat-or-default, %0, Reputation, Not set), %b, %(, ulocal(f.get-player-stat-or-zero, %0, Rep), /, ulocal(f.get-max-rep, %0), %)), 0, %1)
+&layout.crew-rep-line [v(d.cgf)]=formattext(strcat(Reputation:, %b, ulocal(f.get-player-stat-or-default, %0, Reputation, ulocal(layout.not-set, %0, Reputation)), %b, %(, ulocal(f.get-player-stat-or-zero, %0, Rep), /, ulocal(f.get-max-rep, %0), %)), 0, %1)
 
-&layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.crew_bio), Lair|Crew Name|Hunting Grounds|Reputation, |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), Not set)), |, |), * *, 0, |, %1), %r, ulocal(layout.crew-rep-line, %0, %1), %r, formattext(strcat(Hunting Grounds:, %b, ulocal(f.get-player-stat-or-default, %0, Hunting Grounds, Not set), %b, \[, first(ulocal(f.get-player-stat-or-default, %0, faction.hunting, Faction not set|), |), \], %r, Lair:, %b, ulocal(f.get-player-stat-or-default, %0, Lair, Not set)), 0, %1))
+&layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.crew_bio), xget(%vD, d.manual-bio-stats), |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), ulocal(layout.not-set, %0, itext(0)))), |, |), * *, 0, |, %1), %r, ulocal(layout.crew-rep-line, %0, %1), %r, formattext(strcat(Hunting Grounds:, %b, ulocal(f.get-player-stat-or-default, %0, Hunting Grounds, ulocal(layout.not-set, %0, Hunting Grounds)), %b, \[, first(ulocal(f.get-player-stat-or-default, %0, faction.hunting, ulocal(layout.not-set, %0, faction.hunting)|), |), \], %r, Lair:, %b, ulocal(f.get-player-stat-or-default, %0, Lair, ulocal(layout.not-set, %0, Lair))), 0, %1))
 
 &layout.crew1 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew-heat, %qC, %1), %r, ulocal(layout.crew-coin, %qC, %1), %r, ulocal(layout.crew-abilities, %qC, %1), %r, ulocal(layout.crew-upgrades, %qC, %1), %r, ulocal(layout.crew-xp_triggers, %qC, %1))
 
@@ -150,7 +152,7 @@
 
 &check.scoundrel.abilities [v(d.cgf)]=eq(ulocal(f.get-total-player-abilities, %0), 1)
 
-&check.scoundrel.bio [v(d.cgf)]=not(ladd(iter(remove(ulocal(f.get-player-bio-fields, %0), Crew, |), not(hasattr(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |)))
+&check.scoundrel.bio [v(d.cgf)]=not(ladd(iter(diffset(ulocal(f.get-player-bio-fields, %0), Crew|Alias, |, |), not(hasattr(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |)))
 
 &check.scoundrel.friends [v(d.cgf)]=cand(t(setr(F, ulocal(f.get-player-stat, %0, friends))), eq(words(%qF, |), 5), t(ulocal(f.get-player-stat, %0, ally)), t(ulocal(f.get-player-stat, %0, rival)))
 
@@ -187,7 +189,7 @@
 
 &layout.pass [v(d.cgf)]=%ch%cg%[Pass%]
 
-&layout.fail [v(d.cgf)]=%cr%[Needs work%]
+&layout.fail [v(d.cgf)]=%cr%ch%[Needs work%]
 
 &layout.test [v(d.cgf)]=cat(*, if(t(%0), %1, if(t(%2), %2, %1)), if(t(%0), ulocal(layout.pass), ulocal(layout.fail)))
 
@@ -200,7 +202,7 @@
 
 &layout.crew-cg-errors [v(d.cgf)]=strcat(header(Crew creation instructions, %1), %r, formattext(strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.test, ulocal(check.crew.bio, %qC), Set all your crew's bio fields.), %r, ulocal(layout.test, ulocal(check.crew.abilities, %qC), Select one Crew Ability.), %r, ulocal(layout.test, ulocal(check.crew.contacts, %qC), Choose 6 Contacts and a Favorite.), %r, ulocal(layout.test, ulocal(check.crew.upgrades, %qC), Select 4 points of Upgrades.), ulocal(layout.test-line, ulocal(check.cohort-edges-count, %qC), Pick 1-2 Edges and Flaws for your Cohorts.), ulocal(layout.test-line, ulocal(check.cohort-flaws-balance, %qC), Cohort Edges and Flaws should balance one for one: one Edge = one Flaw.), ulocal(layout.test-line, ulocal(check.like-part-of-the-family-cohort, %qC), You have Like Part of the Family. Take the Vehicle Upgrade and create a Cohort with the Vehicle Type.), ulocal(layout.test-line, ulocal(check.vehicle-without-crew-ability, %qC), Having a Vehicle Cohort without the Crew Ability "Like Part of the Family" is not allowed.), %r, ulocal(layout.test, ulocal(check.faction_questions_answered, %qC), Answer 5 faction questions.), ulocal(layout.test-line, ulocal(check.faction_status_limits, %qC), You're at less than -3 or greater than +3 to a faction. Shift your factions around.), %r, ulocal(layout.test, ulocal(check.crew.xp_triggers, %qC), Select a Crew XP Trigger.)), 0, %1), ulocal(layout.cg-commands, +crew/all to see everything|+cohort/create <name>=<type>|+faction/set <question>=<faction>|+cohort/set <stat>=<value>|+faction/pay <question>=<amount>|+crew/lock to submit to staff|+faction/boost or unboost, %1), %r, footer(cg/on to join the Chargen channel and ask questions!, %1))
 
-&layout.full-cg-errors [v(d.cgf)]=strcat(formattext(strcat(ulocal(layout.test, ulocal(check.scoundrel.bio, %0), You have all your bio fields set., Some of your bio fields %(not counting Crew%) are not set.), ulocal(layout.test-line, ulocal(check.simple.desc, %0), +desc me=<Character's normal description>), %r, ulocal(layout.test, ulocal(check.scoundrel.actions, %0), 7 action dots chosen., You need 7 action dots. You have [ulocal(f.get-total-player-actions, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.abilities, %0), One ability selected., You need one ability. You have [ulocal(f.get-total-player-abilities, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.friends, %0), You need 5 friends%, an ally%, and a rival.), %r, ulocal(layout.test, ulocal(check.scoundrel.gear, %0), You have chosen your gear., You need gear!), %r, ulocal(layout.test, ulocal(check.scoundrel.xp_triggers, %0), You have chosen your XP triggers., You need to select your XP triggers.)), 0, %1), ulocal(layout.cg-commands, +sheet/all to see everything|+stats/lock to submit to staff, %1))
+&layout.full-cg-errors [v(d.cgf)]=strcat(formattext(strcat(ulocal(layout.test, ulocal(check.scoundrel.bio, %0), You have all your bio fields set., Some of your bio fields are not set.), ulocal(layout.test-line, ulocal(check.simple.desc, %0), +desc me=<Character's normal description>), %r, ulocal(layout.test, ulocal(check.scoundrel.actions, %0), 7 action dots chosen., You need 7 action dots. You have [ulocal(f.get-total-player-actions, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.abilities, %0), One ability selected., You need one ability. You have [ulocal(f.get-total-player-abilities, %0)].), %r, ulocal(layout.test, ulocal(check.scoundrel.friends, %0), You need 5 friends%, an ally%, and a rival.), %r, ulocal(layout.test, ulocal(check.scoundrel.gear, %0), You have chosen your gear., You need gear!), %r, ulocal(layout.test, ulocal(check.scoundrel.xp_triggers, %0), You have chosen your XP triggers., You need to select your XP triggers.)), 0, %1), ulocal(layout.cg-commands, +sheet/all to see everything|+stats/lock to submit to staff, %1))
 
 &layout.cg-commands [v(d.cgf)]=strcat(divider(Commands, %1), %r, multicol(+stat/set <stat>=<value>|+stat/set <stat>= to clear a stat|+stat/clear to start over|%0, * *, 0, |, %1))
 
