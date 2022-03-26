@@ -59,7 +59,7 @@ TODO: Check the math on Rep. You can bank up to 12 rep, but if you've got 6 turf
 
 @daily [v(d.cg)]=@dolist xget(%vD, d.logs-to-clear)={ @trigger me/tr.clean-old-player-logs=##; }; @trigger me/tr.award-downtime;
 
-&tr.award-downtime [v(d.cg)]=@break gettimer(%!, award-downtime); @dolist search(EPLAYER=cand(isapproved(##), cor(hasflag(##, CONNECTED), lt(sub(secs(), xget(##, _last-conn)), 604800))))={ @trigger me/tr.award-player-downtime=##; }; @eval settimer(%!, award-downtime, 604800);
+&tr.award-downtime [v(d.cg)]=@break gettimer(%!, award-downtime); @dolist search(EPLAYER=cand(isapproved(##), cor(hasflag(##, CONNECTED), lt(sub(secs(), xget(##, _last-conn)), 604000))))={ @trigger me/tr.award-player-downtime=##; }; @eval settimer(%!, award-downtime, 604000);
 
 &tr.award-player-downtime [v(d.cg)]=@set %0=[ulocal(f.get-stat-location-on-player, downtime)]:[add(ulocal(f.get-player-stat, %0, downtime), setr(A, ulocal(f.get-player-downtime-per-week, %0)))]; @trigger me/tr.log=%0, _downtime-, Auto, Awarded %qA weekly auto-downtime.; @trigger me/tr.success=%0, Received %qA auto-downtime for the week.;
 
