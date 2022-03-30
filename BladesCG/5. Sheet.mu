@@ -1,3 +1,16 @@
+/*
+
+TODO: Add sheet-sharing, not just showing. So that people can +sheets and +sheet <name> if they have permission.
+
+Questions: What about crew sheet sharing?
+
++sheet/share <player>
++sheet/unshare <player>
++sheets - see all the sheets shared with you and all the people you've shared your sheet with
++sheet <name>
+
+TODO: +sheet/prove
+*/
 
 &c.+sheet [v(d.cg)]=$+sheet:@pemit %#=ulocal(layout.page1, %#, %#); @assert hasattr(%#, _stat.locked)={ @pemit %#=strcat(%r, ulocal(layout.cg-errors, %#, %#)); };
 

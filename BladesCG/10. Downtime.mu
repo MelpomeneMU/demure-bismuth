@@ -151,6 +151,10 @@ TODO: Check the math on Rep. You can bank up to 12 rep, but if you've got 6 turf
 
 &layout.clear-stress [v(d.cgf)]=cat(alert(Stress), ulocal(f.get-name, %0), clears a stress%, bringing, poss(%0), total to %1/%2.)
 
+&c.+stress/spend [v(d.cg)]=$+stress/spend *:@force %#=+stress/gain %0;
+
+&c.+stress/spend_1 [v(d.cg)]=$+stress/spend:@force %#=+stress/gain 1;
+
 &c.+stress/gain_1 [v(d.cg)]=$+stress/gain:@force %#=+stress/gain 1;
 
 &c.+stress/gain_reason [v(d.cg)]=$+stress/gain *:@break strmatch(%0, *=*); @if isint(%0)={@force %#=+stress/gain %0=; }, { @force %#=+stress/gain 1=%0; };
@@ -159,7 +163,7 @@ TODO: Check the math on Rep. You can bank up to 12 rep, but if you've got 6 turf
 
 &c.+stress/clear [v(d.cg)]=$+stress/clear: @eval setq(M, ulocal(f.get-max-stress, %#)); @eval setq(C, ulocal(f.get-player-stat, %#, Stress)); @eval setq(X, ulocal(f.get-max-trauma, %#)); @eval setq(T, ulocal(f.get-player-stat, %#, Traumas)); @assert gte(setr(N, dec(%qC)), 0)={ @trigger me/tr.error=%#, You have no stress to clear.; }; @assert not(cand(gte(%qC, %qM), eq(words(%qT, |), %qX)))={ @trigger me/tr.error=%#, You have reached your limit for all stress and trauma.; }; @set %#=[ulocal(f.get-stat-location-on-player, stress)]:%qN; @trigger me/tr.remit-or-pemit=%L, ulocal(layout.clear-stress, %#, %qN, %qM), %#; @trigger me/tr.alert-to-monitor=%#, Cleared a stress.; @trigger me/tr.log=%#, _stress-, %#, Cleared a stress.; @assert not(eq(%qC, %qM))={ @wipe %#/[ulocal(f.get-stat-location-on-player, needs trauma)]; };
 
-&c.+trauma/add [v(d.cg)]=$+trauma/add *: @assert cor(t(ulocal(f.get-player-stat, %#, needs trauma)), cand(strmatch(ulocal(f.get-player-stat, %#, Playbook), Vampire), lt(words(ulocal(f.get-player-stat, %#, traumas), |), ulocal(f.get-max-trauma, %#))))={ @trigger me/tr.error=%#, You can't take a trauma yet. Go earn more stress!; }; @assert t(setr(T, finditem(setr(L, setdiff(xget(%vD, d.value.traumas), setr(U, ulocal(f.get-player-stat, %#, traumas)), |, |)), %0, |)))={ @trigger me/tr.error=%#, Could not find a trauma starting with '%0'. Available traumas are [ulocal(layout.list, %qL)].; }; @wipe %#/[ulocal(f.get-stat-location-on-player, needs trauma)]; @set %#=[ulocal(f.get-stat-location-on-player, Traumas)]:[trim(strcat(%qU, |, %qT), |, b)]; @set %#=[ulocal(f.get-stat-location-on-player, Stress)]:0; @trigger me/tr.stat-setting-messages=ulocal(layout.add-message, Traumas, %qT, %#, %#), ulocal(layout.staff-add-alert, Traumas, %qT, %#, %#), %#, %#, Traumas; @trigger me/tr.remit-or-pemit=%l, cat(alert(Trauma), ulocal(f.get-name, %#) takes a trauma and resets, poss(%#), stress level to 0.), %#; @trigger me/tr.log=%#, _stress-, %#, Trauma taken. Stress reset to 0.;
+&c.+trauma/add [v(d.cg)]=$+trauma/add *: @assert cor(t(ulocal(f.get-player-stat, %#, needs trauma)), cand(strmatch(ulocal(f.get-player-stat, %#, Playbook), Vampire), lt(words(ulocal(f.get-player-stat, %#, traumas), |), ulocal(f.get-max-trauma, %#))))={ @trigger me/tr.error=%#, You can't take a trauma yet. Go earn more stress!; }; @assert t(setr(T, finditem(setr(L, setdiff(xget(%vD, d.value.traumas), setr(U, ulocal(f.get-player-stat, %#, traumas)), |, |)), %0, |)))={ @trigger me/tr.error=%#, Could not find a trauma starting with '%0'. Available traumas are [ulocal(layout.list, %qL)].; }; @wipe %#/[ulocal(f.get-stat-location-on-player, needs trauma)]; @set %#=[ulocal(f.get-stat-location-on-player, Traumas)]:[unionset(%qU, %qT, |, |)]; @set %#=[ulocal(f.get-stat-location-on-player, Stress)]:0; @trigger me/tr.stat-setting-messages=ulocal(layout.add-message, Traumas, %qT, %#, %#), ulocal(layout.staff-add-alert, Traumas, %qT, %#, %#), %#, %#, Traumas; @trigger me/tr.remit-or-pemit=%l, cat(alert(Trauma), ulocal(f.get-name, %#) takes a trauma and resets, poss(%#), stress level to 0.), %#; @trigger me/tr.log=%#, _stress-, %#, Trauma taken. Stress reset to 0.;
 
 &c.+dt/vice [v(d.cg)]=$+dt/vice:@force %#=+dt/indulge;
 

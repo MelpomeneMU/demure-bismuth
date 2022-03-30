@@ -74,7 +74,7 @@
 
 &layout.crew_footer [v(d.cgf)]=strcat(if(t(setr(D, ulocal(f.get-player-stat, %0, crew approved date))), cat(Approved, %qD), Unapproved), %,, %b, setr(A, ulocal(f.get-advancements, %0, Crew, spent)), %b, plural(%qA, Advancement, Advancements))
 
-&layout.subsection [v(d.cgf)]=strcat(ulocal(ulocal(f.get-stat-location, layout.%0), %1, %2), if(cor(not(t(setr(M, finditem(page1 page2, %0)))), not(strmatch(%0, %qM))), strcat(%r, footer(ulocal(strcat(layout., switch(%0, crew*, crew_), footer), switch(%0, crew*, ulocal(f.get-player-stat, %1, crew object), %1), %2), %2))))
+&layout.subsection [v(d.cgf)]=strcat(ulocal(ulocal(f.get-stat-location, layout.%0), %1, %2, %3), if(cor(not(t(setr(M, finditem(page1 page2, %0)))), not(strmatch(%0, %qM))), strcat(%r, footer(ulocal(strcat(layout., switch(%0, crew*, crew_), footer), switch(%0, crew*, ulocal(f.get-player-stat, %1, crew object), %1), %2), %2))))
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew sheet
