@@ -52,19 +52,17 @@
 
 &layout.friends [v(d.cgf)]=strcat(divider(Friends, %1), setq(E, ulocal(f.get-player-stat, %0, rival)), setq(A, ulocal(f.get-player-stat, %0, ally)), %r, multicol(iter(ulocal(f.get-player-stat, %0, friends), strcat(itext(0), switch(itext(0), %qA, %b%cg%(Ally%), %qE, %b%cr%(Rival%))), |, |), * *, 0, |, %1))
 
-&layout.gear [v(d.cgf)]=strcat(divider(Playbook gear, %1), %r, multicol(edit(iter(fliplist(ulocal(f.get-player-stat, %0, gear), 2, |), ulocal(layout.gear-item, itext(0)), |, |), 0L, %ch%cx--%cn), * *, 0, |, %1), %r, ulocal(layout.other-gear, %0, %1, %2), %r, ulocal(layout.load-chart, %0, %1), if(t(%2), strcat(%r, ulocal(layout.standard-gear, %0, %1, %2))), %r, ulocal(layout.coin, %0, %1))
+&layout.gear [v(d.cgf)]=strcat(divider(Playbook gear, %1), %r, multicol(edit(iter(fliplist(ulocal(f.get-player-stat, %0, gear), 2, |), itext(0), |, |), %(0L%), %ch%cx(0L)%cn), * *, 0, |, %1), %r, ulocal(layout.other-gear, %0, %1, %2), %r, ulocal(layout.load-chart, %0, %1), if(t(%2), strcat(%r, ulocal(layout.standard-gear, %0, %1, %2))), %r, ulocal(layout.coin, %0, %1))
 
 &layout.coin [v(d.cgf)]=strcat(divider(Coin and wealth, %1), %r, multicol(strcat(Coin:, |, ulocal(f.get-player-stat-or-zero, %0, coin), /4, |, Stash:, |, ulocal(f.get-player-stat-or-zero, %0, stash)/40, |, Lifestyle:, |, ulocal(f.get-lifestyle-desc, %0), %b, %(, ulocal(f.get-lifestyle, %0), %)), 15 5 * 5 * 15, 0, |, %1))
 
-&layout.standard-gear [v(d.cgf)]=strcat(divider(Standard gear, %1), %r, multicol(edit(iter(fliplist(if(t(setr(G, ulocal(f.get-player-stat, %0, standard gear))), %qG, xget(%vD, d.standard_gear)), 2, |), ulocal(layout.gear-item, itext(0)), |, |), 0L, %ch%cx--%cn), * *, 0, |, %1))
+&layout.standard-gear [v(d.cgf)]=strcat(divider(Standard gear, %1), %r, multicol(edit(iter(fliplist(if(t(setr(G, ulocal(f.get-player-stat, %0, standard gear))), %qG, xget(%vD, d.standard_gear)), 2, |), itext(0), |, |), %(0L%), %ch%cx%(0L%)%cn), * *, 0, |, %1))
 
-&layout.other-gear [v(d.cgf)]=strcat(divider(Other gear, %1), %r, setq(L, edit(iter(fliplist(ulocal(f.get-player-stat, %0, other gear), 2, |), ulocal(layout.gear-item, itext(0)), |, |), 0L, %ch%cx--%cn)), multicol(if(t(%qL), %qL, |), * *, 0, |, %1))
+&layout.other-gear [v(d.cgf)]=strcat(divider(Other gear, %1), %r, setq(L, edit(iter(fliplist(ulocal(f.get-player-stat, %0, other gear), 2, |), itext(0), |, |), %(0L%), %ch%cx%(0L%)%cn)), multicol(if(t(%qL), %qL, |), * *, 0, |, %1))
 
 &layout.load-chart [v(d.cgf)]=strcat(multicol(strcat(repeat(|, 10), ulocal(f.get-player-load-list, %0), |, Your load:, |, if(t(setr(L, ulocal(f.get-player-stat, %0, load))), %qL, Unset)), 6 4 7 4 6 2 12 4 * 6, 0, |, %1))
 
 &layout.load-desc [v(d.cgf)]=cat(ulocal(f.get-name, %0, %1), looks, switch(ulocal(f.get-player-stat, %0, load), Normal, like a scoundrel%, ready for trouble, Heavy, like an operative on a mission, Encumbered, overburdened and slow, like an ordinary%, law-abiding citizen).)
-
-&layout.gear-item [v(d.cgf)]=switch(%0, %[*%]*, %0, cat(%[, %], %0))
 
 &layout.projects [v(d.cgf)]=if(t(setr(L, ulocal(f.get-player-projects, %0))),  strcat(divider(Long-term projects, %1), %r, multicol(%qL, *, 0, |, %1), %r))
 

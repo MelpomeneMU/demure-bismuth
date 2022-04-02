@@ -69,7 +69,7 @@
 
 &d.xp_tracks [v(d.cgdb)]=Insight|Prowess|Resolve|Playbook|Crew|Untracked
 
-&d.stats-that-default [v(d.cgdb)]=Friends|Ally|Rival|Abilities|Gear|XP Triggers
+&d.stats-that-default [v(d.cgdb)]=Friends|Ally|Rival|Abilities|Gear|XP Triggers|Standard Gear
 
 &d.crew-stats-that-default [v(d.cgdb)]=Contacts|Favorite|Crew Abilities|Crew XP Triggers
 
@@ -148,6 +148,8 @@
 @@ Bio stats that are required at CG
 &d.required-scoundrel-bio [v(d.cgdb)]=Name|Playbook|Heritage|Background|Vice|Vice Purveyor|Age
 
+@@ TODO: Add values for Vice Purveyor based on vice
+
 &d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire
 
 &d.value.age [v(d.cgdb)]=Young Adult|Adult|Mature|Elderly
@@ -196,7 +198,7 @@
 
 &d.xp_triggers.cutter [v(d.cgdb)]=address a challenge with Violence or Coercion
 
-&d.gear.cutter [v(d.cgdb)]=1L Fine hand weapon|2L Fine heavy weapon|1L Scary weapon or tool|0L Manacles & chain|0L Rage essence vial|0L Spiritbane charm
+&d.gear.cutter [v(d.cgdb)]=[ ] Fine hand weapon|[ ]-[ ] Fine heavy weapon|[ ] Scary weapon or tool|[ ] (0L) Manacles & chain|[ ] (0L) Rage essence vial|[ ] (0L) Spiritbane charm
 
 &d.abilities.hound [v(d.cgdb)]=Sharpshooter|Focused|Ghost Hunter (ghost-form)|Ghost Hunter (mind-link)|Ghost Hunter (arrow-swift)|Scout|Survivor|Tough as Nails|Vengeful
 
@@ -204,9 +206,9 @@
 
 &d.xp_triggers.hound [v(d.cgdb)]=address a challenge with Tracking or Violence
 
-&d.standard_gear [v(d.cgdb)]=1L A blade or two|1L Throwing knives|1L A pistol|1L A second pistol|2L A large weapon|1L An unusual weapon|2L Armor|3L Heavy Armor (requires Armor)|1L Burglary Gear|2L Climbing gear|1L Arcane implements|1L Documents|1L Subterfuge supplies|2L Demolition tools|1L Tinkering tools|1L Lantern|0L Spiritbane charm
+&d.standard_gear [v(d.cgdb)]=[ ] A blade or two|[ ] Throwing knives|[ ] A pistol [ ] A 2nd pistol|[ ]-[ ] A large weapon|[ ] An unusual weapon|[ ]-[ ] Armor [ ]-[ ]-[ ] +Heavy|[ ] Burglary Gear|[ ]-[ ] Climbing gear|[ ] Arcane implements|[ ] Documents|[ ] Subterfuge supplies|[ ]-[ ] Demolition tools|[ ] Tinkering tools|[ ] Lantern
 
-&d.gear.hound [v(d.cgdb)]=1L Fine pair of pistols|2L Fine long rifle|1L Electroplasmic ammunition|0L A trained hunting pet|1L Spyglass|0L Spiritbane charm
+&d.gear.hound [v(d.cgdb)]=[ ] Fine pair of pistols|[ ]-[ ] Fine long rifle|[ ] Electroplasmic ammunition|[ ] (0L) A trained hunting pet|[ ] Spyglass|[ ] (0L) Spiritbane charm
 
 &d.abilities.leech [v(d.cgdb)]=Alchemist|Analyst|Artificer|Fortitude|Ghost Ward|Phsysicker|Saboteur|Venomous
 
@@ -214,7 +216,7 @@
 
 &d.xp_triggers.leech [v(d.cgdb)]=address a challenge with Technical Skill or Mayhem
 
-&d.gear.leech [v(d.cgdb)]=1L Fine tinkering tools|2L Fine wrecking tools|0L Blowgun & darts, syringes|1L Bandolier (3 uses)|1L Bandolier (3 uses)|1L Gadgets|1L Gadgets|1L Gadgets|0L Alcahest |0L Binding Oil|0L Drift Oil|0L Drown Powder|0L Eyeblind Poison|0L Fire Oil|0L Grenade|0L Quicksilver|0L Skullfire Poison|0L Smoke Bomb|0L Spark (drug)|0L Standstill Poison|0L Trance Powder
+&d.gear.leech [v(d.cgdb)]=[ ] Fine tinkering tools|[ ]-[ ] Fine wrecking tools|[ ] (0L) Blowgun & darts, syringes|[ ] Bandolier (3 uses)|[ ] Bandolier (3 uses)|[ ] [ ] [ ] Gadgets
 
 &d.abilities.lurk [v(d.cgdb)]=Infiltrator|Ambush|Daredevil|The Devil's Footsteps|Expertise|Ghost Veil|Reflexes|Shadow
 
@@ -222,7 +224,7 @@
 
 &d.xp_triggers.lurk [v(d.cgdb)]=address a challenge with Stealth or Evasion
 
-&d.gear.lurk [v(d.cgdb)]=0L Fine lockpicks|1L Fine shadow cloak|1L Light climbing gear|0L Silence potion vial|1L Dark sight goggles|0L Spiritbane charm
+&d.gear.lurk [v(d.cgdb)]=[ ] (0L) Fine lockpicks|[ ] Fine shadow cloak|[ ] Light climbing gear|[ ] (0L) Silence potion vial|[ ] Dark sight goggles|[ ] (0L) Spiritbane charm
 
 &d.abilities.slide [v(d.cgdb)]=Rook's Gambit|Cloak & Dagger|Ghost Voice|Like Looking into a Mirror|A Little Something on the Side|Mesmerism|Subterfuge|Trust in Me
 
@@ -230,7 +232,7 @@
 
 &d.xp_triggers.slide [v(d.cgdb)]=address a challenge with Deception or Influence
 
-&d.gear.slide [v(d.cgdb)]=0L Fine clothes and jewelry|1L Fine disguise kit|0L Fine loaded dice, trick cards|0L Trance powder|1L A cane sword|0L Spiritbane charm
+&d.gear.slide [v(d.cgdb)]=[ ] (0L) Fine clothes and jewelry|[ ] Fine disguise kit|[ ] (0L) Fine loaded dice, trick cards|[ ] (0L) Trance powder|[ ] A cane sword|[ ] (0L) Spiritbane charm
 
 &d.abilities.spider [v(d.cgdb)]=Foresight|Calculating|Connected|Functioning Vice|Ghost Contract|Jail Bird|Mastermind|Weaving the Web
 
@@ -238,7 +240,7 @@
 
 &d.xp_triggers.spider [v(d.cgdb)]=address a challenge with Calculation or Conspiracy
 
-&d.gear.spider [v(d.cgdb)]=0L Fine cover identity|1L Fine bottle of whiskey|1L Blueprints|0L Vial of slumber essence|0L Concealed palm pistol|0L Spiritbane charm
+&d.gear.spider [v(d.cgdb)]=[ ] (0L) Fine cover identity|[ ] Fine bottle of whiskey|[ ] Blueprints|[ ] (0L) Vial of slumber essence|[ ] (0L) Concealed palm pistol|[ ] (0L) Spiritbane charm
 
 &d.abilities.whisper [v(d.cgdb)]=Compel|Ghost Mind|Iron Will|Occultist|Ritual|Strange Methods|Tempest|Warded
 
@@ -246,7 +248,7 @@
 
 &d.xp_triggers.whisper [v(d.cgdb)]=address a challenge with Knowledge or Arcane Power
 
-&d.gear.whisper [v(d.cgdb)]=2L Fine lightning hook|1L Fine spirit mask|0L Electroplasm vials|1L Spirit Bottles (2)|0L Ghost key|0L Demonbane charm
+&d.gear.whisper [v(d.cgdb)]=[ ]-[ ] Fine lightning hook|[ ] Fine spirit mask|[ ] (0L) Electroplasm vials|[ ] Spirit Bottles (2)|[ ] (0L) Ghost key|[ ] (0L) Demonbane charm
 
 &d.abilities.ghost [v(d.cgdb)]=Ghost Form|Dissipate|Manifest|Poltergeist|Possess
 

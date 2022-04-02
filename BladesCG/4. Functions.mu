@@ -24,19 +24,15 @@
 
 @@ %0 - list of player's upgrades
 @@ %1 - list of player's expected crew upgrades
-&f.get-extra-crew-upgrades [v(d.cgf)]=strcat(setq(S, setq(R,)), null(iter(d.upgrades.lair d.upgrades.quality d.upgrades.training, setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), setq(S, squish(trim(%qS|%1, b, |), |)), null(iter(%0, if(not(t(ulocal(f.find-upgrade, %qS, trim(last(itext(0), \]))))), setq(R, strcat(%qR, |, itext(0)))), |, |)), squish(trim(%qR, b, |), |))
+&f.get-extra-crew-upgrades [v(d.cgf)]=strcat(setq(S, setq(R,)), null(iter(d.upgrades.lair d.upgrades.quality d.upgrades.training, setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), setq(S, squish(trim(%qS|%1, b, |), |)), null(iter(%0, if(not(t(ulocal(f.find-tickable, %qS, trim(last(itext(0), \]))))), setq(R, strcat(%qR, |, itext(0)))), |, |)), squish(trim(%qR, b, |), |))
 
 &f.get-upgrades [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.upgrades), setq(S, strcat(%qS, |, iter(xget(%vD, itext(0)), trim(last(itext(0), \])), |, |))))), squish(trim(%qS, b, |), |))
 
-@@ %0 - any upgrades list with boxes
-@@ %1 - upgrade to find
-&f.find-upgrade [v(d.cgf)]=first(trim(iter(%0, if(strmatch(trim(last(itext(0), \])), %1*), inum(0)), |, |), b, |), |)
-
 @@ %0: A list of standardized upgrades
 @@ %1: A list of the player's upgrades
-&f.replace-upgrades [v(d.cgf)]=strcat(setq(F, %0), null(iter(%1, if(t(setr(I, ulocal(f.find-upgrade, %0, trim(last(itext(0), \]))))), setq(F, replace(%qF, %qI, itext(0), |, |))), |, |)), %qF)
+&f.replace-upgrades [v(d.cgf)]=strcat(setq(F, %0), null(iter(%1, if(t(setr(I, ulocal(f.find-tickable, %0, trim(last(itext(0), \]))))), setq(F, replace(%qF, %qI, itext(0), |, |))), |, |)), %qF)
 
-&f.get-vault-max [v(d.cgf)]=if(ulocal(f.has-list-stat, %0, Upgrades, Vault), add(case(ulocal(f.count-ticks, strcat(setq(E, ulocal(f.get-player-stat, %0, Upgrades)), setq(I, ulocal(f.find-upgrade, %qE, Vault)), extract(%qE, %qI, 1, |))), 1, 4, 12), 4), 4)
+&f.get-vault-max [v(d.cgf)]=if(ulocal(f.has-list-stat, %0, Upgrades, Vault), add(case(ulocal(f.count-ticks, strcat(setq(E, ulocal(f.get-player-stat, %0, Upgrades)), setq(I, ulocal(f.find-tickable, %qE, Vault)), extract(%qE, %qI, 1, |))), 1, 4, 12), 4), 4)
 
 &f.get-addable-stats [v(d.cgf)]=xget(%vD, if(isstaff(%1), d.addable-stats, d.cg-addable-stats))
 
@@ -83,7 +79,7 @@
 @@ %1: Stat name
 @@ %2: Is crew stat
 @@ %3: Crew object
-&f.get-stat-default [v(d.cgf)]=if(%2, ulocal(f.get-crew-default, xget(%3, ulocal(f.get-stat-location-on-player, Crew Type)), %1, %3), switch(%1, Ally, ulocal(f.get-first-default, %0, Friends), Rival, ulocal(f.get-last-default, %0, Friends), ulocal(f.get-playbook-default, xget(%0, ulocal(f.get-stat-location-on-player, Playbook)), %1)))
+&f.get-stat-default [v(d.cgf)]=if(%2, ulocal(f.get-crew-default, xget(%3, ulocal(f.get-stat-location-on-player, Crew Type)), %1, %3), switch(%1, Ally, ulocal(f.get-first-default, %0, Friends), Rival, ulocal(f.get-last-default, %0, Friends), Standard Gear, xget(%vD, d.standard_gear), ulocal(f.get-playbook-default, xget(%0, ulocal(f.get-stat-location-on-player, Playbook)), %1)))
 
 &f.get-crew-abilities [v(d.cgf)]=strcat(setq(S,), null(iter(xget(%vD, d.crew_abilities), setq(S, strcat(%qS, |, xget(%vD, itext(0)))))), squish(trim(%qS, b, |), |))
 
@@ -149,6 +145,7 @@ th ulocal(v(d.cgf)/f.get-player-stat, %#, crew object)
 @@  [ ] [ ] [ ] Stat name here
 @@  [ ]-[ ] Stat name here
 @@  [X] [ ] Stat name here
+@@  [ ]-[ ] Stat name here [ ] Other stat here
 @@ Number of boxes doesn't matter, nor does whether the boxes are checked.
 @@ A box is "ticked" when it has an X in it. Otherwise it is unticked.
 
@@ -158,18 +155,33 @@ th ulocal(v(d.cgf)/f.get-player-stat, %#, crew object)
 
 &f.count-boxes [v(d.cgf)]=add(ulocal(f.count-ticks, %0), if(gt(setr(0, words(%0, \\[ \\])), 0), dec(%q0), 0))
 
+@@ %0: any tickable list
+@@ %1: 0 for unticked, 1 for ticked results, blank for all
+&f.get-list-without-ticks [v(d.cgf)]=strcat(setq(0, edit(%0, %[ %], %[_%])), case(%1,,, setq(0, iter(%q0, if(strmatch(itext(0), strcat(*%[, case(%1, 0, _, X), %]*)), itext(0)), |, |))), iter(%q0, trim(iter(itext(0), if(strmatch(itext(0), %[*%]),, itext(0)))), |, |))
+
+@@ %0: any tickable list
+@@ %1: item to find
+@@ %2: 0 for unticked, 1 for ticked results, blank for all
+@@ Result: The list position of the item matching that value (including partial matches like "Heavy" for heavy armor)
+&f.find-tickable [v(d.cgf)]=if(t(setr(R, first(trim(iter(setr(L, ulocal(f.get-list-without-ticks, %0, %2)), if(strmatch(itext(0), %1*), inum(0)), |, |), b, |), |))), %qR, first(trim(iter(%qL, if(strmatch(itext(0), *%1*), inum(0)), |, |), b, |), |))
+
 @@ %0: crew object
 &f.count-upgrades [v(d.cgf)]=add(ulocal(f.count-ticks, ulocal(f.get-player-stat, %0, Upgrades)), ulocal(f.get-total-cohort-cost, %0))
 
 @@ If %0 matches conjoined ticks, tick all of them
 @@ If %0 matches separated ticks, tick only the FIRST unticked
+@@ If %0 matches separate conjoined ticks, tick only the first unticked set
 @@ If there are no tickable slots, return it unchanged
-&f.tick-tickable [v(d.cgf)]=strcat(setq(0, \[ \]), setq(1, edit(%q0, %b, X)), switch(%0, %q0-*, edit(%0, %q0, %q1), *%q0*, strcat(first(%0, %q0), %q1, rest(%0, %q0)), %0))
+&f.tick-tickable [v(d.cgf)]=strcat(setq(0, \[ \]), setq(1, edit(%q0, %b, X)), setq(2, edit(%q0, %b, _)), setq(3, edit(%0, %q0, %q2)), setq(4, 1), edit(iter(%q3, if(cand(%q4, strmatch(itext(0), %q2*)), strcat(edit(itext(0), %q2, %q1), setq(4, 0)), itext(0))), %q2, %q0))
 
 @@ If %0 matches conjoined ticks, untick all of them
 @@ If %0 matches separated ticks, untick only the LAST ticked
 @@ If there are no untickable slots, return it unchanged
-&f.untick-tickable [v(d.cgf)]=strcat(setq(0, \[X\]), setq(1, edit(%q0, X, %b)), switch(%0, %q0-*, edit(%0, %q0, %q1), %q0*, replace(%0, dec(words(%0, %q0)), %q1), %0))
+&f.untick-tickable [v(d.cgf)]=strcat(setq(0, \[X\]), setq(1, edit(%q0, %[X%], %[_%])), setq(2, edit(%q0, %b, _, %]%b%[, %]_%[)), setq(3, edit(%0, %q0, %q2)), setq(4, 1), edit(revwords(edit(iter(revwords(%q3), if(cand(%q4, strmatch(itext(0), %q2*)), strcat(edit(itext(0), %q2, %q1), setq(4, 0)), itext(0))), %q2, %q0)), _, %b))
+
+@@ %0: A tickable item
+@@ Returns: The amount of additional ticks this item will have if ticked.
+&f.get-new-tick-cost [v(d.cgf)]=if(strmatch(%0, *%(0L%)*), 0, sub(ulocal(f.count-ticks, ulocal(f.tick-tickable, %0)), ulocal(f.count-ticks, %0)))
 
 @@ %0 - stat
 @@ %1 - value
@@ -253,7 +265,7 @@ th ulocal(v(d.cgf)/f.get-player-stat, %#, crew object)
 @@ %0: player
 @@ %1: stat list to look on
 @@ %2: stat to look for
-&f.has-list-stat [v(d.cgf)]=switch(%1, Upgrades, t(ulocal(f.find-upgrade, ulocal(f.get-player-stat, %0, %1), switch(%2, *\]*, trim(last(%2, \])), %2))), Factions, t(finditem(iter(ulocal(f.get-player-stat, %0, %1), rest(itext(0)), |, |), if(isnum(first(%2)), rest(%2), %2), |)), t(finditem(ulocal(f.get-player-stat, %0, %1), %2, |)))
+&f.has-list-stat [v(d.cgf)]=switch(%1, Upgrades, t(ulocal(f.find-tickable, ulocal(f.get-player-stat, %0, %1), switch(%2, *\]*, trim(last(%2, \])), %2))), Factions, t(finditem(iter(ulocal(f.get-player-stat, %0, %1), rest(itext(0)), |, |), if(isnum(first(%2)), rest(%2), %2), |)), t(finditem(ulocal(f.get-player-stat, %0, %1), %2, |)))
 
 &f.get-lifestyle [v(d.cgf)]=div(ulocal(f.get-player-stat, %0, Stash), 10)
 
