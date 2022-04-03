@@ -50,11 +50,13 @@
 
 &layout.xp_triggers [v(d.cgf)]=strcat(divider(XP Triggers, %1), %r, formattext(strcat(* You, %b, ulocal(f.get-player-stat-or-default, %0, xp triggers, addressed a challenge with ______ or ______)., %r, * You roll a desperate action., %r, * You express your beliefs%, drives%, heritage%, or background., %r, * You struggled with issues from your vice or traumas during the session.), 0, %1))
 
+@@ TODO: Make allies and rivals addable. Make Favorites addable?
+
 &layout.friends [v(d.cgf)]=strcat(divider(Friends, %1), setq(E, ulocal(f.get-player-stat, %0, rival)), setq(A, ulocal(f.get-player-stat, %0, ally)), %r, multicol(iter(ulocal(f.get-player-stat, %0, friends), strcat(itext(0), switch(itext(0), %qA, %b%cg%(Ally%), %qE, %b%cr%(Rival%))), |, |), * *, 0, |, %1))
 
 &layout.gear [v(d.cgf)]=strcat(divider(Playbook gear, %1), %r, multicol(edit(iter(fliplist(ulocal(f.get-player-stat, %0, gear), 2, |), itext(0), |, |), %(0L%), %ch%cx(0L)%cn), * *, 0, |, %1), %r, ulocal(layout.other-gear, %0, %1, %2), %r, ulocal(layout.load-chart, %0, %1), if(t(%2), strcat(%r, ulocal(layout.standard-gear, %0, %1, %2))), %r, ulocal(layout.coin, %0, %1))
 
-&layout.coin [v(d.cgf)]=strcat(divider(Coin and wealth, %1), %r, multicol(strcat(Coin:, |, ulocal(f.get-player-stat-or-zero, %0, coin), /4, |, Stash:, |, ulocal(f.get-player-stat-or-zero, %0, stash)/40, |, Lifestyle:, |, ulocal(f.get-lifestyle-desc, %0), %b, %(, ulocal(f.get-lifestyle, %0), %)), 15 5 * 5 * 15, 0, |, %1))
+&layout.coin [v(d.cgf)]=strcat(divider(Coin and wealth, %1), %r, multicol(strcat(Coin:, |, ulocal(f.get-player-stat-or-zero, %0, coin), /4, |, Stash:, |, ulocal(f.get-player-stat-or-zero, %0, stash)/40, |, Lifestyle:, |, ulocal(f.get-lifestyle-desc, %0), %b, %(, ulocal(f.get-lifestyle, %0), %)), 15 5 * 6 12 *r, 0, |, %1))
 
 &layout.standard-gear [v(d.cgf)]=strcat(divider(Standard gear, %1), %r, multicol(edit(iter(fliplist(if(t(setr(G, ulocal(f.get-player-stat, %0, standard gear))), %qG, xget(%vD, d.standard_gear)), 2, |), itext(0), |, |), %(0L%), %ch%cx%(0L%)%cn), * *, 0, |, %1))
 

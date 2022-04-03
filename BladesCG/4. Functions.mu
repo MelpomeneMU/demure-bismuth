@@ -269,7 +269,9 @@ th ulocal(v(d.cgf)/f.get-player-stat, %#, crew object)
 
 &f.get-lifestyle [v(d.cgf)]=div(ulocal(f.get-player-stat, %0, Stash), 10)
 
-&f.get-lifestyle-desc [v(d.cgf)]=case(ulocal(f.get-lifestyle, %0), 4, Fine, 3, Modest, 2, Meager, Poor soul)
+th ulocal(v(d.cgf)/f.get-lifestyle, #161)
+
+&f.get-lifestyle-desc [v(d.cgf)]=case(ulocal(f.get-lifestyle, %0), 3, Fine, 2, Modest, 1, Meager, Poor soul)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ XP functions

@@ -40,7 +40,7 @@
 
 &d.crew-sheet-sections [v(d.cgdb)]=Crew1|Crew2|Bio|Abilities|Upgrades|Contacts|Factions|XP Triggers|Members|Map|Cohorts
 
-&d.stats_editable_after_chargen [v(d.cgdb)]=Name|Alias|Look
+&d.stats_editable_after_chargen [v(d.cgdb)]=Name|Alias|Look|Load
 
 @@ Consider expanding editable stats - Playbook, Crew Type, etc should maybe be changeable after CG. Maybe there are others - stats that change the feel of the character or crew but not the stats. (Consider who can change those stats in a crew, if we allow crews to be editable after CG.)
 
@@ -74,7 +74,7 @@
 &d.crew-stats-that-default [v(d.cgdb)]=Contacts|Favorite|Crew Abilities|Crew XP Triggers
 
 @@ Stuff we want to be settable by staff but don't want players to mess with.
-&d.staff-only-stats [v(d.cgdb)]=Heat|Crew Coin|Wanted Level|Hold|Stress|Traumas|Healing|Coin|Claims
+&d.staff-only-stats [v(d.cgdb)]=Heat|Crew Coin|Wanted Level|Hold|Stress|Traumas|Healing|Coin|Claims|Stash
 
 &d.map-list [v(d.cgdb)]=Map A1|Map A2|Map A3|Map A4|Map A5|Map B1|Map B2|Map B4|Map B5|Map C1|Map C2|Map C3|Map C4|Map C5
 
@@ -133,9 +133,11 @@
 @@ Scoundrel stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.scoundrel-stats [v(d.cgdb)]=Hunt|Study|Survey|Tinker|Finesse|Prowl|Skirmish|Wreck|Attune|Command|Consort|Sway|Stress|Traumas|Healing|Load|Coin|Playbook
+&d.scoundrel-stats [v(d.cgdb)]=Hunt|Study|Survey|Tinker|Finesse|Prowl|Skirmish|Wreck|Attune|Command|Consort|Sway|Stress|Traumas|Healing|Load|Coin|Stash|Playbook
 
 &d.value.coin [v(d.cgdb)]=0|1|2|3|4
+
+&d.value.stash [v(d.cgdb)]=0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40
 
 &d.value.stress [v(d.cgdb)]=0|1|2|3|4|5|6|7|8|9|10
 
@@ -149,8 +151,6 @@
 &d.required-scoundrel-bio [v(d.cgdb)]=Name|Playbook|Heritage|Background|Vice|Vice Purveyor|Age
 
 @@ TODO: Add values for Vice Purveyor based on vice
-
-&d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire
 
 &d.value.age [v(d.cgdb)]=Young Adult|Adult|Mature|Elderly
 
@@ -190,7 +190,172 @@
 
 &d.actions [v(d.cgdb)]=Hunt|Study|Survey|Tinker|Finesse|Prowl|Skirmish|Wreck|Attune|Command|Consort|Sway
 
-&d.abilities [v(d.cgdb)]=d.abilities.cutter d.abilities.hound d.abilities.leech d.abilities.lurk d.abilities.slide d.abilities.spider d.abilities.whisper
+&d.standard_gear [v(d.cgdb)]=[ ] A blade or two|[ ] Throwing knives|[ ] A pistol [ ] A 2nd pistol|[ ]-[ ] A large weapon|[ ] An unusual weapon|[ ]-[ ] Armor [ ]-[ ]-[ ] +Heavy|[ ] Burglary Gear|[ ]-[ ] Climbing gear|[ ] Arcane implements|[ ] Documents|[ ] Subterfuge supplies|[ ]-[ ] Demolition tools|[ ] Tinkering tools|[ ] Lantern
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire|Drwid|Faegir|Hersir|Prests|Serkr|Skipas|Vik|Faris|Janissary|Mirage|Rafiq|Rakshasa|Vizier|Zindiq
+
+&d.abilities [v(d.cgdb)]=d.abilities.cutter d.abilities.hound d.abilities.leech d.abilities.lurk d.abilities.slide d.abilities.spider d.abilities.whisper d.abilities.drwid d.abilities.faegir d.abilities.hersir d.abilities.prests d.abilities.serkr d.abilities.skipas d.abilities.vik d.abilities.faris d.abilities.janissary d.abilities.mirage d.abilities.rafiq d.abilities.rakshasa d.abilities.vizier d.abilities.zindiq
+
+@@ To add a new playbook:
+
+@@ 1. Add the playbook to &d.value.playbook
+@@ 2. Add the abilities attribute to &d.abilities
+@@ 3. Fill out one of the blocks below.
+
+@@ Notes:
+@@ - Sub-selectable abilities should be broken out like: Ghost Hunter (mind-link)|Ghost Hunter (arrow-swift), etc.
+@@ - Try to keep the case (upper and lower) similar to what's already written
+@@ - If an ability starts with "The", consider removing the "The" so players can find it easier. The Devil's Footsteps or just Devil's Footsteps? What will players expect?
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.faris [v(d.cgdb)]=address a challenge with a Show of Force or Leadership
+
+&d.friends.faris [v(d.cgdb)]=Bilal Maat, a corrupt lawyer|Imran Pasha, a gang boss|Lenora Drakewell, an Imperial diplomat|Nurul Fallash, a leviathan captain|Sordat Khan, a sheikh
+
+&d.abilities.faris [v(d.cgdb)]=Leader|Ambitious|Battleborn|Expertise|Ghost Busters (Fight ghosts)|Ghost Busters (Survive Deathlands)|Ghost Busters (Possession)|Tiger's Fury|Vigorous
+
+&d.gear.faris [v(d.cgdb)]=[ ] (0L) Entourage|[ ] Fine clothes & jewelry|[ ] Fine hand weapon|[ ] Fine pair of pistols|[ ] Electroplasmic ammunition
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.janissary [v(d.cgdb)]=address a challenge with Courage or Attention to Detail
+
+&d.friends.janissary [v(d.cgdb)]=Aziz, a bartender|Hanifa, a maid|Nima, a snitch|Omid, muscle-for-hire|Vishka, a driver
+
+&d.abilities.janissary [v(d.cgdb)]=Bodyguard|Ghost Fighter|Ghost Mind|Herald|Mule|Security|Strategic Retreat|Tough as Nails
+
+&d.gear.janissary [v(d.cgdb)]=[ ] Dark-sight goggles|[ ] Fine hand weapon|[ ] (0L) Fine map|[ ] (0L) Manacles & chain|[ ] Spyglass
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.mirage [v(d.cgdb)]=address a challenge with Deception or Showmanship
+
+&d.friends.mirage [v(d.cgdb)]=Arzu, an actress|Durjan Hask, a poet|Elif, a shopkeeper|Nasra Zoshavid, a city official|Yashua, a snake charmer
+
+&d.abilities.mirage [v(d.cgdb)]=Illusionist|Cloak & Dagger|Conjurer|Like a Star|Misdirection|Practiced|Rook's Gambit|Strange Methods
+
+@@ TODO: Note HR: Mirage does not have a blowgun & darts, syringes. (They don't have any potions with which to use them.)
+
+&d.gear.mirage [v(d.cgdb)]=[ ] (0L) Fine cover identity|[ ] Fine disguise kit|[ ] (0L) Fine loaded dice, trick cards|[ ] Fine tinkering tools|[ ] [ ] [ ] Gadgets
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.rafiq [v(d.cgdb)]=address a challenge with Deception or Influence
+
+&d.friends.rafiq [v(d.cgdb)]=Forcha Khoravid, a noble|Mirza, a youth|Nusha, a courtesan|Quarraq, a demon|Vishka, a kidnapper
+
+&d.abilities.rafiq [v(d.cgdb)]=Eye for Weakness|Cut-out|From Beyond|Functioning Vice|Like Looking Into a Mirror|Occultist|Trust In Me|Weaving the Web
+
+&d.gear.rafiq [v(d.cgdb)]=[ ] A cane sword|[ ] (0L) Concealed palm pistol|[ ] (0L) Fine lockpicks|[ ] (0L) Trance powder
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.rakshasa [v(d.cgdb)]=address a challenge with Stealth or Violence
+
+&d.friends.rakshasa [v(d.cgdb)]=Benaz, a prison guard|Dameer, a death cultist|Mohadisa, an alchemist|Nimet, a coal seller|Raban, a gravedigger
+
+&d.abilities.rakshasa [v(d.cgdb)]=Ghoul|Ambush|The Black Speech|Ghost Hunter (ghost-form)|Ghost Hunter (mind-link)|Ghost Hunter (arrow-swift)|Monstrous|Scout|Subterfuge
+
+&d.gear.rakshasa [v(d.cgdb)]=[ ] Electroplasmic ammunition|[ ]-[ ] Fine long rifle|[ ] Light climbing gear|[ ] Scary weapon or tool|[ ] (0L) A trained hunting pet
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.vizier [v(d.cgdb)]=address a challenge with Planning or Teamwork
+
+&d.friends.vizier [v(d.cgdb)]=Bilal Maat, an infernalist|Gulrukh, a librarian|Reyasso, an art dealer|Sallahattin, a lecturer|Tamadur Faran, the explorer
+
+&d.abilities.vizier [v(d.cgdb)]=Red Right Hand|Alchemist|Calculating|Foresight|A Little Something on the Side|Physicker|Prepared|Ritual
+
+&d.gear.vizier [v(d.cgdb)]=[ ] Bandolier (3 uses)|[ ] (0L) Blowgun & darts, syringes|[ ] Blueprints|[ ] (0L) Demonbane charm|[ ] Fine tinkering tools
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.zindiq [v(d.cgdb)]=address a challenge with Oratory or Destruction
+
+&d.friends.zindiq [v(d.cgdb)]=Faizani, a seditionist|Hoshan, a junkie|Jade Eyes, a cult leader|Kashr, a madman|Lenora Drakewell, a spy
+
+&d.abilities.zindiq [v(d.cgdb)]=Revolutionary|Artificer|Compel|Driven|Ghost Ward|Infiltrator|Pyromancer|Saboteur
+
+&d.gear.zindiq [v(d.cgdb)]=[ ] (0L) Fine cover identity|[ ] (0L) Fine lockpicks|[ ] Fine spirit mask|[ ] [ ] [ ] Gadgets|[ ] (0L) Ghost key
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.drwid [v(d.cgdb)]=address a challenge with Natural Knowledge or Primal Power
+
+&d.friends.drwid [v(d.cgdb)]=Arenght, an old hersir|Fostro, an eagle-owl|Harrel, a fair trader|Landris, a prests|Megh, an herbalist
+
+&d.abilities.drwid [v(d.cgdb)]=Commune|Drwidism|Nature's Way|Plenty|Shamanism|Warden of the Wilds|Wrath of Nature
+
+&d.gear.drwid [v(d.cgdb)]=[ ] (0L) Fine animal companion|[ ] Fine quarterstaff|[ ] (0L) Vial of slumber essence|[ ] Tribal spirit mask|[ ] Plants & herbs
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.faegir [v(d.cgdb)]=address a challenge with Creativity or Dedication
+
+&d.friends.faegir [v(d.cgdb)]=Tjormun, a whimsical noble|Kira, a chandler|Bosh, a chemist|Stras, seducer of demons|Yurggenn, a philosopher
+
+&d.abilities.faegir [v(d.cgdb)]=Creative Mind|Ghost Entertainer|Marchand|Masterpiece|Patient Creator|Social Climber|Subliminal|Mischievous
+
+&d.gear.faegir [v(d.cgdb)]=[ ] Fine tinkering tools|[ ]-[ ] Fine artist tools|[ ] Entertainer tools|[ ] (0L) Tattoos|[ ] (0L) Thought essence
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.hersir [v(d.cgdb)]=address a challenge with Leadership or Strategy
+
+&d.friends.hersir [v(d.cgdb)]=Bran, a blacksmith|Roose, a lieutenant|Hermund, a serkr|Arog, a drwid|Mullen, a kennel master
+
+&d.abilities.hersir [v(d.cgdb)]=Every Blade Counts|Feast at my Table|Ghost Battalion|Hersir's Armory|Know Your Ranks|Lead By Example|Shield Wall|Strategist
+
+@@ TODO: Note HRs: Fine Clothes & Jewelry is 1L not 2L and Warpaint is 0L.
+
+&d.gear.hersir [v(d.cgdb)]=[ ]-[ ] Fine heavy weapon or shield|[ ] Fine clothes & jewelry|[ ] (0L) Warpaint|[ ] (0L) Battle horn|[ ] (0L) Vehicle
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.prests [v(d.cgdb)]=address a challenge with Ancient Power or Personal Influence
+
+&d.friends.prests [v(d.cgdb)]=Brunhilde, a drwid|Manticore, an inquisitive|Mint, a former thrall|Rolnio, a jarl|A Forgotten God (note required)
+
+&d.abilities.prests [v(d.cgdb)]=Conduit|Divine Envoy|Ghost Bond|God's Favor|Preacher|Prescience|Sacrifice|Visage
+
+&d.gear.prests [v(d.cgdb)]=[ ] Fine spirit totem|[ ] Fine sacrificial blade|[ ] Ritualist's implements|[ ] (0L) Trance powder|[ ] (0L) Spirit key
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.serkr [v(d.cgdb)]=address a challenge with Violence or Mayhem
+
+&d.friends.serkr [v(d.cgdb)]=Thurma, a ghost hunter|Pavle, a skipas|Latrea, a mercenary soldier|Volgar, a clan chieftan|Q'radin, a spirit in a petrified tree
+
+&d.abilities.serkr [v(d.cgdb)]=Beast Within|Frenzy|Ghost Bear|Kodiak's Vigor|Predator|Ravager|Reckless|Zwarghtahrg
+
+&d.gear.serkr [v(d.cgdb)]=[ ] Fine heavy weapon|[ ]-[ ]-[ ] Bear skin armor|[ ] (0L) Rage essence vial|[ ] Light demolition tools|[ ] Ancestral totem
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.skipas [v(d.cgdb)]=address a challenge with Technical Skill or Deception
+
+@@ TODO: Note HRs: Nurm is a dock foreman, not a Lockport foreman.
+
+&d.friends.skipas [v(d.cgdb)]=Krarg, a veteran vik|Traggrar, a factory worker|Chalk, a skovland war survivor|Beowulf, a hersir|Nurm, a dock foreman
+
+&d.abilities.skipas [v(d.cgdb)]=Brilliant|Everyone's Friend|Ghost Navigator|Guild's Profits|Heave!|Just a Fisherman|Salt's Worth|Skipsvel
+
+&d.gear.skipas [v(d.cgdb)]=[ ] Fine tinkering tools|[ ]-[ ] Fine climbing gear|[ ] Guild badge & uniform|[ ] Blueprints|[ ] Life buoy
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp_triggers.vik [v(d.cgdb)]=address a challenge with Violence or Camaraderie
+
+&d.friends.vik [v(d.cgdb)]=Aina, a sea witch|Olivia, a tavern owner|Resh, a docker|Stellan, a veteran cannoneer|Lord Strangford, a leviathan hunter captain
+
+&d.abilities.vik [v(d.cgdb)]=All Hands on Deck|Bring Me My Red Shirt|Board & Plunder|Dead Men Tell No Tales|Feed the Fishes|Full Steam Ahead|Sails!|Splice the Mainbrace
+
+&d.gear.vik [v(d.cgdb)]=[ ] Fine pair of pistols|[ ] Fine hand weapon|[ ]-[ ] Shield|[ ] Light climbing gear|[ ] Electroplasmic ammunition
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.abilities.cutter [v(d.cgdb)]=Battleborn|Bodyguard|Ghost Fighter|Leader|Mule|Not to be Trifled With|Savage|Vigorous
 
@@ -200,15 +365,17 @@
 
 &d.gear.cutter [v(d.cgdb)]=[ ] Fine hand weapon|[ ]-[ ] Fine heavy weapon|[ ] Scary weapon or tool|[ ] (0L) Manacles & chain|[ ] (0L) Rage essence vial|[ ] (0L) Spiritbane charm
 
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
 &d.abilities.hound [v(d.cgdb)]=Sharpshooter|Focused|Ghost Hunter (ghost-form)|Ghost Hunter (mind-link)|Ghost Hunter (arrow-swift)|Scout|Survivor|Tough as Nails|Vengeful
 
 &d.friends.hound [v(d.cgdb)]=Steiner, an assassin|Celene, a sentinel|Melvir, a phsysicker|Veleris, a spy|Casta, a bounty hunter
 
 &d.xp_triggers.hound [v(d.cgdb)]=address a challenge with Tracking or Violence
 
-&d.standard_gear [v(d.cgdb)]=[ ] A blade or two|[ ] Throwing knives|[ ] A pistol [ ] A 2nd pistol|[ ]-[ ] A large weapon|[ ] An unusual weapon|[ ]-[ ] Armor [ ]-[ ]-[ ] +Heavy|[ ] Burglary Gear|[ ]-[ ] Climbing gear|[ ] Arcane implements|[ ] Documents|[ ] Subterfuge supplies|[ ]-[ ] Demolition tools|[ ] Tinkering tools|[ ] Lantern
-
 &d.gear.hound [v(d.cgdb)]=[ ] Fine pair of pistols|[ ]-[ ] Fine long rifle|[ ] Electroplasmic ammunition|[ ] (0L) A trained hunting pet|[ ] Spyglass|[ ] (0L) Spiritbane charm
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.abilities.leech [v(d.cgdb)]=Alchemist|Analyst|Artificer|Fortitude|Ghost Ward|Phsysicker|Saboteur|Venomous
 
@@ -218,7 +385,9 @@
 
 &d.gear.leech [v(d.cgdb)]=[ ] Fine tinkering tools|[ ]-[ ] Fine wrecking tools|[ ] (0L) Blowgun & darts, syringes|[ ] Bandolier (3 uses)|[ ] Bandolier (3 uses)|[ ] [ ] [ ] Gadgets
 
-&d.abilities.lurk [v(d.cgdb)]=Infiltrator|Ambush|Daredevil|The Devil's Footsteps|Expertise|Ghost Veil|Reflexes|Shadow
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.abilities.lurk [v(d.cgdb)]=Infiltrator|Ambush|Daredevil|Devil's Footsteps|Expertise|Ghost Veil|Reflexes|Shadow
 
 &d.friends.lurk [v(d.cgdb)]=Telda, a beggar|Darmot, a bluecoat|Frake, a locksmith|Roslyn Kellis, a noble|Petra, a city clerk
 
@@ -226,13 +395,17 @@
 
 &d.gear.lurk [v(d.cgdb)]=[ ] (0L) Fine lockpicks|[ ] Fine shadow cloak|[ ] Light climbing gear|[ ] (0L) Silence potion vial|[ ] Dark sight goggles|[ ] (0L) Spiritbane charm
 
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
 &d.abilities.slide [v(d.cgdb)]=Rook's Gambit|Cloak & Dagger|Ghost Voice|Like Looking into a Mirror|A Little Something on the Side|Mesmerism|Subterfuge|Trust in Me
 
 &d.friends.slide [v(d.cgdb)]=Bryl, a drug dealer|Bazso Baz, a  gang leader|Klyra, a tavern owner|Nyryx, a prostitute|Harker, a jail-bird
 
 &d.xp_triggers.slide [v(d.cgdb)]=address a challenge with Deception or Influence
 
-&d.gear.slide [v(d.cgdb)]=[ ] (0L) Fine clothes and jewelry|[ ] Fine disguise kit|[ ] (0L) Fine loaded dice, trick cards|[ ] (0L) Trance powder|[ ] A cane sword|[ ] (0L) Spiritbane charm
+&d.gear.slide [v(d.cgdb)]=[ ] (0L) Fine clothes & jewelry|[ ] Fine disguise kit|[ ] (0L) Fine loaded dice, trick cards|[ ] (0L) Trance powder|[ ] A cane sword|[ ] (0L) Spiritbane charm
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.abilities.spider [v(d.cgdb)]=Foresight|Calculating|Connected|Functioning Vice|Ghost Contract|Jail Bird|Mastermind|Weaving the Web
 
@@ -242,6 +415,8 @@
 
 &d.gear.spider [v(d.cgdb)]=[ ] (0L) Fine cover identity|[ ] Fine bottle of whiskey|[ ] Blueprints|[ ] (0L) Vial of slumber essence|[ ] (0L) Concealed palm pistol|[ ] (0L) Spiritbane charm
 
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
 &d.abilities.whisper [v(d.cgdb)]=Compel|Ghost Mind|Iron Will|Occultist|Ritual|Strange Methods|Tempest|Warded
 
 &d.friends.whisper [v(d.cgdb)]=Nyryx, a possessor ghost|Scurlock, a vampire|Setarra, a demon|Quellyn, a witch|Flint, a spirit trafficker
@@ -250,19 +425,25 @@
 
 &d.gear.whisper [v(d.cgdb)]=[ ]-[ ] Fine lightning hook|[ ] Fine spirit mask|[ ] (0L) Electroplasm vials|[ ] Spirit Bottles (2)|[ ] (0L) Ghost key|[ ] (0L) Demonbane charm
 
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
 &d.abilities.ghost [v(d.cgdb)]=Ghost Form|Dissipate|Manifest|Poltergeist|Possess
 
 &d.xp_triggers.ghost [v(d.cgdb)]=Exact Vengeance, Express Outrage or Anger, or Settle Scores from Your Heritage or Background
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.abilities.hull [v(d.cgdb)]=Compartments|Electroplasmic Projectors|Interface|Overcharge|Secondary Hull|Frame Upgrade
 
 &d.xp_triggers.hull [v(d.cgdb)]=fulfill your Drives despite Difficulty or Danger or Suppress or Ignore your former Human Qualities
 
+&d.frame_upgrades.hull [v(d.cgdb)]=Interior Chamber|Life-like Appearance|Levitation|Phonograph|Plating|Reflexes|Sensors|Smoke Projectors|Spider Climb|Spring-leap Pistons
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
 &d.abilities.vampire [v(d.cgdb)]=Arcane Sight|Dark Talent|Sinister Guile|Terrible Power|A Void in the Echo
 
 &d.xp_triggers.vampire [v(d.cgdb)]=Display Dominance or Slay without Mercy
-
-&d.frame_upgrades.hull [v(d.cgdb)]=Interior Chamber|Life-like Appearance|Levitation|Phonograph|Plating|Reflexes|Sensors|Smoke Projectors|Spider Climb|Spring-leap Pistons
 
 &d.strictures.vampire [v(d.cgdb)]=Slumber|Forbidden|Repelled|Bestial|Bound
 
