@@ -237,9 +237,9 @@
 
 &d.abilities.mirage [v(d.cgdb)]=Illusionist|Cloak & Dagger|Conjurer|Like a Star|Misdirection|Practiced|Rook's Gambit|Strange Methods
 
-@@ TODO: Note HR: Mirage does not have a blowgun & darts, syringes. (They don't have any potions with which to use them.)
+@@ TODO: Note HR: Mirage does not have a blowgun & darts, syringes. (They don't have any potions with which to use them.) This looks to have been a typo in the book's items entry and the value is replaced by Spiritbane charm on the sheet.
 
-&d.gear.mirage [v(d.cgdb)]=[ ] (0L) Fine cover identity|[ ] Fine disguise kit|[ ] (0L) Fine loaded dice, trick cards|[ ] Fine tinkering tools|[ ] [ ] [ ] Gadgets
+&d.gear.mirage [v(d.cgdb)]=[ ] (0L) Fine cover identity|[ ] Fine disguise kit|[ ] (0L) Fine loaded dice, trick cards|[ ] Fine tinkering tools|[ ] [ ] [ ] Gadgets|[ ] Spiritbane charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
