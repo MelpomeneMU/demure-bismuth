@@ -115,18 +115,20 @@
 
 +channel/header Staff=%x<#894ff7><%xwStaff%x<#894ff7>>
 
-@@ Code idea: +temproom Tavern > makes you a random tavern with desc, randomized name, etc.
+@@ TODO: MAYBE: Code idea: +temproom Tavern > makes you a random tavern with desc, randomized name, etc.
 
-@@ Changed the name of IC Handle to Street Alias and IC Occupation to Expert Type, added Crew.
-&d.allowed-who-fields [v(d.bd)]=Alias|Apparent Age|Connection Info|Connection Time|DBref|Doing|Gender|IC Full Name|Street Alias|Expert Type|IC Pronouns|Idle|Last IP|Location|Mail Stats|Name|Note|OOC Pronouns|Played-by|Position|Private Alts|Public Alts|Quote|RP Prefs|Short-desc|Staff Notes|Status|Themesong|Timezone|Wiki|Crew
+@@ Changed the name of IC Handle to Street Alias and IC Occupation to Expert Type, added Crew. Changed Apparent Age to Age (since we have an Age stat) and removed Age from the settable fields since it's a stat with specific values (Young Adult, Adult, Mature, Elder).
+&d.allowed-who-fields [v(d.bd)]=Alias|Age|Connection Info|Connected|DBref|Doing|Gender|IC Full Name|Street Alias|Expert Type|IC Pronouns|Idle|Last IP|Location|Mail Stats|Name|Note|OOC Pronouns|Played-by|Position|Private Alts|Public Alts|Quote|RP Prefs|Short-desc|Staff Notes|Status|Themesong|Timezone|Wiki|Crew
 
 @force me=@edit [v(d.bd)]/d.who-field-widths=$, %%b20
 
-&d.section.ic_info [v(d.bd)]=Apparent Age|Gender|IC Full Name|Street Alias|Crew|Crew Title|Expert Type|IC Pronouns|Played-by|Short-desc|Wiki|Themesong|Quote
+&d.section.ic_info [v(d.bd)]=Age|Gender|IC Full Name|Street Alias|Crew|Crew Title|Expert Type|IC Pronouns|Played-by|Short-desc|Wiki|Themesong|Quote
 
-&d.finger-settable-fields [v(d.bd)]=Apparent Age|Gender|IC Full Name|Street Alias|Crew Title|IC Pronouns|OOC Pronouns|Played-by|Position|Public Alts|Quote|RP Prefs|Short-desc|Themesong|Timezone|Wiki
+&d.finger-settable-fields [v(d.bd)]=Gender|IC Full Name|Street Alias|Crew Title|IC Pronouns|OOC Pronouns|Played-by|Position|Public Alts|Quote|RP Prefs|Short-desc|Themesong|Timezone|Wiki
 
 &f.get-expert_type [v(d.bf)]=xget(%0, _stat.expert_type)
+
+&f.get-age [v(d.bf)]=xget(%0, _stat.age)
 
 &f.get-crew [v(d.bf)]=if(t(setr(N, xget(setr(C, xget(%0, _stat.crew_object)), _stat.crew_name))), strcat(%qN, %b, %(, setq(T, default(%qC/_stat.tier, 0)), if(t(%qT), roman(%qT), %qT), %)))
 
