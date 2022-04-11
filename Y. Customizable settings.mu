@@ -1,3 +1,4 @@
+@@ This is an overlay on the default file. Without default file, stuff will be missing.
 @@ Here are where the settings go. Change this stuff if you want!
 
 @@ Default alert message
@@ -138,5 +139,8 @@
 
 &jobs [v(d.pp)]=BTCMO
 
+@@ %0: an approved player
+&f.is-active-player [v(d.bf)]=lte(sub(secs(), xget(%0, _last-conn)), mul(v(d.max-days-before-name-available), 60, 60, 24))
+
 @@ Show retired as a separate thing
-&layout.finger-footer [v(d.bf)]=cat(ulocal(f.get-status, %0, %1), case(1, isstaff(%0), staff, isapproved(%0), approved, if(t(xget(%0, _stat.retired_date)), retired and unapproved, unapproved)), ulocal(f.get-idle, %0, %1) idle)
+&layout.finger-footer [v(d.bf)]=cat(ulocal(f.get-status, %0, %1), case(1, isstaff(%0), staff, isapproved(%0), if(ulocal(f.is-active-player, %0), approved, approved but inactive), if(t(xget(%0, _stat.retired_date)), retired and unapproved, if(t(xget(%0, _stat.frozen_date)), frozen and unapproved, unapproved))), if(strmatch(setr(A, ulocal(f.get-idle, %0, %1)), -), if(ulocal(f.is-active-player, %0), disconnected, inactive), %qA idle))
