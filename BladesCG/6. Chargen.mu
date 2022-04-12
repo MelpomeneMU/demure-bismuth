@@ -94,7 +94,7 @@ TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, o
 
 &c.+approve [v(d.cg)]=$+approve *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to approve people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert hasattr(%qP, _stat.locked)={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) has not locked [poss(%qP)] stats yet and cannot be approved.; }; @assert t(%1)={ @trigger me/tr.error=%#, Please enter a reason for approval.; }; @trigger me/tr.approve-player=%qP, %#, %1; @trigger me/tr.success=%#, You approved [ulocal(f.get-name, %qP, %#)] with the comment '%1'.; @trigger me/tr.message=%qP, ulocal(f.get-name, %#, %qP) approved your character with the comment '%1'. Congratulations!; 
 
-&tr.approve-player [v(d.cg)]=@trigger me/tr.lock-stats=%0; @set %0=APPROVED; @set %0=[ulocal(f.get-stat-location-on-player, approved date)]:[prettytime()]; @set %0=[ulocal(f.get-stat-location-on-player, approved by)]:[ulocal(f.get-name, %1)] (%1); @trigger me/tr.log=%0, _app-, %1, Approved with comment '%2'.;
+&tr.approve-player [v(d.cg)]=@trigger me/tr.lock-stats=%0; @set %0=APPROVED; @set %0=[ulocal(f.get-stat-location-on-player, approved date)]:[prettytime()]; @set %0=[ulocal(f.get-stat-location-on-player, approved by)]:[ulocal(f.get-name, %1)] (%1); @set %0=[ulocal(f.get-stat-location-on-player, frozen date)]:; @set %0=[ulocal(f.get-stat-location-on-player, frozen by)]:; @trigger me/tr.log=%0, _app-, %1, Approved with comment '%2'.;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Unapproval
@@ -105,6 +105,24 @@ TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, o
 &tr.unapprove-player [v(d.cg)]=@set %0=!APPROVED; @set %0=[ulocal(f.get-stat-location-on-player, approved date)]:; @set %0=[ulocal(f.get-stat-location-on-player, approved by)]:; @trigger me/tr.log=%0, _app-, %1, Unapproved with comment '%2'.; @trigger me/tr.tel-unapproved-player=%0, %1;
 
 &tr.tel-unapproved-player [v(d.cg)]=@if cand(not(default(d.allow-unapproved-players-IC, 0)), not(ulocal(f.is-location-ooc, loc(%0))))={ @trigger me/tr.travel_to_destination=v(d.ooc), %0, %1, sent by; };
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Freezing
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ DOING: +freeze and +unfreeze. Must decide whether it auto-claims the name. Decided yes because 1) makes it obvious someone is frozen at a glance and 2) removes deterrent from new players of 'oh my name is taken'. Frozen players can't RP. 
+
+&c.+freeze [v(d.cg)]=$+freeze *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to unapprove and freeze people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert t(%1)={ @trigger me/tr.error=%#, Please enter a reason for freezing. The player will see this message.; }; @trigger me/tr.unapprove-player=%qP, %#, %1; @trigger me/tr.freeze-player=%qP, %#, %1; @trigger me/tr.success=%#, You unapproved and froze [ulocal(f.get-name, %qP, %#)] with the comment '%1'.; @trigger me/tr.message=%qP, You have been unapproved and frozen by [ulocal(f.get-name, %#, %qP)] with the comment '%1'.;
+
+&tr.freeze-player [v(d.cg)]=@set %0=[ulocal(f.get-stat-location-on-player, frozen date)]:[prettytime()]; @set %0=[ulocal(f.get-stat-location-on-player, frozen by)]:[ulocal(f.get-name, %1)] (%1); @name %0=strcat(edit(first(name(%0), _), %b, _), edit(%0, #, _)); @wipe %0/alias; @trigger me/tr.log=%0, _app-, %1, Unapproved and frozen with comment '%2'.; @trigger me/tr.tel-unapproved-player=%0, %1;
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Unfreezing
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&c.+unfreeze [v(d.cg)]=$+unfreeze *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to unfreeze people.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @eval setq(N, ulocal(f.get-name, %qP, %#)); @assert t(%1)={ @trigger me/tr.error=%#, Please enter a reason for unfreezing. The player will see this message.; }; @trigger me/tr.unfreeze-player=%qP, %#, %1; @trigger me/tr.success=%#, You unfroze [ulocal(f.get-name, %qP, %#)] with the comment '%1'. Note that unfreezing does not approve players for play - if you want to approve them%, type %ch+approve <player>=<reason>%cn.; @trigger me/tr.message=%qP, You have been unfrozen by [ulocal(f.get-name, %#, %qP)] with the comment '%1'. You can reclaim your name with %ch@name me=<name>%cn%, so long as another player hasn't taken it.;
+
+&tr.unfreeze-player [v(d.cg)]=@set %0=[ulocal(f.get-stat-location-on-player, frozen date)]:; @set %0=[ulocal(f.get-stat-location-on-player, frozen by)]:; @trigger me/tr.log=%0, _app-, %1, Unfrozen with comment '%2'.;
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Retirement
