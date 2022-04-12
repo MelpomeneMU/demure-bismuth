@@ -1,0 +1,26 @@
+{{help
+|topic=Approval
+|detail=These commands change a character's status in the following ways:
+
+* '''Unapproved''' - the default state. The character is not allowed IC. They may RP in temprooms.
+* '''Inactive''' - the character has not been active for 45 days. Their name may be claimed and they may end up booted from their crew. This is automatic and cannot be set by staff.
+* '''Approved''' - the character can go IC and RP.
+* '''Frozen''' - the character is not allowed IC and should not be RPing at all. Players freeze their characters when they make new ones that could cause alt conflict. Staff may freeze inactive characters to indicate that their effects on the grid have waned - they may lose property, status, etc. It's like retirement but they have a chance to possibly return. Freezing does take the character's name away, so that new players can claim it.
+* '''Retired''' - the character is not allowed IC and should not be RPing beyond a scene or two to wrap things up. Players retire characters in order to pass a portion of their advances on to new characters. Staff may also retire characters which are unthematic or otherwise simply not permitted, or whose players have been banned.
+
+Players do see the reasons given for each type of approval change, and can view them in +app/log.
+|example=
+* '''+approve <player>=<reason>''' - approve an unapproved or frozen character.
+* '''+unapprove <player>=<reason>''' - unapprove a character.
+* '''+freeze <player>=<reason>''' - freeze a character.
+* '''+unfreeze <player>=<reason>''' - unfreeze but don't approve a character.
+* '''+retire <player>=<reason>''' - retire a character.
+* '''+app/log''' - (player-usable) view your application history.
+* '''+app/log <player>''' - view a player's application history.
+|link1=+stat
+|link2=
+|link3=
+|link4=
+|category1=Staff_Commands
+|category2=
+}}

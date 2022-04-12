@@ -1,0 +1,14 @@
+{{help
+|topic=+stat2
+|detail=These +stat commands are designed to be used by staff to update player sheets. The player will always be notified (if they're connected) that a stat has changed, but staff are still responsible per [[News:Respect_Players'_Property|Respect Players' Property]] for notifying the player that 1) the change will take place, 2) what was changed, if the player isn't connected, and 3) that the changes are complete.<br /><br />Be aware that crew stat updates will be emitted to the crew's channel, so you may get questions if they hadn't realized the change was coming.<br /><br />'''Note:''' None of these commands spend Advancements.
+|example=
+* '''+stat/set <player>/<stat>=<value>''' - set a normal stat, like Name. To unset it, just don't include a value.
+* '''+stat/add <player>/<addable stat>=<value>''' - some stats are "addable" like Upgrades. +stat/add Friends=Sam the Blacksmith, for example.
+* '''+stat/rem <player>/<addable stat>=<value>''' - to remove an addable stat.
+|link1=+stat
+|link2=Approval
+|link3=Advancements
+|link4=
+|category1=Staff_Commands
+|category2=
+}}

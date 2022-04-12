@@ -1,0 +1,16 @@
+{{help
+|topic=+stat
+|detail=This command helps players set their character's stats. It's relevant even past character generation - some stats, such as Name, can be changed at any time. The general format is '''+stat <stat>=<value>'''. There are a few fancy tweaks to ensure it's not difficult, though.<br /><br />First and most importantly, if you're not sure what stat you're trying to set, try it out. If you get it wrong, you'll get a list of valid options to choose from, and if you get it right, you can always change it later.<br /><br />Second, we have a walk-through chargen ('''+travel cg''') and a Chargen channel ('''cg/on''') to help you out. Each step of the walkthrough explains your choices, and the Chargen channel is monitored by staff to answer your questions.<br /><br />With all of that said, on with the commands!
+|example=
+* '''+stat/set <stat>=<value>''' - set a normal stat, like Name. To unset it, just don't include a value.
+* '''+stat/add <addable stat>=<value>''' - some stats are "addable" like Upgrades. +stat/add Friends=Sam the Blacksmith, for example.
+* '''+stat/rem <addable stat>=<value>''' - to remove an addable stat.
+* '''+stats/clear''' - wipe your stats. Will ask if you're sure first.
+* '''+stats/lock''' - locks your stats and starts a Chargen job. Will ask if you're sure first.
+|link1=+stat2
+|link2=
+|link3=
+|link4=
+|category1=Chargen
+|category2=
+}}
