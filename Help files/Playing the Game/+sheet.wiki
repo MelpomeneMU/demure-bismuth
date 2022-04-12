@@ -1,0 +1,17 @@
+{{help
+|topic=+sheet
+|detail=Commands to view your character sheet.
+|example=
+* '''+sheet''' - see your sheet.
+* '''+sheet/all''' - see your entire sheet (may be spammy).
+* '''+sheet/<page>''' - see a page of your sheet.
+* '''+sheet <player>''' (staff-only) - see a player's sheet.
+* '''+sheet/all <player>''' (staff-only) - see a player's entire sheet (may be spammy).
+* '''+sheet/<page> <player>''' (staff-only) - see a page of a player's sheet.
+|link1=+gear
+|link2=+coin
+|link3=+crew
+|link4=+factions
+|category1=Playing_the_Game
+|category2=
+}}

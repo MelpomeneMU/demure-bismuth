@@ -1,0 +1,16 @@
+{{help
+|topic=+rep
+|detail=Rep is a measure of your reputation, and a currency you can spend to get things done. It varies regularly from Score to Score. You need a certain amount of rep to raise your crew's Tier, but past the required level, extra is lost, so it makes sense to spend some occasionally.
+|example=
+* '''+rep''' - see your crew's rep and reputation.
+* '''+rep/dt <#>=<reason>''' - spend a point of your crew's rep to gain a point of downtime for yourself.
+* '''+rep/spend <#>=<reason>''' - spend a point of rep without gaining downtime (required for some entanglements).
+* '''+rep/award <player>=<#> for <reason>''' (staff-only) - award a player's crew reputation.
+* '''+rep/spend <player>=<#> for <reason>''' (staff-only) - spend a player's crew's reputation.
+|link1=+coin
+|link2=+dt
+|link3=+stress
+|link4=+health
+|category1=Playing_the_Game
+|category2=
+}}

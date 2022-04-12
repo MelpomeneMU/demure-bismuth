@@ -1,0 +1,14 @@
+{{help
+|topic=+heat
+|detail=Heat is when the Bluecoats are after you. It complicates your Scores and makes your entanglements more dangerous. Heat affects your whole crew - any member can gain it in a Score, or clear it with downtime.
+|example=
+* '''+heat''' - see your crew's heat and Wanted Level.
+* '''+heat/gain <#>=<reason>''' - bring some heat down on your crew. 
+* '''+dt/heat''' - spend a point of downtime to clear a point of your crew's heat.
+|link1=+dt
+|link2=+coin
+|link3=+stress
+|link4=+health
+|category1=Playing_the_Game
+|category2=
+}}

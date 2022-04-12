@@ -1,0 +1,33 @@
+{{help
+|topic=+badges
+|detail=Badges are earnable tags that go in your +finger for other players to see. Some badges are earned automatically, some are granted as prizes or memorabilia, and some are bought for street cred.
+|example=
+* '''+badges''' - see your sharps and badges.
+* '''+badges <player>''' - see a player's public badges.
+* '''+badges/all''' - see all available badges.
+* '''+badge/info <badge>''' - see information about a particular badge.
+
+==== Managing your badges ====
+
+* '''+badge/wear <badge>''' - set your 'worn' badge. It will show up by your name in the OOC rooms.
+* '''+badge/unwear <badge>''' - take off your public badge.
+* '''+badge/hide <badge>''' - hide one of your badges from other players.
+* '''+badge/show <badge>''' - unhide a hidden badge.
+
+==== Staff commands ====
+
+* '''+badge/award <player>=<badge>''' - award a player a badge.
+* '''+badge/remove <player>=<badge>''' - remove a player's badge.
+* '''+badge/awardall <badge>''' - award '''all connected players''' a badge.
+* '''+badge/removeall <badge>''' - remove a badge from everyone who has it.
+* '''+badge/create <badge>=<description>''' - create a new badge.
+* '''+badge/retire <badge>''' - retire a badge. Staff will not give this badge out any longer.
+* '''+badge/reactivate <badge>''' - unretire a badge.
+* '''+badge/destroy <badge>''' - destroy a badge. Does not remove it from players that already have it. Will ask if you're sure.
+|link1=+sharps
+|link2=+noms
+|link3=+who
+|link4=+request
+|category1=Intermediate Commands
+|category2=
+}}

@@ -8,9 +8,9 @@
 * '''+stats/clear''' - wipe your stats. Will ask if you're sure first.
 * '''+stats/lock''' - locks your stats and starts a Chargen job. Will ask if you're sure first.
 |link1=+stat2
-|link2=
-|link3=
-|link4=
+|link2=+adv
+|link3=+xp
+|link4=+dt
 |category1=Chargen
 |category2=
 }}

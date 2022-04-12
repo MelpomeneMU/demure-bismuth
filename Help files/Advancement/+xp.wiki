@@ -1,0 +1,15 @@
+{{help
+|topic=+xp
+|detail=These commands manage a player's XP.
+|example=
+* '''+xp''' - view all your XP and the last 10 entries of your XP log.
+* '''+xp <player>''' - (staff-only) view another player's XP.
+* '''+xp/move <track>=<#>''' - move your untracked XP to a track where it can be used.
+* '''req/xp <title>=<text>''' - spending XP is currently done by player request to staff. No justification is required - just tell us how you want to spend it and we'll make it happen.
+|link1=+adv
+|link2=+rep
+|link3=+coin
+|link4=+stat
+|category1=Advancement
+|category2=Chargen
+}}

@@ -6,9 +6,9 @@
 * '''+stat/add <player>/<addable stat>=<value>''' - some stats are "addable" like Upgrades. +stat/add Friends=Sam the Blacksmith, for example.
 * '''+stat/rem <player>/<addable stat>=<value>''' - to remove an addable stat.
 |link1=+stat
-|link2=Approval
-|link3=Advancements
-|link4=
+|link2=+approve
+|link3=+adv
+|link4=+xp
 |category1=Staff_Commands
 |category2=
 }}

@@ -1,0 +1,28 @@
+{{help
+|topic=+dt or +downtime
+|detail=The downtime commands spend your Downtime, a stat you gain over time which can be used for IC things like getting rid of stress.
+|example=
+* '''+dt''' or '''+downtime''' - view your downtime and the last 10 downtime expenditures.
+* '''+dt/vice''' - spend downtime exercising your vice to clear some stress. Runs a risk of overindulgence, which will be handled in a job by staff.
+** '''+dt/need''' - the ghost version of this command.
+** '''+dt/feed''' - the vampire version of this command. It also heals the vampire.
+** '''+dt/fuel''' - the hull version of this command.
+* '''+dt/heat''' - spend downtime to clear some heat off your crew.
+* '''+dt/train <track>''' - spend downtime training one of your XP tracks. This grants you XP in that track depending on whether your crew has training facilities, and can be done once a week.
+* '''+dt/recover <#>''' - heal some harm. The # is determined by the Tinker action (or other relevant action) of the player healing you. (Remember that if you heal yourself, you take 2 stress!) This can be influenced by a variety of factors - whether you have Vigorous, whether you have access to an Infirmary, etc. '''The person being healed''' does the +dt/recover roll, since each roll deducts a downtime; this also allows the code to track your healing clock and move your harms down a level if necessary. (This is different from the book, where normally the person doing the healing would do the roll and the healed player would mark off their sheet manually.)
+* '''+dt/buy <#>''' - spend # coin to get # downtime.
+* '''+dt/spend <#>=<reason>''' - spend downtime without gaining a coded benefit.
+* '''req/acquire <title>=<text>''' - this creates a job so that staff can help you Acquire an Asset. You may have to spend downtime as part of this.
+* '''req/ltp <title>=<text>''' - this creates a job so that staff can help you accomplish a Long Term Project. You may have to spend downtime as part of this.
+
+==== Staff Commands ====
+
+* '''+dt/spend <player>=<#> <reason>''' - spend player downtime. 
+* '''+dt/award <player>=<#> <reason>''' - award a player downtime. 
+|link1=+stress
+|link2=+rep
+|link3=+coin
+|link4=+heat
+|category1=Playing_the_Game
+|category2=
+}}

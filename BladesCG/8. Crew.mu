@@ -14,8 +14,8 @@ Crew chargen:
 	+cohorts
 	+cohort/create <name>=<type>
 	+cohort/create <player>/<name>=<type>
-	+cohort/destroy <name>=<type>
-	+cohort/destroy <player>/<name>=<type>
+	+cohort/destroy <name>
+	+cohort/destroy <player>/<name>
 	+cohort/edit <name>
 	+cohort/edit <player>/<name>
 	+cohort/set <stat>=<value>
@@ -44,9 +44,9 @@ Crew membership and management:
 Staff commands:
 	+faction/set <player>/<faction>=<#>
 	+claim/award <player>=<name or map number>
-	* +crew/unlock <player>
-	* +crew/approve <player>
-	* +crew/unapprove <player>
+	+crew/unlock <player>
+	+crew/approve <player>
+	+crew/unapprove <player>
 
 TODO: Code to raise a crew's tier.
 

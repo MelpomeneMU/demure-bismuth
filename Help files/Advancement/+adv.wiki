@@ -1,0 +1,19 @@
+{{help
+|topic=+adv
+|detail=These commands are mostly for staff, but a few are usable by players.
+|example=
+* '''+adv''' - (player-usable) view your advancement log.
+* '''+adv/crew''' - (player-usable) view your crew's advancement log.
+* '''+adv <player>''' - view a player's advancement log.
+* '''+adv/crew <player>''' - view a player's crew's advancement log.
+* '''+adv/spend <player>/<stat>=<value>''' - spend a player's advancement on buying them a specific stat to <value> - ex +adv/spend me/Ability=Battleborn would buy you the ability "Battleborn" if you had XP. Spending advancements alerts the player, or, if it's a crew stat, the crew channel (if they have one - if not, it alerts the player you used in the command), and adds an entry into their advancement log.
+* '''+adv/spend <player>/<track>=<#>''' - spend a player's points without buying a stat - necessary for some stats that must be set manually.
+* '''+adv/log <player>=<log entry>''' - add a log entry to the player's advancement log.
+* '''+adv/log <player>/Crew=<log entry>''' - add a log entry to the player's crew's advancement log.
+|link1=+xp
+|link2=+stat2
+|link3=
+|link4=
+|category1=Staff_Commands
+|category2=Advancement
+}}

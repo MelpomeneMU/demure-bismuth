@@ -1,0 +1,27 @@
+{{help
+|topic=+crew
+|detail=These commands can be used by players and staff to manage their crew.
+|example=
+* '''+crew''' - see your crew's short sheet.
+* '''+crew/all''' - see your crew's entire sheet.
+* '''+crew/<page>''' - see part of your crew's sheet, like contacts or factions.
+* '''+crew/create <new crew>''' - enter crew generation.
+* '''+crew/channel <channel name>''' - make a particular channel your crew's channel. You must own the channel to make this change.
+* '''+crew/lock''' - complete crew generation. A job will be created with staff to take a look at your crew stats and perhaps approve them.
+* '''+crew/invite <player>''' - invite a player to join your crew.
+* '''+crew/join <crew>''' - accept someone's invitation to join their crew.
+* '''+crew/boot <player>''' - boot a character out of the crew. They must be probationary crew members or inactive. Will ask if you're sure.
+* '''+crew/leave''' - leave your crew. Will ask if you're sure.
+
+==== Staff Commands ====
+
+* '''+crew/unlock <player>''' - unlock a player's crew so that they can edit them again. Do not use this if they have spent Advancements!
+* '''+crew/approve <player>''' - approve a player's crew.
+* '''+crew/unapprove <player>''' - unapprove a player's crew.
+|link1=+cohorts
+|link2=+factions
+|link3=msg
+|link4=+channels
+|category1=Chargen
+|category2=Playing_the_Game
+}}

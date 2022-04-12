@@ -1,0 +1,18 @@
+{{help
+|topic=+cohorts
+|detail=Cohorts are NPC members of your crew who provide material assistance to your crew.
+|example=
+* '''+cohorts''' - see your crew's cohorts.
+* '''+cohort/create <cohort>=<type>''' - create a new crew cohort for a 2 Upgrade cost.
+* '''+cohort/destroy <cohort>''' - destroy the cohort. Will ask if you're sure.
+* '''+cohort/edit <name>''' - edit your cohort in chargen.
+* '''+cohort/set <stat>=<value>''' - change one of your cohort's stats.
+* '''+cohort/add <stat>=<value>''' - add a new flaw or edge.
+* '''+cohort/remove <stat>=<value>''' - remove a flaw or edge.
+|link1=+factions
+|link2=+crew
+|link3=msg
+|link4=+channels
+|category1=Chargen
+|category2=
+}}

@@ -1,0 +1,20 @@
+{{help
+|topic=+stress
+|detail=Stress is your big 'spendy' stat. You spend it to use abilities, get extra dice, resist consequences, etc. These commands help you manage it. (Pity they don't work in real life!) These commands are for use during Scores and PVP. Outside of Scores and PVP, you shouldn't need to spend stress.
+
+A word about spending and gaining with stress: they're the same thing. You acquire - gain - stress from doing things that ard hard in game, and you spend stress - thus acquiring more of it - to do things like push yourself.
+
+To get rid of stress, you'll need to spend downtime to indulge your vice with the [[Help:+dt|+dt]] command.
+
+We do have a '''+stress/clear''' command for when you get a critical success on a resistance roll in a Score. It is not for clearing stress in a general situation, so its use is monitored.
+|example=
+* '''+stress''' - see your IC stress levels and traumas.
+* '''+stress/spend <#>=<reason>''' - spend <#> stress for <reason>.
+* '''+stress/clear''' - clear a stress after you roll a crit on a resistance roll.
+|link1=+dt
+|link2=+trauma
+|link3=+rep
+|link4=+health
+|category1=Playing_the_Game
+|category2=
+}}

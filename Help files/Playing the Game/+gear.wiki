@@ -1,0 +1,19 @@
+{{help
+|topic=+gear
+|detail=Gear is equipment you have access to which helps your dice rolls. Each playbook has a specific set of gear available which replenishes after every Score, and every character has access to the Standard Gear list.
+|example=
+* '''+gear''' - see your gear and your current load.
+* '''+load <value>''' - set your Load before a score. (Light, Medium, Heavy, or Encumbered)
+* '''+gear/clear''' - clear your gear list of marks.
+* '''+gear/mark <gear>''' - mark a piece of gear as present on this Score.
+* '''+gear/unmark <gear>''' - unmark a piece of gear as present on this Score.
+* '''+gear/prove <player>''' - show your gear to someone.
+* '''+gear/give <player>=<new gear>''' (staff-only) - give a player a piece of Other Gear (something that is not available on either their Standard Gear or their Playbook Gear list.)
+* '''+gear/take <player>=<gear>''' (staff-only) - remove a piece of gear from a player's Other Gear list.
+|link1=+sheet
+|link2=+coin
+|link3=+dt
+|link4=+health
+|category1=Playing_the_Game
+|category2=
+}}

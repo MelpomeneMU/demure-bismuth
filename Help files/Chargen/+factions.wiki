@@ -1,0 +1,18 @@
+{{help
+|topic=+factions
+|detail=Factions are global NPC entities who move throughout the city and have an affect on the landscape. Factions do NOT include player characters or crews.
+|example=
+* '''+factions''' - see a list of all the factions.
+* '''+crew/factions''' - see just the factions your crew has relationships with.
+* '''+factions/log''' - see a record of your crew's interaction with the factions.
+* '''+faction/set <type>=<faction>''' - answer your crew's Chargen faction questions (Helped, Harmed, Friendly, Unfriendly, and Hunting).
+* '''+faction/pay <type>=<#>''' - spend coin in Chargen to improve your crew's relationship with your Helped, Harmed, or Hunting factions.
+* '''+faction/boost <type>''' - boost the intensity of your crew's relationship with its Friendly and Unfriendly factions.
+* '''+faction/unboost <type>''' - lower the intensity of your crew's relationship with its Friendly and Unfriendly factions.
+|link1=+cohorts
+|link2=+crew
+|link3=msg
+|link4=+channels
+|category1=Chargen
+|category2=Playing_the_Game
+}}

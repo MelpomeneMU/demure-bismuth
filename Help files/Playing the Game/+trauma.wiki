@@ -1,0 +1,15 @@
+{{help
+|topic=+trauma
+|detail=You acquire trauma when you reach your max amount of stress (for most creatures). It's up to you how much you want to roleplay your trauma, but if it causes you trouble during a Score, you get XP.
+|example=
+* '''+trauma''' - see your IC stress levels and traumas.
+* '''+trauma/add <truama>''' - choose a trauma. To see the full list type +trauma/add asdf - it'll list the available options out. This will clear your stress.
+* '''+gloom''' - same as trauma, but for ghosts.
+* '''+wear''' - same as trauma, but for hulls.
+|link1=+stress
+|link2=+dt
+|link3=+rep
+|link4=+health
+|category1=Playing_the_Game
+|category2=
+}}

@@ -1,0 +1,15 @@
+{{help
+|topic=+health
+|detail=Health is wealth, right? Pity it doesn't always work out that way...
+|example=
+* '''+health''' - see your injuries and healing clock.
+* '''+harm <level> <reason>''' - hurt yourself. If you skip <level>, the game will assume a 1L harm. Level 4 harm is usually fatal, and you will see a warning before you take your last level of harm. If it gets that far, a job will be opened automatically with staff to discuss your character's afterlife.
+* '''+dt/recover <#>''' - spend a point of downtime to roll a recovery - the amount of dice you'll roll will vary with the situation.
+* '''+harm/clear <player>''' (staff-only) - clear a player's harm completely. Useful when moving them on to a new playbook, like Ghost...
+|link1=+dt
+|link2=+coin
+|link3=+stress
+|link4=+rep
+|category1=Playing_the_Game
+|category2=
+}}

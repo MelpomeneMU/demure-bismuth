@@ -1,0 +1,21 @@
+{{help
+|topic=+noms
+|detail=Noms are a way to say "Good scene!" to a fellow player. Each +nom grants another player a partial or complete Sharp - see [[Help:+sharps|]] - and players are notified when they receive a +nom, unless you choose the /quiet option.
+
+'Nom' stands for 'Nominate'. Nominate them for sharps!
+|example=
+* '''+noms''' - see your noms.
+* '''+noms/report''' - see the noms you've given and received this week.
+* '''+noms/global''' - see who's getting nommed this week.
+* '''+nom <player>''' - nominate a player for sharps.
+* '''+nom <player>=<reason>''' - nominate a player for sharps with a reason. They'll see the reason, so try to be encouraging.
+** '''/anon''' - nominate someone anonymously. Your real name will be logged but the player won't be able to see it.
+** '''/quiet''' - nominate someone silently. They won't receive a 'you got a +nom!' notification.
+** Example use: '''+nom/anon/quiet <player>=<reason>'''
+|link1=+sharps
+|link2=+badges
+|link3=+who
+|link4=+request
+|category1=Basic Commands
+|category2=
+}}

@@ -1,0 +1,25 @@
+{{help
+|topic=+coin
+|detail=Coin is the currency of this game, and each coin is about a week's worth of wages. Stash is coin you've squirreled away somewhere safe, and getting it out will cost you.
+|example=
+* '''+coin''' - see all your coin and stash.
+* '''+coin/stash <#>''' - stash some of your coins.
+* '''+coin/unstash <#>''' - withdraw from your stash - but beware, you'll get back half of what you put in!
+* '''+coin/withdraw <#>''' - withdraw coin from your crew's vault.
+* '''+coin/deposit <#>''' - deposit coin into your crew's vault.
+* '''+coin/pay <player>=<#>''' - give another player coin.
+* '''+coin/spend <#>=<reason>''' - spend coin for <reason>.
+
+==== Staff commands ====
+
+* '''+coin/award <player>=<#> <reason>''' - give a player coin.
+* '''+coin/spend <player>=<#> <reason>''' - spend a player's coin.
+* '''+coin/deposit <player>=<#> <reason>''' - give a '''crew''' coin.
+* '''+coin/withdraw <player>=<#> <reason>''' - take away crew coin.
+|link1=+rep
+|link2=+dt
+|link3=+stress
+|link4=+health
+|category1=Playing_the_Game
+|category2=
+}}

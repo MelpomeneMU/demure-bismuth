@@ -5,10 +5,10 @@
 *	+dt/feed - clears Stress and Heals!!
 		*	Account for Functional Vice here.
 *	+dt/fuel - clears 5 Drain, cannot Overindulge
-	+dt/heat
 	+dt/indulge or +dt/vice
 		*	Account for Functional Vice here.
 *	+dt/vice <#> - roll a specific number when indulging
+	+dt/heat
 	+dt/train <track>
 	+dt/spend <#>=<reason>
 	+dt/buy <#> - spend <#> coin to buy <#> downtime
@@ -46,8 +46,9 @@
 	+heat/gain <reason>
 	+heat/gain <#>=<reason>
 +rep
+*	+rep/dt <#>=<reason> - spend a point of Rep to get a point of Downtime
+*	+rep/spend <#>=<reason> - spend a point of Rep to get a point of Downtime
 	+rep/award <player>=<#> <reason>
-*	+rep/spend <#> - spend a point of Rep to get a point of Downtime
 *	+rep/spend <player>=<#> <reason>
 
 TODO: Check the math on Rep. You can bank up to 12 rep, but if you've got 6 turf, you only spend 6 to level up your gang.  But that costs a lot of coin you may not have to spare, so when you're tier 2-3 or so and you've got like 10 rep and 3 coin?  You definitely don't want to spend that coin for downtimes, because coin is your bottleneck in going up a tier.

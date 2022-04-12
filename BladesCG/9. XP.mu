@@ -108,8 +108,6 @@
 
 &c.+adv/spend_nocount [v(d.cg)]=$+adv/spend */*: @break strmatch(%1, *=*); @force %#=+adv/spend %0/%1=1;
 
-th ulocal(v(d.cgf)/f.get-new-tick-cost, [ ] Hawker's Rigging)
-
 @@ %0: player being logged to
 @@ %1: advancement type - player or crew
 @@ %2: advancement note

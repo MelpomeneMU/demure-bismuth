@@ -503,6 +503,16 @@ touch M-wiki.log
 &d.wiki.msg [v(d.jrs)]=u(display.generic_msg, %0, wiki)
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.xp.bucket [v(d.jrs)]=CHARACTERS
+
+&d.xp.prefix [v(d.jrs)]=XP
+
+&d.xp.jgroup [v(d.jrs)]=+allstaff
+
+&d.xp.msg [v(d.jrs)]=u(display.generic_msg, %0, XP)
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Lock the job boards down!
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 

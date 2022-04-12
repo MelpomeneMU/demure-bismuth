@@ -63,11 +63,7 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 +name/title <player>=<title> - set a player's OOC title (presumably after they've spent Sharps) - staff-only
 
-TODO: Add chart of costs?
-
-TODO: Noms counts reset weekly.
-
-TODO: Make +nom/anon and +nom/silent and let them be mixed.
+TODO: Make +nom/anon and +nom/quiet and let them be mixed.
 
 TODO: Make noms reason optional.
 
@@ -190,6 +186,8 @@ TODO: Prepare to include ascii art in badges, both in the names and the descript
 
 &f.get-badge-creator [v(d.sb)]=trim(first(rest(rest(rest(default(strcat(%vD, /, %0), Date Time AMPM Creator: None: No meaning given.)))), :))
 
+&f.get-badge-hidden [v(d.sb)]=t(member(xget(%0, _hidden-badges), %1, |))
+
 &f.get-badge-creation-date [v(d.sb)]=extract(default(strcat(%vD, /, %0), Date Time AMPM Creator: None: No meaning given.), 1, 3)
 
 &f.get-badge-status [v(d.sb)]=default(strcat(%vD, /, edit(%0, BADGE-, status-)), Active)
@@ -203,7 +201,7 @@ TODO: Prepare to include ascii art in badges, both in the names and the descript
 @@ Sharps, badges, and noms views
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&layout.sharps_and_badges [v(d.sb)]=strcat(header(cat(Badges for, ulocal(f.get-name, %0, %1)), %1), %r, if(cor(isstaff(%1), strmatch(%0, %1)), edit(multicol(strcat(Sharps:, %b, default(%0/_sharps, 0), |, Total sharps:, %b, default(%0/_total-sharps, 0), |, rjust(strcat(Worn Badge:, %b, if(t(setr(P, ulocal(f.get-badge, %0))), %qP, None)), sub(getremainingwidth(%#), 37), _)), 15 20 *, 0, |, %1), _, %b), formattext(cat(Worn badge:, if(t(setr(P, ulocal(f.get-badge, %0))), %qP, None)), 0, %1)), if(not(strmatch(setr(B, default(%0/_badges, None)), None)), strcat(%r, divider(Badges, %1), %r, formattext(iter(%qB, cat(*, itext(0):, ulocal(f.get-badge-meaning, ulocal(f.find-badge-by-name, itext(0)))), |, %r), 0, %1))), if(cand(cor(isstaff(%1), strmatch(%0, %1)), t(setr(L, ulocal(f.get-last-X-logs, %0, _sharps-)))), strcat(%r, divider(Last 10 sharps and badges logs, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(, %1))
+&layout.sharps_and_badges [v(d.sb)]=strcat(header(cat(Badges for, ulocal(f.get-name, %0, %1)), %1), %r, if(cor(isstaff(%1), strmatch(%0, %1)), edit(multicol(strcat(Sharps:, %b, default(%0/_sharps, 0), |, Total sharps:, %b, default(%0/_total-sharps, 0), |, rjust(strcat(Worn Badge:, %b, if(t(setr(P, ulocal(f.get-badge, %0))), %qP, None)), sub(getremainingwidth(%#), 37), _)), 15 20 *, 0, |, %1), _, %b), formattext(cat(Worn badge:, if(t(setr(P, ulocal(f.get-badge, %0))), %qP, None)), 0, %1)), if(not(strmatch(setr(B, if(cor(isstaff(%1), strmatch(%0, %1)), default(%0/_badges, None), diffset(default(%0/_badges, None), xget(%0, _hidden-badges), |, |))), None)), strcat(%r, divider(Badges, %1), %r, formattext(iter(%qB, strcat(*, %b, itext(0):, %b, if(ulocal(f.get-badge-hidden, %0, itext(0)), %(%cx%chHidden%cn%)%b), ulocal(f.get-badge-meaning, ulocal(f.find-badge-by-name, itext(0)))), |, %r), 0, %1))), if(cand(cor(isstaff(%1), strmatch(%0, %1)), t(setr(L, ulocal(f.get-last-X-logs, %0, _sharps-)))), strcat(%r, divider(Last 10 sharps and badges logs, %1), %r, formattext(iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), 0, %1))), %r, footer(, %1))
 
 &layout.noms [v(d.sb)]=strcat(header(cat(+noms for, ulocal(f.get-name, %0, %1)), %1), setq(L, ulocal(f.get-last-X-logs, %0, _nom-)), %r, formattext(if(t(%qL), iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), None yet.), 0, %1), %r, footer(, %1))
 

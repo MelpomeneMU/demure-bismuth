@@ -1,5 +1,5 @@
 {{help
-|topic=Approval
+|topic=+approve
 |detail=These commands change a character's status in the following ways:
 
 * '''Unapproved''' - the default state. The character is not allowed IC. They may RP in temprooms.
