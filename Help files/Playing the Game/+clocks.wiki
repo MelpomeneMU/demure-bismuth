@@ -1,0 +1,26 @@
+{{help
+|topic=+clocks
+|detail=Progress clocks (page 15 of the main book) are a game mechanic that allows the GM - and players - to track how quickly something is likely to happen in response to player actions.
+
+Clocks are public - anyone in the room with you can see your clocks - and notify the world when they're ticked.
+
+Clocks represent obstacles, danger, time limits, and competitions. You can offer players a Devil's Bargain: "Sure, you get an extra die, but I get to tick the Assassins! clock over here..."
+|example=
+* '''+clocks''' - view the clocks in your area.
+* '''+clock <player>/<clock>''' - see the details about a clock.
+* '''+clock/create <clock>=<ticks>''' - create a new clock, for example: +clock/create Assassins!=8 - this would create a clock named "Assassins!" with 8 ticks on it.
+* '''+clock/destroy <clock>''' - get rid of a clock you created.
+* '''+clocks/destroy completed''' - get rid of all your completed clocks.
+* '''+clocks/destroy all''' - get rid of all your clocks, even the ones with ticks still left on them. Will ask if you're sure first.
+* '''+clock/tick <clock>=<#>''' - tick a clock.
+* '''+clock/untick <clock>=<#>''' - remove ticks from the clock.
+* '''+clock/set <clock>=<#>''' - set the clock to <#> ticks.
+* '''+clock/reset <clock>''' - set a clock back to 0 ticks.
+* '''+clock/show <clock>=<player>''' - show a clock to a player.
+|link1=+time
+|link2=+dice
+|link3=+gear
+|link4=+health
+|category1=Playing the Game
+|category2=Intermediate Commands
+}}

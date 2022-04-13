@@ -1,0 +1,22 @@
+{{help
+|topic=+xcard
+|detail=The X Card is a sign that any player can anonymously invoke to let other players know that the current topic is making them uncomfortable, and to request a change of topic or just a change to the way the scene is going.
+
+For example, if someone is bothered by spiders, and the GM sics a giant spider on them, '''+xcard spiders'''. The GM changes the spider to a giant wasp, and the story continues.
+
+The X Card is anonymous and minimal - no explanation is required, just a mention of the topic to be avoided. Players are expected to drop the indicated topic - not ask questions, not protest, just drop it - and move on.
+
+The X Card is designed to be used with other policies, including [[News:Fade_to_Black|Fade to Black]], [[News:Content_Warnings|Content Warnings]], and [[News:Rule_Zero|Rule Zero]].
+
+See [[News:X_Card|X Card]] for more information.
+|example=
+* '''+xcard <text>''' - X Card a topic described in <text>.
+* '''+xcard''' - throw up an X Card with no further detail.
+* '''req/social <title>=<text>''' - reach out to staff if the X Card is ignored.
+|link1=+noms
+|link2=+staff
+|link3=+request
+|link4=+channels
+|category1=Basic Commands
+|category2=
+}}

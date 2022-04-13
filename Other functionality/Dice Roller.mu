@@ -19,6 +19,8 @@ Switches:
 	/<channel> <dice> - roll to the channel
 	/job <job>=<dice>
 
+TODO: Add +/-<#> parsing. Tier+1, etc.
+
 */
 
 

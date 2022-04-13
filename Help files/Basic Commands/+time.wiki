@@ -1,0 +1,16 @@
+{{help
+|topic=+time
+|detail=The IC time is in no way matched to the OOC time - Doskvol operates on a strange calendar. See [[News:Doskvol_Time|Doskvol Time]] for details! The +time command is to be used as a suggestion, not a fact, and is there to provide fuel for roleplay.
+|example=
+* '''+time''' and '''+weather''' - view the time and weather.
+* '''+time/holidays <month>''' - see the holidays in each month.
+* '''+time/season''' - see the seasons.
+* '''+time/hours''' - see the hours. (Spammy!)
+* '''+time/days''' - see the days.
+|link1=+clocks
+|link2=+dice
+|link3=+gear
+|link4=+health
+|category1=Basic Commands
+|category2=
+}}

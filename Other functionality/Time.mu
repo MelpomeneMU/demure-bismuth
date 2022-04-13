@@ -342,9 +342,9 @@ The weather changes daily, not hourly, since Doskvol's weather is relatively sta
 
 &layout.test-season [v(d.tc)]=strcat(header(The cycle of the Shattered Isles, %0), %r, multicol(iter(lnum(6), strcat(ansi(h, setr(M, ulocal(f.get-month, mul(inum(0), 60)))), %b, 1-30:, %b, ulocal(f.get-season, %qM, 1), ||, ansi(h, %qM) 31-60:, %b, ulocal(f.get-season, %qM, 60)),, ||), *, 0, |, %0), %r, footer(, %0))
 
-&layout.test-days [v(d.tc)]=strcat(header(The days of the week, %0), %r, multicol(iter(lnum(6), strcat(ulocal(f.get-day-of-week, itext(0))),, |), * * *, 0, |, %0), %r, footer(, %0))
+&layout.test-days [v(d.tc)]=strcat(header(The days of the week, %0), %r, multicol(iter(lnum(6), strcat(ulocal(f.get-day-of-week, itext(0))),, ||), *, 0, |, %0), %r, footer(, %0))
 
 &layout.test-holidays [v(d.tc)]=strcat(ulocal(layout.holidays, %0, %1), footer(, %0))
 
-&c.+time/test [v(d.tc)]=$+time/*:@assert setr(T, finditem(setr(L, hour|days|season|holidays), first(%0), |))={ @trigger me/tr.error=%#, Couldn't find '[first(%0)]' on the list. The list is: [ulocal(layout.list, %qL)].; }; @assert cor(not(strmatch(%qT, holidays)), t(setr(M, finditem(setr(L, Mendar|Kalivet|Suran|Ulsivet|Volnivet|Elisar), rest(%0), |))))={ @trigger me/tr.error=%#, To view the tests for holidays%, you must enter the month name like so: %ch+time/holidays <month>%cn. Valid months are [ulocal(layout.list, %qL)].; }; @pemit %#=ulocal(layout.test-%qT, %#, %qM); @assert strmatch(%qT, hour); @pemit %#=ulocal(layout.test-%qT2, %#); @pemit %#=ulocal(layout.test-%qT3, %#); @pemit %#=ulocal(layout.test-%qT4, %#);
+&c.+time/test [v(d.tc)]=$+time/*:@assert setr(T, finditem(setr(L, hours|days|season|holidays), first(%0), |))={ @trigger me/tr.error=%#, Couldn't find '[first(%0)]' on the list. The list is: [ulocal(layout.list, %qL)].; }; @eval setq(T, switch(%qT, hou*, hour, %qT)); @assert cor(not(strmatch(%qT, holidays)), t(setr(M, finditem(setr(L, Mendar|Kalivet|Suran|Ulsivet|Volnivet|Elisar), rest(%0), |))))={ @trigger me/tr.error=%#, To view the tests for holidays%, you must enter the month name like so: %ch+time/holidays <month>%cn. Valid months are [ulocal(layout.list, %qL)].; }; @pemit %#=ulocal(layout.test-%qT, %#, %qM); @assert strmatch(%qT, hou*); @pemit %#=ulocal(layout.test-%qT2, %#); @pemit %#=ulocal(layout.test-%qT3, %#); @pemit %#=ulocal(layout.test-%qT4, %#);
 

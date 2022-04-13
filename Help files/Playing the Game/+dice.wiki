@@ -1,0 +1,26 @@
+{{help
+|topic=+dice
+|detail=Dice are essential to this game - they provide a sense of randomness and consequences. Dice always come with a bit of '''risk''' - anything but a 6 will result in some kind of consequence, and no matter how many dice you're rolling, there's always a chance of failure.
+
+See '''page 7''' of the main Blades in the Dark book for how to roll dice and handle failure in a fail-forward way.
+
+Note: All +dice commands can also be called with '''+roll'''. Use whichever is comfortable for you.
+|example=
+* '''+dice <#>''' - roll <#> dice.
+* '''+dice <action>''' - roll an action. Experts will automatically roll Tier instead of an action.
+* '''+dice <resistance trait>''' - roll a resistance trait. This will tell you how much stress to take, depending on your roll. Experts will automatically roll their Tier for this.
+* '''+dice Lifestyle''' - roll your Lifestyle to see if you can afford something.
+* '''+dice Tier''' - roll your Tier.
+* Dice can be rolled to with switches - aka +dice/switch <#> - such as:
+** /quiet <dice> - secretly roll something
+** /page <name>=<dice> - roll it to another player
+** /com <channel>=<dice> - roll to a channel
+** /<channel> <dice> - roll to the channel - +dice/pub 3 for example.
+** /job <job>=<dice> - roll to a job.
+|link1=+sheet
+|link2=+health
+|link3=+gear
+|link4=+stress
+|category1=Playing the Game
+|category2=Basic Commands
+}}
