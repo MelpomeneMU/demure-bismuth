@@ -172,13 +172,13 @@ TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, o
 @@ Aliases for commands
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+stats [v(d.cg)]=$+stats*:@break switch(%0, /clear*, 1, /lock, 1, /unlock *, 1, /fi*, 1, /se*, 1, 0); @force %#=+sheet%0
+&c.+stats [v(d.cg)]=$+stats*:@break switch(%0, /clear*, 1, /lock, 1, /unlock *, 1, /fi*, 1, /sea*, 1, /set*, 1, 0)={ @force %#=+stat%0; }; @force %#=+sheet%0;
 
 &c.+stat/del [v(d.cg)]=$+stat/del*:@force %#=+stat/remove [switch(%0, %b*, trim(%0), rest(%0))];
 
 &c.+stat/rem [v(d.cg)]=$+stat/rem*:@break strmatch(%0, ove *); @force %#=+stat/remove [switch(%0, %b*, trim(%0), rest(%0))];
 
-&c.+stat/search [v(d.cg)]=$+stat/se*:@force %#=+stat/find [switch(%0, %b*, trim(%0), rest(%0))];
+&c.+stat/search [v(d.cg)]=$+stat/sea*:@force %#=+stat/find [switch(%0, %b*, trim(%0), rest(%0))];
 
 &c.+stat/fi [v(d.cg)]=$+stat/fi*:@break strmatch(%0, nd *); @force %#=+stat/find [switch(%0, %b*, trim(%0), rest(%0))];
 
@@ -189,7 +189,8 @@ TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, o
 @@ %0 - stat
 @@ %1 - value
 @@ %2 - player
-&tr.find-stat [v(d.cg)]=@assert cand(t(setr(S, ulocal(f.is-stat, %0, %2, %2))), not(gt(words(%0, *), 1)))={ @trigger me/tr.message=%2, Stats matching '%0' are: [ulocal(layout.list, finditems(ulocal(f.list-stats, %0, %2, %2), %0, |),, 100)].; }; @trigger me/tr.message=%2, strcat(%qS, %b, if(strmatch(%qS, *s),, values%b), discovered, if(t(%1), %bwith '%1' in them):, %b, ulocal(layout.list, finditems(ulocal(f.list-valid-values, %qS, %2), %1, |),, 100).);
+@@ Default max list of items is 1000. Replace '1000' with something better if it becomes a problem.
+&tr.find-stat [v(d.cg)]=@eval setq(D, 0); @assert cand(t(setr(S, ulocal(f.is-stat, %0, %2, %2))), not(gt(words(%0, *), 1)))={ @eval setq(R, xget(%vD, d.staff-only-stats)); @trigger me/tr.message=%2, strcat(Stats matching '%0' are:, %b, ulocal(layout.list, iter(finditems(ulocal(f.list-all-stats, %2), %0, |), if(t(member(%qR, itext(0), |)), ansi(xh, itext(0)[setq(D, 1)]), itext(0)), |, |),, 1000)., if(t(%qD), %bStats in %cx%chdark text%cn can only be set by staff.)); }; @eval setq(V, ulocal(f.list-values, %qS, %2)); @eval setq(R, ulocal(f.list-restricted-values, %qS, %2)); @trigger me/tr.message=%2, strcat(ulocal(f.get-singular-stat-name, %qS), %b, values, if(t(%1), %bwith '%1' in them):, %b, ulocal(layout.list, if(t(%qV), iter(finditems(%qV, %1, |), if(t(member(%qR, itext(0), |)), ansi(xh, itext(0)[setq(D, 1)]), itext(0)), |, |), any unrestricted text),, 1000)., if(t(%qD), %bValues in %cx%chdark text%cn are restricted.));
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat-setting triggers

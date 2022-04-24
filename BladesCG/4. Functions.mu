@@ -47,7 +47,9 @@
 
 &f.is-addable-stat [v(d.cgf)]=strcat(setq(N, ulocal(f.resolve-stat-name, %0)), finditem(ulocal(f.get-addable-stats, %0, %1), %qN, |))
 
-&f.list-stats [v(d.cgf)]=strcat(setq(D, if(ulocal(f.is-allowed-to-break-stat-setting-rules, %2, %1),, xget(%vD, d.staff-only-stats))), diffset(ulocal(f.get-stats, %1), %qD, |, |), |, diffset(ulocal(f.get-choosable-stats, %1), %qD, |, |), |, diffset(ulocal(f.list-crew-stats, %1), %qD, |, |))
+&f.list-all-stats [v(d.cgf)]=strcat(ulocal(f.get-stats, %0), |, ulocal(f.get-choosable-stats, %0), |, ulocal(f.list-crew-stats, %0))
+
+&f.list-stats [v(d.cgf)]=strcat(setq(D, if(ulocal(f.is-allowed-to-break-stat-setting-rules, %2, %1),, xget(%vD, d.staff-only-stats))), diffset(ulocal(f.list-all-stats, %1), %qD, |, |))
 
 &f.is-full-list-stat [v(d.cgf)]=t(finditem(xget(%vD, d.stats-where-player-gets-entire-list), %0, |))
 
