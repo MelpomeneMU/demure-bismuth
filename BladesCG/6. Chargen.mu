@@ -5,6 +5,8 @@
 +stat/set <stat>=<value>
 +stat/add <stat>=<value>
 +stat/remove <stat>=<value>
++stat/find <stat>*
++stat/find <stat>=<value>
 
 Aliases:
 
@@ -164,15 +166,30 @@ TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, o
 
 &c.+stats/clear [v(d.cg)]=$+stats/clear*: @assert not(hasattr(%#, _stat.locked))={ @trigger me/tr.error=%#, You can't clear your stats once they're locked.; }; @assert gettimer(%#, clear-request, if(t(trim(%0)), trim(%0), NO))={ @eval settimer(%#, clear-request, 600, YES); @trigger me/tr.message=%#, This will clear all of your stats and any crew stats you may have set on you. %(If you don't want to lose those%, +crew\/transfer <player> to give the crew to someone else before you +stats/clear.%) If you would like to continue%, type %ch+stat/clear YES%cn within the next 10 minutes. It is now [prettytime()].; }; @wipe %#/_stat.*; @trigger me/tr.success=%#, Your stats have been cleared.;
 
+&c.+stat/find [v(d.cg)]=$+stat/find *: @assert t(%0)={ @trigger me/tr.error=%#, You need to enter something to find.; }; @trigger me/tr.find-stat=first(%0, =), rest(%0, =), %#;
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Aliases for commands
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+stats [v(d.cg)]=$+stats*:@break switch(%0, /clear*, 1, /lock, 1, /unlock *, 1, 0); @force %#=+sheet%0
+&c.+stats [v(d.cg)]=$+stats*:@break switch(%0, /clear*, 1, /lock, 1, /unlock *, 1, /fi*, 1, /se*, 1, 0); @force %#=+sheet%0
 
 &c.+stat/del [v(d.cg)]=$+stat/del*:@force %#=+stat/remove [switch(%0, %b*, trim(%0), rest(%0))];
 
 &c.+stat/rem [v(d.cg)]=$+stat/rem*:@break strmatch(%0, ove *); @force %#=+stat/remove [switch(%0, %b*, trim(%0), rest(%0))];
+
+&c.+stat/search [v(d.cg)]=$+stat/se*:@force %#=+stat/find [switch(%0, %b*, trim(%0), rest(%0))];
+
+&c.+stat/fi [v(d.cg)]=$+stat/fi*:@break strmatch(%0, nd *); @force %#=+stat/find [switch(%0, %b*, trim(%0), rest(%0))];
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+@@ Stat-finding
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+@@ %0 - stat
+@@ %1 - value
+@@ %2 - player
+&tr.find-stat [v(d.cg)]=@assert cand(t(setr(S, ulocal(f.is-stat, %0, %2, %2))), not(gt(words(%0, *), 1)))={ @trigger me/tr.message=%2, Stats matching '%0' are: [ulocal(layout.list, finditems(ulocal(f.list-stats, %0, %2, %2), %0, |),, 100)].; }; @trigger me/tr.message=%2, strcat(%qS, %b, if(strmatch(%qS, *s),, values%b), discovered, if(t(%1), %bwith '%1' in them):, %b, ulocal(layout.list, finditems(ulocal(f.list-valid-values, %qS, %2), %1, |),, 100).);
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat-setting triggers
