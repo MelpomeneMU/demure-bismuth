@@ -5,6 +5,8 @@
 * '''+stat/set <stat>=<value>''' - set a normal stat, like Name. To unset it, just don't include a value.
 * '''+stat/add <addable stat>=<value>''' - some stats are "addable" like Upgrades. +stat/add Friends=Sam the Blacksmith, for example.
 * '''+stat/rem <addable stat>=<value>''' - to remove an addable stat.
+* '''+stat/find <stat>''' - find a stat. Use * to find all stats. If only one stat matches your search term, you'll see a list of its possible values, if any.
+* '''+stat/find <stat>=<value>''' - find specific stats - for example, +stat/find Abilities=dev to find all abilities that mention "dev", like "Daredevil" and "The Devil's Footsteps".
 * '''+stats/clear''' - wipe your stats. Will ask if you're sure first.
 * '''+stats/lock''' - locks your stats and starts a Chargen job. Will ask if you're sure first.
 |link1=+stat2
