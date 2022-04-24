@@ -27,8 +27,6 @@
 @@ - Anything else gets deleted.
 &d.logs-to-clear [v(d.cgdb)]=_downtime- _crew-coin- _coin- _xp- _rep- _heat- _stress-
 
-@@ TODO: Add advanced abilities from pg 234. These aren't "special abilities", they're Advances (costs the same?) and they may go in a different section. Might also come with some hidden bio fields like "which Iruvian path are you on" but I don't think we vitally *need* that.
-
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Data for chargen
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -42,7 +40,7 @@
 
 &d.stats_editable_after_chargen [v(d.cgdb)]=Name|Alias|Look|Load
 
-@@ Consider expanding editable stats - Playbook, Crew Type, etc should maybe be changeable after CG. Maybe there are others - stats that change the feel of the character or crew but not the stats. (Consider who can change those stats in a crew, if we allow crews to be editable after CG.)
+@@ TODO: Consider expanding editable stats - Playbook, Crew Type, etc should maybe be changeable after CG. Maybe there are others - stats that change the feel of the character or crew but not the stats. (Consider who can change those stats in a crew, if we allow crews to be editable after CG.)
 
 &d.stats-where-player-gets-entire-list [v(d.cgdb)]=Gear|XP Triggers|Friends|Contacts|Crew XP Triggers
 
@@ -74,7 +72,7 @@
 &d.crew-stats-that-default [v(d.cgdb)]=Contacts|Favorite|Crew Abilities|Crew XP Triggers
 
 @@ Stuff we want to be settable by staff but don't want players to mess with.
-&d.staff-only-stats [v(d.cgdb)]=Heat|Crew Coin|Wanted Level|Hold|Stress|Traumas|Healing|Coin|Claims|Stash
+&d.staff-only-stats [v(d.cgdb)]=Heat|Crew Coin|Wanted Level|Hold|Stress|Traumas|Healing|Coin|Claims|Stash|Factions|Tier
 
 &d.map-list [v(d.cgdb)]=Map A1|Map A2|Map A3|Map A4|Map A5|Map B1|Map B2|Map B4|Map B5|Map C1|Map C2|Map C3|Map C4|Map C5
 
@@ -122,14 +120,6 @@
 &d.desc.expert_type.thug [v(d.cgdb)]=Killers, brawlers, and roustabouts.
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-@@ Restricted values at character generation
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
-
-&d.restricted.playbook [v(d.cgdb)]=Ghost|Hull|Vampire
-
-&d.restricted.action [v(d.cgdb)]=3|4
-
-@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Scoundrel stats
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -164,6 +154,9 @@
 
 &d.value.action [v(d.cgdb)]=0|1|2|3|4
 
+@@ Can't be taken at CG.
+&d.restricted.action [v(d.cgdb)]=3|4
+
 &d.bio.hull [v(d.cgdb)]=Frame Size|Primary Drive|Secondary Drive|Tertiary Drive
 
 &d.value.frame_size [v(d.cgdb)]=Small|Medium|Heavy
@@ -196,18 +189,24 @@
 
 &d.value.playbook [v(d.cgdb)]=Cutter|Hound|Leech|Lurk|Slide|Spider|Whisper|Ghost|Hull|Vampire|Drwid|Faegir|Hersir|Prests|Serkr|Skipas|Vik|Faris|Janissary|Mirage|Rafiq|Rakshasa|Vizier|Zindiq
 
-&d.abilities [v(d.cgdb)]=d.abilities.cutter d.abilities.hound d.abilities.leech d.abilities.lurk d.abilities.slide d.abilities.spider d.abilities.whisper d.abilities.drwid d.abilities.faegir d.abilities.hersir d.abilities.prests d.abilities.serkr d.abilities.skipas d.abilities.vik d.abilities.faris d.abilities.janissary d.abilities.mirage d.abilities.rafiq d.abilities.rakshasa d.abilities.vizier d.abilities.zindiq
+&d.restricted.playbook [v(d.cgdb)]=Ghost|Hull|Vampire
+
+&d.abilities [v(d.cgdb)]=d.abilities.cutter d.abilities.hound d.abilities.leech d.abilities.lurk d.abilities.slide d.abilities.spider d.abilities.whisper d.abilities.drwid d.abilities.faegir d.abilities.hersir d.abilities.prests d.abilities.serkr d.abilities.skipas d.abilities.vik d.abilities.faris d.abilities.janissary d.abilities.mirage d.abilities.rafiq d.abilities.rakshasa d.abilities.vizier d.abilities.zindiq d.abilities.vampire d.abilities.ghost d.abilities.hull d.abilities.other
+
+&d.restricted.abilities [v(d.cgdb)]=Ghost Form|Dissipate|Manifest|Poltergeist|Automaton|Compartments|Electroplasmic Projectors|Undead|Arcane Sight|Dark Talent (Insight)|Dark Talent (Prowess)|Dark Talent (Resolve)|Sinister Guile|Terrible Power|A Void in the Echo|Sash Fighting|Falling Star|Moon Dagger|Rising Moon|Closing of the Eye|Glorious Visage|Spirit Link|Demonic Attendant|Demonic Artifact
 
 @@ To add a new playbook:
 
 @@ 1. Add the playbook to &d.value.playbook
 @@ 2. Add the abilities attribute to &d.abilities
 @@ 3. Fill out one of the blocks below.
+@@ 4. If the playbook has any restricted abilities (can't be taken at CG), add them to &d.restricted.abilities.
+@@ 5. If the playbook can't be taken at CG (restricted), add it to d.restricted.playbook.
 
 @@ Notes:
-@@ - Sub-selectable abilities should be broken out like: Ghost Hunter (mind-link)|Ghost Hunter (arrow-swift), etc.
-@@ - Try to keep the case (upper and lower) similar to what's already written
-@@ - If an ability starts with "The", consider removing the "The" so players can find it easier. The Devil's Footsteps or just Devil's Footsteps? What will players expect?
+@@ - Sub-selectable abilities should be broken out like: Ghost Hunter (Mind-link)|Ghost Hunter (Arrow-swift), etc.
+@@ - Try to keep the case (upper and lower) similar to what's already written, but lean towards Title Case for proper names. (We're not doing all-caps like in the books.)
+@@ - Keep the text exactly the same as what's in the book. The Devil's Footsteps instead of Devil's Footsteps - even if players are looking for the non-The version, because changing it up from the official source will confuse people. Theoretically we could have both, but if we don't, better to keep the official version. The book is pretty good about not sticking a The in front of everything (except factions).
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -215,9 +214,9 @@
 
 &d.friends.faris [v(d.cgdb)]=Bilal Maat, a corrupt lawyer|Imran Pasha, a gang boss|Lenora Drakewell, an Imperial diplomat|Nurul Fallash, a leviathan captain|Sordat Khan, a sheikh
 
-&d.abilities.faris [v(d.cgdb)]=Leader|Ambitious|Battleborn|Expertise|Ghost Busters (Fight ghosts)|Ghost Busters (Survive Deathlands)|Ghost Busters (Possession)|Tiger's Fury|Vigorous
+&d.abilities.faris [v(d.cgdb)]=Leader|Ambitious|Battleborn|Expertise|Ghost Busters (Fight Ghosts)|Ghost Busters (Survive Deathlands)|Ghost Busters (Possession)|Tiger's Fury|Vigorous
 
-&d.gear.faris [v(d.cgdb)]=[ ] (0L) Entourage|[ ] Fine clothes & jewelry|[ ] Fine hand weapon|[ ] Fine pair of pistols|[ ] Electroplasmic ammunition
+&d.gear.faris [v(d.cgdb)]=[ ] (0L) Entourage|[ ] Fine Clothes & Jewelry|[ ] Fine Hand Weapon|[ ] Fine Pair of Pistols|[ ] Electroplasmic Ammunition|[ ] (0L) Spiritbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -227,7 +226,7 @@
 
 &d.abilities.janissary [v(d.cgdb)]=Bodyguard|Ghost Fighter|Ghost Mind|Herald|Mule|Security|Strategic Retreat|Tough as Nails
 
-&d.gear.janissary [v(d.cgdb)]=[ ] Dark-sight goggles|[ ] Fine hand weapon|[ ] (0L) Fine map|[ ] (0L) Manacles & chain|[ ] Spyglass
+&d.gear.janissary [v(d.cgdb)]=[ ] Dark-sight Goggles|[ ] Fine Hand Weapon|[ ] (0L) Fine Map|[ ] (0L) Manacles & Chain|[ ] Spyglass|[ ] (0L) Spiritbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -237,9 +236,9 @@
 
 &d.abilities.mirage [v(d.cgdb)]=Illusionist|Cloak & Dagger|Conjurer|Like a Star|Misdirection|Practiced|Rook's Gambit|Strange Methods
 
-@@ TODO: Note HR: Mirage does not have a blowgun & darts, syringes. (They don't have any potions with which to use them.) This looks to have been a typo in the book's items entry and the value is replaced by Spiritbane charm on the sheet.
+@@ Note HR: Mirage does not have a Blowgun & Darts, Syringes. (They don't have any potions with which to use them.) This looks to have been a typo in the book's items entry and the value is replaced by Spiritbane Charm on the sheet.
 
-&d.gear.mirage [v(d.cgdb)]=[ ] (0L) Fine cover identity|[ ] Fine disguise kit|[ ] (0L) Fine loaded dice, trick cards|[ ] Fine tinkering tools|[ ] [ ] [ ] Gadgets|[ ] Spiritbane charm
+&d.gear.mirage [v(d.cgdb)]=[ ] (0L) Fine Cover Identity|[ ] Fine Disguise Kit|[ ] (0L) Fine Loaded Dice, Trick Cards|[ ] Fine Tinkering Tools|[ ] [ ] [ ] Gadgets|[ ] (0L) Spiritbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -249,7 +248,7 @@
 
 &d.abilities.rafiq [v(d.cgdb)]=Eye for Weakness|Cut-out|From Beyond|Functioning Vice|Like Looking Into a Mirror|Occultist|Trust In Me|Weaving the Web
 
-&d.gear.rafiq [v(d.cgdb)]=[ ] A cane sword|[ ] (0L) Concealed palm pistol|[ ] (0L) Fine lockpicks|[ ] (0L) Trance powder
+&d.gear.rafiq [v(d.cgdb)]=[ ] A Cane Sword|[ ] (0L) Concealed Palm Pistol|[ ] Fine Clothes & Jewelry|[ ] (0L) Fine Lockpicks|[ ] (0L) Spiritbane Charm|[ ] (0L) Trance Powder
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -257,9 +256,9 @@
 
 &d.friends.rakshasa [v(d.cgdb)]=Benaz, a prison guard|Dameer, a death cultist|Mohadisa, an alchemist|Nimet, a coal seller|Raban, a gravedigger
 
-&d.abilities.rakshasa [v(d.cgdb)]=Ghoul|Ambush|The Black Speech|Ghost Hunter (ghost-form)|Ghost Hunter (mind-link)|Ghost Hunter (arrow-swift)|Monstrous|Scout|Subterfuge
+&d.abilities.rakshasa [v(d.cgdb)]=Ghoul|Ambush|The Black Speech|Ghost Hunter (Ghost-form)|Ghost Hunter (Mind-link)|Ghost Hunter (Arrow-swift)|Monstrous|Scout|Subterfuge
 
-&d.gear.rakshasa [v(d.cgdb)]=[ ] Electroplasmic ammunition|[ ]-[ ] Fine long rifle|[ ] Light climbing gear|[ ] Scary weapon or tool|[ ] (0L) A trained hunting pet
+&d.gear.rakshasa [v(d.cgdb)]=[ ] Electroplasmic Ammunition|[ ]-[ ] Fine Long Rifle|[ ] Light Climbing Gear|[ ] Scary Weapon or Tool|[ ] (0L) A Trained Hunting Pet|[ ] (0L) Spiritbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -269,7 +268,7 @@
 
 &d.abilities.vizier [v(d.cgdb)]=Red Right Hand|Alchemist|Calculating|Foresight|A Little Something on the Side|Physicker|Prepared|Ritual
 
-&d.gear.vizier [v(d.cgdb)]=[ ] Bandolier (3 uses)|[ ] (0L) Blowgun & darts, syringes|[ ] Blueprints|[ ] (0L) Demonbane charm|[ ] Fine tinkering tools
+&d.gear.vizier [v(d.cgdb)]=[ ] Bandolier (3 uses)|[ ] Bandolier (3 uses)|[ ] (0L) Blowgun & Darts, Syringes|[ ] Blueprints|[ ] (0L) Demonbane Charm|[ ] Fine Tinkering Tools
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -279,7 +278,7 @@
 
 &d.abilities.zindiq [v(d.cgdb)]=Revolutionary|Artificer|Compel|Driven|Ghost Ward|Infiltrator|Pyromancer|Saboteur
 
-&d.gear.zindiq [v(d.cgdb)]=[ ] (0L) Fine cover identity|[ ] (0L) Fine lockpicks|[ ] Fine spirit mask|[ ] [ ] [ ] Gadgets|[ ] (0L) Ghost key
+&d.gear.zindiq [v(d.cgdb)]=[ ] (0L) Fine Cover Identity|[ ] (0L) Fine Lockpicks|[ ] Fine Spirit Mask|[ ] [ ] [ ] Gadgets|[ ] (0L) Ghost Key|[ ] (0L) Spiritbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -289,7 +288,7 @@
 
 &d.abilities.drwid [v(d.cgdb)]=Commune|Drwidism|Nature's Way|Plenty|Shamanism|Warden of the Wilds|Wrath of Nature
 
-&d.gear.drwid [v(d.cgdb)]=[ ] (0L) Fine animal companion|[ ] Fine quarterstaff|[ ] (0L) Vial of slumber essence|[ ] Tribal spirit mask|[ ] Plants & herbs
+&d.gear.drwid [v(d.cgdb)]=[ ] (0L) Fine Animal Companion|[ ] Fine Quarterstaff|[ ] (0L) Vial of Slumber Essence|[ ] Tribal Spirit Mask|[ ] Plants & Herbs
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -299,7 +298,7 @@
 
 &d.abilities.faegir [v(d.cgdb)]=Creative Mind|Ghost Entertainer|Marchand|Masterpiece|Patient Creator|Social Climber|Subliminal|Mischievous
 
-&d.gear.faegir [v(d.cgdb)]=[ ] Fine tinkering tools|[ ]-[ ] Fine artist tools|[ ] Entertainer tools|[ ] (0L) Tattoos|[ ] (0L) Thought essence
+&d.gear.faegir [v(d.cgdb)]=[ ] Fine Tinkering Tools|[ ]-[ ] Fine Artist Tools|[ ] Entertainer Tools|[ ] (0L) Tattoos|[ ] (0L) Thought Essence
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -309,19 +308,19 @@
 
 &d.abilities.hersir [v(d.cgdb)]=Every Blade Counts|Feast at my Table|Ghost Battalion|Hersir's Armory|Know Your Ranks|Lead By Example|Shield Wall|Strategist
 
-@@ TODO: Note HRs: Fine Clothes & Jewelry is 1L not 2L and Warpaint is 0L.
+@@ Note HR: Fine Clothes & Jewelry is 1L not 2L and Warpaint is 0L.
 
-&d.gear.hersir [v(d.cgdb)]=[ ]-[ ] Fine heavy weapon or shield|[ ] Fine clothes & jewelry|[ ] (0L) Warpaint|[ ] (0L) Battle horn|[ ] (0L) Vehicle
+&d.gear.hersir [v(d.cgdb)]=[ ]-[ ] Fine Heavy Weapon or Shield|[ ] Fine Clothes & Jewelry|[ ] (0L) Warpaint|[ ] (0L) Battle Horn|[ ] (0L) Vehicle
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.xp_triggers.prests [v(d.cgdb)]=address a challenge with Ancient Power or Personal Influence
 
-&d.friends.prests [v(d.cgdb)]=Brunhilde, a drwid|Manticore, an inquisitive|Mint, a former thrall|Rolnio, a jarl|A Forgotten God (note required)
+&d.friends.prests [v(d.cgdb)]=Brunhilde, a drwid|Manticore, an inquisitive|Mint, a former thrall|Rolnio, a jarl|A Forgotten God
 
 &d.abilities.prests [v(d.cgdb)]=Conduit|Divine Envoy|Ghost Bond|God's Favor|Preacher|Prescience|Sacrifice|Visage
 
-&d.gear.prests [v(d.cgdb)]=[ ] Fine spirit totem|[ ] Fine sacrificial blade|[ ] Ritualist's implements|[ ] (0L) Trance powder|[ ] (0L) Spirit key
+&d.gear.prests [v(d.cgdb)]=[ ] Fine Spirit Totem|[ ] Fine Sacrificial Blade|[ ] Ritualist's Implements|[ ] (0L) Trance Powder|[ ] (0L) Spirit Key
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -331,19 +330,19 @@
 
 &d.abilities.serkr [v(d.cgdb)]=Beast Within|Frenzy|Ghost Bear|Kodiak's Vigor|Predator|Ravager|Reckless|Zwarghtahrg
 
-&d.gear.serkr [v(d.cgdb)]=[ ] Fine heavy weapon|[ ]-[ ]-[ ] Bear skin armor|[ ] (0L) Rage essence vial|[ ] Light demolition tools|[ ] Ancestral totem
+&d.gear.serkr [v(d.cgdb)]=[ ] Fine Heavy Weapon|[ ]-[ ]-[ ] Bear Skin Armor|[ ] (0L) Rage Essence Vial|[ ] Light Demolition Tools|[ ] Ancestral Totem
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.xp_triggers.skipas [v(d.cgdb)]=address a challenge with Technical Skill or Deception
 
-@@ TODO: Note HRs: Nurm is a dock foreman, not a Lockport foreman.
+@@ Note HR: Nurm is a dock foreman, not a Lockport foreman.
 
 &d.friends.skipas [v(d.cgdb)]=Krarg, a veteran vik|Traggrar, a factory worker|Chalk, a skovland war survivor|Beowulf, a hersir|Nurm, a dock foreman
 
 &d.abilities.skipas [v(d.cgdb)]=Brilliant|Everyone's Friend|Ghost Navigator|Guild's Profits|Heave!|Just a Fisherman|Salt's Worth|Skipsvel
 
-&d.gear.skipas [v(d.cgdb)]=[ ] Fine tinkering tools|[ ]-[ ] Fine climbing gear|[ ] Guild badge & uniform|[ ] Blueprints|[ ] Life buoy
+&d.gear.skipas [v(d.cgdb)]=[ ] Fine Tinkering Tools|[ ]-[ ] Fine Climbing Gear|[ ] Guild Badge & Uniform|[ ] Blueprints|[ ] Life Buoy
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -353,7 +352,7 @@
 
 &d.abilities.vik [v(d.cgdb)]=All Hands on Deck|Bring Me My Red Shirt|Board & Plunder|Dead Men Tell No Tales|Feed the Fishes|Full Steam Ahead|Sails!|Splice the Mainbrace
 
-&d.gear.vik [v(d.cgdb)]=[ ] Fine pair of pistols|[ ] Fine hand weapon|[ ]-[ ] Shield|[ ] Light climbing gear|[ ] Electroplasmic ammunition
+&d.gear.vik [v(d.cgdb)]=[ ] Fine Pair of Pistols|[ ] Fine Hand Weapon|[ ]-[ ] Shield|[ ] Light Climbing Gear|[ ] Electroplasmic Ammunition
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -363,17 +362,17 @@
 
 &d.xp_triggers.cutter [v(d.cgdb)]=address a challenge with Violence or Coercion
 
-&d.gear.cutter [v(d.cgdb)]=[ ] Fine hand weapon|[ ]-[ ] Fine heavy weapon|[ ] Scary weapon or tool|[ ] (0L) Manacles & chain|[ ] (0L) Rage essence vial|[ ] (0L) Spiritbane charm
+&d.gear.cutter [v(d.cgdb)]=[ ] Fine Hand Weapon|[ ]-[ ] Fine Heavy Weapon|[ ] Scary Weapon or Tool|[ ] (0L) Manacles & Chain|[ ] (0L) Rage Essence Vial|[ ] (0L) Spiritbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.abilities.hound [v(d.cgdb)]=Sharpshooter|Focused|Ghost Hunter (ghost-form)|Ghost Hunter (mind-link)|Ghost Hunter (arrow-swift)|Scout|Survivor|Tough as Nails|Vengeful
+&d.abilities.hound [v(d.cgdb)]=Sharpshooter|Focused|Ghost Hunter (Ghost-form)|Ghost Hunter (Mind-link)|Ghost Hunter (Arrow-swift)|Scout|Survivor|Tough as Nails|Vengeful
 
 &d.friends.hound [v(d.cgdb)]=Steiner, an assassin|Celene, a sentinel|Melvir, a phsysicker|Veleris, a spy|Casta, a bounty hunter
 
 &d.xp_triggers.hound [v(d.cgdb)]=address a challenge with Tracking or Violence
 
-&d.gear.hound [v(d.cgdb)]=[ ] Fine pair of pistols|[ ]-[ ] Fine long rifle|[ ] Electroplasmic ammunition|[ ] (0L) A trained hunting pet|[ ] Spyglass|[ ] (0L) Spiritbane charm
+&d.gear.hound [v(d.cgdb)]=[ ] Fine Pair of Pistols|[ ]-[ ] Fine Long Rifle|[ ] Electroplasmic Ammunition|[ ] (0L) A Trained Hunting Pet|[ ] Spyglass|[ ] (0L) Spiritbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -383,17 +382,17 @@
 
 &d.xp_triggers.leech [v(d.cgdb)]=address a challenge with Technical Skill or Mayhem
 
-&d.gear.leech [v(d.cgdb)]=[ ] Fine tinkering tools|[ ]-[ ] Fine wrecking tools|[ ] (0L) Blowgun & darts, syringes|[ ] Bandolier (3 uses)|[ ] Bandolier (3 uses)|[ ] [ ] [ ] Gadgets
+&d.gear.leech [v(d.cgdb)]=[ ] Fine Tinkering Tools|[ ]-[ ] Fine Wrecking Tools|[ ] (0L) Blowgun & Darts, Syringes|[ ] Bandolier (3 uses)|[ ] Bandolier (3 uses)|[ ] [ ] [ ] Gadgets
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.abilities.lurk [v(d.cgdb)]=Infiltrator|Ambush|Daredevil|Devil's Footsteps|Expertise|Ghost Veil|Reflexes|Shadow
+&d.abilities.lurk [v(d.cgdb)]=Infiltrator|Ambush|Daredevil|The Devil's Footsteps|Expertise|Ghost Veil|Reflexes|Shadow
 
 &d.friends.lurk [v(d.cgdb)]=Telda, a beggar|Darmot, a bluecoat|Frake, a locksmith|Roslyn Kellis, a noble|Petra, a city clerk
 
 &d.xp_triggers.lurk [v(d.cgdb)]=address a challenge with Stealth or Evasion
 
-&d.gear.lurk [v(d.cgdb)]=[ ] (0L) Fine lockpicks|[ ] Fine shadow cloak|[ ] Light climbing gear|[ ] (0L) Silence potion vial|[ ] Dark sight goggles|[ ] (0L) Spiritbane charm
+&d.gear.lurk [v(d.cgdb)]=[ ] (0L) Fine Lockpicks|[ ] Fine Shadow Cloak|[ ] Light Climbing Gear|[ ] (0L) Silence Potion Vial|[ ] Dark Sight Goggles|[ ] (0L) Spiritbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -403,7 +402,7 @@
 
 &d.xp_triggers.slide [v(d.cgdb)]=address a challenge with Deception or Influence
 
-&d.gear.slide [v(d.cgdb)]=[ ] (0L) Fine clothes & jewelry|[ ] Fine disguise kit|[ ] (0L) Fine loaded dice, trick cards|[ ] (0L) Trance powder|[ ] A cane sword|[ ] (0L) Spiritbane charm
+&d.gear.slide [v(d.cgdb)]=[ ] (0L) Fine Clothes & Jewelry|[ ] Fine Disguise Kit|[ ] (0L) Fine Loaded Dice, Trick Cards|[ ] (0L) Trance Powder|[ ] A Cane Sword|[ ] (0L) Spiritbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -413,7 +412,7 @@
 
 &d.xp_triggers.spider [v(d.cgdb)]=address a challenge with Calculation or Conspiracy
 
-&d.gear.spider [v(d.cgdb)]=[ ] (0L) Fine cover identity|[ ] Fine bottle of whiskey|[ ] Blueprints|[ ] (0L) Vial of slumber essence|[ ] (0L) Concealed palm pistol|[ ] (0L) Spiritbane charm
+&d.gear.spider [v(d.cgdb)]=[ ] (0L) Fine Cover Identity|[ ] Fine Bottle of Whiskey|[ ] Blueprints|[ ] (0L) Vial of Slumber Essence|[ ] (0L) Concealed Palm Pistol|[ ] (0L) Spiritbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
@@ -423,29 +422,31 @@
 
 &d.xp_triggers.whisper [v(d.cgdb)]=address a challenge with Knowledge or Arcane Power
 
-&d.gear.whisper [v(d.cgdb)]=[ ]-[ ] Fine lightning hook|[ ] Fine spirit mask|[ ] (0L) Electroplasm vials|[ ] Spirit Bottles (2)|[ ] (0L) Ghost key|[ ] (0L) Demonbane charm
+&d.gear.whisper [v(d.cgdb)]=[ ]-[ ] Fine Lightning Hook|[ ] Fine Spirit Mask|[ ] (0L) Electroplasm Vials|[ ] Spirit Bottles (2)|[ ] (0L) Ghost Key|[ ] (0L) Demonbane Charm
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
 &d.abilities.ghost [v(d.cgdb)]=Ghost Form|Dissipate|Manifest|Poltergeist|Possess
 
-&d.xp_triggers.ghost [v(d.cgdb)]=Exact Vengeance, Express Outrage or Anger, or Settle Scores from Your Heritage or Background
+&d.xp_triggers.ghost [v(d.cgdb)]=exact vengeance, express outrage or anger, or settle scores from your heritage or background
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.abilities.hull [v(d.cgdb)]=Compartments|Electroplasmic Projectors|Interface|Overcharge|Secondary Hull|Frame Upgrade
+&d.abilities.hull [v(d.cgdb)]=Automaton|Compartments|Electroplasmic Projectors|Interface|Overcharge|Secondary Hull|Frame Upgrade (Interior Chamber)|Frame Upgrade (Life-like Appearance)|Frame Upgrade (Levitation)|Frame Upgrade (Phonograph)|Frame Upgrade (Plating)|Frame Upgrade (Reflexes)|Frame Upgrade (Sensors)|Frame Upgrade (Smoke Projectors)|Frame Upgrade (Spider Climb)|Frame Upgrade (Spring-leap Pistons)
 
-&d.xp_triggers.hull [v(d.cgdb)]=fulfill your Drives despite Difficulty or Danger or Suppress or Ignore your former Human Qualities
-
-&d.frame_upgrades.hull [v(d.cgdb)]=Interior Chamber|Life-like Appearance|Levitation|Phonograph|Plating|Reflexes|Sensors|Smoke Projectors|Spider Climb|Spring-leap Pistons
+&d.xp_triggers.hull [v(d.cgdb)]=fulfill your drives despite difficulty or danger or suppress or ignore your former human qualities
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&d.abilities.vampire [v(d.cgdb)]=Arcane Sight|Dark Talent|Sinister Guile|Terrible Power|A Void in the Echo
+&d.abilities.vampire [v(d.cgdb)]=Undead|Arcane Sight|Dark Talent (Insight)|Dark Talent (Prowess)|Dark Talent (Resolve)|Sinister Guile|Terrible Power|A Void in the Echo
 
-&d.xp_triggers.vampire [v(d.cgdb)]=Display Dominance or Slay without Mercy
+&d.xp_triggers.vampire [v(d.cgdb)]=display dominance or slay without mercy
 
 &d.strictures.vampire [v(d.cgdb)]=Slumber|Forbidden|Repelled|Bestial|Bound
+
+@@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
+
+&d.abilities.other [v(d.cgdb)]=Sash Fighting|Falling Star|Moon Dagger|Rising Moon|Closing of the Eye|Glorious Visage|Spirit Link|Demonic Attendant|Demonic Artifact
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew stats
@@ -461,6 +462,8 @@
 &d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew XP|Crew Abilities|Contacts|Favorite|Factions|Upgrades|Heat|Crew Coin|Wanted Level|Hold|Claims
 
 &d.value.heat [v(d.cgdb)]=0|1|2|3|4|5|6|7|8|9
+
+&d.value.tier [v(d.cgdb)]=0|1|2|3|4|5
 
 &d.value.crew_coin [v(d.cgdb)]=0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16
 
