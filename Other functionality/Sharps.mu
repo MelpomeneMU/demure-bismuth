@@ -71,6 +71,8 @@ TODO: Send +noms to a channel somewhere.
 
 TODO: Prepare to include ascii art in badges, both in the names and the descriptions.
 
+TODO: BUG: +noms/report me hits both player and staff version.
+
 */
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
