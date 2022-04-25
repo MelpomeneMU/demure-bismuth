@@ -13,6 +13,13 @@
 
 +gear/give <player>=<gear> - staff-only, give a player a piece of Other gear
 +gear/take <player>=<gear> - staff-only, take a player's Other gear
+
++armor/mark - mark your armor
++armor/mark <armor, heavy, or special> - mark your armor
++armor/clear - clear all marks
++armor/unmark all - clear all marks
++armor/unmark - unmark your armor
++armor/unmark <armor, heavy, or special> - unmark your armor
 */
 
 &f.get-player-load-list [v(d.cgf)]=if(t(finditem(ulocal(f.get-player-stat, %0, abilities), Mule, |)), Light:|1-5|Normal:|6-7|Heavy:|8|Encumbered:|9, Light:|1-3|Normal:|4-5|Heavy:|6|Encumbered:|7-9)
@@ -60,3 +67,12 @@
 @set [v(d.cg)]/c.+gear/give=no_parse
 
 &c.+gear/take [v(d.cg)]=$+gear/take *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, Only staff can give gear out. Open a job to request gear.; }; @assert t(setr(P, ulocal(f.find-player, %0, %#)))={ @trigger me/tr.error=%#, Could not find a player named '%0'.; }; @assert t(setr(L, ulocal(f.get-player-stat, %qP, other gear)))={ @trigger me/tr.error=%#, ulocal(f.get-name, %qP, %#) doesn't have any gear to take yet.; }; @assert t(setr(G, ulocal(f.get-gear-list, %qL,, setq(S, other gear))))={ @trigger me/tr.error=%#, Could not find a piece of other gear on [ulocal(f.get-name, %qP, %#)]'s +gear list starting with '%1'. Other gear is the only kind of gear you can take from a player - anything else%, they're able to get back (or get another of) after the score is over.; }; @set %qP=ulocal(f.get-stat-location-on-player, other gear):[diffset(%qL, %qG, |, |)]; @pemit #12=%qL >> %qG >> [diffset(%qL, %qG, |, |)]; @trigger me/tr.success=%#, You take away [ulocal(f.get-name, %qP, %#)]'s [ulocal(f.get-gear-name, %qG)] gear.; @trigger me/tr.message=%qP, ulocal(f.get-name, %#, %qP) takes away your [ulocal(f.get-gear-name, %qG)] other gear.;
+
+&c.+armor [v(d.cg)]=$+armor:@force %#=+health
+
+&c.+armor/clear [v(d.cg)]=$+armor/clear:@set %#=[setr(X, ulocal(f.get-stat-location-on-player, armor))]:[setq(A, xget(%#, %qX))]0; @set %#=[setr(X, ulocal(f.get-stat-location-on-player, heavy armor))]:[setq(H, xget(%#, %qX))]0; @set %#=[setr(X, ulocal(f.get-stat-location-on-player, special armor))]:[setq(S, xget(%#, %qX))]0; @assert cor(t(%qA), t(%qH), t(%qS))={ @trigger me/tr.message=%#, Your armor is already clear of marks.; }; @trigger me/tr.remit-or-pemit=%#, ulocal(layout.room-emit, %#, cat(clears, poss(%#), plural(add(t(%qA), t(%qH), t(%qS)), mark, marks), on, ulocal(layout.list, strcat(if(t(%qA), %chArmor%cn|), if(t(%qH), %chHeavy Armor%cn|), if(t(%qS), %chSpecial Armor%cn))) -, plural(add(t(%qA), t(%qH), t(%qS)), it is, they are), no longer marked used for this score.)), %#;
+
+&c.+armor/mark [v(d.cg)]=$+armor/mark*:@assert t(setr(S, finditem(Armor|Heavy Armor|Special Armor, setr(T, switch(%0, %b*, trim(%0), * *, rest(%0), Armor)), |)))={ @trigger me/tr.error=%#, Could not find an armor type named '%qT'. Valid types are Armor%, Heavy Armor%, and Special Armor.; }; @break t(ulocal(f.get-player-stat, %#, %qS))={ @trigger me/tr.error=%#, Your %qS is already marked and cannot be marked again.; }; @set %#=ulocal(f.get-stat-location-on-player, %qS):1; @trigger me/tr.remit-or-pemit=%#, ulocal(layout.room-emit, %#, marks [poss(%#)] %ch%qS%cn as used on this score.);
+
+&c.+armor/unmark [v(d.cg)]=$+armor/unmark*:@assert t(setr(S, finditem(Armor|Heavy Armor|Special Armor|all, setr(T, switch(%0, %b*, trim(%0), * *, rest(%0), Armor)), |)))={ @trigger me/tr.error=%#, Could not find an armor type named '%qT'. Valid types are Armor%, Heavy Armor%, and Special Armor.; }; @break strmatch(%qT, all)={ @force %#=+armor/clear; }; @assert t(ulocal(f.get-player-stat, %#, %qS))={ @trigger me/tr.error=%#, Your %qS is not marked and cannot be unmarked.; }; @set %#=ulocal(f.get-stat-location-on-player, %qS):0; @trigger me/tr.remit-or-pemit=%#, ulocal(layout.room-emit, %#, clears [poss(%#)] mark on %ch%qS%cn - it is no longer marked used for this score.);
+

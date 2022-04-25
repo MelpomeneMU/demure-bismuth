@@ -1,0 +1,15 @@
+{{help
+|topic=+armor
+|detail=Armor is part of your health - if you're wearing it, you don't get hurt as quickly. It can be brought into play on the fly via a flashback, or activated by a special ability. These commands allow you to mark it so that you can easily remember what's already been used in a scene.<br /><br />Armor comes in three types: Armor, Heavy Armor, and Special Armor. If you don't specify an armor type, we'll assume you're marking or unmarking Armor.
+|example=
+* '''+armor''' - see your health and your current armor levels.
+* '''+armor/clear''' - clear your armor of marks.
+* '''+armor/mark <armor>''' - mark a piece of armor as used for this Score.
+* '''+armor/unmark <armor>''' - unmark a piece of armor unused for this Score.
+|link1=+gear
+|link2=+health
+|link3=+sheet
+|link4=+dt
+|category1=Playing_the_Game
+|category2=
+}}
