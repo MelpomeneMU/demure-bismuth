@@ -1,17 +1,6 @@
 {{help
 |topic=+sharps
-|detail=Sharps are a point system that rewards OOC good behavior, game stewardship, and acting in a way that makes the game fun for everyone. They can be awarded by staff for things like:
-
-* GMing
-* In celebration of a holiday
-* Anything that makes the game better (useful builds, bug-finding, etc)
-
-They can also be acquired by roleplaying with other players and getting +nominated.
-
-Sharps can be spent:
-* To buy badges
-* To buy advanced playbooks at character creation
-* Any other rewards staff deems acceptable
+|detail=Sharps are a point system that rewards OOC good behavior, game stewardship, and acting in a way that makes the game fun for everyone. They can be awarded by staff for things that improve the game, and by players via the [[Help:+noms|+noms]] system.<br /><br />See [[News:Sharps|Sharps]] for more information about what Sharps can be used for and spent on.
 |example=
 * '''+sharps''' - see your sharps and badges.
 * '''+sharps <player>''' - see a player's public badges.

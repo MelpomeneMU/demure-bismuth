@@ -1,6 +1,6 @@
 {{help
 |topic=+noms
-|detail=Noms are a way to say "Good scene!" to a fellow player. Each +nom grants another player a partial or complete Sharp - see [[Help:+sharps|]] - and players are notified when they receive a +nom, unless you choose the /quiet option.
+|detail=Noms are a way to say "Good scene!" or "Thank you!" to a fellow player. Each +nom grants another player a partial or complete Sharp - see [[News:Sharps|Sharps]] - and players are notified when they receive a +nom, unless you choose the /quiet option.
 
 'Nom' stands for 'Nominate'. Nominate them for sharps!
 |example=
