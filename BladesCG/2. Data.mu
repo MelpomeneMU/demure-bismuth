@@ -193,7 +193,7 @@
 
 &d.abilities [v(d.cgdb)]=d.abilities.cutter d.abilities.hound d.abilities.leech d.abilities.lurk d.abilities.slide d.abilities.spider d.abilities.whisper d.abilities.drwid d.abilities.faegir d.abilities.hersir d.abilities.prests d.abilities.serkr d.abilities.skipas d.abilities.vik d.abilities.faris d.abilities.janissary d.abilities.mirage d.abilities.rafiq d.abilities.rakshasa d.abilities.vizier d.abilities.zindiq d.abilities.vampire d.abilities.ghost d.abilities.hull d.abilities.other
 
-&d.restricted.abilities [v(d.cgdb)]=Ghost Form|Dissipate|Manifest|Poltergeist|Automaton|Compartments|Electroplasmic Projectors|Undead|Arcane Sight|Dark Talent (Insight)|Dark Talent (Prowess)|Dark Talent (Resolve)|Sinister Guile|Terrible Power|A Void in the Echo|Sash Fighting|Falling Star|Moon Dagger|Rising Moon|Closing of the Eye|Glorious Visage|Spirit Link|Demonic Attendant|Demonic Artifact
+&d.restricted.abilities [v(d.cgdb)]=Ghost Form|Dissipate|Manifest|Poltergeist|Automaton|Compartments|Electroplasmic Projectors|Interface|Overcharge|Secondary Hull|Frame Upgrade (Interior Chamber)|Frame Upgrade (Life-like Appearance)|Frame Upgrade (Levitation)|Frame Upgrade (Phonograph)|Frame Upgrade (Plating)|Frame Upgrade (Reflexes)|Frame Upgrade (Sensors)|Frame Upgrade (Smoke Projectors)|Frame Upgrade (Spider Climb)|Frame Upgrade (Spring-leap Pistons)|Undead|Arcane Sight|Dark Talent (Insight)|Dark Talent (Prowess)|Dark Talent (Resolve)|Sinister Guile|Terrible Power|A Void in the Echo|Sash Fighting|Falling Star|Moon Dagger|Rising Moon|Closing of the Eye|Glorious Visage|Spirit Link|Demonic Attendant|Demonic Artifact
 
 @@ To add a new playbook:
 
