@@ -21,11 +21,8 @@
 @@ Send important emits to this channel.
 &d.monitor-channel [v(d.cgdb)]=Monitor
 
-@@ These logs will be regularly purged of old items. The rules are:
-@@ - Keep the top 20 log entries.
-@@ - Keep any log entries that have happened in the past 7 days.
-@@ - Anything else gets deleted.
-&d.logs-to-clear [v(d.cgdb)]=_downtime- _crew-coin- _coin- _xp- _rep- _heat- _stress-
+@@ Don't clear these logs: advancement = advantages spent, crew_advancement = crew advantages spent.
+@if t(xget(v(d.bd), d.keep-all-logs-from-this-list))={ @force me=@edit [v(d.bd)]/d.keep-all-logs-from-this-list=$, %%badvancement crew_advancement; }, { &d.keep-all-logs-from-this-list [v(d.bd)]=advancement crew_advancement; }
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Data for chargen
