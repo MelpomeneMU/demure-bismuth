@@ -31,7 +31,7 @@ TODO: Add +/-<#> parsing. Tier+1, etc.
 
 @force me=&d.dr me=[search(ETHING=t(member(name(##), Dice Roller <DR>, |)))]
 
-@force me=&va [v(d.dr)]=[xget(search(ETHING=t(member(name(##), Job Global Object <JGO>, |))), va)]
+@force me=&vA [v(d.dr)]=[xget(search(ETHING=t(member(name(##), Job Global Object <JGO>, |))), va)]
 
 @tel [v(d.dr)]=[config(master_room)]
 

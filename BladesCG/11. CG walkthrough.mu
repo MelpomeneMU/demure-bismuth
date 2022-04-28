@@ -13,7 +13,7 @@
 
 @force me=&vF [v(d.chf)]=[v(d.cgf)]
 
-&f.can-create-channels [v(d.chf)]=or(isstaff(%0), and(not(hasflag(%0, GUEST)), lt(words(xget(%0, _channels-created)), xget(%vD, d.max-player-channels)), cor(hasflag(%0, APPROVED), t(ulocal(%vF/f.get-player-stat, %0, crew object)))))
+&f.can-create-channels [v(d.chf)]=or(isstaff(%0), and(not(hasflag(%0, GUEST)), lt(words(xget(%0, _channels-created)), xget(%vG, d.max-player-channels)), cor(hasflag(%0, APPROVED), t(ulocal(%vF/f.get-player-stat, %0, crew object)))))
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Main CG room
@@ -60,13 +60,13 @@ e
 
 @set here=INHERIT
 
-@force me=&vD here=[v(d.cgdb)]
+@force me=&vG here=[v(d.cgdb)]
 
 &d.redirect-poses.[num(here)] [v(d.bd)]=Chargen
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TBecoming an Expert starts with choosing your Expert Type. Below is a list of available Expert Types, along with simple descriptions.%R%R[multicol(iter(xget(%vD, d.value.expert_type), strcat(itext(0), |, xget(%vD, strcat(d.desc.expert_type., itext(0)))), |, |), 10 *, 0, |, getremainingwidth(%#), 1)]%R%R%T%ch+stat/set Expert Type=<your choice>%cn and hit Next!%R%R%TAll conversation in this room goes to the Chargen channel.%R
+@desc here=%R%TBecoming an Expert starts with choosing your Expert Type. Below is a list of available Expert Types, along with simple descriptions.%R%R[multicol(iter(xget(%vG, d.value.expert_type), strcat(itext(0), |, xget(%vG, strcat(d.desc.expert_type., itext(0)))), |, |), 10 *, 0, |, getremainingwidth(%#), 1)]%R%R%T%ch+stat/set Expert Type=<your choice>%cn and hit Next!%R%R%TAll conversation in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Expert walkthrough - Character Type
@@ -364,7 +364,7 @@ N
 
 @force me=&vF here=[v(d.cgf)]
 
-@force me=&vD here=[v(d.cgdb)]
+@force me=&vG here=[v(d.cgdb)]
 
 @name O=Back <O>;o;out;exit;back;b;
 
@@ -372,7 +372,7 @@ N
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TYou get XP when you roleplay your XP Triggers during a job. You can see your XP Triggers with %ch+sheet/xp%cn.%R%R%TYou can change your XP triggers with %ch+stat/set XP Triggers=<playbook name>%cn. Here's the full list:%R%R[multicol(iter(ulocal(%vF/f.get-choice-list, XP Triggers, %#), strcat(itext(0), |, xget(%vD, strcat(d.xp_triggers., ulocal(%vF/f.get-stat-location, itext(0))))), |, |), 10 *, 0, |, getremainingwidth(%#), 1)]%R%R%TYou can skip this step if you like, and your XP Triggers will be set to your Playbook's triggers.%R%R%TAll chat in this room goes to the Chargen channel.%R
+@desc here=%R%TYou get XP when you roleplay your XP Triggers during a job. You can see your XP Triggers with %ch+sheet/xp%cn.%R%R%TYou can change your XP triggers with %ch+stat/set XP Triggers=<playbook name>%cn. Here's the full list:%R%R[multicol(iter(ulocal(%vF/f.get-choice-list, XP Triggers, %#), strcat(itext(0), |, xget(%vG, strcat(d.xp_triggers., ulocal(%vF/f.get-stat-location, itext(0))))), |, |), 10 *, 0, |, getremainingwidth(%#), 1)]%R%R%TYou can skip this step if you like, and your XP Triggers will be set to your Playbook's triggers.%R%R%TAll chat in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Scoundrel walkthrough - Finishing Touches
@@ -396,7 +396,7 @@ N
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TLook over your +sheet one more time with %ch+sheet/all%cn and see if anything looks incomplete.%R%RStaff will be looking for:%R%T* Does your character fit into the theme OK?%R%T* Desc can't be underage.%R%T* Desc should be at least one (relevant) sentence long.%R%T* Anything missing? Any [ulocal(%vF/layout.fail)] marks on the CG check?%R%R%TWhen you're sure you're ready, type %ch+stats/lock%cn to lock your sheet and notify staff that you're ready for approval. There might still be changes, but staff will work those out with you.%R%R%TAll chat in this room goes to the Chargen channel.%R
+@desc here=%R%TLook over your +sheet one more time with %ch+sheet/all%cn and see if anything looks incomplete.%R%RStaff will be looking for:%R%T* Does your character fit into the theme OK?%R%T* Desc can't be underage.%R%T* Desc should be at least one (relevant) sentence long.%R%T* Anything missing? Any [ulocal(%vF/layout.fail)] marks on the CG check?%R%R%TWhen you're sure you're ready, type %ch+stat/lock%cn to lock your sheet and notify staff that you're ready for approval. There might still be changes, but staff will work those out with you.%R%R%TAll chat in this room goes to the Chargen channel.%R
 
 +note/add here/Crew=%R%TCrews are not mandatory, but they do give you extra power. You can join a crew or make your own.%R%TIf you want to join an existing crew, ask around on the LFG channel (%chlfg/on%cn) or check out the Doskvol Rumors board (%ch+bbread Doskvol Rumors%cn).%R%TIf you're interested in creating your own crew - and no, you don't need other players to join you, and you can always join a different crew later! - head back into CG and visit the %chCrew Creation%cn walkthrough.%R
 
@@ -727,7 +727,7 @@ n
 
 @force me=&vF here=[v(d.cgf)]
 
-@force me=&vD here=[v(d.cgdb)]
+@force me=&vG here=[v(d.cgdb)]
 
 @name O=Back <O>;o;out;exit;back;b;
 
@@ -735,7 +735,7 @@ n
 
 &short-desc here=All chat in this room goes to the Chargen channel.
 
-@desc here=%R%TYour crew can choose an XP Trigger that fits its essential nature with %ch+stat/set Crew XP Triggers=<choice>%cn. By default, it's set to whatever your Crew Type's XP Triggers are. In case you want to make changes, here's the full list:%R%R[multicol(iter(ulocal(%vF/f.get-choice-list, Crew XP Triggers, %#), strcat(itext(0), |, xget(%vD, strcat(d.crew_xp_triggers., ulocal(%vF/f.get-stat-location, itext(0)))), |%b|), |, |), 10 *, 0, |, getremainingwidth(%#), 1)]%R%R%TAll chat in this room goes to the Chargen channel.%R
+@desc here=%R%TYour crew can choose an XP Trigger that fits its essential nature with %ch+stat/set Crew XP Triggers=<choice>%cn. By default, it's set to whatever your Crew Type's XP Triggers are. In case you want to make changes, here's the full list:%R%R[multicol(iter(ulocal(%vF/f.get-choice-list, Crew XP Triggers, %#), strcat(itext(0), |, xget(%vG, strcat(d.crew_xp_triggers., ulocal(%vF/f.get-stat-location, itext(0)))), |%b|), |, |), 10 *, 0, |, getremainingwidth(%#), 1)]%R%R%TAll chat in this room goes to the Chargen channel.%R
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Crew Creation Walkthrough - Wrapping Up

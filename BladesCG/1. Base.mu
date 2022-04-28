@@ -15,9 +15,9 @@
 
 @force me=&d.chargen-functions [v(d.bd)]=[v(d.cgf)]
 
-@force me=&vD [v(d.cgf)]=[v(d.cgdb)]
+@force me=&vG [v(d.cgf)]=[v(d.cgdb)]
 
-@force me=&va [v(d.cgf)]=[xget(search(ETHING=t(member(name(##), Job Global Object <JGO>, |))), va)]
+@force me=&vA [v(d.cgf)]=[xget(search(ETHING=t(member(name(##), Job Global Object <JGO>, |))), va)]
 
 @@ Characters bucket - expected to be named CHARACTERS
 @force me=&d.characters-bucket [v(d.cgdb)]=[search(ETHING=t(member(name(##), CHARACTERS, |)))]
