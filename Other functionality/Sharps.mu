@@ -63,8 +63,6 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 +name/title <player>=<title> - set a player's OOC title (presumably after they've spent Sharps) - staff-only
 
-TODO: Prepare to include ascii art in badges, both in the names and the descriptions.
-
 */
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -271,7 +269,7 @@ TODO: Prepare to include ascii art in badges, both in the names and the descript
 @@ Badge creation and destruction
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 
-&c.+badge/create [v(d.sb)]=$+badge/create *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert not(t(ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is already a badge named %0.; }; @trigger me/tr.log=%vS, badge-, %#, %0: %1; @trigger me/tr.success=%#, You have created the badge '%0' with the following description: %1;
+&c.+badge/create [v(d.sb)]=$+badge/create *=*:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert not(t(ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is already a badge named %0.; }; @trigger me/tr.store=%vS, badge-, %#, %0: %1; @trigger me/tr.success=%#, You have created the badge '%0' with the following description: %1;
 
 &c.+badge/destroy [v(d.sb)]=$+badge/destroy *:@assert isstaff(%#)={ @trigger me/tr.error=%#, You must be staff to manage badges.; }; @assert t(setr(B, ulocal(f.find-badge-by-name, %0)))={ @trigger me/tr.error=%#, There is no badge named %0.; }; @eval setq(N, ulocal(f.get-badge-name, %qB)); @assert gettimer(%#, destroy-badge, %qN)={ @eval settimer(%#, destroy-badge, 600, %qN); @trigger me/tr.message=%#, You are about to destroy badge %qN. This will not remove it from players - for that you must use +badge/removeall %qN. Are you sure you wish to destroy this badge? If so%, type %ch+badge/destroy %0%cn again within the next 10 minutes. The time is now [prettytime()].; }; @wipe %vS/%qB; @wipe %vS/[edit(%qB, BADGE-, status-)]; @wipe %vS/[edit(%qB, BADGE-, players-)]; @trigger me/tr.success=%#, You destroy the badge %qN. This does not take it away from players that have it.; 
 
