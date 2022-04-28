@@ -24,15 +24,15 @@
 
 &layout.bio [v(d.cgf)]=strcat(multicol(ulocal(layout.player-bio, %0, %1), * *, 0, |, %1), %r, formattext(strcat(Vice Purveyor:, %b, ulocal(f.get-player-stat-or-default, %0, Vice Purveyor, ulocal(layout.not-set, %0, Vice Purveyor)), %r, Look:, %b, shortdesc(%0, %1)), 0, %1))
 
-&layout.not-set [v(d.cgf)]=if(cor(strmatch(%1, faction.hunting), t(grab(xget(%vD, strcat(d.required-, if(ulocal(f.is-crew-stat, %1), crew, if(ulocal(f.is_expert, %0), expert, scoundrel)), -bio)), %1, |))), %ch%crNot set%cn, Not set)
+&layout.not-set [v(d.cgf)]=if(cor(strmatch(%1, faction.hunting), t(grab(xget(%vG, strcat(d.required-, if(ulocal(f.is-crew-stat, %1), crew, if(ulocal(f.is_expert, %0), expert, scoundrel)), -bio)), %1, |))), %ch%crNot set%cn, Not set)
 
-&layout.simple-bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.expert_bio), Look|Character Type, |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), ulocal(layout.not-set, %0, itext(0)))), |, |), * *, 0, |, %1), %r, divider(, %1), %r, formattext(cat(Character Type:, ulocal(f.get-player-stat-or-default, %0, Character Type, ulocal(layout.not-set, %0, Character Type)))), %r, formattext(cat(Look:, ulocal(f.get-player-stat-or-default, %0, Look, ulocal(layout.not-set, %0, Look)))))
+&layout.simple-bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vG, d.expert_bio), Look|Character Type, |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), ulocal(layout.not-set, %0, itext(0)))), |, |), * *, 0, |, %1), %r, divider(, %1), %r, formattext(cat(Character Type:, ulocal(f.get-player-stat-or-default, %0, Character Type, ulocal(layout.not-set, %0, Character Type)))), %r, formattext(cat(Look:, ulocal(f.get-player-stat-or-default, %0, Look, ulocal(layout.not-set, %0, Look)))))
 
 &layout.player-bio [v(d.cgf)]=iter(ulocal(f.get-layout-bio-stats, %0), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), ulocal(layout.not-set, %0, itext(0)))), |, |)
 
 &layout.actions [v(d.cgf)]=strcat(divider(Actions, %1), %r, multicol(ulocal(layout.player-actions, %0), * 1 2 * 1 2 * 1, 1, |, %1))
 
-&layout.player-actions [v(d.cgf)]=iter(strcat(xget(%vD, d.attributes), |, fliplist(strcat(xget(%vD, d.actions.insight), ||, xget(%vD, d.actions.prowess), ||, xget(%vD, d.actions.resolve)), 3, |)), strcat(itext(0), if(lte(inum(0), 3), strcat(space(3), %(, ulocal(f.get-xp, %0, itext(0), current), /, ulocal(f.get-xp, %0, itext(0), max), %b, XP, %), |, ulocal(f.get-player-attribute, %0, itext(0)), if(lte(inum(0), 2), |)), strcat(|, ulocal(f.get-player-stat-or-zero, %0, itext(0)), if(neq(mod(inum(0), 3), 0), |)))), |, |)
+&layout.player-actions [v(d.cgf)]=iter(strcat(xget(%vG, d.attributes), |, fliplist(strcat(xget(%vG, d.actions.insight), ||, xget(%vG, d.actions.prowess), ||, xget(%vG, d.actions.resolve)), 3, |)), strcat(itext(0), if(lte(inum(0), 3), strcat(space(3), %(, ulocal(f.get-xp, %0, itext(0), current), /, ulocal(f.get-xp, %0, itext(0), max), %b, XP, %), |, ulocal(f.get-player-attribute, %0, itext(0)), if(lte(inum(0), 2), |)), strcat(|, ulocal(f.get-player-stat-or-zero, %0, itext(0)), if(neq(mod(inum(0), 3), 0), |)))), |, |)
 
 &layout.abilities-title [v(d.cgf)]=strcat(Special Abilities %(, ulocal(f.get-xp, %0, playbook, current), /, ulocal(f.get-xp, %0, playbook, max), %b, XP, %))
 
@@ -46,7 +46,7 @@
 
 &layout.2health [v(d.cgf)]=if(or(t(%3), t(setr(1, xget(%0, _health-%2-1))), t(setr(2, xget(%0, _health-%2-2)))), edit(multicol(strcat(setq(W, sub(div(sub(getremainingwidth(%1), 14), 2), 3)), |, _, repeat(@, %qW), |, _, repeat(@, %qW), |||, #, center(__, %qW, _), #, |, #, center(__, %qW, _), #, ||, %2, |, ulocal(layout.player-health, %0, %1, %q1, %qW), |, ulocal(layout.player-health, %0, %1, %q2, %qW), |, case(%2, 2, -1d, Less effect), ||, #, repeat(@, %qW), #, |, #, repeat(@, %qW), #), 1 * * 13, 0, |, %1), _, %b, @, _, #, |))
 
-&layout.stress [v(d.cgf)]=strcat(divider(Stress, %1), %r, multicol(strcat(Stress:, |, ulocal(f.get-player-stat-or-default, %0, Stress, 0), /, ulocal(f.get-max-stress, %0), |, Traumas:, |, words(ulocal(f.get-player-stat, %0, Traumas), |), /, setr(M, ulocal(f.get-max-trauma, %0))), * 5 * 5, 0, |, %1), %r, formattext(cat(Traumas:, ulocal(layout.list, setr(T, ulocal(f.get-player-stat-or-default, %0, Traumas, None yet.))), if(cand(t(setr(N, ulocal(f.get-player-stat, %0, needs trauma))), lt(words(%qT, |), %qM)), cat(%r%rNew trauma required. +trauma/add <choice> from the following list:, ulocal(layout.list, setdiff(xget(%vD, d.value.traumas), %qT, |, |))), if(t(%qN), %r%rNo more room for trauma. This character cannot play until this is resolved.))), 0, %1))
+&layout.stress [v(d.cgf)]=strcat(divider(Stress, %1), %r, multicol(strcat(Stress:, |, ulocal(f.get-player-stat-or-default, %0, Stress, 0), /, ulocal(f.get-max-stress, %0), |, Traumas:, |, words(ulocal(f.get-player-stat, %0, Traumas), |), /, setr(M, ulocal(f.get-max-trauma, %0))), * 5 * 5, 0, |, %1), %r, formattext(cat(Traumas:, ulocal(layout.list, setr(T, ulocal(f.get-player-stat-or-default, %0, Traumas, None yet.))), if(cand(t(setr(N, ulocal(f.get-player-stat, %0, needs trauma))), lt(words(%qT, |), %qM)), cat(%r%rNew trauma required. +trauma/add <choice> from the following list:, ulocal(layout.list, setdiff(xget(%vG, d.value.traumas), %qT, |, |))), if(t(%qN), %r%rNo more room for trauma. This character cannot play until this is resolved.))), 0, %1))
 
 &layout.xp_triggers [v(d.cgf)]=strcat(divider(XP Triggers, %1), %r, formattext(strcat(* You, %b, ulocal(f.get-player-stat-or-default, %0, xp triggers, addressed a challenge with ______ or ______)., %r, * You roll a desperate action., %r, * You express your beliefs%, drives%, heritage%, or background., %r, * You struggled with issues from your vice or traumas during the session.), 0, %1))
 
@@ -58,7 +58,7 @@
 
 &layout.coin [v(d.cgf)]=strcat(divider(Coin and wealth, %1), %r, multicol(strcat(Coin:, |, ulocal(f.get-player-stat-or-zero, %0, coin), /4, |, Stash:, |, ulocal(f.get-player-stat-or-zero, %0, stash)/40, |, Lifestyle:, |, ulocal(f.get-lifestyle-desc, %0), %b, %(, ulocal(f.get-lifestyle, %0), %)), 15 5 * 6 12 *r, 0, |, %1))
 
-&layout.standard-gear [v(d.cgf)]=strcat(divider(Standard gear, %1), %r, multicol(edit(iter(fliplist(if(t(setr(G, ulocal(f.get-player-stat, %0, standard gear))), %qG, xget(%vD, d.standard_gear)), 2, |), itext(0), |, |), %(0L%), %ch%cx%(0L%)%cn), * *, 0, |, %1))
+&layout.standard-gear [v(d.cgf)]=strcat(divider(Standard gear, %1), %r, multicol(edit(iter(fliplist(if(t(setr(G, ulocal(f.get-player-stat, %0, standard gear))), %qG, xget(%vG, d.standard_gear)), 2, |), itext(0), |, |), %(0L%), %ch%cx%(0L%)%cn), * *, 0, |, %1))
 
 &layout.other-gear [v(d.cgf)]=strcat(divider(Other gear, %1), %r, setq(L, edit(iter(fliplist(ulocal(f.get-player-stat, %0, other gear), 2, |), itext(0), |, |), %(0L%), %ch%cx%(0L%)%cn)), multicol(if(t(%qL), %qL, |), * *, 0, |, %1))
 
@@ -84,7 +84,7 @@
 
 &layout.crew-rep-line [v(d.cgf)]=formattext(strcat(Reputation:, %b, ulocal(f.get-player-stat-or-default, %0, Reputation, ulocal(layout.not-set, %0, Reputation)), %b, %(, ulocal(f.get-player-stat-or-zero, %0, Rep), /, ulocal(f.get-max-rep, %0), %)), 0, %1)
 
-&layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vD, d.crew_bio), xget(%vD, d.manual-bio-stats), |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), ulocal(layout.not-set, %0, itext(0)))), |, |), * *, 0, |, %1), %r, ulocal(layout.crew-rep-line, %0, %1), %r, formattext(strcat(Hunting Grounds:, %b, ulocal(f.get-player-stat-or-default, %0, Hunting Grounds, ulocal(layout.not-set, %0, Hunting Grounds)), %b, \[, first(ulocal(f.get-player-stat-or-default, %0, faction.hunting, ulocal(layout.not-set, %0, faction.hunting)|), |), \], %r, Lair:, %b, ulocal(f.get-player-stat-or-default, %0, Lair, ulocal(layout.not-set, %0, Lair))), 0, %1))
+&layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vG, d.crew_bio), xget(%vG, d.manual-bio-stats), |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), ulocal(layout.not-set, %0, itext(0)))), |, |), * *, 0, |, %1), %r, ulocal(layout.crew-rep-line, %0, %1), %r, formattext(strcat(Hunting Grounds:, %b, ulocal(f.get-player-stat-or-default, %0, Hunting Grounds, ulocal(layout.not-set, %0, Hunting Grounds)), %b, \[, first(ulocal(f.get-player-stat-or-default, %0, faction.hunting, ulocal(layout.not-set, %0, faction.hunting)|), |), \], %r, Lair:, %b, ulocal(f.get-player-stat-or-default, %0, Lair, ulocal(layout.not-set, %0, Lair))), 0, %1))
 
 &layout.crew1 [v(d.cgf)]=strcat(setq(C, ulocal(f.get-player-stat, %0, crew object)), ulocal(layout.crew_name, %qC, %1), %r, ulocal(layout.crew_bio, %qC, %1), %r, ulocal(layout.crew-heat, %qC, %1), %r, ulocal(layout.crew-coin, %qC, %1), %r, ulocal(layout.crew-abilities, %qC, %1), %r, ulocal(layout.crew-upgrades, %qC, %1), %r, ulocal(layout.crew-xp_triggers, %qC, %1))
 
@@ -108,7 +108,7 @@
 
 &layout.crew-contacts [v(d.cgf)]=strcat(divider(Crew Contacts, %1), setq(F, ulocal(f.get-player-stat, %0, favorite)), %r, multicol(iter(ulocal(f.get-player-stat, %0, Contacts), strcat(itext(0), switch(%qF, itext(0), %b%cg%(Favorite%))), |, |), * *, 0, |, %1))
 
-&layout.crew-upgrades [v(d.cgf)]=strcat(divider(Upgrades, %1), %r, setq(U, ulocal(f.get-player-stat, %0, Upgrades)), setq(M, ulocal(f.replace-upgrades, xget(%vD, strcat(d.upgrades., ulocal(f.get-player-stat, %0, Crew Type))), %qU)), setq(M, strcat(%qM, |, ulocal(f.get-extra-crew-upgrades, %qU, %qM))), setq(M, squish(trim(%qM, b, |), |)), setq(L, xget(%vD, d.upgrades.lair)), setq(T, xget(%vD, d.upgrades.training)), setq(Q, xget(%vD, d.upgrades.quality)), setq(W, getremainingwidth(%1, 2)), multicol(fliplist(strcat(divider(Crew, %qW), |, %qM, |, divider(Quality, %qW), |, ulocal(f.replace-upgrades, %qQ, %qU), repeat(|, sub(add(words(%qL, |), words(%qT, |)), add(words(%qM, |), words(%qQ, |)))), |, divider(Lair, %qW), |, ulocal(f.replace-upgrades, %qL, %qU), |, divider(Training, %qW), |, ulocal(f.replace-upgrades, %qT, %qU)), 2, |), * *, 0, |, %1))
+&layout.crew-upgrades [v(d.cgf)]=strcat(divider(Upgrades, %1), %r, setq(U, ulocal(f.get-player-stat, %0, Upgrades)), setq(M, ulocal(f.replace-upgrades, xget(%vG, strcat(d.upgrades., ulocal(f.get-player-stat, %0, Crew Type))), %qU)), setq(M, strcat(%qM, |, ulocal(f.get-extra-crew-upgrades, %qU, %qM))), setq(M, squish(trim(%qM, b, |), |)), setq(L, xget(%vG, d.upgrades.lair)), setq(T, xget(%vG, d.upgrades.training)), setq(Q, xget(%vG, d.upgrades.quality)), setq(W, getremainingwidth(%1, 2)), multicol(fliplist(strcat(divider(Crew, %qW), |, %qM, |, divider(Quality, %qW), |, ulocal(f.replace-upgrades, %qQ, %qU), repeat(|, sub(add(words(%qL, |), words(%qT, |)), add(words(%qM, |), words(%qQ, |)))), |, divider(Lair, %qW), |, ulocal(f.replace-upgrades, %qL, %qU), |, divider(Training, %qW), |, ulocal(f.replace-upgrades, %qT, %qU)), 2, |), * *, 0, |, %1))
 
 &layout.crew-members [v(d.cgf)]=strcat(divider(Members, %1), %r, multicol(iter(ulocal(f.get-crew-members, %0), trim(cat(ulocal(f.get-name, itext(0), %1), case(1, ulocal(f.is-founding-member, itext(0), %0), ansi(cg, %(Founder%)), ulocal(f.is-probationary-member, itext(0), %0), ansi(ch, %(Probationary%))), ulocal(f.get-crew_title, itext(0)))),, |), * *, 0, |, %1))
 
@@ -160,7 +160,7 @@
 
 &check.scoundrel.xp_triggers [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, xp triggers))
 
-&check.crew.bio [v(d.cgf)]=not(ladd(iter(xget(%vD, d.crew_bio), not(hasattr(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |)))
+&check.crew.bio [v(d.cgf)]=not(ladd(iter(xget(%vG, d.crew_bio), not(hasattr(%0, ulocal(f.get-stat-location-on-player, itext(0)))), |)))
 
 &check.crew.abilities [v(d.cgf)]=t(ulocal(f.get-player-stat, %0, crew abilities))
 
