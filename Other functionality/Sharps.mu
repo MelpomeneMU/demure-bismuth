@@ -115,11 +115,11 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 &sharpcount-5 [v(d.sbd)]=100
 
-@force me=&badge-1 [v(d.sbd)]=[prettytime()] [moniker(%#)]: Petty criminal: Gained [xget(v(d.sbd), sharpcount-1)]+ Sharps!
+@force me=&badge-1 [v(d.sbd)]=[prettytime()] [moniker(%#)]: Petty Criminal: Gained [xget(v(d.sbd), sharpcount-1)]+ Sharps!
 
-@force me=&badge-2 [v(d.sbd)]=[prettytime()] [moniker(%#)]: Crook: Gained [xget(v(d.sbd), sharpcount-2)]+ Sharps!
+@force me=&badge-2 [v(d.sbd)]=[prettytime()] [moniker(%#)]: Proper Crook: Gained [xget(v(d.sbd), sharpcount-2)]+ Sharps!
 
-@force me=&badge-3 [v(d.sbd)]=[prettytime()] [moniker(%#)]: Person of means: Gained [xget(v(d.sbd), sharpcount-3)]+ Sharps!
+@force me=&badge-3 [v(d.sbd)]=[prettytime()] [moniker(%#)]: Person of Means: Gained [xget(v(d.sbd), sharpcount-3)]+ Sharps!
 
 @force me=&badge-4 [v(d.sbd)]=[prettytime()] [moniker(%#)]: Nobility: Gained [xget(v(d.sbd), sharpcount-4)]+ Sharps!
 
