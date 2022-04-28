@@ -1,29 +1,4 @@
-/*
-+stat/set <player>/<stat>=<value>
-+stat/add <player>/<stat>=<value>
-+stat/remove <player>/<stat>=<value>
-+stat/set <stat>=<value>
-+stat/add <stat>=<value>
-+stat/remove <stat>=<value>
-+stat/find <stat>*
-+stat/find <stat>=<value>
-
-Aliases:
-
-+stat/del
-+stat/rem
-
-+stats/clear
-+stats/lock
-+stats/unlock <player>
-
-+approve <player>=<comment>
-+unapprove <player>=<comment>
-+retire <player>=<comment>
-
-TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, or Consort and will allow you to bypass the default restrictions.
-
-*/
+@@ TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, or Consort and will allow you to bypass the default restrictions.
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Layouts for CG messages
@@ -78,9 +53,9 @@ TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, o
 
 &layout.chargen-job [v(d.cgf)]=strcat(ulocal(f.get-name, %0) is ready to be approved., %r%r%b, Staff will be looking for:%R%T* Does your character fit into the theme OK?%R%T* Desc can't be underage.%R%T* Desc should be at least one (relevant) sentence long.%R%T* Anything missing? Any, %b, ulocal(layout.fail), %b, marks on the CG check?, %r%r%b, If you have any questions%, please add them to this job!)
 
-&c.+stats/lock [v(d.cg)]=$+stats/lock:@assert not(hasattr(%#, _stat.locked))={ @trigger me/tr.error=%#, Your stats are already locked.; }; @assert gettimer(%#, stats-lock)={ @trigger me/tr.message=%#, You are about to lock your stats. This will create a job (or add to your existing job if you already have one) and make it so you cannot edit your character any more. Are you sure? If yes%, type %ch+stats/lock%cn again within the next 10 minutes. The time is now [prettytime()].; @eval settimer(%#, stats-lock, 600); }; @trigger me/tr.lock-stats=%#; @if cand(isdbref(setr(J, xget(%#, _chargen-job))), ulocal(f.can-add-to-job, %#, %qJ))={ @trigger %vA/trig_add=%qJ, cat(ulocal(f.get-name, %#) has locked, poss(%#), stats again.), %#, ADD; @trigger me/tr.success=%#, You locked your stats. A comment has been added to your CG job to let staff know to take another look.; @trigger %vA/trig_broadcast=%#, cat(CG:, name(%qJ):, ulocal(f.get-name, %#), locked, poss(%#) stats again.), ADD; }, { @trigger %vA/trig_create=%#, xget(%vD, d.CG-bucket), 1, ulocal(f.get-name, %#): Ready for approval, ulocal(layout.chargen-job, %#); @trigger me/tr.success=%#, You locked your stats. A job has been created with staff to examine your character. Type %ch+myjobs%cn to see it.; }
+&c.+stats/lock [v(d.cg)]=$+stats/lock:@assert not(hasattr(%#, _stat.locked))={ @trigger me/tr.error=%#, Your stats are already locked.; }; @assert gettimer(%#, stats-lock)={ @trigger me/tr.message=%#, You are about to lock your stats. This will create a job (or add to your existing job if you already have one) and make it so you cannot edit your character any more. Are you sure? If yes%, type %ch+stats/lock%cn again within the next 10 minutes. The time is now [prettytime()].; @eval settimer(%#, stats-lock, 600); }; @trigger me/tr.lock-stats=%#; @if cand(isdbref(setr(J, xget(%#, _chargen-job))), ulocal(f.can-add-to-job, %#, %qJ))={ @trigger %vA/trig_add=%qJ, cat(ulocal(f.get-name, %#) has locked, poss(%#), stats again.), %#, ADD; @trigger me/tr.success=%#, You locked your stats. A comment has been added to your CG job to let staff know to take another look.; @trigger %vA/trig_broadcast=%#, cat(CG:, name(%qJ):, ulocal(f.get-name, %#), locked, poss(%#) stats again.), ADD; }, { @trigger %vA/trig_create=%#, xget(%vG, d.CG-bucket), 1, ulocal(f.get-name, %#): Ready for approval, ulocal(layout.chargen-job, %#); @trigger me/tr.success=%#, You locked your stats. A job has been created with staff to examine your character. Type %ch+myjobs%cn to see it.; }
 
-&tr.lock-stats [v(d.cg)]=@set %0=_stat.locked:[prettytime()]; @dolist/delimit | [xget(%vD, d.stats-that-default)]={ @set %0=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %0, ##)]; }; @set %0=ulocal(f.get-stat-location-on-player, xp.insight.max):[setr(M, switch(setr(P, ulocal(f.get-player-stat, %0, Playbook)), Vampire, 8, 6))]; @set %0=ulocal(f.get-stat-location-on-player, xp.prowess.max):%qM; @set %0=ulocal(f.get-stat-location-on-player, xp.resolve.max):%qM; @set %0=ulocal(f.get-stat-location-on-player, xp.playbook.max):[switch(%qP, Vampire, 10, 8)]; 
+&tr.lock-stats [v(d.cg)]=@set %0=_stat.locked:[prettytime()]; @dolist/delimit | [xget(%vG, d.stats-that-default)]={ @set %0=[ulocal(f.get-stat-location-on-player, ##)]:[ulocal(f.get-player-stat, %0, ##)]; }; @set %0=ulocal(f.get-stat-location-on-player, xp.insight.max):[setr(M, switch(setr(P, ulocal(f.get-player-stat, %0, Playbook)), Vampire, 8, 6))]; @set %0=ulocal(f.get-stat-location-on-player, xp.prowess.max):%qM; @set %0=ulocal(f.get-stat-location-on-player, xp.resolve.max):%qM; @set %0=ulocal(f.get-stat-location-on-player, xp.playbook.max):[switch(%qP, Vampire, 10, 8)]; 
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Unlock stats
@@ -190,7 +165,7 @@ TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, o
 @@ %1 - value
 @@ %2 - player
 @@ Default max list of items is 1000. Replace '1000' with something better if it becomes a problem.
-&tr.find-stat [v(d.cg)]=@eval setq(D, 0); @assert cand(t(setr(S, ulocal(f.is-stat, %0, #1, #1))), not(gt(words(%0, *), 1)))={ @eval setq(R, xget(%vD, d.staff-only-stats)); @trigger me/tr.message=%2, strcat(Stats matching '%0' are:, %b, ulocal(layout.list, iter(finditems(ulocal(f.list-all-stats, %2), %0, |), if(t(member(%qR, itext(0), |)), ansi(xh, itext(0)[setq(D, 1)]), itext(0)), |, |),, 1000)., if(t(%qD), %bStats in %cx%chdark text%cn can only be set by staff.)); }; @eval setq(V, ulocal(f.list-values, %qS, %2)); @eval setq(R, ulocal(f.list-restricted-values, %qS, %2)); @trigger me/tr.message=%2, strcat(ulocal(f.get-singular-stat-name, %qS), %b, values, if(t(%1), %bwith '%1' in them):, %b, ulocal(layout.list, if(t(%qV), iter(finditems(%qV, %1, |), if(t(member(%qR, itext(0), |)), ansi(xh, itext(0)[setq(D, 1)]), itext(0)), |, |), any unrestricted text),, 1000)., if(t(%qD), %bValues in %cx%chdark text%cn are restricted.));
+&tr.find-stat [v(d.cg)]=@eval setq(D, 0); @assert cand(t(setr(S, ulocal(f.is-stat, %0, #1, #1))), not(gt(words(%0, *), 1)))={ @eval setq(R, xget(%vG, d.staff-only-stats)); @trigger me/tr.message=%2, strcat(Stats matching '%0' are:, %b, ulocal(layout.list, iter(finditems(ulocal(f.list-all-stats, %2), %0, |), if(t(member(%qR, itext(0), |)), ansi(xh, itext(0)[setq(D, 1)]), itext(0)), |, |),, 1000)., if(t(%qD), %bStats in %cx%chdark text%cn can only be set by staff.)); }; @eval setq(V, ulocal(f.list-values, %qS, %2)); @eval setq(R, ulocal(f.list-restricted-values, %qS, %2)); @trigger me/tr.message=%2, strcat(ulocal(f.get-singular-stat-name, %qS), %b, values, if(t(%1), %bwith '%1' in them):, %b, ulocal(layout.list, if(t(%qV), iter(finditems(%qV, %1, |), if(t(member(%qR, itext(0), |)), ansi(xh, itext(0)[setq(D, 1)]), itext(0)), |, |), any unrestricted text),, 1000)., if(t(%qD), %bValues in %cx%chdark text%cn are restricted.));
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Stat-setting triggers
@@ -231,7 +206,7 @@ TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, o
 @@ %1 - value
 @@ %2 - player
 @@ %3 - player doing the setting
-&tr.set-stat [v(d.cg)]=@assert t(setr(S, ulocal(f.is-stat, %0, %2, %3)))={ @trigger me/tr.error=%3, '%0' does not appear to be a stat. Valid stats are: [ulocal(layout.list, ulocal(f.list-stats, %0, %2, %3))]; }; @assert cor(not(t(ulocal(f.is-addable-stat, %0, %3))), t(finditem(xget(%vD, d.settable-addable-stats), %qS, |)))={ @force %3=+stat/add [if(not(strmatch(%2, %3)), %2/)]%0=%1; }; @eval setq(I, ulocal(f.is-crew-stat, %qS)); @assert ulocal(f.is-allowed-to-edit-[if(%qI, crew, stat)], %3, %2, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-[if(%qI, stats, crew-stats)], %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.set-[case(1, t(ulocal(f.is-action, %qS)), action, %qI, crew-stat, ulocal(f.is-full-list-stat, %qS), full-list-stat, final-stat)]=%qS, %qV, %2, %3;
+&tr.set-stat [v(d.cg)]=@assert t(setr(S, ulocal(f.is-stat, %0, %2, %3)))={ @trigger me/tr.error=%3, '%0' does not appear to be a stat. Valid stats are: [ulocal(layout.list, ulocal(f.list-stats, %0, %2, %3))]; }; @assert cor(not(t(ulocal(f.is-addable-stat, %0, %3))), t(finditem(xget(%vG, d.settable-addable-stats), %qS, |)))={ @force %3=+stat/add [if(not(strmatch(%2, %3)), %2/)]%0=%1; }; @eval setq(I, ulocal(f.is-crew-stat, %qS)); @assert ulocal(f.is-allowed-to-edit-[if(%qI, crew, stat)], %3, %2, %qS)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-[if(%qI, crew-stats, stats)], %0, %2, %3); }; @assert cor(not(t(strlen(%1))), t(strlen(setr(V, ulocal(f.get-pretty-value, %qS, %1, %2, %3)))))={ @trigger me/tr.error=%3, ulocal(layout.bad-or-restricted-values, %qS, %1, %2, %3, ulocal(f.get-singular-stat-name, %qS)); }; @trigger me/tr.set-[case(1, t(ulocal(f.is-action, %qS)), action, %qI, crew-stat, ulocal(f.is-full-list-stat, %qS), full-list-stat, final-stat)]=%qS, %qV, %2, %3;
 
 @@ %0 - stat
 @@ %1 - value
@@ -250,4 +225,4 @@ TODO: Hawkers' Silver Tongues ability gives you an extra dot of Sway, Command, o
 
 &tr.set-crew-stat [v(d.cg)]=@assert t(setr(C, ulocal(f.get-player-stat, %2, crew object)))={ @trigger me/tr.error=%3, ulocal(layout.crew-object-error, %0, %1, %2, %3); }; @assert ulocal(f.is-allowed-to-edit-crew, %3, %2)={ @trigger me/tr.error=%3, ulocal(layout.cannot-edit-crew-stats, %0, %1, %2, %3); }; @assert not(ulocal(f.is-full-list-stat, %0))={ @trigger me/tr.set-full-list-stat=%0, %1, %qC, %3; }; @trigger me/tr.set-final-stat=%0, %1, %qC, %3;
 
-&tr.set-full-list-stat [v(d.cg)]=@trigger me/tr.set-final-stat=%0, setr(0, xget(%vD, strcat(d., ulocal(f.get-stat-location, %0), ., if(t(%1), %1)))), %2, %3, if(t(%1), the %ch%1%cn list: [ulocal(layout.list, %q0)]);
+&tr.set-full-list-stat [v(d.cg)]=@trigger me/tr.set-final-stat=%0, setr(0, xget(%vG, strcat(d., ulocal(f.get-stat-location, %0), ., if(t(%1), %1)))), %2, %3, if(t(%1), the %ch%1%cn list: [ulocal(layout.list, %q0)]);
