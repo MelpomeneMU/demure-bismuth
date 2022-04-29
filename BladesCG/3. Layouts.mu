@@ -82,7 +82,7 @@
 
 &layout.crew_name [v(d.cgf)]=header(if(t(%0), strcat(ulocal(f.get-player-stat-or-default, %0, Crew name, No crew name set), %b, %(, Tier, %b, ulocal(f.get-player-stat-or-zero, %0, Crew Tier), %), if(isstaff(%1), strcat(%b, %(, %0, %)))), No crew selected), %1)
 
-&layout.crew-rep-line [v(d.cgf)]=formattext(strcat(Reputation:, %b, ulocal(f.get-player-stat-or-default, %0, Reputation, ulocal(layout.not-set, %0, Reputation)), %b, %(, ulocal(f.get-player-stat-or-zero, %0, Rep), /, ulocal(f.get-max-rep, %0), %)), 0, %1)
+&layout.crew-rep-line [v(d.cgf)]=formattext(strcat(Reputation:, %b, ulocal(f.get-player-stat-or-default, %0, Reputation, ulocal(layout.not-set, %0, Reputation)), %b, %(, ulocal(f.get-player-stat-or-zero, %0, Rep), /12 -, %b, ulocal(f.get-max-rep, %0), %b, to develop, %)), 0, %1)
 
 &layout.crew_bio [v(d.cgf)]=strcat(multicol(iter(setdiff(xget(%vG, d.crew_bio), xget(%vG, d.manual-bio-stats), |, |), strcat(itext(0), :, %b, ulocal(f.get-player-stat-or-default, %0, itext(0), ulocal(layout.not-set, %0, itext(0)))), |, |), * *, 0, |, %1), %r, ulocal(layout.crew-rep-line, %0, %1), %r, formattext(strcat(Hunting Grounds:, %b, ulocal(f.get-player-stat-or-default, %0, Hunting Grounds, ulocal(layout.not-set, %0, Hunting Grounds)), %b, \[, first(ulocal(f.get-player-stat-or-default, %0, faction.hunting, ulocal(layout.not-set, %0, faction.hunting)|), |), \], %r, Lair:, %b, ulocal(f.get-player-stat-or-default, %0, Lair, ulocal(layout.not-set, %0, Lair))), 0, %1))
 

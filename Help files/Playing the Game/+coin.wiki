@@ -5,7 +5,7 @@
 * '''+coin''' - see all your coin and stash.
 * '''+coin/stash <#>''' - stash some of your coins.
 * '''+coin/unstash <#>''' - withdraw from your stash - but beware, you'll get back half of what you put in!
-* '''+coin/withdraw <#>''' - withdraw coin from your crew's vault.
+* '''+coin/withdraw <#>=<reason>''' - withdraw coin from your crew's vault.
 * '''+coin/deposit <#>''' - deposit coin into your crew's vault.
 * '''+coin/pay <player>=<#>''' - give another player coin.
 * '''+coin/spend <#>=<reason>''' - spend coin for <reason>.

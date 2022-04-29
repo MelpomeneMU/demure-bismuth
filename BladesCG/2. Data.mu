@@ -69,7 +69,7 @@
 &d.crew-stats-that-default [v(d.cgdb)]=Contacts|Favorite|Crew Abilities|Crew XP Triggers
 
 @@ Stuff we want to be settable by staff but don't want players to mess with.
-&d.staff-only-stats [v(d.cgdb)]=Heat|Crew Coin|Wanted Level|Hold|Stress|Traumas|Healing|Coin|Claims|Stash|Factions|Tier
+&d.staff-only-stats [v(d.cgdb)]=Heat|Crew Coin|Wanted Level|Hold|Stress|Traumas|Healing|Coin|Claims|Stash|Factions|Tier|Rep
 
 &d.map-list [v(d.cgdb)]=Map A1|Map A2|Map A3|Map A4|Map A5|Map B1|Map B2|Map B4|Map B5|Map C1|Map C2|Map C3|Map C4|Map C5
 
@@ -456,7 +456,7 @@
 
 @@ TODO: Add Preferred Operation Type?
 
-&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew XP|Crew Abilities|Contacts|Favorite|Factions|Upgrades|Heat|Crew Coin|Wanted Level|Hold|Claims
+&d.crew-stats [v(d.cgdb)]=Tier|Crew XP Triggers|Crew XP|Crew Abilities|Contacts|Favorite|Factions|Upgrades|Heat|Crew Coin|Wanted Level|Hold|Claims|Reputation|Rep
 
 &d.value.heat [v(d.cgdb)]=0|1|2|3|4|5|6|7|8|9
 
