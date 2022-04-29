@@ -101,6 +101,9 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 @@ +channel/staff Noms
 &d.noms-channel [v(d.sbd)]=Noms
 
+@@ How many days between nom resets
+&d.noms-days [v(d.sbd)]=7
+
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Default Badges
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
@@ -175,7 +178,7 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 @daily [v(d.sb)]=@trigger me/tr.wipe-weekly-nom-stats;
 
-&tr.wipe-weekly-nom-stats [v(d.sb)]=@break gettimer(%vS, global-noms); @eval settimer(%vS, global-noms, 604795); @wipe %vS/global-noms-*; @set %vS=last-reset:[prettytime()]; @dolist search(EPLAYER=hasattr(##, _past-noms))={ @wipe ##/_past-noms; };
+&tr.wipe-weekly-nom-stats [v(d.sb)]=@break gettimer(%vS, global-noms); @eval settimer(%vS, global-noms, sub(mul(xget(%vS, d.noms-days), 60, 60, 24), 600)); @wipe %vS/global-noms-*; @set %vS=last-reset:[prettytime()]; @dolist search(EPLAYER=hasattr(##, _past-noms))={ @wipe ##/_past-noms; };
 
 @@ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ @@
 @@ Basic functions
@@ -209,7 +212,7 @@ Old +noms that are no longer visible should get nuked after a while to save spac
 
 &layout.noms [v(d.sb)]=strcat(header(cat(+noms for, ulocal(f.get-name, %0, %1)), %1), setq(L, ulocal(f.get-last-X-logs, %0, _nom-)), %r, formattext(if(t(%qL), iter(%qL, ulocal(layout.log, xget(%0, itext(0))),, %r), None yet.), 0, %1), %r, footer(, %1))
 
-&layout.noms-report [v(d.sb)]=strcat(header(cat(+nom report for, ulocal(f.get-name, %0, %1)[if(t(setr(L, xget(%vS, last-reset))), %bsince %qL)]), %1), %r, divider(+noms given, %1), %r, multicol(if(t(setr(R, xget(%0, _past-noms))), strcat(Name|noms|Name|noms|Name|noms|, iter(%qR, strcat(setr(N, ulocal(f.get-name, first(itext(0), -), %1)), |, rest(itext(0), -)),, |)), None yet.), * 4 * 4 * 4, t(%qR), |, %1), divider(+noms received, %1), %r, multicol(if(t(setr(R, search(EPLAYER=strmatch(xget(##, _past-noms), %0-*)))), strcat(Name|noms|Name|noms|Name|noms|, iter(%qR, strcat(ulocal(f.get-name, itext(0), %1), |, rest(finditem(xget(itext(0), _past-noms), %0-), -)),, |)), None yet.),* 4 * 4 * 4, t(%qR), |, %1), %r, footer(, %1))
+&layout.noms-report [v(d.sb)]=strcat(header(strcat(+nom report for, %b, setr(Q, ulocal(f.get-name, %0, %1)), if(t(setr(L, xget(%vS, last-reset))), %bsince %qL)), %1), setq(T, sub(secs(), mul(xget(%vS, d.noms-days), 60, 60, 24))), %r, divider(+noms given by %qQ, %1), %r, multicol(if(t(setr(R, xget(%0, _past-noms))), strcat(Name|noms|Name|noms|Name|noms|, iter(%qR, strcat(setr(N, ulocal(f.get-name, first(itext(0), -), %1)), |, rest(itext(0), -)),, |)), None yet.), * 4 * 4 * 4, t(%qR), |, %1), divider(+noms received by %qQ, %1), %r, null(if(isstaff(%1), setq(R, iter(search(EPLAYER=strmatch(xget(##, _past-noms), %0-*)), strcat(ulocal(f.get-name, itext(0), %1), |, rest(finditem(xget(itext(0), _past-noms), %0-), -)),, |)), strcat(setq(P, ulocal(f.get-name, %0)), setq(L, iter(ulocal(f.get-last-X-logs, %0, nom-, 100), if(gt(unprettytime(extract(xget(%0, itext(0)), 1, 3)), %qT), itext(0)))), setq(R,), null(iter(%qL, if(cand(not(t(member(%qR, setr(N, first(extract(xget(%0, itext(0)), 4, 99), :)>0), |))), not(strmatch(%qN, %qP>0))), setq(R, unionset(%qR, %qN, |, |))))), null(iter(%qL, iter(%qR, if(strmatch(first(extract(xget(%0, itext(1)), 4, 99), :), first(itext(0), >)), setq(R, replace(%qR, inum(0), strcat(first(itext(0), >), >, inc(rest(itext(0), >))), |))), |, |))), setq(R, edit(%qR, >, |))))), multicol(if(t(%qR), Name|noms|Name|noms|Name|noms|%qR, None yet.),* 4 * 4 * 4, t(%qR), |, %1), %r, footer(, %1))
 
 &layout.noms-global [v(d.sb)]=strcat(header(Global +noms stats[if(t(setr(L, xget(%vS, last-reset))), %bsince %qL)], %0), %r, divider(+noms given, %0), %r, multicol(if(t(setr(R, xget(%vS, global-noms-given))), strcat(Name|noms|Name|noms|Name|noms|, iter(%qR, strcat(setr(N, ulocal(f.get-name, first(itext(0), -), %1)), |, rest(itext(0), -)),, |)), None yet.), * 4 * 4 * 4, t(%qR), |, %1), %r, divider(+noms received, %0), %r, multicol(if(t(setr(R, xget(%vS, global-noms-received))), strcat(Name|noms|Name|noms|Name|noms|, iter(%qR, strcat(setr(N, ulocal(f.get-name, first(itext(0), -), %1)), |, rest(itext(0), -)),, |)), None yet.), * 4 * 4 * 4, t(%qR), |, %1), %r, footer(if(t(gettimer(%vS, global-noms)), cat(Reset in, getremainingtime(%vS, global-noms).), Reset once the @daily hits), %0))
 
