@@ -139,7 +139,7 @@
 
 @@ TODO: Add values for Vice Purveyor based on vice
 
-&d.value.age [v(d.cgdb)]=Young Adult|Adult|Mature|Elderly
+&d.value.age [v(d.cgdb)]=Young Adult|Adult|Mature|Venerable
 
 &d.value.load [v(d.cgdb)]=Light|Normal|Heavy|Encumbered
 
