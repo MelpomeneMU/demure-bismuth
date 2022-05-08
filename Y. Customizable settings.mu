@@ -110,7 +110,7 @@
 
 +channel/header Public=%x<#d4c0fa>-%x<#894ff7>\{ %xwPublic %x<#894ff7>\}%x<#d4c0fa>-
 
-+channel/header Chargen=%x<#d4c0fa>-%x<#894ff7>\{ %xwChargen %x<#894ff7>\}%x<#d4c0fa>-
++channel/header Chargen=%x<#894ff7>\[%xwChargen%x<#894ff7>\]
 
 +channel/header Monitor=%x<#d4c0fa>\[%x<#CC0000>Monitor%x<#d4c0fa>\]
 
